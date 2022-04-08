@@ -34,7 +34,9 @@
 
 <body class="alt-menu sidebar-noneoverflow">
 
-    @include('components.nav')
+    @auth
+        @include('components.nav')
+    @endauth
 
     <!--  BEGIN MAIN CONTAINER  -->
     <div class="main-container" id="container">
