@@ -18,14 +18,14 @@
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
 
     <!-- BEGIN GLOBAL MANDATORY STYLES -->
+    @livewireStyles
     <link href="https://fonts.googleapis.com/css?family=Quicksand:400,500,600,700&display=swap" rel="stylesheet">
     <link href="{{ asset('bootstrap/css/bootstrap.min.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('assets/css/plugins.css') }}" rel="stylesheet" type="text/css" />
     <!-- END GLOBAL MANDATORY STYLES -->
 
     <!-- BEGIN PAGE LEVEL PLUGINS/CUSTOM STYLES -->
-    <link href="{{ asset('plugins/apex/apexcharts.css') }}" rel="stylesheet" type="text/css">
-    <link href="{{ asset('assets/css/dashboard/dash_1.css') }}" rel="stylesheet" type="text/css" />
+    @yield('styles')
     <!-- END PAGE LEVEL PLUGINS/CUSTOM STYLES -->
 
     <!-- Styles -->
@@ -52,7 +52,7 @@
 
                 <div class="page-header">
                     <div class="page-title">
-                        <h3>Sales Dashboard</h3>
+                        <h3>@yield('title')</h3>
                     </div>
                 </div>
 
@@ -162,7 +162,8 @@
             <main class="py-4">
                 @yield('content')
             </main> --}}
-
+    @livewireScripts
+    @yield('scripts')
 </body>
 
 </html>

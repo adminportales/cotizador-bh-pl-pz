@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CotizadorController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -20,6 +21,8 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-Route::get('/catalogo', [App\Http\Controllers\HomeController::class, 'catalogo'])->name('catalogo');
-Route::get('/mis-cotizaciones', [App\Http\Controllers\HomeController::class, 'cotizaciones'])->name('cotizaciones');
-Route::get('/cotizacion-actual', [App\Http\Controllers\HomeController::class, 'cotizacion'])->name('cotizacion');
+Route::get('/catalogo', [CotizadorController::class, 'catalogo'])->name('catalogo');
+Route::get('/catalogo/{product}', [CotizadorController::class, 'verProducto'])->name('show.product');
+Route::get('/mis-cotizaciones', [CotizadorController::class, 'cotizaciones'])->name('cotizaciones');
+Route::get('/cotizacion-actual', [CotizadorController::class, 'cotizacion'])->name('cotizacion');
+Route::get('/actualizarCatalogo', [App\Http\Controllers\ActualizarCatalogoController::class, 'actualizarCatalogo'])->name('actualizarCatalogo');

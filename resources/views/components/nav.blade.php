@@ -132,7 +132,7 @@
                  <a href="javascript:void(0);" class="nav-link dropdown-toggle user" id="user-profile-dropdown"
                      data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                      <div class="media">
-                         <img src="assets/img/90x90.jpg" class="img-fluid" alt="admin-profile">
+                         <img src="{{ asset('assets/img/90x90.jpg') }}" class="img-fluid" alt="admin-profile">
                          <div class="media-body align-self-center">
                              <h6><span>Hola,</span> {{ auth()->user()->name }}</h6>
                          </div>

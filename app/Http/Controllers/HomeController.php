@@ -20,19 +20,4 @@ class HomeController extends Controller
     {
         return view('home');
     }
-
-    public function catalogo()
-    {
-        # code...
-    }
-
-    public function cotizacion()
-    {
-        # code...
-    }
-
-    public function cotizaciones()
-    {
-        # code...
-    }
 }
