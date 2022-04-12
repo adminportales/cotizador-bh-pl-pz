@@ -4,7 +4,6 @@ namespace App\Http\Livewire;
 
 use Livewire\Component;
 
-use function PHPSTORM_META\type;
 
 class FormularioDeCotizacion extends Component
 {
@@ -41,5 +40,10 @@ class FormularioDeCotizacion extends Component
 
         $this->precioCalculado = $nuevoPrecio;
         return view('pages.catalogo.formulario-de-cotizacion');
+    }
+
+    public function agregarCotizacion()
+    {
+        auth()->user()->currentQuote;
     }
 }

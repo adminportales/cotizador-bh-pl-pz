@@ -1,5 +1,5 @@
 <div>
-    <form action="">
+    <form wire:submit.prevent="agregarCotizacion">
         <div class="form-group d-flex align-items-center">
             <label for="tecnica" class="w-50 text-dark"><strong>Tecnica</strong> </label>
             <input type="text" name="tecnica" wire:model="tecnica" placeholder="Tecnica de personalizacion"

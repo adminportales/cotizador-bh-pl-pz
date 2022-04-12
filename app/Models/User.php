@@ -46,4 +46,9 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Company::class, 'company_id');
     }
+
+    public function currentQuote()
+    {
+        return $this->hasMany(CurrentQuote::class);
+    }
 }
