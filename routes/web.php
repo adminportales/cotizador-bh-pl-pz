@@ -29,3 +29,11 @@ Route::get('/mis-cotizaciones', [CotizadorController::class, 'cotizaciones'])->n
 Route::get('/cotizacion-actual', [CotizadorController::class, 'cotizacion'])->name('cotizacion');
 
 Route::get('/actualizarCatalogo', [ActualizarCatalogoController::class, 'actualizarCatalogo'])->name('actualizarCatalogo');
+
+//Route Hooks - Do not delete//
+// Route::view('prices_techniques', 'livewire.prices_techniques.index')->middleware('auth');
+// Route::view('size_material_technique', 'livewire.size_material_technique.index')->middleware('auth');
+// Route::view('sizes', 'livewire.sizes.index')->middleware('auth');
+// Route::view('material_technique', 'livewire.material-techniques.index')->middleware('auth');
+// Route::view('materials', 'livewire.materials.index')->middleware('auth');
+Route::view('techniques', 'livewire.techniques.index')->middleware('auth');
