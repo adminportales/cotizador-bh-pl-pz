@@ -15,7 +15,7 @@
 						<div>
 							<input wire:model='keyWord' type="text" class="form-control" name="search" id="search" placeholder="Search Techniques">
 						</div>
-						<div class="btn btn-sm btn-info" data-toggle="modal" data-target="#createDataModal">
+						<div class="btn btn-sm btn-info" data-toggle="modal" data-target="#createDataModalTechnique">
 						<i class="fa fa-plus"></i>  Add Techniques
 						</div>
 					</div>

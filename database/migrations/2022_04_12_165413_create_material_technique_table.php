@@ -17,6 +17,7 @@ class CreateMaterialTechniqueTable extends Migration
             $table->id();
             $table->foreignId('technique_id')->constrained();
             $table->foreignId('material_id')->constrained();
+            $table->unique(['technique_id','material_id']);
         });
     }
 

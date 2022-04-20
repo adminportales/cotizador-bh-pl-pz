@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace App\Models;
 
@@ -7,14 +7,14 @@ use Illuminate\Database\Eloquent\Model;
 
 class Material extends Model
 {
-	use HasFactory;
-	
+    use HasFactory;
+
     public $timestamps = true;
 
     protected $table = 'materials';
 
-    protected $fillable = ['nombre','extras','slug'];
-	
+    protected $fillable = ['nombre', 'extras', 'slug'];
+
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
@@ -22,5 +22,4 @@ class Material extends Model
     {
         return $this->hasMany('App\Models\MaterialTechnique', 'material_id', 'id');
     }
-    
 }

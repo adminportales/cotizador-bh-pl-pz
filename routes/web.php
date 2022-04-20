@@ -15,13 +15,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
 Auth::routes();
 
-Route::get('/home', [CotizadorController::class, 'index'])->name('home');
+Route::get('/', [CotizadorController::class, 'index'])->name('home');
 
 Route::get('/catalogo', [CotizadorController::class, 'catalogo'])->name('catalogo');
 Route::get('/catalogo/{product}', [CotizadorController::class, 'verProducto'])->name('show.product');
@@ -36,4 +32,6 @@ Route::get('/actualizarCatalogo', [ActualizarCatalogoController::class, 'actuali
 // Route::view('sizes', 'livewire.sizes.index')->middleware('auth');
 // Route::view('material_technique', 'livewire.material-techniques.index')->middleware('auth');
 // Route::view('materials', 'livewire.materials.index')->middleware('auth');
-Route::view('techniques', 'livewire.techniques.index')->middleware('auth');
+Route::middleware(['role:admin'])->group(function () {
+    Route::view('techniques', 'livewire.techniques.index')->middleware('auth');
+});

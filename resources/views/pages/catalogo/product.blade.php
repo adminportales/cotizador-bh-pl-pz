@@ -17,8 +17,8 @@
                 <div class="card-body">
                     <div class="product text-center">
                         <div class="img-container">
-                            <img id="imgBox" src="{{ $product->firstImage->image_url }}" class="img-fluid"
-                                alt="{{ $product->firstImage->image_url }}">
+                            <img id="imgBox" src="{{ $product->firstImage ?  $product->firstImage->image_url:asset('img/default.jpg') }}" class="img-fluid"
+                                alt="imagen">
                         </div>
                         <div class="product-small-img">
                             @foreach ($product->images as $image)

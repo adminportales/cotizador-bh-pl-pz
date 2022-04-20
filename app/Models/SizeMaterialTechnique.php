@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace App\Models;
 
@@ -8,13 +8,13 @@ use Illuminate\Database\Eloquent\Model;
 class SizeMaterialTechnique extends Model
 {
 	use HasFactory;
-	
-    public $timestamps = true;
 
-    protected $table = 'sizeMaterialTechniques';
+    public $timestamps = false;
+
+    protected $table = 'size_material_technique';
 
     protected $fillable = ['size_id','material_technique_id'];
-	
+
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
@@ -22,7 +22,7 @@ class SizeMaterialTechnique extends Model
     {
         return $this->hasOne('App\Models\MaterialTechnique', 'id', 'material_technique_id');
     }
-    
+
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
@@ -30,7 +30,7 @@ class SizeMaterialTechnique extends Model
     {
         return $this->hasMany('App\Models\PricesTechnique', 'size_material_technique_id', 'id');
     }
-    
+
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
@@ -38,5 +38,5 @@ class SizeMaterialTechnique extends Model
     {
         return $this->hasOne('App\Models\Size', 'id', 'size_id');
     }
-    
+
 }

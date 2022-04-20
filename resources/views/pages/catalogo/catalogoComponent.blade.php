@@ -78,7 +78,7 @@
                                                 $priceProduct = round($priceProduct - $priceProduct * ($row->provider->discount / 100), 2);
                                             }
                                         @endphp
-                                        <img src="{{ $row->firstImage ? $row->firstImage->image_url : '' }}"
+                                        <img src="{{ $row->firstImage ? $row->firstImage->image_url : asset('img/default.jpg') }}"
                                             class="card-img-top" alt="{{ $row->name }}">
                                         <h5 class="card-title" style="text-transform: capitalize">
                                             {{ $row->name }}

@@ -9,11 +9,6 @@
                             <h4><i class="fab fa-laravel text-info"></i>
                                 Material Technique Listing </h4>
                         </div>
-                        <div wire:poll.60s>
-                            <code>
-                                <h5>{{ now()->format('H:i:s') }} UTC</h5>
-                            </code>
-                        </div>
                         @if (session()->has('message'))
                             <div wire:poll.4s class="btn btn-sm btn-success" style="margin-top:0px; margin-bottom:0px;">
                                 {{ session('message') }} </div>
@@ -22,7 +17,7 @@
                             <input wire:model='keyWord' type="text" class="form-control" name="search" id="search"
                                 placeholder="Search Material Techniques">
                         </div>
-                        <div class="btn btn-sm btn-info" data-toggle="modal" data-target="#createDataModal">
+                        <div class="btn btn-sm btn-info" data-toggle="modal" data-target="#createDataModalMT">
                             <i class="fa fa-plus"></i> Add Material Techniques
                         </div>
                     </div>
@@ -36,8 +31,8 @@
                             <thead class="thead">
                                 <tr>
                                     <td>#</td>
-                                    <th>Technique Id</th>
-                                    <th>Material Id</th>
+                                    <th>Technique</th>
+                                    <th>Material</th>
                                     <td>ACTIONS</td>
                                 </tr>
                             </thead>
@@ -45,8 +40,8 @@
                                 @foreach ($materialTechniques as $row)
                                     <tr>
                                         <td>{{ $loop->iteration }}</td>
-                                        <td>{{ $row->technique_id }}</td>
-                                        <td>{{ $row->material_id }}</td>
+                                        <td>{{ $row->technique->nombre }}</td>
+                                        <td>{{ $row->material->nombre }}</td>
                                         <td width="90">
                                             <div class="btn-group">
                                                 <button type="button" class="btn btn-info btn-sm dropdown-toggle"

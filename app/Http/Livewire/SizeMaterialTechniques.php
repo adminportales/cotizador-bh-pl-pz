@@ -17,22 +17,22 @@ class SizeMaterialTechniques extends Component
     public function render()
     {
 		$keyWord = '%'.$this->keyWord .'%';
-        return view('livewire.sizeMaterialTechniques.view', [
+        return view('livewire.size-material-techniques.view', [
             'sizeMaterialTechniques' => SizeMaterialTechnique::latest()
 						->orWhere('size_id', 'LIKE', $keyWord)
 						->orWhere('material_technique_id', 'LIKE', $keyWord)
 						->paginate(10),
         ]);
     }
-	
+
     public function cancel()
     {
         $this->resetInput();
         $this->updateMode = false;
     }
-	
+
     private function resetInput()
-    {		
+    {
 		$this->size_id = null;
 		$this->material_technique_id = null;
     }
@@ -44,11 +44,11 @@ class SizeMaterialTechniques extends Component
 		'material_technique_id' => 'required',
         ]);
 
-        SizeMaterialTechnique::create([ 
+        SizeMaterialTechnique::create([
 			'size_id' => $this-> size_id,
 			'material_technique_id' => $this-> material_technique_id
         ]);
-        
+
         $this->resetInput();
 		$this->emit('closeModal');
 		session()->flash('message', 'SizeMaterialTechnique Successfully created.');
@@ -58,10 +58,10 @@ class SizeMaterialTechniques extends Component
     {
         $record = SizeMaterialTechnique::findOrFail($id);
 
-        $this->selected_id = $id; 
+        $this->selected_id = $id;
 		$this->size_id = $record-> size_id;
 		$this->material_technique_id = $record-> material_technique_id;
-		
+
         $this->updateMode = true;
     }
 
@@ -74,7 +74,7 @@ class SizeMaterialTechniques extends Component
 
         if ($this->selected_id) {
 			$record = SizeMaterialTechnique::find($this->selected_id);
-            $record->update([ 
+            $record->update([
 			'size_id' => $this-> size_id,
 			'material_technique_id' => $this-> material_technique_id
             ]);

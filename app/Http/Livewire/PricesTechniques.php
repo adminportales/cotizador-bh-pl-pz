@@ -17,7 +17,7 @@ class PricesTechniques extends Component
     public function render()
     {
 		$keyWord = '%'.$this->keyWord .'%';
-        return view('livewire.pricesTechniques.view', [
+        return view('livewire.prices-techniques.view', [
             'pricesTechniques' => PricesTechnique::latest()
 						->orWhere('size_material_technique_id', 'LIKE', $keyWord)
 						->orWhere('escala_inicial', 'LIKE', $keyWord)
@@ -27,15 +27,15 @@ class PricesTechniques extends Component
 						->paginate(10),
         ]);
     }
-	
+
     public function cancel()
     {
         $this->resetInput();
         $this->updateMode = false;
     }
-	
+
     private function resetInput()
-    {		
+    {
 		$this->size_material_technique_id = null;
 		$this->escala_inicial = null;
 		$this->escala_final = null;
@@ -52,14 +52,14 @@ class PricesTechniques extends Component
 		'tipo_precio' => 'required',
         ]);
 
-        PricesTechnique::create([ 
+        PricesTechnique::create([
 			'size_material_technique_id' => $this-> size_material_technique_id,
 			'escala_inicial' => $this-> escala_inicial,
 			'escala_final' => $this-> escala_final,
 			'precio' => $this-> precio,
 			'tipo_precio' => $this-> tipo_precio
         ]);
-        
+
         $this->resetInput();
 		$this->emit('closeModal');
 		session()->flash('message', 'PricesTechnique Successfully created.');
@@ -69,13 +69,13 @@ class PricesTechniques extends Component
     {
         $record = PricesTechnique::findOrFail($id);
 
-        $this->selected_id = $id; 
+        $this->selected_id = $id;
 		$this->size_material_technique_id = $record-> size_material_technique_id;
 		$this->escala_inicial = $record-> escala_inicial;
 		$this->escala_final = $record-> escala_final;
 		$this->precio = $record-> precio;
 		$this->tipo_precio = $record-> tipo_precio;
-		
+
         $this->updateMode = true;
     }
 
@@ -90,7 +90,7 @@ class PricesTechniques extends Component
 
         if ($this->selected_id) {
 			$record = PricesTechnique::find($this->selected_id);
-            $record->update([ 
+            $record->update([
 			'size_material_technique_id' => $this-> size_material_technique_id,
 			'escala_inicial' => $this-> escala_inicial,
 			'escala_final' => $this-> escala_final,

@@ -5,23 +5,23 @@ namespace App\Http\Livewire;
 use Livewire\Component;
 use Livewire\WithPagination;
 use App\Models\MaterialTechnique;
+use Exception;
 
 class MaterialTechniques extends Component
 {
     use WithPagination;
 
-	protected $paginationTheme = 'bootstrap';
+    protected $paginationTheme = 'bootstrap';
     public $selected_id, $keyWord, $technique_id, $material_id;
     public $updateMode = false;
 
     public function render()
     {
-		$keyWord = '%'.$this->keyWord .'%';
+        $keyWord = '%' . $this->keyWord . '%';
         return view('livewire.material-techniques.view', [
-            'materialTechniques' => MaterialTechnique::latest()
-						->orWhere('technique_id', 'LIKE', $keyWord)
-						->orWhere('material_id', 'LIKE', $keyWord)
-						->paginate(10),
+            'materialTechniques' => MaterialTechnique::orWhere('technique_id', 'LIKE', $keyWord)
+                ->orWhere('material_id', 'LIKE', $keyWord)
+                ->paginate(10),
         ]);
     }
 
@@ -33,25 +33,25 @@ class MaterialTechniques extends Component
 
     private function resetInput()
     {
-		$this->technique_id = null;
-		$this->material_id = null;
+        $this->technique_id = null;
+        $this->material_id = null;
     }
 
     public function store()
     {
         $this->validate([
-		'technique_id' => 'required',
-		'material_id' => 'required',
+            'technique_id' => 'required',
+            'material_id' => 'required',
         ]);
 
         MaterialTechnique::create([
-			'technique_id' => $this-> technique_id,
-			'material_id' => $this-> material_id
+            'technique_id' => $this->technique_id,
+            'material_id' => $this->material_id
         ]);
 
         $this->resetInput();
-		$this->emit('closeModal');
-		session()->flash('message', 'MaterialTechnique Successfully created.');
+        $this->emit('closeModal');
+        session()->flash('message', 'MaterialTechnique Successfully created.');
     }
 
     public function edit($id)
@@ -59,8 +59,8 @@ class MaterialTechniques extends Component
         $record = MaterialTechnique::findOrFail($id);
 
         $this->selected_id = $id;
-		$this->technique_id = $record-> technique_id;
-		$this->material_id = $record-> material_id;
+        $this->technique_id = $record->technique_id;
+        $this->material_id = $record->material_id;
 
         $this->updateMode = true;
     }
@@ -68,20 +68,20 @@ class MaterialTechniques extends Component
     public function update()
     {
         $this->validate([
-		'technique_id' => 'required',
-		'material_id' => 'required',
+            'technique_id' => 'required',
+            'material_id' => 'required',
         ]);
 
         if ($this->selected_id) {
-			$record = MaterialTechnique::find($this->selected_id);
+            $record = MaterialTechnique::find($this->selected_id);
             $record->update([
-			'technique_id' => $this-> technique_id,
-			'material_id' => $this-> material_id
+                'technique_id' => $this->technique_id,
+                'material_id' => $this->material_id
             ]);
 
             $this->resetInput();
             $this->updateMode = false;
-			session()->flash('message', 'MaterialTechnique Successfully updated.');
+            session()->flash('message', 'MaterialTechnique Successfully updated.');
         }
     }
 
