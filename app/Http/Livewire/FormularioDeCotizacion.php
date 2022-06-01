@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire;
 
+use App\Models\Catalogo\GlobalAttribute;
 use App\Models\Material;
 use App\Models\MaterialTechnique;
 use App\Models\SizeMaterialTechnique;
@@ -15,7 +16,7 @@ class FormularioDeCotizacion extends Component
 
     public $precio, $precioCalculado, $precioTotal = 0;
 
-    public $tecnica = 0, $colores = 0, $operacion = 0, $utilidad = 0, $entrega = 0, $cantidad = 0;
+    public $tecnica = 0, $colores = 0, $operacion = 0, $utilidad = 0, $entrega = 0, $cantidad = 0, $priceTechnique;
 
     public $materialSeleccionado;
     public $tecnicaSeleccionada;
@@ -23,7 +24,8 @@ class FormularioDeCotizacion extends Component
 
     public function mount()
     {
-        $utilidad = 10;
+        $utilidad = GlobalAttribute::find(1);
+        $utilidad = (float) $utilidad->value;
         $priceProduct = $this->product->price;
         if ($this->product->producto_promocion) {
             $priceProduct = round($priceProduct - $priceProduct * ($this->product->descuento / 100), 2);
@@ -46,33 +48,45 @@ class FormularioDeCotizacion extends Component
         $techniquesAvailables = [];
         if ($this->materialSeleccionado !== null && $this->materialSeleccionado !== "") {
             $techniquesAvailables = Material::find((int)$this->materialSeleccionado)->materialTechniques;
+        } else {
+            $this->tecnicaSeleccionada = null;
+            $techniquesAvailables = [];
         }
         $sizesAvailables = [];
         if ($this->tecnicaSeleccionada !== null && $this->tecnicaSeleccionada !== "") {
             $sizesAvailables = MaterialTechnique::find((int)$this->tecnicaSeleccionada)->sizeMaterialTechniques;
+        } else {
+            $sizesAvailables = [];
+            $this->sizeSeleccionado = null;
         }
 
         $preciosDisponibles = [];
         if ($this->sizeSeleccionado !== null && $this->sizeSeleccionado !== "") {
             $preciosDisponibles = SizeMaterialTechnique::find((int)$this->sizeSeleccionado)->pricesTechniques;
+        } else {
+            $preciosDisponibles = [];
+            $this->sizeSeleccionado = null;
         }
 
         $precioDeTecnica = 0;
 
-        if ((int)$this->cantidad > 0 && $preciosDisponibles) {
+        if ((int)$this->cantidad > 0 && $preciosDisponibles && $this->sizeSeleccionado !== null) {
             foreach ($preciosDisponibles as $precioDisponible) {
                 if ($precioDisponible->escala_final != null) {
                     if ((int)$this->cantidad >= $precioDisponible->escala_inicial  &&  (int)$this->cantidad <= $precioDisponible->escala_final) {
+                        $this->priceTechnique = $precioDisponible;
                         $precioDeTecnica = $precioDisponible->tipo_precio == "D" ? round($precioDisponible->precio / (int)$this->cantidad, 2) : $precioDisponible->precio;
                     }
                 } else if ($precioDisponible->escala_final == null) {
                     if ((int)$this->cantidad >= $precioDisponible->escala_inicial) {
+                        $this->priceTechnique = $precioDisponible;
                         $precioDeTecnica = $precioDisponible->tipo_precio == "D" ? round($precioDisponible->precio / (int)$this->cantidad, 2) : $precioDisponible->precio;
                     }
                 }
             }
         } else {
             $precioDeTecnica = 0;
+            $this->priceTechnique = null;
         }
 
         // Calculo de Precio
@@ -88,12 +102,59 @@ class FormularioDeCotizacion extends Component
 
         $this->precioCalculado = $nuevoPrecio;
         $this->precioTotal = $nuevoPrecio * $this->cantidad;
-
         return view('pages.catalogo.formulario-de-cotizacion', ['materiales' => $materiales, 'techniquesAvailables' => $techniquesAvailables, 'sizesAvailables' => $sizesAvailables, 'preciosDisponibles' => $preciosDisponibles]);
     }
 
     public function agregarCotizacion()
     {
-        auth()->user()->currentQuote;
+
+        if (!(int)$this->colores > 0) {
+            session()->flash('error', 'No se ha especificado la cantidad de logos.');
+            return;
+        }
+        if (!(int)$this->operacion > 0) {
+            session()->flash('error', 'No se ha especificado el costo de operacion.');
+            return;
+        }
+        if (!(int)$this->utilidad > 0) {
+            session()->flash('error', 'No se ha especificado el margen de utilidad.');
+            return;
+        }
+        if (!(int)$this->cantidad > 0) {
+            session()->flash('error', 'No se ha especificado la cantidad de productos.');
+            return;
+        }
+        if (!(int)$this->entrega > 0) {
+            session()->flash('error', 'No se ha especificado el tiempo de entrega.');
+            return;
+        }
+        if (!$this->priceTechnique) {
+            session()->flash('error', 'No se ha especificado la tecnica de personalizacion.');
+            return;
+        }
+        auth()->user()->currentQuote()->create([
+            'product_id' => $this->product->id,
+            'prices_techniques_id' => $this->priceTechnique->id,
+            'color_logos' => $this->colores,
+            'costo_indirecto' => $this->operacion,
+            'utilidad' => $this->utilidad,
+            'dias_entrega' => $this->entrega,
+            'cantidad' => $this->cantidad,
+            'precio_unitario' => $this->precioCalculado,
+            'precio_total' => $this->precioTotal,
+        ]);
+        session()->flash('message', 'Se ha agregado este producto a la cotizacion.');
+        $this->resetData();
+    }
+    public function resetData()
+    {
+        $this->priceTechnique = null;
+        $this->colores = 0;
+        $this->operacion = 0;
+        $this->utilidad = 0;
+        $this->entrega = 0;
+        $this->cantidad = 0;
+        $this->precioCalculado = 0;
+        $this->precioTotal = 0;
     }
 }

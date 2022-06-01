@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire;
 
+use App\Models\Catalogo\GlobalAttribute;
 use App\Models\Catalogo\Product as CatalogoProduct;
 use App\Models\Catalogo\Provider as CatalogoProvider;
 use Livewire\Component;
@@ -19,7 +20,8 @@ class Catalogo extends Component
 
     public function __construct()
     {
-        $utilidad = 10;
+        $utilidad = GlobalAttribute::find(1);
+        $utilidad = (float) $utilidad->value;
         $price = DB::table('products')->max('price');
         $this->precioMax = round($price + $price * ($utilidad / 100), 2);
         $this->precioMin = 0;
@@ -30,7 +32,8 @@ class Catalogo extends Component
 
     public function render()
     {
-        $utilidad = 10;
+        $utilidad = GlobalAttribute::find(1);
+        $utilidad = (float) $utilidad->value;
 
         $proveedores = CatalogoProvider::all();
         $price = DB::table('products')->max('price');

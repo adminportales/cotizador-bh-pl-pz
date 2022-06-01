@@ -7,13 +7,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class MaterialTechnique extends Model
 {
-	use HasFactory;
+    use HasFactory;
 
     public $timestamps = false;
 
     protected $table = 'material_technique';
 
-    protected $fillable = ['technique_id','material_id'];
+    protected $fillable = ['technique_id', 'material_id'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
@@ -28,7 +28,7 @@ class MaterialTechnique extends Model
      */
     public function sizeMaterialTechniques()
     {
-        return $this->hasMany('App\Models\SizeMaterialTechnique', 'material_technique_id', 'id');
+        return $this->belongsToMany('App\Models\Size', 'size_material_technique', 'material_technique_id', 'size_id');
     }
 
     /**
@@ -38,5 +38,4 @@ class MaterialTechnique extends Model
     {
         return $this->hasOne('App\Models\Technique', 'id', 'technique_id');
     }
-
 }

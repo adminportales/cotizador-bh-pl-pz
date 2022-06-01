@@ -18,7 +18,7 @@
                         <select name="" id="" class="form-control" wire:model="tecnicaSeleccionada">
                             <option value="">Seleccione la tecnica</option>
                             @foreach ($techniquesAvailables as $technique)
-                                <option value="{{ $technique->technique->id }}">{{ $technique->technique->nombre }}
+                                <option value="{{ $technique->id }}">{{ $technique->nombre }}
                                 </option>
                             @endforeach
                         </select>
@@ -94,6 +94,14 @@
             </div>
         </div>
         <br>
+        @if (session()->has('error'))
+            <div wire:poll.4s class="btn btn-sm btn-danger w-100" style="margin-top:0px; margin-bottom:0px;">
+                {{ session('error') }} </div>
+        @endif
+        @if (session()->has('message'))
+            <div wire:poll.4s class="btn btn-sm btn-success w-100" style="margin-top:0px; margin-bottom:0px;">
+                {{ session('message') }} </div>
+        @endif
         <div class="d-flex justify-content-between">
             <div>
                 <h6 class="text-success">Precio Final por Articulo: $ {{ $precioCalculado }}</h6>

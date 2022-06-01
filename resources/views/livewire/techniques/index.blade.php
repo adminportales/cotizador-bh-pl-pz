@@ -1,12 +1,7 @@
 @extends('layouts.app')
 @section('content')
-    <div class="col-md-6">
-        @livewire('materials')
-    </div>
-    <div class="col-md-6">
-        @livewire('techniques')
-    </div>
-    <div class="col-md-6">
+    @livewire('techniques')
+    {{-- <div class="col-md-6">
         @livewire('material-techniques')
     </div>
     <div class="col-md-6">
@@ -17,5 +12,5 @@
     </div>
     <div class="col-md-6">
         @livewire('prices-techniques')
-    </div>
+    </div> --}}
 @endsection

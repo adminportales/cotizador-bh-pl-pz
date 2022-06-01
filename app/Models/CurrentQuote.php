@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Catalogo\Product;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -11,7 +12,7 @@ class CurrentQuote extends Model
     protected $fillable = [
         'user_id',
         'product_id',
-        'technique_id',
+        'prices_techniques_id',
         'color_logos',
         'costo_indirecto',
         'utilidad',
@@ -20,4 +21,9 @@ class CurrentQuote extends Model
         'precio_unitario',
         'precio_total',
     ];
+
+    public function product()
+    {
+        return $this->belongsTo(Product::class);
+    }
 }

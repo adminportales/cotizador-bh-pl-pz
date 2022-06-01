@@ -20,6 +20,6 @@ class Material extends Model
      */
     public function materialTechniques()
     {
-        return $this->hasMany('App\Models\MaterialTechnique', 'material_id', 'id');
+        return $this->belongsToMany('App\Models\Technique', 'material_technique','material_id', 'technique_id');
     }
 }

@@ -17,7 +17,7 @@ class CreateCurrentQuotesTable extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained();
             $table->foreignId('product_id')->constrained();
-            $table->foreignId('technique_id')->constrained();
+            $table->foreignId('prices_techniques_id')->constrained('prices_techniques');
             $table->integer('color_logos');
             $table->decimal('costo_indirecto', 8, 2);
             $table->decimal('utilidad', 8, 2);

@@ -2,11 +2,8 @@
 @section('content')
     <div class="container-fluid">
         <div class="row justify-content-center">
-            <div class="col-md-9">
-                @livewire('size-material-techniques')
-            </div>
-            <div class="col-md-3">
-                @livewire('sizes')
+            <div class="col-md-12">
+                @livewire('prices-techniques')
             </div>
         </div>
     </div>

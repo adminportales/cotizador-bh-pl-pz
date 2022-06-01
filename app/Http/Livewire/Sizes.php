@@ -6,82 +6,79 @@ use Livewire\Component;
 use Livewire\WithPagination;
 use App\Models\Size;
 
+use Illuminate\Support\Str as Str;
+
 class Sizes extends Component
 {
     use WithPagination;
 
-	protected $paginationTheme = 'bootstrap';
-    public $selected_id, $keyWord, $nombre, $slug;
+    protected $paginationTheme = 'bootstrap';
+    public $selected_id, $keyWord, $nombre;
     public $updateMode = false;
 
     public function render()
     {
-		$keyWord = '%'.$this->keyWord .'%';
+        $keyWord = '%' . $this->keyWord . '%';
         return view('livewire.sizes.view', [
             'sizes' => Size::latest()
-						->orWhere('nombre', 'LIKE', $keyWord)
-						->orWhere('slug', 'LIKE', $keyWord)
-						->paginate(10),
+                ->orWhere('nombre', 'LIKE', $keyWord)
+                ->paginate(10),
         ]);
     }
-	
+
     public function cancel()
     {
         $this->resetInput();
         $this->updateMode = false;
     }
-	
+
     private function resetInput()
-    {		
-		$this->nombre = null;
-		$this->slug = null;
+    {
+        $this->nombre = null;
     }
 
     public function store()
     {
         $this->validate([
-		'nombre' => 'required',
-		'slug' => 'required',
+            'nombre' => 'required',
         ]);
 
-        Size::create([ 
-			'nombre' => $this-> nombre,
-			'slug' => $this-> slug
+        Size::create([
+            'nombre' => $this->nombre,
+            'slug' => Str::slug($this->nombre)
         ]);
-        
+
         $this->resetInput();
-		$this->emit('closeModal');
-		session()->flash('message', 'Size Successfully created.');
+        $this->emit('closeModal');
+        session()->flash('message', 'Size Successfully created.');
     }
 
     public function edit($id)
     {
         $record = Size::findOrFail($id);
 
-        $this->selected_id = $id; 
-		$this->nombre = $record-> nombre;
-		$this->slug = $record-> slug;
-		
+        $this->selected_id = $id;
+        $this->nombre = $record->nombre;
+
         $this->updateMode = true;
     }
 
     public function update()
     {
         $this->validate([
-		'nombre' => 'required',
-		'slug' => 'required',
+            'nombre' => 'required',
         ]);
 
         if ($this->selected_id) {
-			$record = Size::find($this->selected_id);
-            $record->update([ 
-			'nombre' => $this-> nombre,
-			'slug' => $this-> slug
+            $record = Size::find($this->selected_id);
+            $record->update([
+                'nombre' => $this->nombre,
+                'slug' => Str::slug($this->nombre)
             ]);
 
             $this->resetInput();
             $this->updateMode = false;
-			session()->flash('message', 'Size Successfully updated.');
+            session()->flash('message', 'Size Successfully updated.');
         }
     }
 

@@ -6,12 +6,14 @@ use Livewire\Component;
 use Livewire\WithPagination;
 use App\Models\Technique;
 
+use Illuminate\Support\Str as Str;
+
 class Techniques extends Component
 {
     use WithPagination;
 
     protected $paginationTheme = 'bootstrap';
-    public $selected_id, $keyWord, $nombre, $slug;
+    public $selected_id, $keyWord, $nombre;
     public $updateMode = false;
 
     public function render()
@@ -20,7 +22,6 @@ class Techniques extends Component
         return view('livewire.techniques.view', [
             'techniques' => Technique::latest()
                 ->orWhere('nombre', 'LIKE', $keyWord)
-                ->orWhere('slug', 'LIKE', $keyWord)
                 ->paginate(10),
         ]);
     }
@@ -34,19 +35,17 @@ class Techniques extends Component
     private function resetInput()
     {
         $this->nombre = null;
-        $this->slug = null;
     }
 
     public function store()
     {
         $this->validate([
             'nombre' => 'required',
-            'slug' => 'required',
         ]);
 
         Technique::create([
             'nombre' => $this->nombre,
-            'slug' => $this->slug
+            'slug' => Str::slug($this->nombre)
         ]);
 
         $this->resetInput();
@@ -60,7 +59,6 @@ class Techniques extends Component
 
         $this->selected_id = $id;
         $this->nombre = $record->nombre;
-        $this->slug = $record->slug;
 
         $this->updateMode = true;
     }
@@ -69,14 +67,13 @@ class Techniques extends Component
     {
         $this->validate([
             'nombre' => 'required',
-            'slug' => 'required',
         ]);
 
         if ($this->selected_id) {
             $record = Technique::find($this->selected_id);
             $record->update([
                 'nombre' => $this->nombre,
-                'slug' => $this->slug
+                'slug' => Str::slug($this->nombre)
             ]);
 
             $this->resetInput();

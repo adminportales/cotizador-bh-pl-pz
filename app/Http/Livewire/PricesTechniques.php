@@ -17,7 +17,7 @@ class PricesTechniques extends Component
     public function render()
     {
 		$keyWord = '%'.$this->keyWord .'%';
-        return view('livewire.prices-techniques.view', [
+        return view('livewire.prices.view', [
             'pricesTechniques' => PricesTechnique::latest()
 						->orWhere('size_material_technique_id', 'LIKE', $keyWord)
 						->orWhere('escala_inicial', 'LIKE', $keyWord)

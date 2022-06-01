@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Catalogo\Category;
 use App\Models\Catalogo\Color;
+use App\Models\Catalogo\GlobalAttribute;
 use App\Models\Catalogo\Image;
 use App\Models\Catalogo\Price;
 use App\Models\Catalogo\Product;
@@ -123,6 +124,14 @@ class ActualizarCatalogoController extends Controller
                 "slug" => $productAttribute->slug,
             ], [
                 "value" => $productAttribute->value,
+            ]);
+        }
+        foreach ($responseBody->globalAttribute as $globalAttribute) {
+            GlobalAttribute::updateOrCreate([
+                "id" => $globalAttribute->id,
+                "attribute" => $globalAttribute->attribute,
+            ], [
+                "value" => $globalAttribute->value,
             ]);
         }
 

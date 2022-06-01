@@ -1,40 +1,36 @@
 <!-- Modal -->
-<div wire:ignore.self class="modal fade" id="updateModal" data-backdrop="static" tabindex="-1" role="dialog"
-    aria-labelledby="updateModalLabel" aria-hidden="true">
+<div wire:ignore.self class="modal fade" id="addTecnicasModal" data-backdrop="static" tabindex="-1" role="dialog"
+    aria-labelledby="addTecnicasModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="updateModalLabel">Agregar Tamaños</h5>
+                <h5 class="modal-title" id="addTecnicasModalLabel">Actualizar Tecnicas del Material</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span wire:click.prevent="cancel()" aria-hidden="true">×</span>
                 </button>
             </div>
             <div class="modal-body">
-                @if ($material != null)
-                    <strong>{{ $material->material->nombre }}</strong> {{ $material->technique->nombre }}
-                @endif
-                <br>
                 <ul class="list-group">
                     @if ($material != null)
-                        @foreach ($sizes as $size)
+                        @foreach ($techniques as $technique)
                             @php
                                 $check = false;
                             @endphp
-                            @foreach ($material->sizeMaterialTechniques as $item)
+                            @foreach ($material->materialTechniques as $item)
                                 @php
-                                    if ($item->id == $size->id) {
+                                    if ($item->id == $technique->id) {
                                         $check = true;
                                     }
                                 @endphp
                             @endforeach
                             <li class="list-group-item">
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="{{ $size->id }}"
-                                        id="check{{ $size->id }}"
-                                        wire:click="update({{ $size->id }}, {{ $material->id }})"
+                                    <input class="form-check-input" type="checkbox" value="{{ $technique->id }}"
+                                        id="check{{ $technique->id }}"
+                                        wire:click="updateListTechniques({{ $technique->id }}, {{ $material->id }})"
                                         {{ $check ? 'checked' : '' }}>
-                                    <label class="form-check-label" for="check{{ $size->id }}">
-                                        {{ $size->nombre }}
+                                    <label class="form-check-label" for="check{{ $technique->id }}">
+                                        {{ $technique->nombre }}
                                     </label>
                                 </div>
                             </li>
@@ -47,8 +43,7 @@
                 @endif
             </div>
             <div class="modal-footer">
-                <button type="button" wire:click.prevent="cancel()" class="btn btn-secondary"
-                    data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
             </div>
         </div>
     </div>
