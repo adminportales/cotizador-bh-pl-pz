@@ -26,9 +26,22 @@
                             <td>{{ $loop->iteration }}</td>
                             <td><strong>{{ $row->material->nombre }}</strong> {{ $row->technique->nombre }}</td>
                             <td>
-                                @foreach ($row->sizeMaterialTechniques as $item)
-                                    {{ $item->nombre }},
-                                @endforeach
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th>Cuarto de Hoja</th>
+                                            <th>Media Hoja</th>
+                                            <th>Hoja Completa</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            @foreach ($row->sizeMaterialTechniques as $item)
+                                                {{ $item->nombre }},
+                                            @endforeach
+                                        </tr>
+                                    </tbody>
+                                </table>
                             </td>
                             <td width="90">
                                 <div class="btn-group">

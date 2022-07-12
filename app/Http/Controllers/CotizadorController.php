@@ -32,13 +32,22 @@ class CotizadorController extends Controller
 
     public function cotizacion()
     {
-        $cotizacionActual = auth()->user()->currentQuote;
-        $total = auth()->user()->currentQuote()->sum('precio_total');
+        $cotizacionActual = auth()->user()->currentQuote->currentQuoteDetails;
+        $total = $cotizacionActual->sum('precio_total');
         return view('pages.catalogo.cotizacion-actual', compact('cotizacionActual', 'total'));
     }
 
     public function cotizaciones()
     {
+    }
 
+    public function finalizar()
+    {
+        return view('pages.catalogo.finalizar');
+    }
+    public function previsualizar()
+    {
+        $pdf = \PDF::loadView('pages.pdf.promolife');
+        return $pdf->stream('ejemplo.pdf');
     }
 }

@@ -21,7 +21,7 @@ class ActualizarCatalogoController extends Controller
     public function actualizarCatalogo()
     {
         $client = new Client(); //GuzzleHttp\Client
-        $url = "http://127.0.0.1:8001/api/getAllProductos";
+        $url = "https://dev-catalogo.promolife.lat/api/getAllProductos";
 
 
         $response = $client->request('GET', $url, [
@@ -73,66 +73,74 @@ class ActualizarCatalogoController extends Controller
             ]);
         }
         foreach ($responseBody->products as $product) {
-            Product::updateOrCreate([
-                "id" => $product->id,
-                "internal_sku" => $product->internal_sku,
-                "sku_parent" => $product->sku_parent,
-                "sku" => $product->sku,
-                'name' => $product->name,
-                'description' => $product->description,
-                'provider_id' => $product->provider_id,
-            ], [
-                'price' => $product->price,
-                'producto_promocion' => $product->producto_promocion,
-                'descuento' => $product->descuento,
-                'producto_nuevo' => $product->producto_nuevo,
-                'precio_unico' => $product->precio_unico,
-                'stock' => $product->stock,
-                'type_id' => $product->type_id,
-                'color_id' => $product->color_id,
-            ]);
+            try {
+                Product::updateOrCreate([
+                    "id" => $product->id,
+                    "internal_sku" => $product->internal_sku,
+                    "sku_parent" => $product->sku_parent,
+                    "sku" => $product->sku,
+                    'name' => $product->name,
+                    'description' => $product->description,
+                    'provider_id' => $product->provider_id,
+                ], [
+                    'price' => $product->price,
+                    'producto_promocion' => $product->producto_promocion,
+                    'descuento' => $product->descuento,
+                    'producto_nuevo' => $product->producto_nuevo,
+                    'precio_unico' => $product->precio_unico,
+                    'stock' => $product->stock,
+                    'type_id' => $product->type_id,
+                    'color_id' => $product->color_id,
+                ]);
+            } catch (\Throwable $th) {
+                //throw $th;
+            }
         }
-        foreach ($responseBody->productCategory as $productCategory) {
-            ProductCategory::updateOrCreate([
-                "id" => $productCategory->id,
-                "category_id" => $productCategory->category_id,
-                "subcategory_id" => $productCategory->subcategory_id,
-                "product_id" => $productCategory->product_id,
-            ]);
-        }
-        foreach ($responseBody->images as $image) {
-            Image::updateOrCreate([
-                "id" => $image->id,
-                "image_url" => $image->image_url,
-                "product_id" => $image->product_id,
-            ]);
-        }
-        foreach ($responseBody->prices as $price) {
-            Price::updateOrCreate([
-                "id" => $price->id,
-                "product_id" => $price->product_id,
-            ], [
-                "price" => $price->price,
-                "escala" => $price->escala,
-            ]);
-        }
-        foreach ($responseBody->productAttribute as $productAttribute) {
-            ProductAttribute::updateOrCreate([
-                "id" => $productAttribute->id,
-                "product_id" => $productAttribute->product_id,
-                "attribute" => $productAttribute->attribute,
-                "slug" => $productAttribute->slug,
-            ], [
-                "value" => $productAttribute->value,
-            ]);
-        }
-        foreach ($responseBody->globalAttribute as $globalAttribute) {
-            GlobalAttribute::updateOrCreate([
-                "id" => $globalAttribute->id,
-                "attribute" => $globalAttribute->attribute,
-            ], [
-                "value" => $globalAttribute->value,
-            ]);
+        try {
+            foreach ($responseBody->productCategory as $productCategory) {
+                ProductCategory::updateOrCreate([
+                    "id" => $productCategory->id,
+                    "category_id" => $productCategory->category_id,
+                    "subcategory_id" => $productCategory->subcategory_id,
+                    "product_id" => $productCategory->product_id,
+                ]);
+            }
+            foreach ($responseBody->images as $image) {
+                Image::updateOrCreate([
+                    "id" => $image->id,
+                    "image_url" => $image->image_url,
+                    "product_id" => $image->product_id,
+                ]);
+            }
+            foreach ($responseBody->prices as $price) {
+                Price::updateOrCreate([
+                    "id" => $price->id,
+                    "product_id" => $price->product_id,
+                ], [
+                    "price" => $price->price,
+                    "escala" => $price->escala,
+                ]);
+            }
+            foreach ($responseBody->productAttribute as $productAttribute) {
+                ProductAttribute::updateOrCreate([
+                    "id" => $productAttribute->id,
+                    "product_id" => $productAttribute->product_id,
+                    "attribute" => $productAttribute->attribute,
+                    "slug" => $productAttribute->slug,
+                ], [
+                    "value" => $productAttribute->value,
+                ]);
+            }
+            foreach ($responseBody->globalAttribute as $globalAttribute) {
+                GlobalAttribute::updateOrCreate([
+                    "id" => $globalAttribute->id,
+                    "attribute" => $globalAttribute->attribute,
+                ], [
+                    "value" => $globalAttribute->value,
+                ]);
+            }
+        } catch (\Throwable $th) {
+            //throw $th;
         }
 
         // return $responseBody;

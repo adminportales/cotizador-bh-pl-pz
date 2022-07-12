@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateCurrentQuotesTable extends Migration
+class CreateQuotesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,10 @@ class CreateCurrentQuotesTable extends Migration
      */
     public function up()
     {
-        Schema::create('current_quotes', function (Blueprint $table) {
+        Schema::create('quotes', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained();
-            $table->string('name')->nullable();
-            $table->boolean('discount')->default(false);
-            $table->string('type')->nullable();
-            $table->decimal('value', 10, 2)->nullable();
+            $table->string('lead');
             $table->timestamps();
         });
     }
@@ -31,6 +28,6 @@ class CreateCurrentQuotesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('current_quotes');
+        Schema::dropIfExists('quotes');
     }
 }

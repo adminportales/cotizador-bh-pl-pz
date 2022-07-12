@@ -23,6 +23,8 @@ Route::get('/', [CotizadorController::class, 'catalogo'])->name('catalogo');
 Route::get('/catalogo/{product}', [CotizadorController::class, 'verProducto'])->name('show.product');
 Route::get('/mis-cotizaciones', [CotizadorController::class, 'cotizaciones'])->name('cotizaciones');
 Route::get('/cotizacion-actual', [CotizadorController::class, 'cotizacion'])->name('cotizacion');
+Route::get('/finalizar-cotizacion', [CotizadorController::class, 'finalizar'])->name('finalizar');
+Route::get('/previsualizar-cotizacion', [CotizadorController::class, 'previsualizar'])->name('previsualizar');
 
 Route::get('/actualizarCatalogo', [ActualizarCatalogoController::class, 'actualizarCatalogo'])->name('actualizarCatalogo');
 

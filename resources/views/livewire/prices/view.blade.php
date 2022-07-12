@@ -30,16 +30,16 @@
                             <thead class="thead">
                                 <tr>
                                     <td>#</td>
-                                    <th>Size Material Technique Id</th>
+                                    <th>Tamaños de las tecnicas</th>
                                     <th>Escala Inicial</th>
                                     <th>Escala Final</th>
                                     <th>Precio</th>
                                     <th>Tipo Precio</th>
-                                    <td>ACTIONS</td>
+                                    <td>Acciones</td>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($pricesTechniques as $row)
+                                @foreach ($materialTechnique as $row)
                                     <tr>
                                         <td>{{ $loop->iteration }}</td>
                                         <td>{{ $row->size_material_technique_id }}</td>
@@ -51,7 +51,7 @@
                                             <div class="btn-group">
                                                 <button type="button" class="btn btn-info btn-sm dropdown-toggle"
                                                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                    Actions
+                                                    Acciones
                                                 </button>
                                                 <div class="dropdown-menu dropdown-menu-right">
                                                     <a data-toggle="modal" data-target="#updateModal"
@@ -67,7 +67,7 @@
                                 @endforeach
                             </tbody>
                         </table>
-                        {{ $pricesTechniques->links() }}
+                        {{ $materialTechnique->links() }}
                     </div>
                 </div>
             </div>

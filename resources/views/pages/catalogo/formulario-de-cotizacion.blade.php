@@ -30,7 +30,7 @@
                         <select name="" id="" class="form-control" wire:model="sizeSeleccionado">
                             <option value="">Seleccione el tamaño</option>
                             @foreach ($sizesAvailables as $size)
-                                <option value="{{ $size->size->id }}">{{ $size->size->nombre }}</option>
+                                <option value="{{ $size->id }}">{{ $size->nombre }}</option>
                             @endforeach
                         </select>
                     </div>

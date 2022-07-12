@@ -2,9 +2,11 @@
 
 namespace App\Http\Livewire;
 
+use App\Models\MaterialTechnique;
 use Livewire\Component;
 use Livewire\WithPagination;
 use App\Models\PricesTechnique;
+use App\Models\SizeMaterialTechnique;
 
 class PricesTechniques extends Component
 {
@@ -18,13 +20,7 @@ class PricesTechniques extends Component
     {
 		$keyWord = '%'.$this->keyWord .'%';
         return view('livewire.prices.view', [
-            'pricesTechniques' => PricesTechnique::latest()
-						->orWhere('size_material_technique_id', 'LIKE', $keyWord)
-						->orWhere('escala_inicial', 'LIKE', $keyWord)
-						->orWhere('escala_final', 'LIKE', $keyWord)
-						->orWhere('precio', 'LIKE', $keyWord)
-						->orWhere('tipo_precio', 'LIKE', $keyWord)
-						->paginate(10),
+            'materialTechnique' => MaterialTechnique::paginate(10),
         ]);
     }
 

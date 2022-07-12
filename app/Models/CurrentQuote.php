@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Models\Catalogo\Product;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -11,19 +10,14 @@ class CurrentQuote extends Model
     use HasFactory;
     protected $fillable = [
         'user_id',
-        'product_id',
-        'prices_techniques_id',
-        'color_logos',
-        'costo_indirecto',
-        'utilidad',
-        'dias_entrega',
-        'cantidad',
-        'precio_unitario',
-        'precio_total',
+        'name',
+        'discount',
+        'type',
+        'value',
     ];
 
-    public function product()
+    public function currentQuoteDetails()
     {
-        return $this->belongsTo(Product::class);
+        return $this->hasMany(CurrentQuoteDetails::class, 'current_quote_id');
     }
 }

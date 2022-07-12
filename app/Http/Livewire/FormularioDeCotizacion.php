@@ -47,14 +47,24 @@ class FormularioDeCotizacion extends Component
         // Obtengo las tenicas disponibles de acuerdo al material seleccionado
         $techniquesAvailables = [];
         if ($this->materialSeleccionado !== null && $this->materialSeleccionado !== "") {
-            $techniquesAvailables = Material::find((int)$this->materialSeleccionado)->materialTechniques;
+            $techniques = Material::find((int)$this->materialSeleccionado);
+            if ($techniques) {
+                $techniquesAvailables = $techniques->materialTechniques;
+            } else {
+                $techniquesAvailables = [];
+            }
         } else {
             $this->tecnicaSeleccionada = null;
             $techniquesAvailables = [];
         }
         $sizesAvailables = [];
         if ($this->tecnicaSeleccionada !== null && $this->tecnicaSeleccionada !== "") {
-            $sizesAvailables = MaterialTechnique::find((int)$this->tecnicaSeleccionada)->sizeMaterialTechniques;
+            $sizes = MaterialTechnique::find((int)$this->tecnicaSeleccionada);
+            if ($sizes) {
+                $sizesAvailables = $sizes->sizeMaterialTechniques;
+            } else {
+                $sizesAvailables = [];
+            }
         } else {
             $sizesAvailables = [];
             $this->sizeSeleccionado = null;
@@ -132,7 +142,15 @@ class FormularioDeCotizacion extends Component
             session()->flash('error', 'No se ha especificado la tecnica de personalizacion.');
             return;
         }
-        auth()->user()->currentQuote()->create([
+        $currentQuote = auth()->user()->currentQuote;
+
+        if ($currentQuote === null) {
+            $currentQuote = auth()->user()->currentQuote()->create([
+                'discount' => false
+            ]);
+        }
+
+        $currentQuote->currentQuoteDetails()->create([
             'product_id' => $this->product->id,
             'prices_techniques_id' => $this->priceTechnique->id,
             'color_logos' => $this->colores,
@@ -143,6 +161,7 @@ class FormularioDeCotizacion extends Component
             'precio_unitario' => $this->precioCalculado,
             'precio_total' => $this->precioTotal,
         ]);
+
         session()->flash('message', 'Se ha agregado este producto a la cotizacion.');
         $this->resetData();
     }
