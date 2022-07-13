@@ -16,7 +16,8 @@ class CreateQuoteProductsTable extends Migration
         Schema::create('quote_products', function (Blueprint $table) {
             $table->id();
             $table->foreignId('quote_information_id')->constrained('quote_information');
-            $table->foreignId('product_id')->constrained();
+            $table->text('product');
+            $table->text('technique');
             $table->decimal('prices_techniques', 8, 2);
             $table->integer('color_logos');
             $table->decimal('costo_indirecto', 8, 2);

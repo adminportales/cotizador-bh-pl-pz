@@ -2,8 +2,10 @@
 
 namespace App\Http\Livewire;
 
+use App\Models\Catalogo\Product;
 use App\Models\PricesTechnique;
 use Livewire\Component;
+use App\Http\Controllers\CotizadorController;
 
 class FinalizarCotizacion extends Component
 {
@@ -31,16 +33,15 @@ class FinalizarCotizacion extends Component
             $this->empresa = 'Empresa de Oddo';
         }
 
-        $validatedData = $this->validate([
+        $this->validate([
             'tipoCliente' => 'required',
             'email' => 'required|email',
             'telefono' => 'required|numeric',
             'celular' => 'required|numeric',
             'oportunidad' => 'required',
             'rank' => 'required',
-            'departamento' => 'required',
-            'informacion' => 'required',
         ]);
+
         // Guardar La cotizacion
         $quote = auth()->user()->quotes()->create([
             'lead' => '487'
@@ -61,9 +62,23 @@ class FinalizarCotizacion extends Component
         // Guardar los productos de la cotizacion
         foreach (auth()->user()->currentQuote->currentQuoteDetails as $item) {
             // TODO: Colocar un array con la data en las tecnicas y productos
+
+            $product = Product::find($item->product_id)->toArray();
+            $tecnica = PricesTechnique::find($item->prices_techniques_id);
+            $price_tecnica =  $tecnica->precio;
+            $material = $tecnica->sizeMaterialTechnique->materialTechnique->material->nombre;
+            $tecnica_nombre = $tecnica->sizeMaterialTechnique->materialTechnique->technique->nombre;
+            $size = $tecnica->sizeMaterialTechnique->size->nombre;
+            $infoTecnica = [
+                'tecnica' => $tecnica_nombre,
+                'material' => $material,
+                'size' => $size,
+            ];
+
             $quoteInfo->quotesProducts()->create([
-                'product_id' => $item->product_id,
-                'prices_techniques' => PricesTechnique::find($item->prices_techniques_id)->precio,
+                'product' => json_encode($product),
+                'technique' =>  json_encode($infoTecnica),
+                'prices_techniques' => $price_tecnica,
                 'color_logos' => $item->color_logos,
                 'costo_indirecto' => $item->costo_indirecto,
                 'utilidad' => $item->utilidad,
@@ -73,8 +88,20 @@ class FinalizarCotizacion extends Component
                 'precio_total' => $item->precio_total
             ]);
         }
-        $data = [
-            $this->tipoCliente, $this->clienteSeleccionado, $this->nombre, $this->empresa, $this->email, $this->telefono, $this->celular, $this->oportunidad, $this->rank, $this->departamento, $this->informacion
-        ];
+        // Eliminar los datos de la cotizacion actual
+        auth()->user()->currentQuote->currentQuoteDetails()->delete();
+        auth()->user()->currentQuote()->delete();
+        return redirect()->action([CotizadorController::class, 'verCotizacion'], ['quote' => $quote->id])->with('message', 'Tu cotizacion se ha guardado exitosamente.');
+    }
+
+    public function resetData()
+    {
+        $this->nombre = '';
+        $this->empresa = '';
+        $this->email = '';
+        $this->telefono = '';
+        $this->celular = '';
+        $this->oportunidad = '';
+        $this->rank = '';
     }
 }

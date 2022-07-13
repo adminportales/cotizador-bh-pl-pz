@@ -17,26 +17,21 @@ use Illuminate\Support\Facades\Route;
 
 Auth::routes();
 
-Route::get('/', [CotizadorController::class, 'catalogo'])->name('catalogo');
+Route::middleware(['auth'])->group(function () {
+    Route::get('/', [CotizadorController::class, 'catalogo'])->name('catalogo');
+    Route::get('/catalogo/{product}', [CotizadorController::class, 'verProducto'])->name('show.product');
+    Route::get('/mis-cotizaciones', [CotizadorController::class, 'cotizaciones'])->name('cotizaciones');
+    Route::get('/cotizacion-actual', [CotizadorController::class, 'cotizacion'])->name('cotizacion');
+    Route::get('/ver-cotizacion/{quote}', [CotizadorController::class, 'verCotizacion'])->name('verCotizacion');
+    Route::get('/finalizar-cotizacion', [CotizadorController::class, 'finalizar'])->name('finalizar');
+    Route::get('/previsualizar-cotizacion', [CotizadorController::class, 'previsualizar'])->name('previsualizar');
+    Route::get('/actualizarCatalogo', [ActualizarCatalogoController::class, 'actualizarCatalogo'])->name('actualizarCatalogo');
 
-// Route::get('/catalogo', [CotizadorController::class, 'catalogo'])->name('catalogo');
-Route::get('/catalogo/{product}', [CotizadorController::class, 'verProducto'])->name('show.product');
-Route::get('/mis-cotizaciones', [CotizadorController::class, 'cotizaciones'])->name('cotizaciones');
-Route::get('/cotizacion-actual', [CotizadorController::class, 'cotizacion'])->name('cotizacion');
-Route::get('/finalizar-cotizacion', [CotizadorController::class, 'finalizar'])->name('finalizar');
-Route::get('/previsualizar-cotizacion', [CotizadorController::class, 'previsualizar'])->name('previsualizar');
-
-Route::get('/actualizarCatalogo', [ActualizarCatalogoController::class, 'actualizarCatalogo'])->name('actualizarCatalogo');
-
-//Route Hooks - Do not delete//
-// Route::view('prices_techniques', 'livewire.prices_techniques.index')->middleware('auth');
-// Route::view('size_material_technique', 'livewire.size_material_technique.index')->middleware('auth');
-// Route::view('sizes', 'livewire.sizes.index')->middleware('auth');
-// Route::view('material_technique', 'livewire.material-techniques.index')->middleware('auth');
-// Route::view('materials', 'livewire.materials.index')->middleware('auth');
-Route::middleware(['role:admin'])->group(function () {
-    Route::view('techniques', 'livewire.techniques.index')->middleware('auth');
-    Route::view('materials', 'livewire.materials.index')->middleware('auth');
-    Route::view('sizes', 'livewire.sizes.index')->middleware('auth');
-    Route::view('prices', 'livewire.prices.index')->middleware('auth');
+    //Route Hooks - Do not delete//
+    Route::middleware(['role:admin'])->group(function () {
+        Route::view('techniques', 'livewire.techniques.index')->middleware('auth');
+        Route::view('materials', 'livewire.materials.index')->middleware('auth');
+        Route::view('sizes', 'livewire.sizes.index')->middleware('auth');
+        Route::view('prices', 'livewire.prices.index')->middleware('auth');
+    });
 });

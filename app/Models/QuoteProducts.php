@@ -9,7 +9,8 @@ class QuoteProducts extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'product_id',
+        'product',
+        'technique',
         'prices_techniques',
         'color_logos',
         'costo_indirecto',

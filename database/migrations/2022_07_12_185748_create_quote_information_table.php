@@ -23,8 +23,8 @@ class CreateQuoteInformationTable extends Migration
             $table->string('cell_phone');
             $table->string('oportunity');
             $table->string('rank');
-            $table->string('department');
-            $table->text('information');
+            $table->string('department')->nullable();
+            $table->text('information')->nullable();
             $table->timestamps();
         });
     }
