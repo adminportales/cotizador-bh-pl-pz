@@ -43,6 +43,5 @@ class CatalogoMinComponent extends Component
     public function regresar()
     {
         $this->producto = '';
-        dd($this->producto);
     }
 }

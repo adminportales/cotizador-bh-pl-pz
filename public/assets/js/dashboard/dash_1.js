@@ -96,7 +96,7 @@ var d_2options1 = {
           right: 0,
           bottom: -40,
           left: 0
-        }, 
+        },
     },
 }
 
@@ -136,7 +136,7 @@ var d_2options2 = {
       right: 0,
       bottom: 36,
       left: 0
-    }, 
+    },
   },
   fill: {
       type:"gradient",
@@ -318,7 +318,7 @@ var options1 = {
         lines: {
             show: true
         }
-    },   
+    },
     yaxis: {
         lines: {
             show: false,
@@ -329,8 +329,8 @@ var options1 = {
       right: 0,
       bottom: 0,
       left: -10
-    }, 
-  }, 
+    },
+  },
   legend: {
     position: 'top',
     horizontalAlign: 'right',
@@ -347,7 +347,7 @@ var options1 = {
       onClick: undefined,
       offsetX: 0,
       offsetY: 0
-    },    
+    },
     itemMargin: {
       horizontal: 0,
       vertical: 20
@@ -495,45 +495,6 @@ var options = {
 */
 
 
-/*
-    ============================
-        Daily Sales | Render
-    ============================
-*/
-var d_2C_1 = new ApexCharts(document.querySelector("#daily-sales"), d_2options1);
-d_2C_1.render();
-
-/*
-    ============================
-        Total Orders | Render
-    ============================
-*/
-var d_2C_2 = new ApexCharts(document.querySelector("#total-orders"), d_2options2);
-d_2C_2.render();
-
-/*
-    ================================
-        Revenue Monthly | Render
-    ================================
-*/
-var chart1 = new ApexCharts(
-    document.querySelector("#revenueMonthly"),
-    options1
-);
-
-chart1.render();
-
-/*
-    =================================
-        Sales By Category | Render
-    =================================
-*/
-var chart = new ApexCharts(
-    document.querySelector("#chart-2"),
-    options
-);
-
-chart.render();
 
 /*
     =============================================

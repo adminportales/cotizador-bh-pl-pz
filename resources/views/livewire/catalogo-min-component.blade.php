@@ -1,5 +1,5 @@
 <div>
-    @if (trim($producto) == '')
+    <div class="{{ trim($producto) == '' ? '' : 'd-none' }}">
         <div class="row">
             <div class="col-md-12">
                 <input wire:model='nombre' type="text" class="form-control" name="search" id="search"
@@ -58,14 +58,45 @@
                 {{ $products->links() }}
             </div>
         </div>
-    @else
-        {{ $producto }}
-        <div style="width: 20px; cursor: pointer;" wire:click="regresar">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
-                stroke="currentColor" stroke-width="2">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-            </svg>
+    </div>
+    <div class="{{ trim($producto) == '' ? 'd-none' : '' }}">
+        <div style="width: 20px; cursor: pointer;">
+            <div wire:click="regresar()">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                </svg>
+            </div>
         </div>
-    @endif
+        <br>
+        @if (!trim($producto) == '')
+            @php
+                $priceProduct = $producto->price;
+                if ($producto->producto_promocion) {
+                    $priceProduct = round($priceProduct - $priceProduct * ($producto->descuento / 100), 2);
+                } else {
+                    $priceProduct = round($priceProduct - $priceProduct * ($producto->provider->discount / 100), 2);
+                }
+            @endphp
+            <div class="d-flex">
+                <div class="img-container w-25">
+                    <img id="imgBox"
+                        src="{{ $producto->firstImage ? $producto->firstImage->image_url : asset('img/default.jpg') }}"
+                        class="img-fluid" alt="imagen">
+                </div>
+                <div class="px-3">
+                    <h4 class="card-title">{{ $producto->name }}</h4>
+                    <p class="my-1"><strong>SKU Interno: </strong> {{ $producto->internal_sku }}</p>
+                    <p class="my-1"><strong>SKU Proveedor: </strong> {{ $producto->sku }}</p>
+                    <h5 class="text-primary">
+                        $ {{ round($priceProduct + $priceProduct * ($utilidad / 100), 2) }}</p>
+                    </h5>
 
+                    <h5 class="text-success">Disponibles:<strong> {{ $producto->stock }}</strong> </h5>
+                    <br>
+                </div>
+            </div>
+            @livewire('formulario-de-cotizacion-min-component', ['product' => $producto])
+        @endif
+    </div>
 </div>
