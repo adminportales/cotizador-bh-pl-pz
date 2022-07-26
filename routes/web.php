@@ -26,6 +26,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/finalizar-cotizacion', [CotizadorController::class, 'finalizar'])->name('finalizar');
     Route::get('/previsualizar-cotizacion', [CotizadorController::class, 'previsualizar'])->name('previsualizar');
     Route::get('/actualizarCatalogo', [ActualizarCatalogoController::class, 'actualizarCatalogo'])->name('actualizarCatalogo');
+    Route::get('/ver-cotizacion-pdf/{quote}', [CotizadorController::class, 'previsualizar'])->name('previsualizar.cotizacion');
 
     //Route Hooks - Do not delete//
     Route::middleware(['role:admin'])->group(function () {

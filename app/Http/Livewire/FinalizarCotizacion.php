@@ -6,6 +6,9 @@ use App\Models\Catalogo\Product;
 use App\Models\PricesTechnique;
 use Livewire\Component;
 use App\Http\Controllers\CotizadorController;
+use App\Mail\SendQuote;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\Mail;
 
 class FinalizarCotizacion extends Component
 {
@@ -58,7 +61,6 @@ class FinalizarCotizacion extends Component
             'department' => $this->departamento,
             'information' => $this->informacion,
         ]);
-
         // Guardar los productos de la cotizacion
         foreach (auth()->user()->currentQuote->currentQuoteDetails as $item) {
             // TODO: Colocar un array con la data en las tecnicas y productos
@@ -88,6 +90,33 @@ class FinalizarCotizacion extends Component
                 'precio_total' => $item->precio_total
             ]);
         }
+        // Enviar PDF
+
+        $pdf = '';
+        switch (auth()->user()->company->name) {
+            case 'PROMO LIFE':
+                # code...
+                $pdf = PDF::loadView('pages.pdf.promolife', ['quote' => $quote]);
+                break;
+            case 'BH TRADEMARKET':
+                # code...
+                $pdf = PDF::loadView('pages.pdf.bh', ['quote' => $quote]);
+                break;
+            case 'PROMO ZALE':
+                # code...
+                $pdf = PDF::loadView('pages.pdf.promozale', ['quote' => $quote]);
+                break;
+
+            default:
+                # code...
+                break;
+        }
+        $pdf->setPaper('Letter', 'portrait');
+        $pdf = $pdf->stream($quote->lead . ".pdf");
+        file_put_contents(public_path() . "/storage/quotes/" . $quote->lead . ".pdf", $pdf);
+        // Mail::to($quote->latestQuotesInformation->email)->send(new SendQuote(auth()->user()->name, $quote->latestQuotesInformation->name, '/storage/quotes/'.$quote->lead . ".pdf"));
+        Mail::to('antoniotd87@gmail.com')->send(new SendQuote(auth()->user()->name, $quote->latestQuotesInformation->name, '/storage/quotes/' . $quote->lead . ".pdf"));
+
         // Eliminar los datos de la cotizacion actual
         auth()->user()->currentQuote->currentQuoteDetails()->delete();
         auth()->user()->currentQuote()->delete();

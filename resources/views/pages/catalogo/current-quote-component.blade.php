@@ -52,8 +52,10 @@
                                         <td>$ {{ $quote->precio_total }}</td>
                                         <td> {{ $quote->dias_entrega }} dias habiles</td>
                                         <td class="px-0 mx-0">
-                                            <button class="btn btn-warning btn-sm mb-1 w-100">Editar</button>
-                                            <button class="btn btn-danger btn-sm w-100 mt-1">Eliminar</button>
+                                            <button class="btn btn-warning btn-sm mb-1 w-100"
+                                                wire:click="editar({{ $quote }})">Editar</button>
+                                            <button class="btn btn-danger btn-sm w-100 mt-1"
+                                                wire:click="eliminar({{ $quote }})">Eliminar</button>
                                         </td>
                                     </tr>
                                 @endforeach
@@ -77,9 +79,13 @@
     </div>
     <div class="col-md-12">
         <br>
-        <div class="card">
+        <div class="card w-50">
             <div class="card-body">
                 <h3>Total de la cotizacion</h3>
+                <button type="button" class="btn btn-light btn-block my-1" data-toggle="modal"
+                    data-target="#discountModal">
+                    Agregar un descuento
+                </button>
 
                 <div class="d-flex justify-content-between">
                     <p class="text-dark"> Subtotal: </p>
@@ -102,84 +108,47 @@
             </div>
         </div>
     </div>
-    {{-- <div class="col-md-12">
-        <hr>
-        <h3>Detalles de la cotizacion</h3>
-        <div class="row">
-            <div class="col-md-6">
-                <div class="form-group">
-                    <label for="">Nombre</label>
-                    <input type="text" class="form-control">
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="form-group">
-                    <label for="">Nombre de la empresa</label>
-                    <input type="text" class="form-control">
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="form-group">
-                    <label for="">Telefono</label>
-                    <input type="text" class="form-control">
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="form-group">
-                    <label for="">Correo</label>
-                    <input type="text" class="form-control">
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="form-group">
-                    <label for="">Celular</label>
-                    <input type="text" class="form-control">
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="form-group">
-                    <label for="">Oportunidad</label>
-                    <input type="text" class="form-control">
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="form-group">
-                    <label for="">Rank</label>
-                    <select name="" id="" class="form-control">
-                        <option value="">Seleccione el rank</option>
-                        <option value="">Medio</option>
-                        <option value="">Alto</option>
-                        <option value="">Muy Alto</option>
-                    </select>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="form-group">
-                    <label for="">Departamento (opcional)</label>
-                    <input type="text" class="form-control">
-                </div>
-            </div>
-            <div class="col-md-12">
-                <div class="form-group">
-                    <label for="">Deja un comentario</label>
-                    <textarea name="" id="" cols="30" rows="10" class="form-control"></textarea>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="form-group">
-                    <button class="btn btn-success" type="submit">
-                        Enviar Cotizacion
+    <!-- Modal -->
+    <div class="modal fade" id="discountModal" tabindex="-1" aria-labelledby="discountModalLabel" aria-hidden="true"
+        wire:ignore.self>
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="discountModalLabel">Agregar Descuento</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
                     </button>
-                    <button class="btn btn-ligth">
-                        Volver al cotizador
-                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="">Tipo de Descuento</label>
+                        <select class="form-control" wire:model.lazy="type">
+                            <option value="">Seleccione...</option>
+                            <option value="Fijo">Valor Fijo</option>
+                            <option value="Porcentaje">Porcentaje</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="">Cantidad</label>
+                        <input type="number" class="form-control" placeholder="ej: 50, 2000" wire:model.lazy="value">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary" wire:click="addDiscount">Guardar</button>
+
                 </div>
             </div>
         </div>
-    </div> --}}
+    </div>
     <style>
         label {
             color: black;
         }
     </style>
+    <script>
+        window.addEventListener('hide-modal-discount', event => {
+            $('#discountModal').modal('hide')
+        })
+    </script>
 </div>

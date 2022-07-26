@@ -163,7 +163,15 @@
                             </tr>
                         @endforeach
                         @php
-                            $subtotal = auth()->user()->currentQuote->currentQuoteDetails->sum('precio_total');
+                            $subtotal = auth()
+                                ->user()
+                                ->currentQuote->currentQuoteDetails->sum('precio_total');
+                            $discount = 0;
+                            if (auth()->user()->currentQuote->type == 'Fijo') {
+                                $discount = auth()->user()->currentQuote->value;
+                            } else {
+                                $discount = round(($subtotal / 100) * auth()->user()->currentQuote->value, 2);
+                            }
                         @endphp
                         <tr>
                             <th colspan="3">Subtotal</th>
@@ -171,18 +179,24 @@
                         </tr>
                         <tr>
                             <th colspan="3">Descuento</th>
-                            <th>$ {{ (int) $quote->discount > 0 ? $quote->discount : 0 }}</th>
+                            <th>$ {{ $discount }}</th>
                         </tr>
                         <tr>
                             <th colspan="3">Total</th>
-                            <th>$ {{ $subtotal - $quote->discount }}</th>
+                            <th>$ {{ $subtotal - $discount }}</th>
                         </tr>
                     </tbody>
                 </table>
                 <div class="d-flex flex-column">
-                    <a class="btn btn-primary mb-3" href="{{ route('previsualizar') }}"
-                        target="_blank">Previsualizar
-                        Cotizacion</a>
+                    {{-- <a class="btn btn-primary mb-3" href="{{ route('previsualizar') }}"
+                            target="_blank">Previsualizar
+                            Cotizacion</a> --}}
+                    <div wire:loading wire:target="guardarCotizacion">
+
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="sr-only">Loading...</span>
+                        </div>
+                    </div>
                     <button class="btn btn-primary" wire:click="guardarCotizacion">Guardar Cotizacion</button>
                 </div>
             </div>

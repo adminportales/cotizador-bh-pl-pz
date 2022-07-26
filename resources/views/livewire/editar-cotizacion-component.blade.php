@@ -127,18 +127,26 @@
                 </table>
                 @php
                     $subtotal = $quote->latestQuotesInformation->quotesProducts->sum('precio_total');
+                    $discount = 0;
+                    if ($quote->latestQuotesInformation->type == 'Fijo') {
+                        $discount = $quote->latestQuotesInformation->value;
+                    } else {
+                        $discount = round(($subtotal / 100) * $quote->latestQuotesInformation->value, 2);
+                    }
                 @endphp
                 <div class="d-flex justify-content-between">
                     <div class="w-50">
+
                         <p><b>Subtotal: </b>$ {{ $subtotal + $subtotalAdded }}</p>
-                        <p><b>Descuento: </b>$ {{ (int) $quote->discount > 0 ? $quote->discount : 0 }}
+                        <p><b>Descuento: </b>$ {{ $discount }}
                         </p>
-                        <p><b>Total: </b>$ {{ $subtotal + $subtotalAdded - $quote->discount }}</p>
+                        <p><b>Total: </b>$ {{ $subtotal + $subtotalAdded - $discount }}</p>
                     </div>
-                    <div class="w-50 text-right">
-                        <button class="btn btn-primary mb-1">Ver PDF</button>
+                    <div class="w-50 d-flex flex-column align-items-end">
+                        <a class="btn btn-success" target="_blank"
+                            href="{{ route('previsualizar.cotizacion', ['quote' => $quote]) }}">Ver PDF</a>
                         <br>
-                        <button class="btn btn-primary mb-1">Enviar al Cliente</button>
+                        <button class="btn btn-primary mb-1" wire:click="enviar">Enviar al Cliente</button>
                     </div>
                 </div>
             @else

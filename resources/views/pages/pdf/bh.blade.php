@@ -2,21 +2,22 @@
 <html lang="en">
 
 <head>
-    <title>Cotizacion Promo Life</title>
-    <link rel="stylesheet" href="quotesheet/pl/style.css">
+    <title>Cotizacion BH</title>
+    <link rel="stylesheet" href="quotesheet/bh/stylebh.css">
 </head>
 
 <body>
     <header>
-        <img src="quotesheet/pl/fondo-azul-superior.png" alt="" srcset="" class="fondo-head">
-        <div class="content" style="text-align: right">
-            <img src="quotesheet/pl/logo.png" class="logo">
-        </div>
-        <div class="content" style="background-color: red">
-            <span class="titulo1">Cotizacion</span>
-            <br>
-            <span class="titulo2">QUOTATION SHEET</span>
-        </div>
+        <img src="quotesheet/bh/fondo-azul-superior.jpg" alt="" srcset="" class="fondo-head">
+        <table class="head content">
+            <tr>
+                <td style="width: 240px">Presupuesto <br> Budget</td>
+                <td class="separator">Compañia</td>
+                <td></td>
+                <td style="text-align: center"><img src="quotesheet/bh/logo.png" class="logo"></td>
+            </tr>
+        </table>
+        <p class="company-name content">BH Trade Market S.A. de C.V.</p>
     </header>
     <footer>
         <table class="footer content">
@@ -39,7 +40,7 @@
             </tr>
         </table>
         <div style="text-align: right">
-            <p class="content">Pagina <span class="pagenum"></span> </p>
+            <p class="content">Pagina <span class="pagenum"></span></p>
         </div>
     </footer>
     <div class="body-pdf">
@@ -56,6 +57,14 @@
                     <p>Fecha Cotización: {{ $quote->updated_at->format('d/m/Y') }}</p>
                     <p>Lead: {{ $quote->lead }}</p>
                 </td>
+            </tr>
+        </table>
+        <table class="content">
+            <tr>
+                <td><img src="quotesheet/bh/icon-whatsapp.png" alt=""> </td>
+                <td>+52 55 5555 5555 </td>
+                <td><img src="quotesheet/bh/icon-email.png" alt=""></td>
+                <td>{{ auth()->user()->email }}</td>
             </tr>
         </table>
         <br>

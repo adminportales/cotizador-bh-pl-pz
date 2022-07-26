@@ -29,7 +29,7 @@
                     @livewire('editar-cotizacion-component', ['quote' => $quote], key($quote->id))
                 </div>
             </div>
-            <div class="col-md-12 mt-2">
+            {{-- <div class="col-md-12 mt-2">
                 <div class="card w-100">
                     <div class="card-body">
                         <h5 class="card-title">Historial de Modificaciones</h5>
@@ -42,7 +42,7 @@
                         @endif
                     </div>
                 </div>
-            </div>
+            </div> --}}
         </div>
     </div>
 @endsection

@@ -1,0 +1,419 @@
+/* Main Body */
+@page {
+    margin-top: 0cm;
+    margin-bottom: 0cm;
+    margin-left: 0cm;
+    margin-right: 0cm;
+}
+
+body {
+    background: #fff;
+    color: #000;
+    margin: 0cm;
+    font-family: 'Open Sans', sans-serif;
+    /* want to use custom fonts? http://docs.wpovernight.com/woocommerce-pdf-invoices-packing-slips/using-custom-fonts/ */
+    font-size: 9pt;
+    line-height: 100%;
+    /* fixes inherit dompdf bug */
+    padding-top: 160px;
+    padding-bottom: 140px;
+}
+
+p {
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    right: 0px;
+    height: 100px;
+}
+
+footer {
+    position: fixed;
+    background-color: black;
+    color: white;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+    height: 140px;
+}
+
+.content {
+    padding: 0px 35px;
+}
+
+.head {
+    width: 100%;
+    margin-top: -30px;
+}
+
+.logo {
+    width: auto;
+    height: 130px;
+    margin-top: -50px;
+}
+
+.fondo-head {
+    margin-top: -18px;
+}
+
+.titulo1 {
+    font-weight: bold;
+    font-size: 45px;
+    text-align: left;
+    text-transform: uppercase;
+}
+.titulo2 {
+    font-weight: bold;
+    font-size: 15px;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+.pagenum::after{
+    content: counter(page);
+}
+.pagetot::after{
+    content: counter(pages);
+}
+
+
+/* h1, h2, h3, h4 {
+	font-weight: bold;
+	margin: 0;
+}
+
+h1 {
+	font-size: 30pt;
+	margin: 5mm 0;
+}
+
+h2 {
+	font-size: 14pt;
+}
+
+h3, h4 {
+	font-size: 9pt;
+}
+
+
+ol,
+ul {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+li,
+ul {
+	margin-bottom: 0.75em;
+}
+
+p {
+	margin: 0;
+	padding: 0;
+}
+
+p + p {
+	margin-top: 1.25em;
+}
+
+a {
+	border-bottom: 1px solid;
+	text-decoration: none;
+}
+
+img{
+	border: 0px;
+} */
+
+/* Basic Table Styling
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+	page-break-inside: always;
+	border: 0;
+	margin: 0;
+	padding: 0;
+}
+
+th, td {
+	vertical-align: top;
+	text-align: left;
+}
+
+table.container {
+	width:100%;
+	border: 0;
+	padding:0cm 1cm 0cm 1cm;
+}
+
+tr.no-borders,
+td.no-borders {
+	border: 0 !important;
+	border-top: 0 !important;
+	border-bottom: 0 !important;
+	padding: 0 !important;
+	width: auto;
+}
+
+div.bottom-spacer {
+	clear: both;
+	height: 8mm;
+}
+*/
+/* Header
+table.head {
+	margin-top: 0mm;
+	margin-bottom: 5mm;
+}
+
+.txInfo{
+    font-size: 8.5pt;
+}
+
+.txInfoAd{
+    font-size: 7.8pt;
+}
+
+.txTabla{
+    font-size: 8.3pt;
+}
+
+.txTablaInfo{
+    font-size: 8pt;
+}
+
+td.header img {
+	max-height: 3cm; /* may be overriden by the settings
+	width: auto;
+}
+
+td.header {
+
+}
+
+td.shop-info {
+	width: 40%;
+}
+.document-type-label {
+	text-transform: uppercase;
+}
+
+/* Recipient addressses & order data
+table.order-data-addresses {
+	width: 100%;
+	margin-bottom: 10mm;
+}
+
+table.order-data-addresses td.address {
+	word-wrap: break-word;
+}
+
+td.order-data {
+	width: 40%;
+}
+
+td.order-data table {
+	width: 100%;
+}
+
+td.order-data table th {
+	font-weight: normal;
+	padding-right: 2mm;
+	width: 50%;
+}
+
+.invoice .shipping-address {
+	width: 30%;
+}
+
+.packing-slip .billing-address {
+	width: 30%;
+}
+
+/* Order details
+table.order-details {
+	width:100%;
+	margin-bottom: 0mm;
+	padding: 0cm 1cm 0cm 1cm;
+}
+
+.divF{
+    position: absolute;
+    bottom: 250px;
+    width: 100%;
+}
+
+.divInt{
+    width: 65%;
+}
+
+.divInt2{
+    width: 35%;
+}
+
+.divInfo{
+    visibility: hidden;
+}
+
+.order-details tr {
+	page-break-inside: always;
+	page-break-after: auto;
+}
+
+.order-details td,
+.order-details th {
+	border-bottom: 1px #ccc solid;
+	border-top: 1px #ccc solid;
+}
+
+.order-details th {
+	font-weight: bold;
+	text-align: left;
+}
+
+.order-details thead th {
+
+}
+
+/* product bundles compatibility
+.order-details tr.bundled-item td.product {
+	padding-left: 5mm;
+}
+
+.order-details tr.product-bundle td,
+.order-details tr.bundled-item td {
+	border: 0;
+}
+
+.order-details tr.bundled-item.hidden {
+	display: none;
+}
+
+.order-details th,
+.order-details td{
+	text-align: center;
+	vertical-align: middle;
+}
+
+.order-details .imagen {
+
+}
+
+.order-details .imagen img {
+	width: 12mm;
+	height: auto;
+	max-height: 25mm;
+}
+
+/* item meta formatting for WC2.6 and older
+dl {
+	margin: 4px 0;
+}
+
+dt, dd, dd p {
+	display: inline;
+	font-size: 7pt;
+	line-height: 7pt;
+}
+
+dd {
+	margin-left: 5px;
+}
+
+dd:after {
+	content: "\A";
+	white-space: pre;
+}
+/* item-meta formatting for WC3.0+
+.wc-item-meta {
+	margin: 4px 0;
+	font-size: 7pt;
+	line-height: 7pt;
+}
+.wc-item-meta p {
+	display: inline;
+}
+.wc-item-meta li {
+	margin: 0;
+	margin-left: 5px;
+}
+
+/* Notes & Totals
+.document-notes,
+.customer-notes {
+	margin-top: 5mm;
+}
+
+table.totals {
+	width: 100%;
+	margin-top: 5mm;
+	table-layout: fixed;
+}
+
+table.totals th,
+table.totals td {
+	border: 0;
+}
+
+table.totals th.description,
+table.totals td.price {
+	width: 50%;
+}
+
+table.totals tr.order_total td,
+table.totals tr.order_total th {
+	font-weight: bold;
+}
+
+table.totals tr.payment_method {
+	display: none;
+}
+
+/* Footer Imprint
+#footer {
+	position: absolute;
+	bottom: -2cm;
+	left: 0;
+	right: 0;
+	height: 2cm; /* if you change the footer height, don't forget to change the bottom (=negative height) and the @page margin-bottom as well!
+	text-align: center;
+	border-top: 0.1mm solid gray;
+	margin-bottom: 0;
+	padding-top: 2mm;
+}
+
+/* page numbers
+
+@page {
+    counter-increment: pages;
+}
+
+@page:first {
+    counter-reset: pages 20;
+}
+
+.pagenum{
+
+}
+
+.pagenum:before {
+	content: counter(page);
+}
+.pagecount:after {
+	content: counter(pages);
+}
+.pagenum,.pagecount {
+	font-family: sans-serif;
+}
+
+
+
+
+thead {display: table-header-group;}
+tfoot {display: table-header-group;} */

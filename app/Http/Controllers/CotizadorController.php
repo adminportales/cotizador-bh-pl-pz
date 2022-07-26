@@ -56,9 +56,30 @@ class CotizadorController extends Controller
     {
         return view('pages.catalogo.finalizar');
     }
-    public function previsualizar()
+    public function previsualizar(Quote $quote)
     {
-        $pdf = \PDF::loadView('pages.pdf.promolife');
+        $pdf = '';
+
+        switch (auth()->user()->company->name) {
+            case 'PROMO LIFE':
+                # code...
+                $pdf = \PDF::loadView('pages.pdf.promolife', ['quote' => $quote]);
+                break;
+            case 'BH TRADEMARKET':
+                # code...
+                $pdf = \PDF::loadView('pages.pdf.bh', ['quote' => $quote]);
+                break;
+            case 'PROMO ZALE':
+                # code...
+                $pdf = \PDF::loadView('pages.pdf.promozale', ['quote' => $quote]);
+                break;
+
+            default:
+                # code...
+                break;
+        }
+
+        $pdf->setPaper('Letter', 'portrait');
         return $pdf->stream('ejemplo.pdf');
     }
 }
