@@ -7,13 +7,15 @@ use Illuminate\Database\Eloquent\Model;
 
 class Type extends Model
 {
-	use HasFactory;
+    use HasFactory;
 
     public $timestamps = true;
 
     protected $table = 'types';
 
-    protected $fillable = ['type','slug'];
+    protected $connection = 'mysql_catalogo';
+
+    protected $fillable = ['type', 'slug'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
@@ -22,5 +24,4 @@ class Type extends Model
     {
         return $this->hasMany('App\Models\Catalogo\Product', 'type_id', 'id');
     }
-
 }

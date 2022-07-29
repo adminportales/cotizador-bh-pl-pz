@@ -13,6 +13,8 @@ class Subcategory extends Model
 
     protected $table = 'subcategories';
 
+    protected $connection = 'mysql_catalogo';
+
     protected $fillable = ['subfamily', 'slug', 'category_id'];
 
     /**

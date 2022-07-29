@@ -13,6 +13,8 @@ class Provider extends Model
 
     protected $table = 'providers';
 
+    protected $connection = 'mysql_catalogo';
+
     protected $fillable = ['company','email','phone','contact','discount'];
 
     /**

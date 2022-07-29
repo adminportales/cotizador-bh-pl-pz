@@ -13,6 +13,8 @@ class ProductCategory extends Model
 
     protected $table = 'product_category';
 
+    protected $connection = 'mysql_catalogo';
+
     protected $fillable = ['category_id', 'subcategory_id', 'product_id'];
 
     public function category()

@@ -13,6 +13,8 @@ class Price extends Model
 
     protected $table = 'prices';
 
+    protected $connection = 'mysql_catalogo';
+
     protected $fillable = ['product_id','price','escala'];
 
     /**

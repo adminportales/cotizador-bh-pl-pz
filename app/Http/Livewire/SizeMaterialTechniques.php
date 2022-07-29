@@ -2,11 +2,13 @@
 
 namespace App\Http\Livewire;
 
+use App\Models\Material;
 use App\Models\MaterialTechnique;
 use App\Models\Size;
 use Livewire\Component;
 use Livewire\WithPagination;
 use App\Models\SizeMaterialTechnique;
+use App\Models\Technique;
 
 class SizeMaterialTechniques extends Component
 {
@@ -22,6 +24,7 @@ class SizeMaterialTechniques extends Component
         return view('livewire.size-material-techniques.view', [
             'sizeMaterialTechniques' => MaterialTechnique::orderby('material_id', 'asc')->paginate(10),
             'sizes' => Size::all(),
+            'materialsTechniques' => MaterialTechnique::all()
         ]);
     }
 
@@ -45,7 +48,7 @@ class SizeMaterialTechniques extends Component
         $this->updateMode = true;
     }
 
-    public function update($size_id)
+    public function updateSizes($size_id)
     {
         $size = Size::find($size_id);
         $this->material->sizeMaterialTechniques()->toggle($size);

@@ -13,6 +13,8 @@ class Product extends Model
 
     protected $table = 'products';
 
+    protected $connection = 'mysql_catalogo';
+
     protected $fillable = [
         'internal_sku',
         'sku_parent',

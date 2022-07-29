@@ -13,8 +13,8 @@
                                 {{ session('message') }} </div>
                         @endif
                         <div>
-                            <input wire:model='keyWord' type="text" class="form-control" name="search" id="search"
-                                placeholder="Search Prices Techniques">
+                            <input wire:model='keyWord' type="text" class="form-control" name="search"
+                                id="search" placeholder="Search Prices Techniques">
                         </div>
                         <div class="btn btn-sm btn-info" data-toggle="modal" data-target="#createDataPTModal">
                             <i class="fa fa-plus"></i> Add Prices Techniques
@@ -39,35 +39,25 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($materialTechnique as $row)
+                                @foreach ($sizeMaterialTechniques as $row)
                                     <tr>
                                         <td>{{ $loop->iteration }}</td>
-                                        <td>{{ $row->size_material_technique_id }}</td>
+                                        <td> <b>{{ $row->materialTechnique->material->nombre }}</b>
+                                            {{ $row->materialTechnique->technique->nombre . ' ' . $row->size->nombre }}
+                                        </td>
                                         <td>{{ $row->escala_inicial }}</td>
                                         <td>{{ $row->escala_final }}</td>
                                         <td>{{ $row->precio }}</td>
                                         <td>{{ $row->tipo_precio }}</td>
                                         <td width="90">
-                                            <div class="btn-group">
-                                                <button type="button" class="btn btn-info btn-sm dropdown-toggle"
-                                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                    Acciones
-                                                </button>
-                                                <div class="dropdown-menu dropdown-menu-right">
-                                                    <a data-toggle="modal" data-target="#updateModal"
-                                                        class="dropdown-item" wire:click="edit({{ $row->id }})"><i
-                                                            class="fa fa-edit"></i> Edit </a>
-                                                    <a class="dropdown-item"
-                                                        onclick="confirm('Confirm Delete Prices Technique id {{ $row->id }}? \nDeleted Prices Techniques cannot be recovered!')||event.stopImmediatePropagation()"
-                                                        wire:click="destroy({{ $row->id }})"><i
-                                                            class="fa fa-trash"></i> Delete </a>
-                                                </div>
-                                            </div>
+                                            <button type="button" class="btn btn-info btn-sm" wire:click="editar({{  }})">
+                                                Editar
+                                            </button>
                                         </td>
                                 @endforeach
                             </tbody>
                         </table>
-                        {{ $materialTechnique->links() }}
+                        {{ $sizeMaterialTechniques->links() }}
                     </div>
                 </div>
             </div>

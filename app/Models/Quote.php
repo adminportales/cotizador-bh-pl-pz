@@ -18,6 +18,7 @@ class Quote extends Model
     {
         return $this->hasMany(QuoteInformation::class);
     }
+
     public function latestQuotesInformation()
     {
         return $this->hasOne(QuoteInformation::class)->latestOfMany();

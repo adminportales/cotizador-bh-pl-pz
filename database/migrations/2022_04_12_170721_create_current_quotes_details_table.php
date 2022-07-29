@@ -16,7 +16,7 @@ class CreateCurrentQuotesDetailsTable extends Migration
         Schema::create('current_quotes_details', function (Blueprint $table) {
             $table->id();
             $table->foreignId('current_quote_id')->constrained('current_quotes');
-            $table->foreignId('product_id')->constrained();
+            $table->integer('product_id');
             $table->foreignId('prices_techniques_id')->constrained('prices_techniques');
             $table->integer('color_logos');
             $table->decimal('costo_indirecto', 8, 2);

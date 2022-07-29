@@ -31,7 +31,7 @@
                                 <div class="form-check">
                                     <input class="form-check-input" type="checkbox" value="{{ $size->id }}"
                                         id="check{{ $size->id }}"
-                                        wire:click="update({{ $size->id }}, {{ $material->id }})"
+                                        wire:click="updateSizes({{ $size->id }}, {{ $material->id }})"
                                         {{ $check ? 'checked' : '' }}>
                                     <label class="form-check-label" for="check{{ $size->id }}">
                                         {{ $size->nombre }}

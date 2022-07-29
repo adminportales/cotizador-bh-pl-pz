@@ -13,6 +13,8 @@ class Color extends Model
 
     protected $table = 'colors';
 
+    protected $connection = 'mysql_catalogo';
+
     protected $fillable = ['color','slug'];
 
     /**

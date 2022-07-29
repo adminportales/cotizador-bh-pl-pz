@@ -13,6 +13,8 @@ class Category extends Model
 
     protected $table = 'categories';
 
+    protected $connection = 'mysql_catalogo';
+
     protected $fillable = ['family','slug'];
 
     /**

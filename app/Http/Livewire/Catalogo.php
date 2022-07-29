@@ -22,10 +22,10 @@ class Catalogo extends Component
     {
         $utilidad = GlobalAttribute::find(1);
         $utilidad = (float) $utilidad->value;
-        $price = DB::table('products')->max('price');
+        $price = DB::connection('mysql_catalogo')->table('products')->max('price');
         $this->precioMax = round($price + $price * ($utilidad / 100), 2);
         $this->precioMin = 0;
-        $stock = DB::table('products')->max('stock');
+        $stock = DB::connection('mysql_catalogo')->table('products')->max('stock');
         $this->stockMax = $stock;
         $this->stockMin = 0;
     }
@@ -36,9 +36,9 @@ class Catalogo extends Component
         $utilidad = (float) $utilidad->value;
 
         $proveedores = CatalogoProvider::all();
-        $price = DB::table('products')->max('price');
+        $price = DB::connection('mysql_catalogo')->table('products')->max('price');
         $price = round($price + $price * ($utilidad / 100), 2);
-        $stock = DB::table('products')->max('stock');
+        $stock = DB::connection('mysql_catalogo')->table('products')->max('stock');
 
         $nombre = '%' . $this->nombre . '%';
         $sku = '%' . $this->sku . '%';

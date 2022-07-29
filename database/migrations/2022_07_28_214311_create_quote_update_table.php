@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateCategoriesTable extends Migration
+class CreateQuoteUpdateTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,11 @@ class CreateCategoriesTable extends Migration
      */
     public function up()
     {
-        Schema::create('categories', function (Blueprint $table) {
+        Schema::create('quote_updates', function (Blueprint $table) {
             $table->id();
-            $table->string('family');
-            $table->string('slug');
+            $table->foreignId('quote_id')->constrained('quotes');
+            $table->foreignId('quote_information_id')->constrained('quote_information');
+            $table->foreignId('quote_discount_id')->constrained('quote_discounts');
             $table->timestamps();
         });
     }
@@ -28,6 +29,6 @@ class CreateCategoriesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('categories');
+        Schema::dropIfExists('quote_update');
     }
 }

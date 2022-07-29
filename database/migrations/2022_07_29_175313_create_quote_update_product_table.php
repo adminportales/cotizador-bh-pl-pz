@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateColorsTable extends Migration
+class CreateQuoteUpdateProductTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,9 @@ class CreateColorsTable extends Migration
      */
     public function up()
     {
-        Schema::create('colors', function (Blueprint $table) {
-            $table->id();
-            $table->string('color');
-            $table->string('slug');
-            $table->timestamps();
+        Schema::create('quote_update_product', function (Blueprint $table) {
+            $table->foreignId('quote_update_id')->constrained('quote_updates');
+            $table->foreignId('quote_products_id')->constrained('quote_products');
         });
     }
 
@@ -28,6 +26,6 @@ class CreateColorsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('colors');
+        Schema::dropIfExists('quote_update_product');
     }
 }

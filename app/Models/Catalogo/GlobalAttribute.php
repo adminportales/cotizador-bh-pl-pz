@@ -13,6 +13,8 @@ class GlobalAttribute extends Model
 
     protected $table = 'globalattributes';
 
+    protected $connection = 'mysql_catalogo';
+
     protected $fillable = ['attribute','value'];
 
 }

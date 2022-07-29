@@ -12,6 +12,10 @@
 				<form>
             <div class="form-group">
                 <label for="size_material_technique_id"></label>
+                <select name="" id="">
+                    <option value="">Selecciones la configuracion</option>
+
+                </select>
                 <input wire:model="size_material_technique_id" type="text" class="form-control" id="size_material_technique_id" placeholder="Size Material Technique Id">@error('size_material_technique_id') <span class="error text-danger">{{ $message }}</span> @enderror
             </div>
             <div class="form-group">

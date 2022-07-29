@@ -1,12 +1,9 @@
-<div class="container-fluid">
-    <div class="row justify-content-center">
-        <div class="col-md-12">
             <div class="card">
                 <div class="card-header">
                     <div style="display: flex; justify-content: space-between; align-items: center;">
                         <div class="">
                             <h4><i class="fab fa-laravel text-info"></i>
-                                Listado de tecnicas </h4>
+                                Tecnicas </h4>
                         </div>
                         <div class="d-flex justify-content-between">
                             @if (session()->has('message'))
@@ -15,8 +12,8 @@
                                     {{ session('message') }} </div>
                             @endif
                             <div>
-                                <input wire:model='keyWord' type="text" class="form-control" name="search" id="search"
-                                    placeholder="Buscar">
+                                <input wire:model='keyWord' type="text" class="form-control" name="search"
+                                    id="search" placeholder="Buscar">
                             </div>
                             <div class="btn btn-sm btn-info" data-toggle="modal"
                                 data-target="#createDataModalTechnique">
@@ -67,6 +64,3 @@
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
-</div>

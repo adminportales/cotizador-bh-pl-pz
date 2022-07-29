@@ -15,7 +15,6 @@ class CreateQuoteInformationTable extends Migration
     {
         Schema::create('quote_information', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('quote_id')->constrained();
             $table->string('name');
             $table->string('company');
             $table->string('email');

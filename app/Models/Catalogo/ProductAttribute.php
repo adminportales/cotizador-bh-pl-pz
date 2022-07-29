@@ -13,6 +13,8 @@ class ProductAttribute extends Model
 
     protected $table = 'product_attributes';
 
+    protected $connection = 'mysql_catalogo';
+
     protected $fillable = ['product_id','attribute','slug','value'];
 
     /**

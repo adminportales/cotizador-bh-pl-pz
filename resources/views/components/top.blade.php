@@ -131,10 +131,7 @@
                       </a>
                       <ul class="collapse submenu list-unstyled" id="uiKit" data-parent="#topAccordion">
                           <li>
-                              <a href="{{ url('/materials') }}"> Materiales </a>
-                          </li>
-                          <li>
-                              <a href="{{ url('/techniques') }}"> Tecnicas </a>
+                              <a href="{{ url('/materials') }}"> Materiales y Tecnicas</a>
                           </li>
                           <li>
                               <a href="{{ url('/sizes') }}"> Tamaños </a>

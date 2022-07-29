@@ -13,6 +13,8 @@ class Image extends Model
 
     protected $table = 'images';
 
+    protected $connection = 'mysql_catalogo';
+
     protected $fillable = ['image_url','product_id'];
 
     /**
