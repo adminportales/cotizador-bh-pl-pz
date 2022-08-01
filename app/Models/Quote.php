@@ -14,13 +14,15 @@ class Quote extends Model
         'lead'
     ];
 
-    public function quotesInformation()
+
+
+    public function quotesUpdate()
     {
-        return $this->hasMany(QuoteInformation::class);
+        return $this->hasMany(QuoteUpdate::class);
     }
 
-    public function latestQuotesInformation()
+    public function latestQuotesUpdate()
     {
-        return $this->hasOne(QuoteInformation::class)->latestOfMany();
+        return $this->hasOne(QuoteUpdate::class)->latestOfMany();
     }
 }

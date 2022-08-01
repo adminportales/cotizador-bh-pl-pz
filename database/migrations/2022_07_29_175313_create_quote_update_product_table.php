@@ -15,7 +15,7 @@ class CreateQuoteUpdateProductTable extends Migration
     {
         Schema::create('quote_update_product', function (Blueprint $table) {
             $table->foreignId('quote_update_id')->constrained('quote_updates');
-            $table->foreignId('quote_products_id')->constrained('quote_products');
+            $table->foreignId('quote_product_id')->constrained('quote_products');
         });
     }
 

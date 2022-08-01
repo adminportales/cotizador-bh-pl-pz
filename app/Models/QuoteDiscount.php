@@ -12,5 +12,5 @@ class QuoteDiscount extends Model
         'discount',
         'type',
         'value',
-    ]
+    ];
 }

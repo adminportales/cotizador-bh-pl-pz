@@ -7,6 +7,8 @@ use App\Models\PricesTechnique;
 use Livewire\Component;
 use App\Http\Controllers\CotizadorController;
 use App\Mail\SendQuote;
+use App\Models\QuoteDiscount;
+use App\Models\QuoteInformation;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Mail;
 
@@ -50,7 +52,8 @@ class FinalizarCotizacion extends Component
             'lead' => '487'
         ]);
 
-        $quoteInfo = $quote->quotesInformation()->create([
+        // Guardar la Info de la cotizacion
+        $quoteInfo = QuoteInformation::create([
             'name' => $this->nombre,
             'company' => $this->empresa,
             'email' => $this->email,
@@ -61,6 +64,35 @@ class FinalizarCotizacion extends Component
             'department' => $this->departamento,
             'information' => $this->informacion,
         ]);
+
+        // Guardar descuento
+        $type = 'Fijo';
+        $value = 0;
+        $discount = false;
+        if (auth()->user()->currentQuote->discount) {
+            $discount = true;
+            $type = auth()->user()->currentQuote->type;
+            $value = auth()->user()->currentQuote->value;
+        }
+
+        $dataDiscount = [
+            'discount' => $discount,
+            'type' => $type,
+            'value' => $value,
+        ];
+
+        $quoteDiscount = QuoteDiscount::create($dataDiscount);
+
+
+
+        // Guardar la actualizacion
+        $quoteUpdate = $quote->quotesUpdate()->create([
+            'quote_information_id' => $quoteInfo->id,
+            'quote_discount_id' => $quoteDiscount->id,
+        ]);
+
+        // Ligar Productos al update
+
         // Guardar los productos de la cotizacion
         foreach (auth()->user()->currentQuote->currentQuoteDetails as $item) {
             // TODO: Colocar un array con la data en las tecnicas y productos
@@ -77,7 +109,7 @@ class FinalizarCotizacion extends Component
                 'size' => $size,
             ];
 
-            $quoteInfo->quotesProducts()->create([
+            $quoteUpdate->quoteProducts()->create([
                 'product' => json_encode($product),
                 'technique' =>  json_encode($infoTecnica),
                 'prices_techniques' => $price_tecnica,
@@ -90,6 +122,7 @@ class FinalizarCotizacion extends Component
                 'precio_total' => $item->precio_total
             ]);
         }
+
         // Enviar PDF
 
         $pdf = '';
@@ -115,8 +148,7 @@ class FinalizarCotizacion extends Component
         $pdf = $pdf->stream($quote->lead . ".pdf");
         file_put_contents(public_path() . "/storage/quotes/" . $quote->lead . ".pdf", $pdf);
         // Mail::to($quote->latestQuotesInformation->email)->send(new SendQuote(auth()->user()->name, $quote->latestQuotesInformation->name, '/storage/quotes/'.$quote->lead . ".pdf"));
-        Mail::to('antoniotd87@gmail.com')->send(new SendQuote(auth()->user()->name, $quote->latestQuotesInformation->name, '/storage/quotes/' . $quote->lead . ".pdf"));
-
+        Mail::to('antoniotd87@gmail.com')->send(new SendQuote(auth()->user()->name, $quote->latestQuotesUpdate->quotesInformation->name, '/storage/quotes/' . $quote->lead . ".pdf"));
         // Eliminar los datos de la cotizacion actual
         auth()->user()->currentQuote->currentQuoteDetails()->delete();
         auth()->user()->currentQuote()->delete();

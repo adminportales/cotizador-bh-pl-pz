@@ -11,7 +11,7 @@ class CurrentQuoteComponent extends Component
     public $cotizacionActual, $totalQuote;
     public $discountMount = 0;
 
-    public $value, $type;
+    public $value, $type, $currentQuoteEdit;
 
     public function mount()
     {
@@ -35,15 +35,6 @@ class CurrentQuoteComponent extends Component
         return view('pages.catalogo.current-quote-component', ['total' => $total, 'discount' => $discount]);
     }
 
-    /* public function agregarDescuento()
-    {
-        if (auth()->user()->temporalDiscount) {
-            auth()->user()->temporalDiscount()->update(['mount' => (floatval($this->discountMount))]);
-        } else {
-            auth()->user()->temporalDiscount()->create(['mount' => (floatval($this->discountMount))]);
-        }
-    } */
-
     public function addDiscount()
     {
         if (strlen($this->type) > 0 && (int)$this->value > 0) {
@@ -65,6 +56,8 @@ class CurrentQuoteComponent extends Component
 
     public function editar(CurrentQuoteDetails $cqd)
     {
+        $this->currentQuoteEdit = $cqd;
+        $this->dispatchBrowserEvent('show-modal-edit-product');
     }
 
     public function eliminar(CurrentQuoteDetails $cqd)

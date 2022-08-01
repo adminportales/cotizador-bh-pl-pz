@@ -6,18 +6,18 @@
             <div class="col-md-6">
                 <div class="card w-100 h-100">
                     <div class="card-body">
-                        @if ($quote->latestQuotesInformation)
-                            <h5 class="card-title">{{ $quote->latestQuotesInformation->name }} |
-                                {{ $quote->latestQuotesInformation->company }}</h5>
+                        @if ($quote->latestQuotesUpdate)
+                            <h5 class="card-title">{{ $quote->latestQuotesUpdate->quotesInformation->name }} |
+                                {{ $quote->latestQuotesUpdate->quotesInformation->company }}</h5>
                             <h6><b>Numero de lead: </b> {{ $quote->lead }}</h6>
-                            <h6><b>Oportunidad: </b> {{ $quote->latestQuotesInformation->oportunity }}</h6>
+                            <h6><b>Oportunidad: </b> {{ $quote->latestQuotesUpdate->quotesInformation->oportunity }}</h6>
                             <br>
-                            <p><b>Email: </b>{{ $quote->latestQuotesInformation->email }}</p>
-                            <p><b>Telefono: </b>{{ $quote->latestQuotesInformation->landline }}</p>
-                            <p><b>Celular: </b>{{ $quote->latestQuotesInformation->cell_phone }}</p>
-                            <p><b>Rank: </b>{{ $quote->latestQuotesInformation->rank }}</p>
-                            <p><b>Departamento: </b>{{ $quote->latestQuotesInformation->department }}</p>
-                            <p><b>Informacion adicional: </b>{{ $quote->latestQuotesInformation->information }}</p>
+                            <p><b>Email: </b>{{ $quote->latestQuotesUpdate->quotesInformation->email }}</p>
+                            <p><b>Telefono: </b>{{ $quote->latestQuotesUpdate->quotesInformation->landline }}</p>
+                            <p><b>Celular: </b>{{ $quote->latestQuotesUpdate->quotesInformation->cell_phone }}</p>
+                            <p><b>Rank: </b>{{ $quote->latestQuotesUpdate->quotesInformation->rank }}</p>
+                            <p><b>Departamento: </b>{{ $quote->latestQuotesUpdate->quotesInformation->department }}</p>
+                            <p><b>Informacion adicional: </b>{{ $quote->latestQuotesUpdate->quotesInformation->information }}</p>
                         @else
                             <p>Sin informacion</p>
                         @endif

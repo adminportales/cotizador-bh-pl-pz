@@ -49,9 +49,9 @@
                 </td>
 
                 <td style="width: 40%">
-                    <p> {{ $quote->latestQuotesInformation->company }}</p>
-                    <p>{{ $quote->latestQuotesInformation->name }}</p>
-                    <p> {{ $quote->latestQuotesInformation->department }}</p>
+                    <p> {{ $quote->latestQuotesUpdate->quotesInformation->company }}</p>
+                    <p>{{ $quote->latestQuotesUpdate->quotesInformation->name }}</p>
+                    <p> {{ $quote->latestQuotesUpdate->quotesInformation->department }}</p>
                 </td>
                 <td style="width: 40%">
                     <p>Costumer ID: Falta ese dato</p>
@@ -78,7 +78,7 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach ($quote->latestQuotesInformation->quotesProducts as $item)
+                @foreach ($quote->latestQuotesUpdate->quoteProducts as $item)
                     @php
                         $producto = json_decode($item->product);
                         $tecnica = json_decode($item->technique);
@@ -103,21 +103,22 @@
         <br>
         <table class="total content">
             <tr>
+
                 @php
-                    $subtotal = $quote->latestQuotesInformation->quotesProducts->sum('precio_total');
-                    $iva = $subtotal * 0.16;
+                    $subtotal = $quote->latestQuotesUpdate->quoteProducts->sum('precio_total');
+                    $discount = 0;
+                    if ($quote->latestQuotesUpdate->quoteDiscount->type == 'Fijo') {
+                        $discount = $quote->latestQuotesUpdate->quoteDiscount->value;
+                    } else {
+                        $discount = round(($subtotal / 100) * $quote->latestQuotesUpdate->quoteDiscount->value, 2);
+                    }
+                    $iva = round($subtotal * 0.16, 2);
                 @endphp
-                <td>
-                    <p>Subtotal: </p>
-                    <p>Descuento:</p>
-                    <p>Iva: </p>
-                    <p>Total:</p>
-                </td>
                 <td style="width: 150px">
-                    <p>${{ $subtotal }}</p>
-                    <p>$ {{ (int) $quote->discount > 0 ? $quote->discount : 0 }}</p>
-                    <p>$ {{ $iva }}</p>
-                    <p> $ {{ $subtotal - $quote->discount + $iva }}</p>
+                    <p><b>Subtotal: </b>$ {{ $subtotal }}</p>
+                    <p><b>Descuento: </b>$ {{ $discount }}</p>
+                    <p><b>Iva: </b>$ {{ $iva }}</p>
+                    <p><b>Total: </b>$ {{ $subtotal - $discount + $iva }}</p>
                 </td>
             </tr>
         </table>

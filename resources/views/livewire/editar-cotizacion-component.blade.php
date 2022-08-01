@@ -20,8 +20,8 @@
         @php
             $subtotalAdded = 0;
         @endphp
-        @if ($quote->latestQuotesInformation)
-            @if (count($quote->latestQuotesInformation->quotesProducts) > 0)
+        @if ($quote->latestQuotesUpdate)
+            @if (count($quote->latestQuotesUpdate->quoteProducts) > 0)
                 <table class="table">
                     <thead>
                         <tr>
@@ -35,7 +35,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($quote->latestQuotesInformation->quotesProducts as $product)
+                        @foreach ($quote->latestQuotesUpdate->quoteProducts as $product)
                             @php
                                 $producto = (object) json_decode($product->product);
                                 $tecnica = (object) json_decode($product->technique);
@@ -126,12 +126,12 @@
                     @endif
                 </table>
                 @php
-                    $subtotal = $quote->latestQuotesInformation->quotesProducts->sum('precio_total');
+                    $subtotal = $quote->latestQuotesUpdate->quoteProducts->sum('precio_total');
                     $discount = 0;
-                    if ($quote->latestQuotesInformation->type == 'Fijo') {
-                        $discount = $quote->latestQuotesInformation->value;
+                    if ($quote->latestQuotesUpdate->quoteDiscount->type == 'Fijo') {
+                        $discount = $quote->latestQuotesUpdate->quoteDiscount->value;
                     } else {
-                        $discount = round(($subtotal / 100) * $quote->latestQuotesInformation->value, 2);
+                        $discount = round(($subtotal / 100) * $quote->latestQuotesUpdate->quoteDiscount->value, 2);
                     }
                 @endphp
                 <div class="d-flex justify-content-between">

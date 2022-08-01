@@ -47,9 +47,10 @@
         <table class="cliente content">
             <tr>
                 <td style="width: 50%">
-                    <p>Atención a: {{ $quote->latestQuotesInformation->company }}</p>
-                    <p>Contacto: {{ $quote->latestQuotesInformation->name }}</p>
-                    <p>Departamento: {{ $quote->latestQuotesInformation->department }}</p>
+
+                    <p>Atención a: {{ $quote->latestQuotesUpdate->quotesInformation->company }}</p>
+                    <p>Contacto: {{ $quote->latestQuotesUpdate->quotesInformation->name }}</p>
+                    <p>Departamento: {{ $quote->latestQuotesUpdate->quotesInformation->department }}</p>
 
                 </td>
                 <td style="width: 50%">
@@ -85,7 +86,7 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach ($quote->latestQuotesInformation->quotesProducts as $item)
+                @foreach ($quote->latestQuotesUpdate->quoteProducts as $item)
                     @php
                         $producto = json_decode($item->product);
                         $tecnica = json_decode($item->technique);
@@ -116,20 +117,26 @@
                     <p style="margin-bottom: 5px">Cotización Válida Hasta:
                         {{ $quote->updated_at->addMonth()->format('d/m/Y') }}</p>
                     <br>
-                    <p>Información Adicional: {{ $quote->latestQuotesInformation->information }}</p>
+                    <p>Información Adicional: {{ $quote->latestQuotesUpdate->quotesInformation->information }}</p>
                     <br>
                 </td>
             </tr>
             <tr>
                 @php
-                    $subtotal = $quote->latestQuotesInformation->quotesProducts->sum('precio_total');
-                    $iva = $subtotal * 0.16;
+                    $subtotal = $quote->latestQuotesUpdate->quoteProducts->sum('precio_total');
+                    $discount = 0;
+                    if ($quote->latestQuotesUpdate->quoteDiscount->type == 'Fijo') {
+                        $discount = $quote->latestQuotesUpdate->quoteDiscount->value;
+                    } else {
+                        $discount = round(($subtotal / 100) * $quote->latestQuotesUpdate->quoteDiscount->value, 2);
+                    }
+                    $iva = round($subtotal * 0.16, 2);
                 @endphp
                 <td style="width: 100%; text-align: right">
                     <p><b>Subtotal: </b>$ {{ $subtotal }}</p>
-                    <p><b>Descuento: </b>$ {{ (int) $quote->discount > 0 ? $quote->discount : 0 }}</p>
+                    <p><b>Descuento: </b>$ {{ $discount }}</p>
                     <p><b>Iva: </b>$ {{ $iva }}</p>
-                    <p><b>Total: </b>$ {{ $subtotal - $quote->discount + $iva }}</p>
+                    <p><b>Total: </b>$ {{ $subtotal - $discount + $iva }}</p>
                 </td>
             </tr>
         </table>

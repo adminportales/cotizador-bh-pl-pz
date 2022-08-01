@@ -25,17 +25,21 @@
                                 <tr>
                                     <td class="text-center">{{ $loop->iteration }}</td>
                                     <th style="vertical-align: middle">{{ $quote->lead }}</th>
-                                    @if ($quote->latestQuotesInformation)
-                                        <td>{{ $quote->latestQuotesInformation->name . ' | ' . $quote->latestQuotesInformation->company }}
+                                    @if ($quote->latestQuotesUpdate)
+                                        <td>{{ $quote->latestQuotesUpdate->quotesInformation->name . ' | ' . $quote->latestQuotesUpdate->quotesInformation->company }}
                                         </td>
-                                        <td>{{ $quote->latestQuotesInformation->oportunity }}
+                                        <td>{{ $quote->latestQuotesUpdate->quotesInformation->oportunity }}
                                         </td>
-                                        <td>{{ $quote->latestQuotesInformation->rank }}
+                                        <td>{{ $quote->latestQuotesUpdate->quotesInformation->rank }}
                                         </td>
-                                        @if (count($quote->latestQuotesInformation->quotesProducts) > 0)
-                                            <td class="text-center">$
-                                                {{ $quote->latestQuotesInformation->quotesProducts->sum('precio_total') }}
-                                            </td>
+                                        @if ($quote->latestQuotesUpdate->quoteProducts)
+                                            @if (count($quote->latestQuotesUpdate->quoteProducts) > 0)
+                                                <td class="text-center">$
+                                                    {{ $quote->latestQuotesUpdate->quoteProducts->sum('precio_total') }}
+                                                </td>
+                                            @else
+                                                <td class="text-center">Sin Dato</td>
+                                            @endif
                                         @else
                                             <td class="text-center">Sin Dato</td>
                                         @endif
@@ -48,7 +52,8 @@
 
                                     <td class="text-center">
                                         <a href="{{ route('verCotizacion', ['quote' => $quote->id]) }}"
-                                            class="btn btn-primary">Ver Cotizacion</a>
+                                            class="btn btn-primary">Ver
+                                            Cotizacion</a>
                                     </td>
                                 </tr>
                             @endforeach
