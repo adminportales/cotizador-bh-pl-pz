@@ -115,7 +115,8 @@
                 </div>
                 <div class="modal-body">
                     @if ($currentQuoteEdit)
-                        @livewire('formulario-de-cotizacion-min-component', ['current_quote' => $currentQuoteEdit])
+                        @livewire('formulario-de-cotizacion-min-component', ['product' => $productEdit, 'current_quote' => $currentQuoteEdit])
+                        {{ $currentQuoteEdit }}
                     @endif
                 </div>
                 <div class="modal-footer">
@@ -166,6 +167,9 @@
     <script>
         window.addEventListener('hide-modal-discount', event => {
             $('#discountModal').modal('hide')
+        })
+        window.addEventListener('show-modal-edit-product', event => {
+            $('#editProductModal').modal('show')
         })
 
         function eliminar(id) {

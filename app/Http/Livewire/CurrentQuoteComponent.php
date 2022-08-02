@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire;
 
+use App\Models\Catalogo\Product;
 use App\Models\CurrentQuote;
 use App\Models\CurrentQuoteDetails;
 use Livewire\Component;
@@ -11,7 +12,7 @@ class CurrentQuoteComponent extends Component
     public $cotizacionActual, $totalQuote;
     public $discountMount = 0;
 
-    public $value, $type, $currentQuoteEdit;
+    public $value, $type, $currentQuoteEdit, $productEdit;
 
     public function mount()
     {
@@ -57,6 +58,7 @@ class CurrentQuoteComponent extends Component
     public function editar(CurrentQuoteDetails $cqd)
     {
         $this->currentQuoteEdit = $cqd;
+        $this->productEdit = Product::find($cqd->product_id);
         $this->dispatchBrowserEvent('show-modal-edit-product');
     }
 

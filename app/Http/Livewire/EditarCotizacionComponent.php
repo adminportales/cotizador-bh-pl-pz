@@ -25,6 +25,7 @@ class EditarCotizacionComponent extends Component
     public function editar()
     {
         $this->puedeEditar = !$this->puedeEditar;
+        // $this->dispatchBrowserEvent('show-modal')
     }
 
     public function editarProducto($product, $isNew = false)
