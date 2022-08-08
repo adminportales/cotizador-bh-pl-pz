@@ -2,28 +2,41 @@
 
 namespace App\Http\Livewire;
 
-use App\Models\Catalogo\GlobalAttribute;
-use App\Models\Material;
-use App\Models\MaterialTechnique;
-use App\Models\SizeMaterialTechnique;
-use App\Models\Technique;
 use Livewire\Component;
 
+use App\Models\Catalogo\GlobalAttribute;
+use App\Models\Catalogo\Product;
+use App\Models\Material;
+use App\Models\MaterialTechnique;
+use App\Models\PricesTechnique;
+use App\Models\SizeMaterialTechnique;
 
-class FormularioDeCotizacion extends Component
+class FormularioDeCotizacionCurrentMin extends Component
 {
-    public $product;
-
+    public $product, $currentQuote;
     public $precio, $precioCalculado, $precioTotal = 0;
-
     public $tecnica = 0, $colores = 0, $operacion = 0, $utilidad = 0, $entrega = 0, $cantidad = 0, $priceTechnique;
-
     public $materialSeleccionado;
     public $tecnicaSeleccionada;
     public $sizeSeleccionado;
 
     public function mount()
     {
+        $this->product = Product::find($this->currentQuote->product_id);
+        if ($this->currentQuote) {
+            // Calculo de Precio
+            $this->colores = $this->currentQuote->color_logos;
+            $this->operacion = $this->currentQuote->costo_indirecto;
+            $this->cantidad =  $this->currentQuote->cantidad;
+            $this->utilidad =  $this->currentQuote->utilidad;
+            $this->entrega =  $this->currentQuote->dias_entrega;
+
+            $prices_techniques = PricesTechnique::find($this->currentQuote->prices_techniques_id);
+            $this->materialSeleccionado = $prices_techniques->sizeMaterialTechnique->materialTechnique->material->id;
+            $this->tecnicaSeleccionada = $prices_techniques->sizeMaterialTechnique->materialTechnique->technique->id;
+            $this->sizeSeleccionado = $prices_techniques->sizeMaterialTechnique->size->id;
+            // dd( $prices_techniques->sizeMaterialTechnique);
+        }
         $utilidad = GlobalAttribute::find(1);
         $utilidad = (float) $utilidad->value;
         $priceProduct = $this->product->price;
@@ -107,18 +120,17 @@ class FormularioDeCotizacion extends Component
             $this->operacion = 0;
         if (!is_numeric($this->cantidad))
             $this->cantidad = 0;
-        if (!is_numeric($this->cantidad))
-            $this->cantidad = 0;
+        if (!is_numeric($this->utilidad))
+            $this->utilidad = 0;
         $nuevoPrecio = round(($this->precio + ($precioDeTecnica * $this->colores) + $this->operacion) / ((100 - $this->utilidad) / 100), 2);
 
         $this->precioCalculado = $nuevoPrecio;
         $this->precioTotal = $nuevoPrecio * $this->cantidad;
-        return view('pages.catalogo.formulario-de-cotizacion', ['materiales' => $materiales, 'techniquesAvailables' => $techniquesAvailables, 'sizesAvailables' => $sizesAvailables, 'preciosDisponibles' => $preciosDisponibles]);
+        return view('livewire.formulario-de-cotizacion-current-min', ['materiales' => $materiales, 'techniquesAvailables' => $techniquesAvailables, 'sizesAvailables' => $sizesAvailables, 'preciosDisponibles' => $preciosDisponibles]);
     }
 
     public function agregarCotizacion()
     {
-
         if (!(int)$this->colores > 0) {
             session()->flash('error', 'No se ha especificado la cantidad de logos.');
             return;
@@ -143,15 +155,8 @@ class FormularioDeCotizacion extends Component
             session()->flash('error', 'No se ha especificado la tecnica de personalizacion.');
             return;
         }
-        $currentQuote = auth()->user()->currentQuote;
 
-        if ($currentQuote === null) {
-            $currentQuote = auth()->user()->currentQuote()->create([
-                'discount' => false
-            ]);
-        }
-
-        $currentQuote->currentQuoteDetails()->create([
+        $this->currentQuote->update([
             'product_id' => $this->product->id,
             'prices_techniques_id' => $this->priceTechnique->id,
             'color_logos' => $this->colores,
@@ -163,18 +168,7 @@ class FormularioDeCotizacion extends Component
             'precio_total' => $this->precioTotal,
         ]);
 
-        session()->flash('message', 'Se ha agregado este producto a la cotizacion.');
-        $this->resetData();
-    }
-    public function resetData()
-    {
-        $this->priceTechnique = null;
-        $this->colores = 0;
-        $this->operacion = 0;
-        $this->utilidad = 0;
-        $this->entrega = 0;
-        $this->cantidad = 0;
-        $this->precioCalculado = 0;
-        $this->precioTotal = 0;
+        $this->dispatchBrowserEvent('closeModal', ['currentQuote' => $this->currentQuote->id]);
+        $this->emit('updateProductCurrent');
     }
 }

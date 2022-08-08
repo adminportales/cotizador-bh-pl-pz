@@ -22,7 +22,7 @@
         @endphp
         @if ($quote->latestQuotesUpdate)
             @if (count($quote->latestQuotesUpdate->quoteProducts) > 0)
-                <table class="table">
+                <table class="table table-responsive">
                     <thead>
                         <tr>
                             <th>Producto</th>
@@ -45,13 +45,13 @@
                                     <p>{{ $producto->name }}</p>
                                 </td>
                                 <td class="pr-5">
-                                    <p>$ {{ $product->precio_unitario }}</p>
+                                    <p class="text-center">${{ $product->precio_unitario }}</p>
                                 </td>
                                 <td class="pr-5">
-                                    <p> {{ $product->cantidad }} piezas</p>
+                                    <p class="text-center"> {{ $product->cantidad }} piezas</p>
                                 </td>
                                 <td>
-                                    <p>$ {{ $product->precio_total }}</p>
+                                    <p class="text-center">${{ $product->precio_total }}</p>
                                 </td>
                                 @if ($puedeEditar)
                                     <td class="text-center d-flex">
@@ -80,13 +80,13 @@
                                         <p>{{ $newProduct['product_id'] }}</p>
                                     </td>
                                     <td class="pr-5">
-                                        <p>$ {{ $newProduct['precio_unitario'] }}</p>
+                                        <p class="text-center">${{ $newProduct['precio_unitario'] }}</p>
                                     </td>
                                     <td class="pr-5">
-                                        <p> {{ $newProduct['cantidad'] }} piezas</p>
+                                        <p class="text-center"> {{ $newProduct['cantidad'] }} piezas</p>
                                     </td>
                                     <td>
-                                        <p>$ {{ $newProduct['precio_total'] }}</p>
+                                        <p class="text-center">${{ $newProduct['precio_total'] }}</p>
                                         @php
                                             $subtotalAdded += $newProduct['precio_total'];
                                         @endphp
@@ -135,19 +135,21 @@
                     }
                 @endphp
                 <div class="d-flex justify-content-between">
-                    <div class="w-50">
-
-                        <p><b>Subtotal: </b>$ {{ $subtotal + $subtotalAdded }}</p>
-                        <p><b>Descuento: </b>$ {{ $discount }}
-                        </p>
-                        <p><b>Total: </b>$ {{ $subtotal + $subtotalAdded - $discount }}</p>
+                    <h5 class="card-title">Informacion del descuento actual</h5>
+                    <div style="width: 20px; cursor: pointer;" wire:click="editarDescuento">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                            <path d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z" />
+                            <path fill-rule="evenodd"
+                                d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z"
+                                clip-rule="evenodd" />
+                        </svg>
                     </div>
-                    <div class="w-50 d-flex flex-column align-items-end">
-                        <a class="btn btn-success" target="_blank"
-                            href="{{ route('previsualizar.cotizacion', ['quote' => $quote]) }}">Ver PDF</a>
-                        <br>
-                        <button class="btn btn-primary mb-1" wire:click="enviar">Enviar al Cliente</button>
-                    </div>
+                </div>
+                <div class="d-flex flex-column">
+                    <p><b>Subtotal: </b>$ {{ $subtotal + $subtotalAdded }}</p>
+                    <p><b>Descuento: </b>$ {{ $discount }}
+                    </p>
+                    <p><b>Total: </b>$ {{ $subtotal + $subtotalAdded - $discount }}</p>
                 </div>
             @else
                 <p>No hay Productos Cotizados</p>
@@ -158,7 +160,8 @@
     </div>
 
     <!-- Modal -->
-    <div class="modal fade" id="modalCotizador" tabindex="-1" aria-labelledby="modalCotizadorLabel" aria-hidden="true">
+    <div class="modal fade" id="modalCotizador" tabindex="-1" aria-labelledby="modalCotizadorLabel"
+        aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">

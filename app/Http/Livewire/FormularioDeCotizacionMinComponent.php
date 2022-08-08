@@ -12,7 +12,7 @@ use Livewire\Component;
 
 class FormularioDeCotizacionMinComponent extends Component
 {
-    public $product;
+    public $product, $currentQuote;
 
     public $precio, $precioCalculado, $precioTotal = 0;
 
@@ -24,6 +24,18 @@ class FormularioDeCotizacionMinComponent extends Component
 
     public function mount()
     {
+        if ($this->currentQuote) {
+            // Calculo de Precio
+            $this->colores = $this->currentQuote->color_logos;
+            $this->operacion = $this->currentQuote->costo_indirecto;
+            $this->cantidad =  $this->currentQuote->cantidad;
+            $this->utilidad =  $this->currentQuote->utilidad;
+            $this->entrega =  $this->currentQuote->dias_entrega;
+            // $nuevoPrecio = round(($this->precio + ($precioDeTecnica * $this->colores) + $this->operacion) / ((100 - $this->utilidad) / 100), 2);
+
+            // $this->precioCalculado = $nuevoPrecio;
+            // $this->precioTotal = $nuevoPrecio * $this->cantidad;
+        }
         $utilidad = GlobalAttribute::find(1);
         $utilidad = (float) $utilidad->value;
         $priceProduct = $this->product->price;
@@ -58,10 +70,11 @@ class FormularioDeCotizacionMinComponent extends Component
             $techniquesAvailables = [];
         }
         $sizesAvailables = [];
+        $materialTechnique = '';
         if ($this->tecnicaSeleccionada !== null && $this->tecnicaSeleccionada !== "") {
-            $sizes = MaterialTechnique::find((int)$this->tecnicaSeleccionada);
-            if ($sizes) {
-                $sizesAvailables = $sizes->sizeMaterialTechniques;
+            $materialTechnique = MaterialTechnique::where('technique_id', (int)$this->tecnicaSeleccionada)->where('material_id', (int)$this->materialSeleccionado)->first();
+            if ($materialTechnique) {
+                $sizesAvailables = $materialTechnique->sizeMaterialTechniques;
             } else {
                 $sizesAvailables = [];
             }
@@ -72,7 +85,7 @@ class FormularioDeCotizacionMinComponent extends Component
 
         $preciosDisponibles = [];
         if ($this->sizeSeleccionado !== null && $this->sizeSeleccionado !== "") {
-            $preciosDisponibles = SizeMaterialTechnique::find((int)$this->sizeSeleccionado)->pricesTechniques;
+            $preciosDisponibles = SizeMaterialTechnique::where('material_technique_id', $materialTechnique->id)->where('size_id', (int)$this->sizeSeleccionado)->first()->pricesTechniques;
         } else {
             $preciosDisponibles = [];
             $this->sizeSeleccionado = null;
@@ -106,8 +119,8 @@ class FormularioDeCotizacionMinComponent extends Component
             $this->operacion = 0;
         if (!is_numeric($this->cantidad))
             $this->cantidad = 0;
-        if (!is_numeric($this->cantidad))
-            $this->cantidad = 0;
+        if (!is_numeric($this->utilidad))
+            $this->utilidad = 0;
         $nuevoPrecio = round(($this->precio + ($precioDeTecnica * $this->colores) + $this->operacion) / ((100 - $this->utilidad) / 100), 2);
 
         $this->precioCalculado = $nuevoPrecio;

@@ -23,7 +23,7 @@
                                 <tbody>
                                     @foreach ($cotizacionActual as $quote)
                                         <tr>
-                                            <td class="text-center">1</td>
+                                            <td class="text-center">{{ $loop->iteration }}</td>
                                             <td> {{ $quote->product->internal_sku }}</td>
                                             <td>
                                                 <div class="d-flex align-items-center">
@@ -37,24 +37,47 @@
                                                 </div>
                                             </td>
                                             <td>
-                                                <p class="m-0"><strong>Costo Indirecto:</strong>$
-                                                    {{ $quote->costo_indirecto }}</p>
-                                                <p class="m-0"><strong>Margen de Utilidad:</strong>$
-                                                    {{ $quote->utilidad }}
+                                                <p class="m-0"><strong>Costo Indirecto:</strong>${{ $quote->costo_indirecto }}</p>
+                                                <p class="m-0"><strong>Margen de Utilidad:</strong>
+                                                    {{ $quote->utilidad }}%
                                                 </p>
-                                                <p class="m-0"><strong>Costo de Impresion:</strong>$
-                                                    {{ $quote->prices_techniques_id }}</p>
+                                                <p class="m-0"><strong>Costo de Impresion:</strong>${{ $quote->prices_techniques_id }}</p>
                                                 <p class="m-0"><strong>Colores/Logos:</strong>
                                                     {{ $quote->color_logos }}
                                                 </p>
                                             </td>
-                                            <td>$ {{ $quote->precio_unitario }}</td>
+                                            <td>${{ $quote->precio_unitario }}</td>
                                             <td> {{ $quote->cantidad }} piezas</td>
-                                            <td>$ {{ $quote->precio_total }}</td>
+                                            <td>${{ $quote->precio_total }}</td>
                                             <td> {{ $quote->dias_entrega }} dias habiles</td>
                                             <td class="px-0 mx-0">
-                                                <button class="btn btn-warning btn-sm mb-1 w-100"
-                                                    wire:click="editar({{ $quote }})">Editar</button>
+                                                <button type="button" class="btn btn-warning btn-sm mb-1 w-100"
+                                                    data-toggle="modal"
+                                                    data-target="#editProductModal{{ $quote->id }}">
+                                                    Editar
+                                                </button>
+                                                <div class="modal fade" id="editProductModal{{ $quote->id }}"
+                                                    tabindex="-1"
+                                                    aria-labelledby="editProductModal{{ $quote->id }}Label"
+                                                    aria-hidden="true" wire:ignore.self>
+                                                    <div class="modal-dialog modal-lg">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title"
+                                                                    id="editProductModal{{ $quote->id }}Label">
+                                                                    Editar
+                                                                    Cotizacion</h5>
+                                                                <button type="button" class="close"
+                                                                    data-dismiss="modal" aria-label="Close">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                                </button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                @livewire('formulario-de-cotizacion-current-min', ['currentQuote' => $quote], key($quote->id))
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                                 <button class="btn btn-danger btn-sm w-100 mt-1"
                                                     onclick='eliminar({{ $quote->id }})'>Eliminar</button>
                                             </td>
@@ -73,9 +96,10 @@
             <div class="card w-50">
                 <div class="card-body">
                     <h3>Total de la cotizacion</h3>
-                    <button type="button" class="btn btn-light btn-block my-1" data-toggle="modal"
-                        data-target="#discountModal">
-                        Agregar un descuento
+                    <button type="button"
+                        class="btn {{ auth()->user()->currentQuote->discount ? 'btn-warning' : 'btn-info' }} btn-block my-1"
+                        data-toggle="modal" data-target="#discountModal">
+                        {{ auth()->user()->currentQuote->discount ? 'Editar Descuento' : 'Agregar Descuento' }}
                     </button>
 
                     <div class="d-flex justify-content-between">
@@ -93,7 +117,7 @@
                         <strong class="d-flex text-primary d-block"> $ {{ $totalQuote - $discount }}</strong>
                     </div>
                     <div class="d-flex justify-content-between" style="font-size: 1.3rem;font-weight: bold;">
-                        <a href="{{ route('finalizar') }}" class="btn btn-info btn-sm mb-1 w-100">Finalizar
+                        <a href="{{ route('finalizar') }}" class="btn btn-primary btn-sm mb-1 w-100">Finalizar
                             Cotizacion</a>
                     </div>
                 </div>
@@ -103,30 +127,6 @@
         <p class="text-center">No tienes productos en tu cotizacion</p>
     @endif
     <!-- Modal -->
-    <div class="modal fade" id="editProductModal" tabindex="-1" aria-labelledby="editProductModalLabel"
-        aria-hidden="true" wire:ignore.self>
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="editProductModalLabel">Editar Cotizacion</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    @if ($currentQuoteEdit)
-                        @livewire('formulario-de-cotizacion-min-component', ['product' => $productEdit, 'current_quote' => $currentQuoteEdit])
-                        {{ $currentQuoteEdit }}
-                    @endif
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn btn-primary" wire:click="addDiscount">Guardar</button>
-
-                </div>
-            </div>
-        </div>
-    </div>
     <div class="modal fade" id="discountModal" tabindex="-1" aria-labelledby="discountModalLabel" aria-hidden="true"
         wire:ignore.self>
         <div class="modal-dialog modal-sm">
@@ -140,10 +140,17 @@
                 <div class="modal-body">
                     <div class="form-group">
                         <label for="">Tipo de Descuento</label>
+                        {{ auth()->user()->currentQuote->type }}
                         <select class="form-control" wire:model.lazy="type">
-                            <option value="">Seleccione...</option>
-                            <option value="Fijo">Valor Fijo</option>
-                            <option value="Porcentaje">Porcentaje</option>
+                            <option value="" {{ auth()->user()->currentQuote->type == '' ? 'selected' : '' }}>
+                                Seleccione...
+                            </option>
+                            <option value="Fijo"
+                                {{ auth()->user()->currentQuote->type == 'Fijo' ? 'selected' : '' }}>Valor Fijo
+                            </option>
+                            <option value="Porcentaje"
+                                {{ auth()->user()->currentQuote->type == 'Porcentaje' ? 'selected' : '' }}>
+                                Porcentaje</option>
                         </select>
                     </div>
                     <div class="form-group">
@@ -168,8 +175,8 @@
         window.addEventListener('hide-modal-discount', event => {
             $('#discountModal').modal('hide')
         })
-        window.addEventListener('show-modal-edit-product', event => {
-            $('#editProductModal').modal('show')
+        window.addEventListener('closeModal', event => {
+            $(`#editProductModal${event.detail.currentQuote}`).modal('hide');
         })
 
         function eliminar(id) {

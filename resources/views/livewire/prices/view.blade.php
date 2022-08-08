@@ -50,7 +50,7 @@
                                         <td>{{ $row->precio }}</td>
                                         <td>{{ $row->tipo_precio }}</td>
                                         <td width="90">
-                                            <button type="button" class="btn btn-info btn-sm" wire:click="editar({{  }})">
+                                            <button type="button" class="btn btn-info btn-sm" wire:click="editar()">
                                                 Editar
                                             </button>
                                         </td>

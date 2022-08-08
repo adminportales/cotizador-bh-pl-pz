@@ -12,7 +12,9 @@ class CurrentQuoteComponent extends Component
     public $cotizacionActual, $totalQuote;
     public $discountMount = 0;
 
-    public $value, $type, $currentQuoteEdit, $productEdit;
+    public $value, $type;
+
+    protected $listeners = ['updateProductCurrent' => 'resetData'];
 
     public function mount()
     {
@@ -55,15 +57,12 @@ class CurrentQuoteComponent extends Component
         }
     }
 
-    public function editar(CurrentQuoteDetails $cqd)
-    {
-        $this->currentQuoteEdit = $cqd;
-        $this->productEdit = Product::find($cqd->product_id);
-        $this->dispatchBrowserEvent('show-modal-edit-product');
-    }
-
     public function eliminar(CurrentQuoteDetails $cqd)
     {
         $cqd->delete();
+    }
+    public function resetData()
+    {
+        $this->cotizacionActual = auth()->user()->currentQuote->currentQuoteDetails;
     }
 }
