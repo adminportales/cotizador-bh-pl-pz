@@ -172,6 +172,8 @@ class FormularioDeCotizacionMinComponent extends Component
 
         $this->dispatchBrowserEvent('closeModal');
 
+        $this->emit('updateSubtotal', ['toAdd' => true, 'subtotal' => $newQuote['precio_total']] );
+
         $this->resetData();
     }
     public function resetData()

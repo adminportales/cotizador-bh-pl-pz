@@ -24,6 +24,7 @@ class QuoteUpdate extends Model
     {
         return $this->belongsTo(QuoteInformation::class, 'quote_information_id');
     }
+
     public function quoteDiscount()
     {
         return $this->belongsTo(QuoteDiscount::class, 'quote_discount_id');

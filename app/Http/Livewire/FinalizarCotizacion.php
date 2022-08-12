@@ -101,12 +101,18 @@ class FinalizarCotizacion extends Component
             $tecnica = PricesTechnique::find($item->prices_techniques_id);
             $price_tecnica =  $tecnica->precio;
             $material = $tecnica->sizeMaterialTechnique->materialTechnique->material->nombre;
+            $material_id = $tecnica->sizeMaterialTechnique->materialTechnique->material->id;
             $tecnica_nombre = $tecnica->sizeMaterialTechnique->materialTechnique->technique->nombre;
+            $tecnica_id = $tecnica->sizeMaterialTechnique->materialTechnique->technique->id;
             $size = $tecnica->sizeMaterialTechnique->size->nombre;
+            $size_id = $tecnica->sizeMaterialTechnique->size->id;
             $infoTecnica = [
-                'tecnica' => $tecnica_nombre,
+                'material_id' => $material_id,
                 'material' => $material,
+                'tecnica' => $tecnica_nombre,
+                'tecnica_id' => $tecnica_id,
                 'size' => $size,
+                'size_id' => $size_id,
             ];
 
             $quoteUpdate->quoteProducts()->create([
@@ -147,8 +153,27 @@ class FinalizarCotizacion extends Component
         $pdf->setPaper('Letter', 'portrait');
         $pdf = $pdf->stream($quote->lead . ".pdf");
         file_put_contents(public_path() . "/storage/quotes/" . $quote->lead . ".pdf", $pdf);
+
+        // Enviar PDF a ODOO
+        $client = new \GuzzleHttp\Client();
+        $response = $client->request('POST', 'http://localhost/api/v1', [
+            'headers' => [
+                'X-VDE-APIKEY' => 'cd78567e59e016e964cdcc1bd99367c6',
+                'X-VDE-TYPE'     => 'Ambos',
+            ],
+            'form_params' => [
+                'field_name' => 'abc',
+                'other_field' => '123',
+                'nested_field' => [
+                    'nested' => 'hello'
+                ]
+            ]
+        ]);
+
+
         // Mail::to($quote->latestQuotesInformation->email)->send(new SendQuote(auth()->user()->name, $quote->latestQuotesInformation->name, '/storage/quotes/'.$quote->lead . ".pdf"));
         Mail::to('antoniotd87@gmail.com')->send(new SendQuote(auth()->user()->name, $quote->latestQuotesUpdate->quotesInformation->name, '/storage/quotes/' . $quote->lead . ".pdf"));
+        return;
         // Eliminar los datos de la cotizacion actual
         auth()->user()->currentQuote->currentQuoteDetails()->delete();
         auth()->user()->currentQuote()->delete();

@@ -17,6 +17,7 @@
                                 <th scope="col">Oportunidad</th>
                                 <th scope="col">Rank</th>
                                 <th scope="col" class="text-center">Total</th>
+                                <th scope="col" class="text-center">Fecha</th>
                                 <th scope="col" class="text-center">Acciones</th>
                             </tr>
                         </thead>
@@ -43,11 +44,13 @@
                                         @else
                                             <td class="text-center">Sin Dato</td>
                                         @endif
-                                    @else
+                                        <td class="text-center">{{ $quote->latestQuotesUpdate->created_at->format('d-m-Y') }}</td>
+                                        @else
                                         <td>Sin Dato</td>
                                         <td>Sin Dato</td>
                                         <td>Sin Dato</td>
                                         <td class="text-center">Sin Dato</td>
+                                        <td class="text-center">{{ $quote->created_at->format('d-m-Y') }}</td>
                                     @endif
 
                                     <td class="text-center">

@@ -12,6 +12,10 @@ class VerCotizacionComponent extends Component
 {
     public $quote, $puedeEditar = false;
 
+    public $newQuoteInfo = [];
+
+    protected $listeners = ['updateQuoteInfo'=> 'updateQuoteInfo'];
+
     public function render()
     {
         return view('livewire.ver-cotizacion-component');
@@ -50,5 +54,10 @@ class VerCotizacionComponent extends Component
     {
         $this->puedeEditar = !$this->puedeEditar;
         $this->emit('puedeEditar', ['puedeEditar' => $this->puedeEditar]);
+    }
+
+    public function updateQuoteInfo($quoteInfo)
+    {
+        $this->newQuoteInfo = $quoteInfo;
     }
 }
