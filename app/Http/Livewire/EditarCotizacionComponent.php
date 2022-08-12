@@ -11,7 +11,7 @@ class EditarCotizacionComponent extends Component
     protected $listeners = ['productAdded' => 'addProducto', 'puedeEditar' => 'editar'];
 
     // Variables Editables
-    public $listNewProducts = [], $listUpdateCurrent, $listDeleteCurrent, $newDiscount;
+    public $listNewProducts = [], $listUpdateCurrent = [], $listDeleteCurrent = [], $newDiscount;
 
     public function render()
     {
@@ -32,5 +32,9 @@ class EditarCotizacionComponent extends Component
     public function addProducto($productAdded)
     {
         array_push($this->listNewProducts, $productAdded);
+    }
+    public function deleteProducto($productDeleted)
+    {
+        array_push($this->listDeleteCurrent, $productDeleted);
     }
 }

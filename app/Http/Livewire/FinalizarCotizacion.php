@@ -155,7 +155,7 @@ class FinalizarCotizacion extends Component
         file_put_contents(public_path() . "/storage/quotes/" . $quote->lead . ".pdf", $pdf);
 
         // Enviar PDF a ODOO
-        $client = new \GuzzleHttp\Client();
+/*         $client = new \GuzzleHttp\Client();
         $response = $client->request('POST', 'http://localhost/api/v1', [
             'headers' => [
                 'X-VDE-APIKEY' => 'cd78567e59e016e964cdcc1bd99367c6',
@@ -168,11 +168,11 @@ class FinalizarCotizacion extends Component
                     'nested' => 'hello'
                 ]
             ]
-        ]);
+        ]); */
 
 
-        // Mail::to($quote->latestQuotesInformation->email)->send(new SendQuote(auth()->user()->name, $quote->latestQuotesInformation->name, '/storage/quotes/'.$quote->lead . ".pdf"));
-        Mail::to('antoniotd87@gmail.com')->send(new SendQuote(auth()->user()->name, $quote->latestQuotesUpdate->quotesInformation->name, '/storage/quotes/' . $quote->lead . ".pdf"));
+        Mail::to($quote->latestQuotesInformation->email)->send(new SendQuote(auth()->user()->name, $quote->latestQuotesInformation->name, '/storage/quotes/'.$quote->lead . ".pdf"));
+        // Mail::to('antoniotd87@gmail.com')->send(new SendQuote(auth()->user()->name, $quote->latestQuotesUpdate->quotesInformation->name, '/storage/quotes/' . $quote->lead . ".pdf"));
         return;
         // Eliminar los datos de la cotizacion actual
         auth()->user()->currentQuote->currentQuoteDetails()->delete();

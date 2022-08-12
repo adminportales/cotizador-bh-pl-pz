@@ -46,8 +46,8 @@ class VerCotizacionComponent extends Component
         $pdf->setPaper('Letter', 'portrait');
         $pdf = $pdf->stream($this->quote->lead . ".pdf");
         file_put_contents(public_path() . "/storage/quotes/" . $this->quote->lead . ".pdf", $pdf);
-        // Mail::to($this->quote->latestQuotesInformation->email)->send(new SendQuote(auth()->user()->name, $this->quote->latestQuotesInformation->name, '/storage/quotes/'.$this->quote->lead . ".pdf"));
-        Mail::to('antoniotd87@gmail.com')->send(new SendQuote(auth()->user()->name, $this->quote->latestQuotesUpdate->quotesInformation->name, '/storage/quotes/' . $this->quote->lead . ".pdf"));
+        Mail::to($this->quote->latestQuotesInformation->email)->send(new SendQuote(auth()->user()->name, $this->quote->latestQuotesInformation->name, '/storage/quotes/'.$this->quote->lead . ".pdf"));
+        // Mail::to('antoniotd87@gmail.com')->send(new SendQuote(auth()->user()->name, $this->quote->latestQuotesUpdate->quotesInformation->name, '/storage/quotes/' . $this->quote->lead . ".pdf"));
         dd('Enviado');
     }
     public function editar()

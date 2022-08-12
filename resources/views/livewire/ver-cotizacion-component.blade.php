@@ -1,12 +1,12 @@
 <div class="row">
-    <div class="col-md-6">
+    <div class="col-md-5">
         <div class="card w-100 h-100">
             <div class="card-body">
                 @if ($quote->latestQuotesUpdate)
                     <div class="d-flex justify-content-between">
                         <h5 class="card-title">{{ $quote->latestQuotesUpdate->quotesInformation->name }} |
                             {{ $quote->latestQuotesUpdate->quotesInformation->company }}</h5>
-                        <div style="width: 20px; cursor: pointer;" wire:click="editar">
+                        <div style="width: 20px; cursor: pointer;" data-toggle="modal" data-target="#editarInfoCliente">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20"
                                 fill="currentColor">
                                 <path
@@ -32,14 +32,9 @@
                 @endif
 
                 @if ($quote->latestQuotesUpdate)
-                    <!-- Button trigger modal -->
-                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editarInfoCliente">
-                        Editar
-                    </button>
-
                     <!-- Modal -->
-                    <div class="modal fade" id="editarInfoCliente" tabindex="-1" aria-labelledby="editarInfoClienteLabel"
-                        aria-hidden="true">
+                    <div class="modal fade" id="editarInfoCliente" tabindex="-1"
+                        aria-labelledby="editarInfoClienteLabel" aria-hidden="true">
                         <div class="modal-dialog modal-lg">
                             <div class="modal-content">
                                 <div class="modal-header">
@@ -58,21 +53,21 @@
             </div>
         </div>
     </div>
-    <div class="col-md-6">
+    <div class="col-md-7">
         <div class="card w-100 h-100">
             @livewire('editar-cotizacion-component', ['quote' => $quote], key($quote->id))
             @if ($quote->latestQuotesUpdate)
                 <div class="card-body">
                     <div class="row">
                         <div class="col-md-4">
-                            <button class="btn btn-warning w-100" wire:click="editar">Editar Cotizacion</button>
-                        </div>
-                        <div class="col-md-4">
                             <a class="btn btn-success w-100" target="_blank"
                                 href="{{ route('previsualizar.cotizacion', ['quote' => $quote]) }}">Ver PDF</a>
                         </div>
                         <div class="col-md-4">
                             <button class="btn btn-primary w-100" wire:click="enviar">Enviar al Cliente</button>
+                        </div>
+                        <div class="col-md-4">
+                            <button class="btn btn-danger w-100" wire:click="enviar">Enviar a ODOO</button>
                         </div>
                     </div>
                 </div>
