@@ -14,8 +14,6 @@ class Quote extends Model
         'lead'
     ];
 
-
-
     public function quotesUpdate()
     {
         return $this->hasMany(QuoteUpdate::class);

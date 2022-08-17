@@ -40,16 +40,16 @@
                 <div class="modal-body">
                     <div class="form-group">
                         <label for="">Tipo de Descuento</label>
-                        {{ auth()->user()->currentQuote->type }}
+                        {{ $quote->latestQuotesUpdate->quoteDiscount->type }}
                         <select class="form-control" wire:model.lazy="type">
-                            <option value="" {{ auth()->user()->currentQuote->type == '' ? 'selected' : '' }}>
+                            <option value="" {{ $quote->latestQuotesUpdate->quoteDiscount->type == '' ? 'selected' : '' }}>
                                 Seleccione...
                             </option>
-                            <option value="Fijo" {{ auth()->user()->currentQuote->type == 'Fijo' ? 'selected' : '' }}>
+                            <option value="Fijo" {{ $quote->latestQuotesUpdate->quoteDiscount->type == 'Fijo' ? 'selected' : '' }}>
                                 Valor Fijo
                             </option>
                             <option value="Porcentaje"
-                                {{ auth()->user()->currentQuote->type == 'Porcentaje' ? 'selected' : '' }}>
+                                {{ $quote->latestQuotesUpdate->quoteDiscount->type == 'Porcentaje' ? 'selected' : '' }}>
                                 Porcentaje</option>
                         </select>
                     </div>
