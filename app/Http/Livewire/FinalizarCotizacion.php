@@ -95,8 +95,6 @@ class FinalizarCotizacion extends Component
 
         // Guardar los productos de la cotizacion
         foreach (auth()->user()->currentQuote->currentQuoteDetails as $item) {
-            // TODO: Colocar un array con la data en las tecnicas y productos
-
             $product = Product::find($item->product_id);
             $tecnica = PricesTechnique::find($item->prices_techniques_id);
             $price_tecnica =  $tecnica->precio;

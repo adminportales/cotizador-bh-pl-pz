@@ -11,14 +11,10 @@
                 </svg>
             </div>
         </div>
-        @if ($puedeEditar)
-            <p class="text-danger">Solo es posible editar la cantidad de piezas, si desea cambiar otros datos, eliminar
-                el producto actual y agregar otro.</p>
-        @else
-            <br>
-        @endif
+        <br>
         @php
             $subtotalAdded = 0;
+            $subtotalSubstract = 0;
         @endphp
         @if ($quote->latestQuotesUpdate)
             @if (count($quote->latestQuotesUpdate->quoteProducts) > 0)
@@ -45,6 +41,7 @@
                                     foreach ($listDeleteCurrent as $productDeleted) {
                                         if ($product->id == $productDeleted['id']) {
                                             $visible = false;
+                                            $subtotalSubstract += $productDeleted['precio_total'];
                                         }
                                     }
                                 @endphp
@@ -119,7 +116,8 @@
                                                     <path stroke-linecap="round" stroke-linejoin="round"
                                                         d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                                                 </svg></button>
-                                            <button class="btn btn-danger btn-sm"  wire:click="deleteNewProducto({{ $newProduct['idNewQuote'] }})"><svg
+                                            <button class="btn btn-danger btn-sm"
+                                                wire:click="deleteNewProducto({{ $newProduct['idNewQuote'] }})"><svg
                                                     xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
                                                     viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                                     <path stroke-linecap="round" stroke-linejoin="round"
@@ -159,7 +157,86 @@
                     </div>
                     <br>
                 @endif
-                @livewire('edit-quote-discount-component', ['quote' => $quote])
+                {{-- INICIO DE LA PARTE DE LOS DESCUENTOS --}}
+                {{-- @livewire('edit-quote-discount-component', ['quote' => $quote]) --}}
+                @php
+                    $subtotal = $quote->latestQuotesUpdate->quoteProducts->sum('precio_total') - $subtotalSubstract;
+                    $discountValue = 0;
+                    if ($type == 'Fijo') {
+                        $discountValue = $value;
+                    } else {
+                        $discountValue = round(($subtotal / 100) * $value, 2);
+                    }
+                @endphp
+                <div class="d-flex justify-content-between">
+                    <h5 class="card-title">Informacion del descuento actual</h5>
+                    <div style="width: 20px; cursor: pointer;" data-toggle="modal" data-target="#discountModalEdit">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20"
+                            fill="currentColor">
+                            <path d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z" />
+                            <path fill-rule="evenodd"
+                                d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z"
+                                clip-rule="evenodd" />
+                        </svg>
+                    </div>
+                </div>
+                <div class="d-flex flex-column">
+                    <p><b>Subtotal: </b>$ {{ $subtotal + $subtotalAdded }}</p>
+                    <p><b>Descuento: </b>$ {{ $discountValue }}
+                    </p>
+                    <p><b>Total: </b>$ {{ $subtotal + $subtotalAdded - $discountValue }}</p>
+                </div>
+
+                <!-- Modal -->
+                <div class="modal fade" id="discountModalEdit" tabindex="-1"
+                    aria-labelledby="discountModalEditLabel" aria-hidden="true" wire:ignore.self>
+                    <div class="modal-dialog modal-sm">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="discountModalEditLabel">Editar Descuento</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                {{ $quote->latestQuotesUpdate->quoteDiscount }}
+                                <div class="form-group">
+                                    <label for="">Tipo de Descuento</label>
+                                    <select class="form-control" wire:model.lazy="type">
+                                        <option value=""
+                                            {{ $quote->latestQuotesUpdate->quoteDiscount->type == '' ? 'selected' : '' }}>
+                                            Seleccione...
+                                        </option>
+                                        <option value="Fijo"
+                                            {{ $quote->latestQuotesUpdate->quoteDiscount->type == 'Fijo' ? 'selected' : '' }}>
+                                            Valor Fijo
+                                        </option>
+                                        <option value="Porcentaje"
+                                            {{ $quote->latestQuotesUpdate->quoteDiscount->type == 'Porcentaje' ? 'selected' : '' }}>
+                                            Porcentaje</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="">Cantidad</label>
+                                    <input type="number" class="form-control" placeholder="ej: 50, 2000"
+                                        wire:model.lazy="value">
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary"
+                                    data-dismiss="modal">Cancelar</button>
+                                <button type="button" class="btn btn-primary"
+                                    wire:click="updateDiscount">Actualizar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <script>
+                    window.addEventListener('hideModalDiscount', event => {
+                        $('#discountModalEdit').modal('hide')
+                    })
+                </script>
+                {{-- FIN DE LA PARTE DE LOS DESCUENTOS --}}
             @else
                 <p>No hay Productos Cotizados</p>
             @endif

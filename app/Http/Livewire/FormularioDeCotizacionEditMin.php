@@ -166,6 +166,7 @@ class FormularioDeCotizacionEditMin extends Component
             $this->materialSeleccionado = $prices_techniques->sizeMaterialTechnique->materialTechnique->material->id;
             $this->tecnicaSeleccionada = $prices_techniques->sizeMaterialTechnique->materialTechnique->technique->id;
             $this->sizeSeleccionado = $prices_techniques->sizeMaterialTechnique->size->id;
+            $this->idNewQuote = $productEdit['idNewQuote'];
         } else {
             $product =  (object) json_decode($productEdit['product']);
 
@@ -176,7 +177,6 @@ class FormularioDeCotizacionEditMin extends Component
             $this->tecnicaSeleccionada = $techniquesInfo->tecnica_id;
             $this->sizeSeleccionado = $techniquesInfo->size_id;
             $this->currentQuote_id = $productEdit['id'];
-            $this->idNewQuote = $productEdit['idNewQuote'];
         }
         # code...
         // Calculo de Precio
