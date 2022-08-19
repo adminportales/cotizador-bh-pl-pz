@@ -129,11 +129,12 @@ class FormularioDeCotizacionEditMin extends Component
             session()->flash('error', 'No se ha especificado la tecnica de personalizacion.');
             return;
         }
-
+        $product = $this->product->toArray();
+        $product['image'] = $this->product->firstImage ? $this->product->firstImage->image_url : '';
         $newQuote = [
             'currentQuote_id' => $this->currentQuote_id,
             'idNewQuote' => $this->idNewQuote,
-            'product_id' => $this->product->id,
+            'product' => json_encode($product),
             'prices_techniques_id' => $this->priceTechnique->id,
             'color_logos' => $this->colores,
             'costo_indirecto' => $this->operacion,
@@ -148,8 +149,6 @@ class FormularioDeCotizacionEditMin extends Component
         $this->emit('productUpdate', $newQuote);
 
         $this->dispatchBrowserEvent('closeModal');
-
-        $this->emit('updateSubtotal', ['toAdd' => true, 'subtotal' => $newQuote['precio_total']]);
 
         $this->resetData();
     }

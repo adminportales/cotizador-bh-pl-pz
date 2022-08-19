@@ -19,6 +19,7 @@ class CatalogoMinComponent extends Component
 
     public $nombre, $producto = '';
 
+    protected $listeners = ['addProductNewQuote' => 'regresar'];
 
     public function render()
     {

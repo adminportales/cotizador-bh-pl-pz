@@ -169,14 +169,10 @@ class FormularioDeCotizacionMinComponent extends Component
             'precio_unitario' => $this->precioCalculado,
             'precio_total' => $this->precioTotal,
         ];
-// dd($newQuote);
 
         $this->emit('productAdded', $newQuote);
-
+        $this->emit('addProductNewQuote');
         $this->dispatchBrowserEvent('closeModal');
-
-        $this->emit('updateSubtotal', ['toAdd' => true, 'subtotal' => $newQuote['precio_total']]);
-
         $this->resetData();
     }
     public function resetData()

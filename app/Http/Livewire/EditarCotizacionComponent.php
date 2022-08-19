@@ -68,7 +68,30 @@ class EditarCotizacionComponent extends Component
     }
     public function updateProduct($productUpdate)
     {
-        array_push($this->listUpdateCurrent, $productUpdate);
+        // TODO: revisar si es nuevo o es actualizacion
+        if ($productUpdate['currentQuote_id'] !== "") {
+            // Revisar si se actualizo una actualizacion o es nueva
+            $listUpdate = [];
+            $isNewEdit = false;
+            if (count($this->listUpdateCurrent) <= 0) {
+                $isNewEdit = true;
+            } else {
+                foreach ($this->listUpdateCurrent as $key => $productQuoteEdit) {
+                    if ($productUpdate['currentQuote_id'] == $productQuoteEdit['currentQuote_id']  && $isNewEdit == false) {
+                        $productQuoteEdit = $productUpdate;
+                    } else {
+                        $isNewEdit = true;
+                    }
+                    array_push($listUpdate, $productQuoteEdit);
+                }
+            }
+
+            if ($isNewEdit) {
+                array_push($this->listUpdateCurrent, $productUpdate);
+            } else {
+                $this->listUpdateCurrent = $listUpdate;
+            }
+        }
     }
     public function deleteProducto($productDeleted)
     {
@@ -87,6 +110,10 @@ class EditarCotizacionComponent extends Component
 
     public function guardar()
     {
+        if (count($this->listNewProducts) <= 0 && count($this->listUpdateCurrent) <= 0 && count($this->listDeleteCurrent) <= 0) {
+            dd('Sin Datos');
+            return;
+        }
         // Obtener los productos
         $latestProductos = $this->quote->latestQuotesUpdate->quoteProducts;
 
@@ -108,7 +135,44 @@ class EditarCotizacionComponent extends Component
             }
         }
 
-        // Actualizar las cotizaciones editadas
+        // Actualizar las cotizaciones editadas en la lista
+        $newLatestProducts = [];
+        if (count($this->listUpdateCurrent) > 0) {
+            foreach ($latestProductos as $key => $productQuote) {
+                foreach ($this->listUpdateCurrent as $keyList => $productQuoteEdit) {
+                    if ($productQuote->id == $productQuoteEdit['currentQuote_id']) {
+                        $tecnica = PricesTechnique::find($productQuoteEdit['prices_techniques_id']);
+                        $price_tecnica =  $tecnica->precio;
+                        $material = $tecnica->sizeMaterialTechnique->materialTechnique->material->nombre;
+                        $material_id = $tecnica->sizeMaterialTechnique->materialTechnique->material->id;
+                        $tecnica_nombre = $tecnica->sizeMaterialTechnique->materialTechnique->technique->nombre;
+                        $tecnica_id = $tecnica->sizeMaterialTechnique->materialTechnique->technique->id;
+                        $size = $tecnica->sizeMaterialTechnique->size->nombre;
+                        $size_id = $tecnica->sizeMaterialTechnique->size->id;
+                        $infoTecnica = [
+                            'material_id' => $material_id,
+                            'material' => $material,
+                            'tecnica' => $tecnica_nombre,
+                            'tecnica_id' => $tecnica_id,
+                            'size' => $size,
+                            'size_id' => $size_id,
+                        ];
+                        $productQuote->product = $productQuoteEdit['product'];
+                        $productQuote->technique = json_encode($infoTecnica);
+                        $productQuote->prices_techniques =  $price_tecnica;
+                        $productQuote->color_logos = $productQuoteEdit['color_logos'];
+                        $productQuote->costo_indirecto = $productQuoteEdit['costo_indirecto'];
+                        $productQuote->utilidad = $productQuoteEdit['utilidad'];
+                        $productQuote->dias_entrega = $productQuoteEdit['dias_entrega'];
+                        $productQuote->cantidad = $productQuoteEdit['cantidad'];
+                        $productQuote->precio_unitario = $productQuoteEdit['precio_unitario'];
+                        $productQuote->precio_total = $productQuoteEdit['precio_total'];
+                        unset($this->listUpdateCurrent[$keyList]);
+                    }
+                }
+                array_push($newLatestProducts, $productQuote);
+            }
+        }
 
         // Agregar los productos de la nueva lista que tiene los productos editados y no estan los elimiandos
         foreach ($latestProductos as $productQuote) {
