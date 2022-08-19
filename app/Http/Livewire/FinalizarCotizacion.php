@@ -186,9 +186,8 @@ class FinalizarCotizacion extends Component
             ]
         ]); */
         // dd($response);
-        return;
         // Mail::to($quote->latestQuotesUpdate->quotesInformation->email)->send(new SendQuote(auth()->user()->name, $quote->latestQuotesUpdate->quotesInformation->name, '/storage/quotes/' . $quote->lead . ".pdf"));
-        Mail::to('antoniotd87@gmail.com')->send(new SendQuote(auth()->user()->name, $quote->latestQuotesUpdate->quotesInformation->name, '/storage/quotes/' . $quote->lead . ".pdf"));
+        // Mail::to('antoniotd87@gmail.com')->send(new SendQuote(auth()->user()->name, $quote->latestQuotesUpdate->quotesInformation->name, '/storage/quotes/' . $quote->lead . ".pdf"));
         // Eliminar los datos de la cotizacion actual
         auth()->user()->currentQuote->currentQuoteDetails()->delete();
         auth()->user()->currentQuote()->delete();
