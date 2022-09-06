@@ -10,8 +10,8 @@
                             <label for="">Opciones de Cliente</label>
                             <select name="tipo" class="form-control" wire:model="tipoCliente">
                                 <option value="">Como vas a registrar el cliente</option>
-                                <option value="buscar">Seleccionar Cliente</option>
-                                <option value="crear">Crear Prospecto</option>
+                                <option value="buscar">Seleccionar uno de mis clientes</option>
+                                <option value="crear">Crear un nuevo prospecto</option>
                             </select>
                         </div>
                         @if ($errors->has('tipoCliente'))
@@ -24,11 +24,14 @@
                                 <label for="">Buscar Cliente</label>
                                 <select name="tipo" class="form-control" wire:model="clienteSeleccionado">
                                     <option value="">Seleccionar Cliente</option>
-                                    <option value="cliente1">Cliente 1</option>
-                                    <option value="cliente2">Cliente 1</option>
-                                    <option value="cliente3">Cliente 1</option>
-                                    <option value="cliente4">Cliente 1</option>
-                                    <option value="cliente5">Cliente 1</option>
+                                    @foreach ($userClients as $client)
+                                        <option value="{{ $client->id }}">Seleccionar Cliente</option>
+                                        {{ $client->name . ' | ' . $client->bussiness_name }}
+                                    @endforeach
+                                    @if (count($userClients) < 1)
+                                        <option value="">No tienes clientes asignados, si es un error, reportalo
+                                            con el area de desarrollo</option>
+                                    @endif
                                 </select>
                             </div>
                             @if ($errors->has('clienteSeleccionado'))

@@ -11,7 +11,8 @@ class Quote extends Model
 
     protected $fillable = [
         'user_id',
-        'lead'
+        'lead',
+        // 'client'
     ];
 
     public function quotesUpdate()

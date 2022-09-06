@@ -37,11 +37,13 @@
                                                 </div>
                                             </td>
                                             <td>
-                                                <p class="m-0"><strong>Costo Indirecto:</strong>${{ $quote->costo_indirecto }}</p>
+                                                <p class="m-0"><strong>Costo
+                                                        Indirecto:</strong>${{ $quote->costo_indirecto }}</p>
                                                 <p class="m-0"><strong>Margen de Utilidad:</strong>
                                                     {{ $quote->utilidad }}%
                                                 </p>
-                                                <p class="m-0"><strong>Costo de Impresion:</strong>${{ $quote->prices_techniques_id }}</p>
+                                                <p class="m-0"><strong>Costo de
+                                                        Impresion:</strong>${{ $quote->prices_techniques_id }}</p>
                                                 <p class="m-0"><strong>Colores/Logos:</strong>
                                                     {{ $quote->color_logos }}
                                                 </p>
@@ -142,15 +144,9 @@
                         <label for="">Tipo de Descuento</label>
                         {{ auth()->user()->currentQuote->type }}
                         <select class="form-control" wire:model.lazy="type">
-                            <option value="" {{ auth()->user()->currentQuote->type == '' ? 'selected' : '' }}>
-                                Seleccione...
-                            </option>
-                            <option value="Fijo"
-                                {{ auth()->user()->currentQuote->type == 'Fijo' ? 'selected' : '' }}>Valor Fijo
-                            </option>
-                            <option value="Porcentaje"
-                                {{ auth()->user()->currentQuote->type == 'Porcentaje' ? 'selected' : '' }}>
-                                Porcentaje</option>
+                            <option value="">Seleccione...</option>
+                            <option value="Fijo">Valor Fijo</option>
+                            <option value="Porcentaje">Porcentaje</option>
                         </select>
                     </div>
                     <div class="form-group">
@@ -159,8 +155,14 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn btn-primary" wire:click="addDiscount">Guardar</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Salir</button>
+                    @if (auth()->user()->currentQuote->discount)
+                        <button type="button" class="btn btn-warning" wire:click="addDiscount">Editar</button>
+                        <button type="button" class="btn btn-danger"
+                            wire:click="eliminarDescuento">Eliminar</button>
+                    @else
+                        <button type="button" class="btn btn-primary" wire:click="addDiscount">Guardar</button>
+                    @endif
 
                 </div>
             </div>

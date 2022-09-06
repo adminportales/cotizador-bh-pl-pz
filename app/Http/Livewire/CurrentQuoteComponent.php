@@ -20,6 +20,13 @@ class CurrentQuoteComponent extends Component
     {
         $this->cotizacionActual = auth()->user()->currentQuote->currentQuoteDetails;
         $this->totalQuote = $this->cotizacionActual->sum('precio_total');
+        if (auth()->user()->currentQuote->discount) {
+            $this->value = auth()->user()->currentQuote->value;
+            $this->type = auth()->user()->currentQuote->type;
+        } else {
+            $this->value = 0;
+            $this->type = '';
+        }
     }
 
     public function render()
@@ -57,9 +64,28 @@ class CurrentQuoteComponent extends Component
         }
     }
 
+    public function eliminarDescuento()
+    {
+        auth()->user()->currentQuote->type = '';
+        auth()->user()->currentQuote->value = 0;
+        auth()->user()->currentQuote->discount = false;
+        auth()->user()->currentQuote->save();
+        if (auth()->user()->currentQuote->discount) {
+            $this->value = auth()->user()->currentQuote->value;
+            $this->type = auth()->user()->currentQuote->type;
+        } else {
+            $this->value = 0;
+            $this->type = '';
+        }
+        $this->dispatchBrowserEvent('hide-modal-discount');
+    }
+
     public function eliminar(CurrentQuoteDetails $cqd)
     {
         $cqd->delete();
+        if (count(auth()->user()->currentQuote->currentQuoteDetails) < 1) {
+            auth()->user()->currentQuote->delete();
+        }
     }
     public function resetData()
     {

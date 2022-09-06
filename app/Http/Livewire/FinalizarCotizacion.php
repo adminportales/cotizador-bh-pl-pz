@@ -14,10 +14,11 @@ use Illuminate\Support\Facades\Mail;
 
 class FinalizarCotizacion extends Component
 {
-    public $tipoCliente, $clienteSeleccionado = '', $nombre, $empresa, $email, $telefono, $celular, $oportunidad, $rank = '', $departamento, $informacion;
+    public $tipoCliente, $clienteSeleccionado = '', $isClient, $nombre, $empresa, $email, $telefono, $celular, $oportunidad, $rank = '', $departamento, $informacion;
     public function render()
     {
-        return view('pages.catalogo.finalizar-cotizacion');
+        $userClients = auth()->user()->clients;
+        return view('pages.catalogo.finalizar-cotizacion', compact('userClients'));
     }
     public function guardarCotizacion()
     {
@@ -30,10 +31,12 @@ class FinalizarCotizacion extends Component
                 'nombre' => 'required',
                 'empresa' => 'required',
             ]);
+            $this->isClient = false;
         } else {
             $this->validate([
                 'clienteSeleccionado' => 'required',
             ]);
+            $this->isClient = true;
             $this->nombre = 'Nombre de Oddo';
             $this->empresa = 'Empresa de Oddo';
         }
@@ -49,7 +52,8 @@ class FinalizarCotizacion extends Component
 
         // Guardar La cotizacion
         $quote = auth()->user()->quotes()->create([
-            'lead' => 'No Definido'
+            'lead' => 'No Definido',
+            'client' => $this->isClient,
         ]);
 
         // Guardar la Info de la cotizacion
