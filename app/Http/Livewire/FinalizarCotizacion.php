@@ -197,9 +197,8 @@ class FinalizarCotizacion extends Component
         // return;
         // Mail::to($quote->latestQuotesUpdate->quotesInformation->email)->send(new SendQuote(auth()->user()->name, $quote->latestQuotesUpdate->quotesInformation->name, '/storage/quotes/' . $quote->lead . ".pdf"));
 
-        Mail::to('antoniotd87@gmail.com')->send(new SendQuote(auth()->user()->name, $quote->latestQuotesUpdate->quotesInformation->name, '/storage/quotes/' . $quote->lead . ".pdf"));
-        Mail::mailer(env('MAIL_MAILER_ALT', 'smtpalt'))->to('antoniotd87@gmail.com')->send(new SendQuote(auth()->user()->name, $quote->latestQuotesUpdate->quotesInformation->name, '/storage/quotes/' . $quote->lead . ".pdf"));
-        return;
+        Mail::to('adminportales@promolife.com.mx')->send(new SendQuote(auth()->user()->name, $quote->latestQuotesUpdate->quotesInformation->name, '/storage/quotes/' . $quote->lead . ".pdf"));
+        Mail::mailer(env('MAIL_MAILER_ALT', 'smtpalt'))->to('adminportales@promolife.com.mx')->send(new SendQuote(auth()->user()->name, $quote->latestQuotesUpdate->quotesInformation->name, '/storage/quotes/' . $quote->lead . ".pdf"));
         // Eliminar los datos de la cotizacion actual
         auth()->user()->currentQuote->currentQuoteDetails()->delete();
         auth()->user()->currentQuote()->delete();
