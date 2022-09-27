@@ -30,16 +30,24 @@
         <table style="magin-bottom: 0mm; position: absolute; bottom: 27mm; z-index: 10; width: 100%;">
             <tr>
                 <td>
-                    <img src="quotesheet/pl/fondo-azul-inferior.png" />
+                    <div>
+                        <img src="quotesheet/pl/fondo-azul-inferior.png" />
+                        <div class="url"style="font-size: 15px; color:#fff ;">
+                            <b>www.promolife.com.mx</b>
+                        </div>
+                    </div>
                 </td>
             </tr>
         </table>
 
-        <table style="magin-bottom: 0mm; position: absolute; bottom: 60px; z-index:100;" class="content">
+        <table style="magin-bottom: 0mm; position: absolute; bottom:70px; z-index:100;" class="content">
             <tr>
                 <td>
-                    <p style="font-size: 12px; color:#0b216e ;">San Andr&#233;s
-                        Atoto 155, San Est&#233;ban, Naucalpan, Edo. Méx. C.P. 53550 <br></p>
+                    <p style="font-size: 12px; color:#0b216e ;">
+                        <span style="top: -15px; left: 38px;">
+                            San Andr&#233;s Atoto 155, San Est&#233;ban, Naucalpan, Edo. Méx. C.P. 53550 <br>
+                    </p>
+                    </span>
                     <p style="font-size: 12px; color:#0b216e ;"> Tel. +52(55) 62690017 </p>
                 </td>
             </tr>
@@ -86,10 +94,18 @@
                     @php
                         $producto = json_decode($item->product);
                         $tecnica = json_decode($item->technique);
+
                     @endphp
                     <tr>
 
-                        <td colspan="1">Imagen</td>
+                        <td rowspan="1">
+                            @if ($producto->image)
+                                <img src="{{ $producto->image }}" width="40">
+                            @else
+                                <img src="img/default.jpg" width="40">
+                            @endif
+
+                        </td>
                         <td colspan="2">{{ $producto->description }}</td>
                         <td colspan="1">{{ $tecnica->tecnica }}</td>
                         <td colspan="1">{{ $item->color_logos }}</td>
@@ -152,11 +168,12 @@
         </ul>
     </div>
     <div>
-        <div class="firma content" style="text-align: left">
+        <div class="firma content" style="text-align: center">
             <p>Firma Digital</p>
             <p class="linea">__________________________</p>
         </div>
-        <table class="content responsable" style="width: 100%">
+        <br>
+        <table class="content responsable" style="width: 105%","text-align: center">
             <tr>
                 <td><img src="quotesheet/bh/icon-email.png"alt="">{Responsable}
                     <b>GERENTE COMERCIAL</b>

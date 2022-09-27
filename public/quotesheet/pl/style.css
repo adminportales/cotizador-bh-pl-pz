@@ -40,8 +40,17 @@ footer {
     height: 60px;
 }
 
+.url {
+    position: absolute;
+    top: 110%;
+    left: 45%;
+    transform: translate(50%, 50%);
+}
+
 .content {
     padding: 0px 35px;
+    margin-left: -5;
+    margin-top: 0px;
 }
 
 .head {
@@ -66,18 +75,21 @@ footer {
     text-align: left;
     text-transform: uppercase;
 }
+
 .titulo2 {
     font-weight: bold;
     font-size: 15px;
     text-align: center;
     text-transform: uppercase;
 }
+
 .company {
     text-align: left;
     color: #0e4840;
     font-size: 25px;
     font-weight: normal;
 }
+
 .cliente {
     width: 100%;
     font-size: 18px;
@@ -88,7 +100,7 @@ footer {
 
 .head-products {
     margin-bottom: -65px;
-    background-color:  #1485cc ;
+    background-color: #1485cc;
     width: 100%;
     height: 45px;
     font-weight: lighter;
@@ -98,7 +110,7 @@ footer {
 
 .titulos {
     width: 100%;
-    background-color:  #1485cc ;
+    background-color: #1485cc;
     color: white;
     font-size: 12px;
 }
@@ -112,7 +124,7 @@ footer {
 }
 
 .productos-body tbody tr {
-    border-bottom: 1pt solid  #1485cc ;
+    border-bottom: 1pt solid #1485cc;
 }
 
 .productos-body td,
@@ -140,20 +152,27 @@ footer {
     font-size: 15px;
     font-weight: bold;
 }
-.responsable{
+
+.responsable {
     font-size: 15px;
 }
-.responsable img{
+
+.responsable img {
     height: 25px;
     margin-right: 7px;
     width: auto;
+    display: flex;
 }
-.responsable p{
+
+.responsable p {
     padding: 0;
+    display: flex;
 }
-.pagenum::after{
+
+.pagenum::after {
     content: counter(page);
 }
-.pagetot::after{
+
+.pagetot::after {
     content: counter(pages);
 }

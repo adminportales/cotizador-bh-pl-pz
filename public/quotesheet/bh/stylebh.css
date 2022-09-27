@@ -84,8 +84,9 @@ footer {
 }
 
 .logo {
-    width: auto;
-    height: 35px;
+    width: 120px;
+    height: 100px;
+    margin-right: 60px;
 }
 
 .company-name {
@@ -151,9 +152,11 @@ footer {
     font-size: 20px;
     padding: 20px 15px 0px 15px;
 }
-.pagenum::after{
+
+.pagenum::after {
     content: counter(page);
 }
-.pagetot::after{
+
+.pagetot::after {
     content: counter(pages);
 }
