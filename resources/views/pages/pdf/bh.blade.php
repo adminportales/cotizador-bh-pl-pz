@@ -92,8 +92,13 @@
                         $tecnica = json_decode($item->technique);
                     @endphp
                     <tr>
+                        <td rowspan="1">
+                            @if ($producto->image)
+                                <img src="{{ $producto->image }}" width="40">
+                            @else
+                                <img src="img/default.jpg" width="40">
+                            @endif
 
-                        <td colspan="0">Imagen</td>
                         <td colspan="0">{{ $producto->description }}</td>
                         <td colspan="1">{{ $tecnica->tecnica }}</td>
                         <td colspan="1">{{ $item->color_logos }}</td>

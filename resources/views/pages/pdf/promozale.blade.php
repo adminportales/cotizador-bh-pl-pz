@@ -86,7 +86,13 @@
                     @endphp
                     <tr>
 
-                        <td colspan="1">Imagen</td>
+                        <td rowspan="1">
+                            @if ($producto->image)
+                                <img src="{{ $producto->image }}" width="40">
+                            @else
+                                <img src="img/default.jpg" width="40">
+                            @endif
+
                         <td colspan="2">{{ $producto->description }}</td>
                         <td colspan="1">{{ $tecnica->tecnica }}</td>
                         <td colspan="1">{{ $item->color_logos }}</td>
