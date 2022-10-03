@@ -84,40 +84,40 @@ class VerCotizacionComponent extends Component
         $pdf->setPaper('Letter', 'portrait');
         $pdf = $pdf->stream($this->quote->lead . ".pdf");
         file_put_contents(public_path() . "/storage/quotes/" . time() . $this->quote->lead . ".pdf", $pdf);
-
-
         try {
             $url = 'https://api-promolife.vde-suite.com:5030/custom/Promolife/V2/crm-lead/create';
             $data =  [
                 'Opportunities' => [
-                    'Name' => $this->quote->latestQuotesUpdate->quotesInformation->oportunity,
-                    'Partner' => [
-                        'Name' => $this->quote->latestQuotesUpdate->quotesInformation->company,
-                        'Email' => $this->quote->latestQuotesUpdate->quotesInformation->email,
-                        'Phone' => $this->quote->latestQuotesUpdate->quotesInformation->cell_phone,
-                        'Contact' => $this->quote->latestQuotesUpdate->quotesInformation->name,
-                    ],
-                    "Estimated" => (floatval($this->quote->latestQuotesUpdate->quoteProducts()->sum('precio_total'))),
-                    "Rating" => 1,
-                    "UserID" => 12,
-                    "File" => [
-                        'Name' => 'Lead',
-                        'Data' => base64_encode($pdf),
+                    [
+                        "CodeLead"=>"",
+                        'Name' => $this->quote->latestQuotesUpdate->quotesInformation->oportunity,
+                        'Partner' => [
+                            'Name' => $this->quote->latestQuotesUpdate->quotesInformation->company,
+                            'Email' => $this->quote->latestQuotesUpdate->quotesInformation->email,
+                            'Phone' => $this->quote->latestQuotesUpdate->quotesInformation->cell_phone,
+                            'Contact' => $this->quote->latestQuotesUpdate->quotesInformation->name,
+                        ],
+                        "Estimated" => (floatval($this->quote->latestQuotesUpdate->quoteProducts()->sum('precio_total'))),
+                        "Rating" => 1,
+                        "UserID" => 12,
+                        "File" => [
+                            'Name' => 'Lead',
+                            'Data' => base64_encode($pdf),
+                        ]
                     ]
                 ]
             ];
-            dd(json_encode($data));
+
             $curl = curl_init($url);
             curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
             curl_setopt($curl, CURLOPT_POST, true);
-            curl_setopt($curl, CURLOPT_POSTFIELDS,  http_build_query($data));
+            curl_setopt($curl, CURLOPT_POSTFIELDS,  json_encode($data));
             curl_setopt($curl, CURLOPT_HTTPHEADER, [
                 'Content-Type: application/json',
                 'X-VDE-APIKEY: cd78567e59e016e964cdcc1bd99367c6',
                 'X-VDE-TYPE: Ambos',
             ]);
             $response = curl_exec($curl);
-            dd(1, $response);
         } catch (Exception $exception) {
             dd(1, $exception->getMessage());
         }
