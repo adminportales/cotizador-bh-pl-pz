@@ -16,7 +16,7 @@ class FormularioDeCotizacionMinComponent extends Component
 
     public $precio, $precioCalculado, $precioTotal = 0;
 
-    public $tecnica = 0, $colores = 0, $operacion = 0, $utilidad = 0, $entrega = 0, $cantidad = 0, $priceTechnique;
+    public $tecnica = null, $colores = null, $operacion = null, $utilidad = null, $entrega = null, $cantidad = null, $priceTechnique;
 
     public $materialSeleccionado;
     public $tecnicaSeleccionada;
@@ -114,13 +114,13 @@ class FormularioDeCotizacionMinComponent extends Component
 
         // Calculo de Precio
         if (!is_numeric($this->colores))
-            $this->colores = 0;
+            $this->colores = null;
         if (!is_numeric($this->operacion))
-            $this->operacion = 0;
+            $this->operacion = null;
         if (!is_numeric($this->cantidad))
-            $this->cantidad = 0;
+            $this->cantidad = null;
         if (!is_numeric($this->utilidad))
-            $this->utilidad = 0;
+            $this->utilidad = null;
         $nuevoPrecio = round(($this->precio + ($precioDeTecnica * $this->colores) + $this->operacion) / ((100 - $this->utilidad) / 100), 2);
 
         $this->precioCalculado = $nuevoPrecio;

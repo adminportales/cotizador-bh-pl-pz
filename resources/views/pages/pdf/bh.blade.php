@@ -73,8 +73,8 @@
         <table class="content productos-body">
             <thead>
                 <tr class="titulos">
-                    <th colspan="1">Imagen</th>
-                    <th colspan="2">Descripción</th>
+                    <th colspan="0">Imagen</th>
+                    <th colspan="0">Descripción</th>
                     <th colspan="1">Personalización</th>
                     <th colspan="1">Tintas</th>
                     <th colspan="1">Cantidad</th>
@@ -92,9 +92,14 @@
                         $tecnica = json_decode($item->technique);
                     @endphp
                     <tr>
+                        <td rowspan="1">
+                            @if ($producto->image)
+                                <img src="{{ $producto->image }}" width="40">
+                            @else
+                                <img src="img/default.jpg" width="40">
+                            @endif
 
-                        <td colspan="1">Imagen</td>
-                        <td colspan="2">{{ $producto->description }}</td>
+                        <td colspan="0">{{ $producto->description }}</td>
                         <td colspan="1">{{ $tecnica->tecnica }}</td>
                         <td colspan="1">{{ $item->color_logos }}</td>
                         <td colspan="1">{{ $item->cantidad }}</td>
@@ -148,8 +153,9 @@
             <p>{{ auth()->user()->name }}</p>
         </div>
     </div>
-
+    <br>
     <div class="content condiciones">
+        <br><br>
         <p> Condiciones:</p>
         <ul>
             <li>Condiciones de pago {plazos de pago}</li>

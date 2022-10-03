@@ -20,7 +20,8 @@
         </table>
     </header>
     <footer>
-        <table style="magin-bottom: 0mm; position: absolute; bottom: 22mm; z-index: 10; width: 100%;">
+        <table
+            style="magin-bottom: 0mm; position: absolute; bottom: 22mm; z-index: 20; width: 100%; margin-left: -10px;">
             <tr>
                 <td>
                     <img src="quotesheet/pz/fondo-azul-inferior.png" />
@@ -85,7 +86,13 @@
                     @endphp
                     <tr>
 
-                        <td colspan="1">Imagen</td>
+                        <td rowspan="1">
+                            @if ($producto->image)
+                                <img src="{{ $producto->image }}" width="40">
+                            @else
+                                <img src="img/default.jpg" width="40">
+                            @endif
+
                         <td colspan="2">{{ $producto->description }}</td>
                         <td colspan="1">{{ $tecnica->tecnica }}</td>
                         <td colspan="1">{{ $item->color_logos }}</td>
@@ -145,8 +152,8 @@
                 previo aviso. Solo se bloquea el inventario al recibir Orden de Compra</li>
         </ul>
     </div>
-    <div style="text-align:center;">
-        <table class="content">
+    <div style="text-align: center;">
+        <table class="content" style="width: 100%">
             <tr>
                 <td style="text-align: right"><img src="quotesheet/bh/icon-email.png"alt=""> </td>
                 <td>{Responsable} <b>GERENTE COMERCIAL</b></td>
@@ -169,6 +176,7 @@
         <div class="firma content" style="text-align: right">
             <p style="height: 45px"></p>
             <p class="linea">__________________________</p>
+            <p style>Firma Digital</p>
         </div>
     </div>
 </body>

@@ -210,7 +210,6 @@
                                 </button>
                             </div>
                             <div class="modal-body">
-                                {{ $quote->latestQuotesUpdate->quoteDiscount }}
                                 <div class="form-group">
                                     <label for="">Tipo de Descuento</label>
                                     <select class="form-control" wire:model.lazy="type">
