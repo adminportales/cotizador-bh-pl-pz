@@ -44,6 +44,16 @@ return [
             'timeout' => null,
             'auth_mode' => null,
         ],
+        'smtpalt' => [
+            'transport' => 'smtp',
+            'host' => env('MAIL_HOST_ALT', 'smtp.mailgun.org'),
+            'port' => env('MAIL_PORT_ALT', 587),
+            'encryption' => env('MAIL_ENCRYPTION_ALT', 'tls'),
+            'username' => env('MAIL_USERNAME_ALT'),
+            'password' => env('MAIL_PASSWORD_ALT'),
+            'timeout' => null,
+            'auth_mode' => null,
+        ],
 
         'ses' => [
             'transport' => 'ses',
@@ -108,7 +118,7 @@ return [
     */
 
     'markdown' => [
-        'theme' => 'default',
+        'theme' => 'pl',
 
         'paths' => [
             resource_path('views/vendor/mail'),
