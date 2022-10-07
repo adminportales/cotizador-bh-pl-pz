@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateUserInformationOdoosTable extends Migration
+class CreateClientesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,16 @@ class CreateUserInformationOdoosTable extends Migration
      */
     public function up()
     {
-        Schema::create('user_information_odoos', function (Blueprint $table) {
+        Schema::create('clientes', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained();
-            $table->string('odoo_id');
-            $table->string('company_id');
+            $table->string('client_odoo_id');
+            $table->string('name');
+            $table->string('company');
+            $table->string('business_name');
+            $table->string('email');
+            $table->string('telefono');
+            $table->string('celular')->nullable();
             $table->timestamps();
         });
     }
@@ -29,6 +34,6 @@ class CreateUserInformationOdoosTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('user_information_odoos');
+        Schema::dropIfExists('clientes');
     }
 }

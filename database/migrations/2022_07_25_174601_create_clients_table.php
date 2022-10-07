@@ -15,12 +15,7 @@ class CreateClientsTable extends Migration
     {
         Schema::create('clients', function (Blueprint $table) {
             $table->id();
-            $table->integer('user_id')->nullable();
-            $table->string('client_odoo_id');
-            $table->string('name');
-            $table->string('contact');
-            $table->string('email');
-            $table->string('phone');
+            $table->foreignId('user_id')->constrained();
             $table->timestamps();
         });
     }
