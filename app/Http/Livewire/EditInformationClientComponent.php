@@ -87,7 +87,6 @@ class EditInformationClientComponent extends Component
                 "precio_total" => $product->precio_total,
             ]);
         }
-
         $this->emit('updateQuoteInfo', $quoteInfo);
         $this->dispatchBrowserEvent('showModalInfoClient');
     }

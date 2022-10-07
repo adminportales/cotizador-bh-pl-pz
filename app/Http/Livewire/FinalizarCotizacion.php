@@ -51,7 +51,18 @@ class FinalizarCotizacion extends Component
             'oportunidad' => 'required',
             'rank' => 'required',
         ]);
-
+        $odoo_id_user = null;
+        if (auth()->user()->info) {
+            $odoo_id_user = auth()->user()->info->odoo_id;
+        }
+        if ($odoo_id_user == null) {
+            dd("No tienes un id de Odoo Asignado");
+            return;
+        }
+        if ((int)$odoo_id_user <= 0) {
+            dd("El id de odoo no es valido");
+            return;
+        }
         // Guardar La cotizacion
         $quote = auth()->user()->quotes()->create([
             'lead' => 'No Definido',
@@ -182,7 +193,7 @@ class FinalizarCotizacion extends Component
                         ],
                         "Estimated" => floatval($quoteUpdate->quoteProducts()->sum('precio_total')),
                         "Rating" => (int) $this->rank,
-                        "UserID" => 5324312,
+                        "UserID" =>(int) auth()->user()->info->odoo_id,
                         "File" => [
                             'Name' => $this->oportunidad,
                             'Data' => base64_encode($pdf),

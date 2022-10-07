@@ -181,35 +181,35 @@
                                             </div>
                                             <br>
                                         </div>
+                                    </div>
                                 @endforeach
+                            @else
+                                <div class="card-header" id="sinModificacionesCollapse">
+                                    <h2 class="mb-0">
+                                        <button class="btn btn-link btn-block text-left collapsed" type="button"
+                                            data-toggle="collapse" data-target="#collapsesinModificacionesCollapse"
+                                            aria-expanded="false" aria-controls="collapsesinModificacionesCollapse">
+                                            Sin Modificaciones
+                                        </button>
+                                    </h2>
+                                </div>
+                                <div id="collapsesinModificacionesCollapse" class="collapse"
+                                    aria-labelledby="sinModificacionesCollapse" data-parent="#accordionExample">
+                                    <div class="card-body">
+                                        <p>No hay modificaciones</p>
+                                    </div>
+                                </div>
+                            @endif
                         </div>
-                    @else
-                        <div class="card-header" id="sinModificacionesCollapse">
-                            <h2 class="mb-0">
-                                <button class="btn btn-link btn-block text-left collapsed" type="button"
-                                    data-toggle="collapse" data-target="#collapsesinModificacionesCollapse"
-                                    aria-expanded="false" aria-controls="collapsesinModificacionesCollapse">
-                                    Sin Modificaciones
-                                </button>
-                            </h2>
-                        </div>
-                        <div id="collapsesinModificacionesCollapse" class="collapse"
-                            aria-labelledby="sinModificacionesCollapse" data-parent="#accordionExample">
-                            <div class="card-body">
-                                <p>No hay modificaciones</p>
-                            </div>
-                        </div>
-                        @endif
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 
-<script>
-    window.addEventListener('showModalInfoClient', event => {
-        $('#editarInfoCliente').modal('hide')
-    })
-</script>
+    <script>
+        window.addEventListener('showModalInfoClient', event => {
+            $('#editarInfoCliente').modal('hide')
+        })
+    </script>
 </div>

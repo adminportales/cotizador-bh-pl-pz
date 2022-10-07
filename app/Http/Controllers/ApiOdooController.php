@@ -40,7 +40,7 @@ class ApiOdooController extends Controller
                                     $userCreated =  User::create([
                                         'name' => $dataUser['display_name'],
                                         'email' => $dataUser['login'],
-                                        'password' => Hash::make(Str::random(8)),
+                                        'password' => Hash::make(12345678),
                                         'company_id' => null,
                                     ]);
                                     $userCreated->info()->create([
@@ -58,7 +58,7 @@ class ApiOdooController extends Controller
                                             'odoo_id' => $dataUser['id'],
                                             'company_id' => $dataUser['company_id'],
                                         ]);
-                                    }else{
+                                    } else {
                                         $user->info()->update([
                                             'odoo_id' => $dataUser['id'],
                                             'company_id' => $dataUser['company_id'],

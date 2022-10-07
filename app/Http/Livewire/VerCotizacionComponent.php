@@ -23,6 +23,8 @@ class VerCotizacionComponent extends Component
 
     public function enviar()
     {
+        $errors = false;
+        $message = '';
         $pdf = '';
         switch (auth()->user()->company->name) {
             case 'PROMO LIFE':
@@ -45,8 +47,18 @@ class VerCotizacionComponent extends Component
         // $pdf = PDF::loadView('pages.pdf.promolife', ['quote' => $this->quote]);
         $pdf->setPaper('Letter', 'portrait');
         $pdf = $pdf->stream($this->quote->lead . ".pdf");
-        file_put_contents(public_path() . "/storage/quotes/" . $this->quote->lead . ".pdf", $pdf);
-        Mail::to($this->quote->latestQuotesUpdate->quotesInformation->email)->send(new SendQuote(auth()->user()->name, $this->quote->latestQuotesUpdate->quotesInformation->name, '/storage/quotes/' . $this->quote->lead . ".pdf"));
+        $path =  "/storage/quotes/" . time() . $this->quote->lead . ".pdf";
+        file_put_contents(public_path() . $path, $pdf);
+        try {
+            Mail::to($this->quote->latestQuotesUpdate->quotesInformation->email)->send(new SendQuote(auth()->user()->name, $this->quote->latestQuotesUpdate->quotesInformation->name, $path));
+            unlink(public_path() . $path);
+        } catch (Exception $exception) {
+            $errors = true;
+            $message = $exception->getMessage();
+        }
+        if ($errors) {
+            dd($message);
+        }
         // Mail::to('antoniotd87@gmail.com')->send(new SendQuote(auth()->user()->name, $this->quote->latestQuotesUpdate->quotesInformation->name, '/storage/quotes/' . $this->quote->lead . ".pdf"));
         dd('Enviado');
     }
@@ -62,18 +74,34 @@ class VerCotizacionComponent extends Component
     }
     public function enviarOdoo()
     {
+        $odoo_id_user = null;
+        if (auth()->user()->info) {
+            $odoo_id_user = auth()->user()->info->odoo_id;
+        }
+        if ($odoo_id_user == null) {
+            dd("No tienes un id de Odoo Asignado");
+            return;
+        }
+        if ((int)$odoo_id_user <= 0) {
+            dd("El id de odoo no es valido");
+            return;
+        }
+
         $pdf = '';
+        $keyOdoo = '';
+        $errors = false;
+        $message = '';
         switch (auth()->user()->company->name) {
             case 'PROMO LIFE':
-                # code...
+                $keyOdoo = 'cd78567e59e016e964cdcc1bd99367c6';
                 $pdf = PDF::loadView('pages.pdf.promolife', ['quote' => $this->quote]);
                 break;
             case 'BH TRADEMARKET':
-                # code...
+                $keyOdoo = 'e877f47a2a844ded99004e444c5a9797';
                 $pdf = PDF::loadView('pages.pdf.bh', ['quote' => $this->quote]);
                 break;
             case 'PROMO ZALE':
-                # code...
+                $keyOdoo = '0e31683a8597606123ff4fcfab772ed7';
                 $pdf = PDF::loadView('pages.pdf.promozale', ['quote' => $this->quote]);
                 break;
 
@@ -100,7 +128,7 @@ class VerCotizacionComponent extends Component
                         ],
                         "Estimated" => (floatval($this->quote->latestQuotesUpdate->quoteProducts()->sum('precio_total'))),
                         "Rating" => (int) $this->quote->latestQuotesUpdate->quotesInformation->rank,
-                        "UserID" => 12,
+                        "UserID" => (int) auth()->user()->info->odoo_id,
                         "File" => [
                             'Name' => $this->quote->latestQuotesUpdate->quotesInformation->oportunity,
                             'Data' => base64_encode($pdf),
@@ -115,14 +143,39 @@ class VerCotizacionComponent extends Component
             curl_setopt($curl, CURLOPT_POSTFIELDS,  json_encode($data));
             curl_setopt($curl, CURLOPT_HTTPHEADER, [
                 'Content-Type: application/json',
-                'X-VDE-APIKEY: cd78567e59e016e964cdcc1bd99367c6',
+                'X-VDE-APIKEY: ' . $keyOdoo,
                 'X-VDE-TYPE: Ambos',
             ]);
             $response = curl_exec($curl);
-            unlink(public_path() . $path);
-            dd($response);
+            if ($response !== false) {
+                $dataResponse = json_decode($response);
+                if ($dataResponse->message) {
+                    if ($dataResponse->message == 'Internal Server Error') {
+                        $message = 'Error en servidor de Odoo';
+                        $errors = true;
+                        return;
+                    }
+                };
+                if ($dataResponse->success) {
+                    $listElementsOpportunities = $dataResponse->listElementsOpportunities;
+                    if ($listElementsOpportunities[0]->success) {
+                        unlink(public_path() . $path);
+                        dd('ENVIADo');
+                    } else {
+                        $errors = true;
+                        $message = $listElementsOpportunities[0]->message;
+                    }
+                }
+            } else {
+                $errors = true;
+                $message = "Error al enviar la cotizacion a odoo";
+            }
         } catch (Exception $exception) {
-            dd(1, $exception->getMessage());
+            $errors = true;
+            $message = "Error al enviar la cotizacion a odoo";
+        }
+        if ($errors) {
+            dd($message);
         }
     }
 }
