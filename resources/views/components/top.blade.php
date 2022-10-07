@@ -17,70 +17,23 @@
               <li class="menu single-menu active">
                   <a href="{{ route('catalogo') }}" class="dropdown-toggle autodroprown">
                       <div class="">
-                          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                              class="feather feather-home">
-                              <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
-                              <polyline points="9 22 9 12 15 12 15 22"></polyline>
-                          </svg>
                           <span>Catalogo </span>
                       </div>
-                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                          class="feather feather-chevron-down">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                          fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                          stroke-linejoin="round" class="feather feather-chevron-down">
                           <polyline points="6 9 12 15 18 9"></polyline>
                       </svg>
                   </a>
               </li>
-
-              {{-- <li class="menu single-menu">
-                  <a href="{{ route('catalogo') }}" aria-expanded="false" class="dropdown-toggle">
-                      <div class="">
-                          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                              class="feather feather-cpu">
-                              <rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect>
-                              <rect x="9" y="9" width="6" height="6"></rect>
-                              <line x1="9" y1="1" x2="9" y2="4"></line>
-                              <line x1="15" y1="1" x2="15" y2="4"></line>
-                              <line x1="9" y1="20" x2="9" y2="23"></line>
-                              <line x1="15" y1="20" x2="15" y2="23"></line>
-                              <line x1="20" y1="9" x2="23" y2="9"></line>
-                              <line x1="20" y1="14" x2="23" y2="14"></line>
-                              <line x1="1" y1="9" x2="4" y2="9"></line>
-                              <line x1="1" y1="14" x2="4" y2="14"></line>
-                          </svg>
-                          <span>Catalogo</span>
-                      </div>
-                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                          class="feather feather-chevron-down">
-                          <polyline points="6 9 12 15 18 9"></polyline>
-                      </svg>
-                  </a>
-              </li> --}}
               <li class="menu single-menu">
                   <a href="{{ route('cotizacion') }}" aria-expanded="false" class="dropdown-toggle">
                       <div class="">
-                          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                              class="feather feather-cpu">
-                              <rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect>
-                              <rect x="9" y="9" width="6" height="6"></rect>
-                              <line x1="9" y1="1" x2="9" y2="4"></line>
-                              <line x1="15" y1="1" x2="15" y2="4"></line>
-                              <line x1="9" y1="20" x2="9" y2="23"></line>
-                              <line x1="15" y1="20" x2="15" y2="23"></line>
-                              <line x1="20" y1="9" x2="23" y2="9"></line>
-                              <line x1="20" y1="14" x2="23" y2="14"></line>
-                              <line x1="1" y1="9" x2="4" y2="9"></line>
-                              <line x1="1" y1="14" x2="4" y2="14"></line>
-                          </svg>
                           <span>Cotizacion</span>
                       </div>
-                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                          class="feather feather-chevron-down">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                          fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                          stroke-linejoin="round" class="feather feather-chevron-down">
                           <polyline points="6 9 12 15 18 9"></polyline>
                       </svg>
                   </a>
@@ -88,25 +41,11 @@
               <li class="menu single-menu">
                   <a href="{{ route('cotizaciones') }}" aria-expanded="false" class="dropdown-toggle">
                       <div class="">
-                          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                              class="feather feather-cpu">
-                              <rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect>
-                              <rect x="9" y="9" width="6" height="6"></rect>
-                              <line x1="9" y1="1" x2="9" y2="4"></line>
-                              <line x1="15" y1="1" x2="15" y2="4"></line>
-                              <line x1="9" y1="20" x2="9" y2="23"></line>
-                              <line x1="15" y1="20" x2="15" y2="23"></line>
-                              <line x1="20" y1="9" x2="23" y2="9"></line>
-                              <line x1="20" y1="14" x2="23" y2="14"></line>
-                              <line x1="1" y1="9" x2="4" y2="9"></line>
-                              <line x1="1" y1="14" x2="4" y2="14"></line>
-                          </svg>
                           <span>Mis Cotizaciones</span>
                       </div>
-                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                          class="feather feather-chevron-down">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                          fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                          stroke-linejoin="round" class="feather feather-chevron-down">
                           <polyline points="6 9 12 15 18 9"></polyline>
                       </svg>
                   </a>
@@ -114,18 +53,25 @@
 
               @role('admin')
                   <li class="menu single-menu">
+                      <a href="{{ route('all.cotizacion') }}" aria-expanded="false" class="dropdown-toggle">
+                          <div class="">
+                              <span>Cotizaciones</span>
+                          </div>
+                          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                              fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                              stroke-linejoin="round" class="feather feather-chevron-down">
+                              <polyline points="6 9 12 15 18 9"></polyline>
+                          </svg>
+                      </a>
+                  </li>
+                  <li class="menu single-menu">
                       <a href="#uiKit" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
                           <div class="">
-                              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                                  class="feather feather-zap">
-                                  <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
-                              </svg>
                               <span>Conf. Tecnicas</span>
                           </div>
-                          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                              class="feather feather-chevron-down">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                              fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                              stroke-linejoin="round" class="feather feather-chevron-down">
                               <polyline points="6 9 12 15 18 9"></polyline>
                           </svg>
                       </a>
@@ -140,6 +86,30 @@
                               <a href="{{ url('/prices') }}"> Precios </a>
                           </li>
                       </ul>
+                  </li>
+                  <li class="menu single-menu">
+                      <a href="{{ url('/users') }}" aria-expanded="false" class="dropdown-toggle">
+                          <div class="">
+                              <span>Usuarios</span>
+                          </div>
+                          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                              fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                              stroke-linejoin="round" class="feather feather-chevron-down">
+                              <polyline points="6 9 12 15 18 9"></polyline>
+                          </svg>
+                      </a>
+                  </li>
+                  <li class="menu single-menu">
+                      <a href="{{  url('/clients') }}" aria-expanded="false" class="dropdown-toggle">
+                          <div class="">
+                              <span>Clientes</span>
+                          </div>
+                          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                              fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                              stroke-linejoin="round" class="feather feather-chevron-down">
+                              <polyline points="6 9 12 15 18 9"></polyline>
+                          </svg>
+                      </a>
                   </li>
               @endrole
           </ul>

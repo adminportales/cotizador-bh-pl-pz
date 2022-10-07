@@ -83,13 +83,14 @@ class VerCotizacionComponent extends Component
         }
         $pdf->setPaper('Letter', 'portrait');
         $pdf = $pdf->stream($this->quote->lead . ".pdf");
-        file_put_contents(public_path() . "/storage/quotes/" . time() . $this->quote->lead . ".pdf", $pdf);
+        $path = "/storage/quotes/" . time() . $this->quote->lead . ".pdf";
+        file_put_contents(public_path() . $path, $pdf);
         try {
             $url = 'https://api-promolife.vde-suite.com:5030/custom/Promolife/V2/crm-lead/create';
             $data =  [
                 'Opportunities' => [
                     [
-                        "CodeLead"=>"",
+                        "CodeLead" => $this->quote->lead,
                         'Name' => $this->quote->latestQuotesUpdate->quotesInformation->oportunity,
                         'Partner' => [
                             'Name' => $this->quote->latestQuotesUpdate->quotesInformation->company,
@@ -98,10 +99,10 @@ class VerCotizacionComponent extends Component
                             'Contact' => $this->quote->latestQuotesUpdate->quotesInformation->name,
                         ],
                         "Estimated" => (floatval($this->quote->latestQuotesUpdate->quoteProducts()->sum('precio_total'))),
-                        "Rating" => 1,
+                        "Rating" => (int) $this->quote->latestQuotesUpdate->quotesInformation->rank,
                         "UserID" => 12,
                         "File" => [
-                            'Name' => 'Lead',
+                            'Name' => $this->quote->latestQuotesUpdate->quotesInformation->oportunity,
                             'Data' => base64_encode($pdf),
                         ]
                     ]
@@ -118,9 +119,10 @@ class VerCotizacionComponent extends Component
                 'X-VDE-TYPE: Ambos',
             ]);
             $response = curl_exec($curl);
+            unlink(public_path() . $path);
+            dd($response);
         } catch (Exception $exception) {
             dd(1, $exception->getMessage());
         }
-        return;
     }
 }

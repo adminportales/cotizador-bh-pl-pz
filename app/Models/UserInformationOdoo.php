@@ -8,4 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class UserInformationOdoo extends Model
 {
     use HasFactory;
+
+    protected $fillable = ['user_id', 'odoo_id', 'company_id'];
 }

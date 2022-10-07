@@ -62,4 +62,8 @@ class User extends Authenticatable
     {
         return $this->hasMany(Client::class);
     }
+    public function info()
+    {
+        return $this->hasOne(UserInformationOdoo::class);
+    }
 }

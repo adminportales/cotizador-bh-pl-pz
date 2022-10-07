@@ -70,14 +70,16 @@
                             </div>
 
                             <div class="col-md-6">
-                                <h5><strong>Categorias</strong></h5>
-                                <p><strong>Familia:</strong>
-                                    {{ $product->productCategories[0]->category->family }}
-                                </p>
-                                <p><strong>Sub
-                                        Familia:</strong>
-                                    {{ $product->productCategories[0]->subcategory->subfamily }}
-                                </p>
+                                @if (count($product->productCategories) > 0)
+                                    <h5><strong>Categorias</strong></h5>
+                                    <p><strong>Familia:</strong>
+                                        {{ $product->productCategories[0]->category->family }}
+                                    </p>
+                                    <p><strong>Sub
+                                            Familia:</strong>
+                                        {{ $product->productCategories[0]->subcategory->subfamily }}
+                                    </p>
+                                @endif
                                 @if (count($product->productAttributes) > 0)
                                     <h5><strong>Otros Atributos</strong></h5>
 

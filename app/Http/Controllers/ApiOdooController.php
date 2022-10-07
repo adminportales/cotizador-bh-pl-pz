@@ -23,25 +23,47 @@ class ApiOdooController extends Controller
                 if ($requestData) {
                     $errors = [];
                     foreach ($requestData as $dataUser) {
-                        if (!$dataUser['display_name'] || !$dataUser['active'] || !$dataUser['login'] || !$dataUser['id']) {
+                        if (!$dataUser['display_name'] || !$dataUser['active'] || !$dataUser['login'] || !$dataUser['id'] || !$dataUser['company_id']) {
                             array_push($errors, [$dataUser, 'Falta informacion del usuario']);
                         }
                     }
                     if (count($errors) > 0) {
                         return response()->json(['errors' => 'Informacion Incompleta', 'data' => $errors]);
                     } else {
+                        // dd(1);
                         Storage::put('/public/dataUsers.txt',   json_encode($request->users));
-                        Mail::to('adminportales@promolife.com.mx')->send(new SendDataOdoo('adminportales@promolife.com.mx', '/storage/dataUsers.txt'));
+                        // Mail::to('adminportales@promolife.com.mx')->send(new SendDataOdoo('adminportales@promolife.com.mx', '/storage/dataUsers.txt'));
                         foreach ($requestData as $dataUser) {
                             if (strtolower($dataUser['active']) == "true") {
                                 $user = User::where('email', $dataUser['login'])->first();
                                 if (!$user) {
-                                    User::create([
+                                    $userCreated =  User::create([
                                         'name' => $dataUser['display_name'],
                                         'email' => $dataUser['login'],
                                         'password' => Hash::make(Str::random(8)),
                                         'company_id' => null,
                                     ]);
+                                    $userCreated->info()->create([
+                                        'odoo_id' => $dataUser['id'],
+                                        'company_id' => $dataUser['company_id'],
+                                    ]);
+                                } else {
+                                    $user->update([
+                                        'name' => $dataUser['display_name'],
+                                        'email' => $dataUser['login'],
+                                        'company_id' => null,
+                                    ]);
+                                    if (!$user->info) {
+                                        $user->info()->create([
+                                            'odoo_id' => $dataUser['id'],
+                                            'company_id' => $dataUser['company_id'],
+                                        ]);
+                                    }else{
+                                        $user->info()->update([
+                                            'odoo_id' => $dataUser['id'],
+                                            'company_id' => $dataUser['company_id'],
+                                        ]);
+                                    }
                                 }
                             }
                         }
@@ -76,7 +98,7 @@ class ApiOdooController extends Controller
                         return response()->json(['errors' => 'Informacion Incompleta', 'data' => $errors]);
                     } else {
                         Storage::put('/public/dataClients.txt',   json_encode($request->clients));
-                        Mail::to('adminportales@promolife.com.mx')->send(new SendDataOdoo('adminportales@promolife.com.mx', '/storage/dataClients.txt'));
+                        //Mail::to('adminportales@promolife.com.mx')->send(new SendDataOdoo('adminportales@promolife.com.mx', '/storage/dataClients.txt'));
                         foreach ($requestData as $dataClient) {
                             $client = Client::where('email', $dataClient['email'])->first();
                             if (!$client) {

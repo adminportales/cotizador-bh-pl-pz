@@ -106,9 +106,9 @@
                             <label for="">Rank</label>
                             <select name="tipo" class="form-control" wire:model="rank">
                                 <option value="">Seleccione el rank</option>
-                                <option value="medio">Medio</option>
-                                <option value="alto">Alto</option>
-                                <option value="muy_alto">Muy Alto</option>
+                                <option value="1">Medio</option>
+                                <option value="2">Alto</option>
+                                <option value="3">Muy Alto</option>
                             </select>
                         </div>
                         @if ($errors->has('rank'))
