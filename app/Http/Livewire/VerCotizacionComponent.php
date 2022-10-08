@@ -48,7 +48,8 @@ class VerCotizacionComponent extends Component
         file_put_contents(public_path() . "/storage/quotes/" . $this->quote->lead . ".pdf", $pdf);
         Mail::to($this->quote->latestQuotesUpdate->quotesInformation->email)->send(new SendQuote(auth()->user()->name, $this->quote->latestQuotesUpdate->quotesInformation->name, '/storage/quotes/' . $this->quote->lead . ".pdf"));
         // Mail::to('antoniotd87@gmail.com')->send(new SendQuote(auth()->user()->name, $this->quote->latestQuotesUpdate->quotesInformation->name, '/storage/quotes/' . $this->quote->lead . ".pdf"));
-        dd('Enviado');
+        //dd('Enviado');
+        $this->dispatchBrowserEvent('Enviar cliente y oddo');
     }
     public function editar()
     {
@@ -59,6 +60,7 @@ class VerCotizacionComponent extends Component
     public function updateQuoteInfo($quoteInfo)
     {
         $this->newQuoteInfo = $quoteInfo;
+        $this->dispatchBrowserEvent('Editarcliente');
     }
     public function enviarOdoo()
     {
@@ -89,7 +91,7 @@ class VerCotizacionComponent extends Component
             $data =  [
                 'Opportunities' => [
                     [
-                        "CodeLead"=>"",
+                        "CodeLead" => "",
                         'Name' => $this->quote->latestQuotesUpdate->quotesInformation->oportunity,
                         'Partner' => [
                             'Name' => $this->quote->latestQuotesUpdate->quotesInformation->company,
@@ -118,6 +120,7 @@ class VerCotizacionComponent extends Component
                 'X-VDE-TYPE: Ambos',
             ]);
             $response = curl_exec($curl);
+            $this->dispatchBrowserEvent('Enviar cliente y oddo');
         } catch (Exception $exception) {
             dd(1, $exception->getMessage());
         }

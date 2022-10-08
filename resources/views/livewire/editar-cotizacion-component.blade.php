@@ -161,11 +161,20 @@
                             </button>
                         </div>
                         <div class="col-md-6">
+
+                            <div class="d-flex justify-content-center">
+                                <div wire:loading wire:target="guardar">
+                                    <div class="spinner-border text-success" role="status">
+                                        <span class="sr-only">loading...</span>
+                                    </div>
+                                </div>
+                            </div>
                             <button class="btn btn-success btn-block shadow-none" wire:click="guardar">
                                 Guardar Cambios en los Productos
                             </button>
                         </div>
                     </div>
+
                     <br>
                 @endif
                 {{-- INICIO DE LA PARTE DE LOS DESCUENTOS --}}
@@ -235,9 +244,18 @@
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary"
                                     data-dismiss="modal">Cancelar</button>
-                                <button type="button" class="btn btn-primary"
-                                    wire:click="updateDiscount">Actualizar</button>
+
+                                <div class="d-flex justify-content-center">
+                                    <div wire:loading wire:target="updateDiscount">
+                                        <div class="spinner-border text-primary" role="status">
+                                            <span class="sr-only">loading...</span>
+                                        </div>
+                                    </div>
+                                    <button type="button" class="btn btn-primary"
+                                        wire:click="updateDiscount">Actualizar</button>
+                                </div>
                             </div>
+
                         </div>
                     </div>
                 </div>
@@ -301,6 +319,15 @@
         })
         window.addEventListener('closeModal', event => {
             $('#modalEditarProducto').modal('hide')
+        })
+        window.addEventListener('Editarproducto', event => {
+            Swal.fire('Actualizado correctamente')
+        })
+        window.addEventListener('Noseedito', event => {
+            Swal.fire('No hay cambio')
+        })
+        window.addEventListener('Editardescuento', event => {
+            Swal.fire('Descuento modificado')
         })
     </script>
 </div>

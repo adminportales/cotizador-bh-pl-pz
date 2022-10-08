@@ -118,7 +118,17 @@
             <h6 class="text-success">Precio Total: $ {{ $precioTotal }}</h6>
         </div>
         <div class="form-group text-center">
-            <button type="submit" class="btn btn-warning py-2 px-4" wire:click="agregarCotizacion">Editar Cotizacion</button>
+
+            <div class="d-flex justify-content-center">
+                <div wire:loading wire:target="agregarCotizacion">
+                    <div class="spinner-border text-warning" role="status">
+                        <span class="sr-only">loading...</span>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-warning py-2 px-4" wire:click="agregarCotizacion">Editar
+                    Cotizacion</button>
+            </div>
         </div>
     </div>
+</div>
 </div>

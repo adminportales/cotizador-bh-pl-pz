@@ -26,6 +26,7 @@ class EditarCotizacionComponent extends Component
         $this->value = $discount->value;
         $this->type = $discount->type;
         $this->discountStatus = $discount->discount;
+
         // dd($this->type, $this->value, $this->discountStatus);
     }
 
@@ -65,6 +66,7 @@ class EditarCotizacionComponent extends Component
     public function addProducto($productAdded)
     {
         array_push($this->listNewProducts, $productAdded);
+        $this->dispatchBrowserEvent('Editarproducto');
     }
     public function updateProduct($productUpdate)
     {
@@ -73,14 +75,19 @@ class EditarCotizacionComponent extends Component
             // Revisar si se actualizo una actualizacion o es nueva
             $listUpdate = [];
             $isNewEdit = false;
+            $this->dispatchBrowserEvent('Editarproducto');
             if (count($this->listUpdateCurrent) <= 0) {
                 $isNewEdit = true;
+                $this->dispatchBrowserEvent('Nosedito');
             } else {
                 foreach ($this->listUpdateCurrent as $key => $productQuoteEdit) {
+
                     if ($productUpdate['currentQuote_id'] == $productQuoteEdit['currentQuote_id']  && $isNewEdit == false) {
                         $productQuoteEdit = $productUpdate;
+                        $this->dispatchBrowserEvent('Editarproducto');
                     } else {
                         $isNewEdit = true;
+                        $this->dispatchBrowserEvent('Noseedito');
                     }
                     array_push($listUpdate, $productQuoteEdit);
                 }
@@ -88,8 +95,10 @@ class EditarCotizacionComponent extends Component
 
             if ($isNewEdit) {
                 array_push($this->listUpdateCurrent, $productUpdate);
+                $this->dispatchBrowserEvent('Noseedito');
             } else {
                 $this->listUpdateCurrent = $listUpdate;
+                $this->dispatchBrowserEvent('Editarproducto');
             }
         }
     }
@@ -111,11 +120,13 @@ class EditarCotizacionComponent extends Component
     public function guardar()
     {
         if (count($this->listNewProducts) <= 0 && count($this->listUpdateCurrent) <= 0 && count($this->listDeleteCurrent) <= 0) {
-            dd('Sin Datos');
+
+
             return;
         }
         // Obtener los productos
         $latestProductos = $this->quote->latestQuotesUpdate->quoteProducts;
+        $this->dispatchBrowserEvent('Editarcliente');
 
         // Crear la nueva cotizacion
         $newQuoteUpdate =  $this->quote->quotesUpdate()->create([
@@ -229,6 +240,7 @@ class EditarCotizacionComponent extends Component
         $this->listUpdateCurrent = [];
         $this->listDeleteCurrent = [];
         // dd('Guardado');
+
     }
 
     public function updateDiscount()
@@ -243,9 +255,10 @@ class EditarCotizacionComponent extends Component
 
         $latestProductos = $this->quote->latestQuotesUpdate->quoteProducts;
         $newQuoteUpdate =  $this->quote->quotesUpdate()->create([
-            'quote_information_id' => $this->quote->latestQuotesUpdate->quote_information_id,
-            'quote_discount_id' => $quoteDiscount->id,
-        ]);
+                'quote_information_id' => $this->quote->latestQuotesUpdate->quote_information_id,
+                'quote_discount_id' => $quoteDiscount->id,
+
+            ]);
         foreach ($latestProductos as $product) {
             $newQuoteUpdate->quoteProducts()->create([
                 "product" => $product->product,
@@ -259,6 +272,7 @@ class EditarCotizacionComponent extends Component
                 "precio_unitario" => $product->precio_unitario,
                 "precio_total" => $product->precio_total,
             ]);
+            $this->dispatchBrowserEvent('Editardescuento');
         }
         $this->value = $quoteDiscount->value;
         $this->type = $quoteDiscount->type;

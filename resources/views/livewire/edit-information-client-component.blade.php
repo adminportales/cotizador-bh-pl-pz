@@ -124,7 +124,14 @@
             @endif
         </div>
         <div class="col-md-12">
-            <button class="btn btn-primary" wire:click="guardarCotizacion">Guardar Cambios</button>
+            <div class="d-flex justify-content-center">
+                <div wire:loading wire:target="guardarCotizacion">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="sr-only">loading...</span>
+                    </div>
+                </div>
+                <button class="btn btn-primary" wire:click="guardarCotizacion">Guardar Cambios</button>
+            </div>
         </div>
     </div>
 </div>

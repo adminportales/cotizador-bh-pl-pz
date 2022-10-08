@@ -67,11 +67,27 @@
                                     href="{{ route('previsualizar.cotizacion', ['quote' => $quote]) }}">Ver PDF</a>
                             </div>
                             <div class="col-md-4">
-                                <button class="btn btn-primary w-100" wire:click="enviar">Enviar al Cliente</button>
+                                <div class="d-flex justify-content-center">
+                                    <div wire:loading wire:target="enviar">
+                                        <div class="spinner-border text-primary" role="status">
+                                            <span class="sr-only">loading...</span>
+                                        </div>
+                                    </div>
+                                    <button class="btn btn-primary w-100" wire:click="enviar">Enviar al Cliente</button>
+
+                                </div>
                             </div>
                             <div class="col-md-4">
-                                <button class="btn btn-danger w-100" wire:click="enviarOdoo">Enviar a ODOO</button>
+                                <div class="d-flex justify-content-center">
+                                    <div wire:loading wire:target="enviarOdoo">
+                                        <div class="spinner-border text-danger" role="status">
+                                            <span class="sr-only">loading...</span>
+                                        </div>
+                                    </div>
+                                    <button class="btn btn-danger w-100" wire:click="enviarOdoo">Enviar a ODOO</button>
+                                </div>
                             </div>
+
                         </div>
                     </div>
                 @endif
@@ -210,6 +226,12 @@
 <script>
     window.addEventListener('showModalInfoClient', event => {
         $('#editarInfoCliente').modal('hide')
+    })
+    window.addEventListener('Enviar cliente y oddo', event => {
+        Swal.fire('Enviado correctamente')
+    })
+    window.addEventListener('Editarcliente', event => {
+        Swal.fire('Informacion Actualizada')
     })
 </script>
 </div>
