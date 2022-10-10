@@ -85,6 +85,9 @@
                           <li>
                               <a href="{{ url('/prices') }}"> Precios </a>
                           </li>
+                          <li>
+                              <a href="{{ url('/importTechniques') }}">Importar</a>
+                          </li>
                       </ul>
                   </li>
                   <li class="menu single-menu">
@@ -100,7 +103,7 @@
                       </a>
                   </li>
                   <li class="menu single-menu">
-                      <a href="{{  url('/clients') }}" aria-expanded="false" class="dropdown-toggle">
+                      <a href="{{ url('/clients') }}" aria-expanded="false" class="dropdown-toggle">
                           <div class="">
                               <span>Clientes</span>
                           </div>

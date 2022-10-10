@@ -32,6 +32,7 @@ Route::middleware(['auth'])->group(function () {
     //Route Hooks - Do not delete//
     Route::middleware(['role:admin'])->group(function () {
         Route::view('techniques', 'livewire.techniques.index')->middleware('auth');
+        Route::view('importTechniques', 'livewire.import-techniques.index')->middleware('auth');
         Route::view('materials', 'livewire.materials.index')->middleware('auth');
         Route::view('sizes', 'livewire.sizes.index')->middleware('auth');
         Route::view('prices', 'livewire.prices.index')->middleware('auth');
