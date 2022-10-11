@@ -175,7 +175,7 @@
         <br>
         <table class="content responsable" style="width: 105%","text-align: center">
             <tr>
-                <td><img src="quotesheet/bh/icon-email.png"alt="">{Responsable}
+                <td><img src="quotesheet/bh/icon-email.png"alt="">{{ auth()->user()->company->manager }}
                     <b>GERENTE COMERCIAL</b>
                 </td>
                 <td><img src="quotesheet/bh/icon-email.png"alt="">
@@ -183,13 +183,13 @@
             </tr>
             <tr>
                 <td><img src="quotesheet/bh/icon-email.png"alt="">
-                    gerencia@trademarket.com.mx</td>
+                    {{ auth()->user()->company->email }}</td>
                 <td><img src="quotesheet/bh/icon-email.png" alt="">
                     {{ auth()->user()->email }} </td>
             </tr>
             <tr>
-                <td><img src="quotesheet/bh/icon-whatsapp.png" alt=""> +52 55 5555
-                    5555</td>
+                <td><img src="quotesheet/bh/icon-whatsapp.png" alt=""> {{ auth()->user()->company->phone }}
+                </td>
                 <td><img src="quotesheet/bh/icon-whatsapp.png" alt=""> +52 55 5555
                     5555</td>
             </tr>

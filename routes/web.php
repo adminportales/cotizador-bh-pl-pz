@@ -38,5 +38,6 @@ Route::middleware(['auth'])->group(function () {
         Route::view('prices', 'livewire.prices.index')->middleware('auth');
         Route::view('users', 'livewire.users.index')->middleware('auth');
         Route::view('clients', 'livewire.clients.index')->middleware('auth');
+        Route::view('companies', 'livewire.companies.index')->middleware('auth');
     });
 });

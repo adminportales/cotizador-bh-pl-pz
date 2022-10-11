@@ -19,7 +19,10 @@ class FinalizarCotizacion extends Component
     public $tipoCliente, $clienteSeleccionado = '', $isClient, $nombre, $empresa, $email, $telefono, $celular, $oportunidad, $rank = '', $departamento, $informacion;
     public function render()
     {
-        $userClients = auth()->user()->clients;
+        $userClients = [];
+        if (auth()->user()->info) {
+            $userClients = auth()->user()->info->clients;
+        }
         return view('pages.catalogo.finalizar-cotizacion', compact('userClients'));
     }
     public function guardarCotizacion()
@@ -193,7 +196,7 @@ class FinalizarCotizacion extends Component
                         ],
                         "Estimated" => floatval($quoteUpdate->quoteProducts()->sum('precio_total')),
                         "Rating" => (int) $this->rank,
-                        "UserID" =>(int) auth()->user()->info->odoo_id,
+                        "UserID" => (int) auth()->user()->info->odoo_id,
                         "File" => [
                             'Name' => $this->oportunidad,
                             'Data' => base64_encode($pdf),

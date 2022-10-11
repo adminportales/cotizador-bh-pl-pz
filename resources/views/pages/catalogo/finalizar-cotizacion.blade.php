@@ -25,8 +25,7 @@
                                 <select name="tipo" class="form-control" wire:model="clienteSeleccionado">
                                     <option value="">Seleccionar Cliente</option>
                                     @foreach ($userClients as $client)
-                                        <option value="{{ $client->id }}">Seleccionar Cliente</option>
-                                        {{ $client->name . ' | ' . $client->bussiness_name }}
+                                        <option value="{{ $client->id }}">{{ $client->name . ' | ' . $client->contact }}</option>
                                     @endforeach
                                     @if (count($userClients) < 1)
                                         <option value="">No tienes clientes asignados, si es un error, reportalo

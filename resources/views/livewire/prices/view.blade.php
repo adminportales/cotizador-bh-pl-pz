@@ -29,7 +29,7 @@
                         <table class="table table-bordered table-sm">
                             <thead class="thead">
                                 <tr>
-                                    <td># efvwgrhtj6shesr</td>
+                                    <th>#</th>
                                     <th>Tamaños de las tecnicas</th>
                                     <th>Escala Inicial</th>
                                     <th>Escala Final</th>
@@ -52,10 +52,18 @@
                                                     {{ $row->materialTechnique->technique->nombre . ' ' . $row->size->nombre }}
                                                 </td>
                                             @endif
-                                            <td>{{ $price->escala_inicial }}</td>
-                                            <td>{{ $price->escala_final }}</td>
-                                            <td>{{ $price->precio }}</td>
-                                            <td>{{ $price->tipo_precio }}</td>
+                                            <td>
+                                                <p> {{ $price->escala_inicial }}</p>
+                                            </td>
+                                            <td>
+                                                <p> {{ $price->escala_final }}</p>
+                                            </td>
+                                            <td>
+                                                <p> {{ $price->precio }}</p>
+                                            </td>
+                                            <td>
+                                                <p> {{ $price->tipo_precio == 'D' ? 'Fijo' : 'Por Unidad' }}</p>
+                                            </td>
                                             <td width="90">
                                                 <div class="btn-group">
                                                     <a data-toggle="modal" data-target="#updateModalPrice"

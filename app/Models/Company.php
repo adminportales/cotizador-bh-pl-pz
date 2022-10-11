@@ -1,4 +1,4 @@
-<?php
+<?php 
 
 namespace App\Models;
 
@@ -7,7 +7,20 @@ use Illuminate\Database\Eloquent\Model;
 
 class Company extends Model
 {
-    use HasFactory;
+	use HasFactory;
+	
+    public $timestamps = true;
 
-    protected $fillable = ['name','domain','image'];
+    protected $table = 'companies';
+
+    protected $fillable = ['name','image','manager','email','phone'];
+	
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function users()
+    {
+        return $this->hasMany('App\Models\User', 'company_id', 'id');
+    }
+    
 }

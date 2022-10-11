@@ -44,10 +44,10 @@
                                 @foreach ($clients as $row)
                                     <tr>
                                         <td>{{ $loop->iteration }}</td>
-                                        <td>{{ $row->client_odoo_id }}</td>
+                                        <td>{{ $row->client_odoo_id }} {{ $row->user_id }}</td>
                                         <td>
-                                            @if ($row->user)
-                                                {{ $row->user->name }}
+                                            @if ($row->userOdoo)
+                                                {{ $row->userOdoo->user->name }}
                                             @endif
                                         </td>
                                         <td>{{ $row->name }}</td>

@@ -20,12 +20,13 @@
                             <div class="img-container">
                                 <img id="imgBox"
                                     src="{{ $product->firstImage ? $product->firstImage->image_url : asset('img/default.jpg') }}"
-                                    class="img-fluid" alt="imagen">
+                                    class="img-fluid" alt="imagen" style=" width: auto; max-height: 400px">
                             </div>
                             <div class="product-small-img">
                                 @foreach ($product->images as $image)
                                     <img src="{{ $image->image_url }}" class="rounded img-fluid"
-                                        alt="{{ $image->image_url }}" onclick="cambiarImagen(this)">
+                                        style=" width: auto; max-height: 100px" alt="{{ $image->image_url }}"
+                                        onclick="cambiarImagen(this)">
                                 @endforeach
                             </div>
                         </div>
