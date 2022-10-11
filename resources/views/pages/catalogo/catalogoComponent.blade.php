@@ -65,36 +65,33 @@
             @endif
             <div class="row">
                 @foreach ($products as $row)
-                    <div class="col-md-3 d-flex justify-content-center">
-                        <div class="card component-card_2 mb-4" style="width: 14rem;">
-                            <div class="card-body">
-                                <div class="h-100 d-flex justify-content-between flex-column">
-                                    <div>
-                                        @php
-                                            $priceProduct = $row->price;
-                                            if ($row->producto_promocion) {
-                                                $priceProduct = round($priceProduct - $priceProduct * ($row->descuento / 100), 2);
-                                            } else {
-                                                $priceProduct = round($priceProduct - $priceProduct * ($row->provider->discount / 100), 2);
-                                            }
-                                        @endphp
-                                        <img src="{{ $row->firstImage ? $row->firstImage->image_url : asset('img/default.jpg') }}"
-                                            class="card-img-top" alt="{{ $row->name }}">
-                                        <h5 class="card-title" style="text-transform: capitalize">
-                                            {{ $row->name }}
-                                        </h5>
-                                        <div class="d-flex justify-content-between">
-                                            <p class=" m-0 pt-1">Stock: {{ $row->stock }}</p>
-                                            <p class=" m-0 pt-1">$
-                                                {{ round($priceProduct + $priceProduct * ($utilidad / 100), 2) }}</p>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <a href="{{ route('show.product', ['product' => $row->id]) }}"
-                                            class="btn btn-primary mb-2 btn-block">
-                                            Cotizar
-                                        </a>
-                                    </div>
+                    <div class="col-md-4 col-lg-3 col-sm-6  d-flex justify-content-center">
+                        <div class="card mb-4" style="width: 14rem;">
+                            <div class="card-body text-center shadow-sm">
+                                @php
+                                    $priceProduct = $row->price;
+                                    if ($row->producto_promocion) {
+                                        $priceProduct = round($priceProduct - $priceProduct * ($row->descuento / 100), 2);
+                                    } else {
+                                        $priceProduct = round($priceProduct - $priceProduct * ($row->provider->discount / 100), 2);
+                                    }
+                                @endphp
+                                <img src="{{ $row->firstImage ? $row->firstImage->image_url : '' }}"
+                                    class="card-img-top " alt="{{ $row->name }}"
+                                    style="max-width: 100%; max-height: 150px; width: auto">
+                                <h5 class="card-title" style="text-transform: capitalize">{{ Str::limit($row->name, 30, '...') }}</h5>
+                                <p class=" m-0 pt-1"><strong>SKU:</strong> {{ $row->sku }}</p>
+                                <div class="d-flex justify-content-between">
+                                    <p class=" m-0 pt-1">Stock: {{ $row->stock }}</p>
+                                    <p class=" m-0 pt-1">$
+                                        {{ round($priceProduct / ((100 - $utilidad) / 100), 2) }}</p>
+                                </div>
+                                <br>
+                                <div>
+                                    <a href="{{ route('show.product', ['product' => $row->id]) }}"
+                                        class="btn btn-primary mb-2 btn-block">
+                                        Cotizar
+                                    </a>
                                 </div>
                             </div>
                         </div>

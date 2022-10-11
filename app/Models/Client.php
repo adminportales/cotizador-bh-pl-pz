@@ -8,12 +8,15 @@ use Illuminate\Database\Eloquent\Model;
 class Client extends Model
 {
     use HasFactory;
-    protected $fillable = [
-        'user_id',
-        'client_odoo_id',
-        'name',
-        'contact',
-        'email',
-        'phone',
-    ];
+
+    public $timestamps = true;
+
+    protected $table = 'clients';
+
+    protected $fillable = ['user_id', 'client_odoo_id', 'name', 'contact', 'email', 'phone'];
+
+    public function userOdoo()
+    {
+        return $this->hasOne(UserInformationOdoo::class, 'odoo_id', 'user_id');
+    }
 }

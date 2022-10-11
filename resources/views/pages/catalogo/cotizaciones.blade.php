@@ -1,12 +1,9 @@
 @extends('layouts.app')
-
+@section('title', 'Mis Cotizaciones')
 @section('content')
     <div class="container-fluid">
         <div class="row px-3">
             <div class="card w-100">
-                <div class="card-header">
-                    <h5 class="card-title">Mis Cotizaciones</h5>
-                </div>
                 <div class="card-body">
                     <table class="table">
                         <thead>
@@ -44,8 +41,9 @@
                                         @else
                                             <td class="text-center">Sin Dato</td>
                                         @endif
-                                        <td class="text-center">{{ $quote->latestQuotesUpdate->created_at->format('d-m-Y') }}</td>
-                                        @else
+                                        <td class="text-center">
+                                            {{ $quote->latestQuotesUpdate->created_at->format('d-m-Y') }}</td>
+                                    @else
                                         <td>Sin Dato</td>
                                         <td>Sin Dato</td>
                                         <td>Sin Dato</td>

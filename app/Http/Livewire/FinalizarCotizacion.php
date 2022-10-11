@@ -11,6 +11,7 @@ use App\Models\QuoteDiscount;
 use App\Models\QuoteInformation;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Exception;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 
 class FinalizarCotizacion extends Component
@@ -18,7 +19,10 @@ class FinalizarCotizacion extends Component
     public $tipoCliente, $clienteSeleccionado = '', $isClient, $nombre, $empresa, $email, $telefono, $celular, $oportunidad, $rank = '', $departamento, $informacion;
     public function render()
     {
-        $userClients = auth()->user()->clients;
+        $userClients = [];
+        if (auth()->user()->info) {
+            $userClients = auth()->user()->info->clients;
+        }
         return view('pages.catalogo.finalizar-cotizacion', compact('userClients'));
     }
     public function guardarCotizacion()
@@ -50,7 +54,18 @@ class FinalizarCotizacion extends Component
             'oportunidad' => 'required',
             'rank' => 'required',
         ]);
-
+        $odoo_id_user = null;
+        if (auth()->user()->info) {
+            $odoo_id_user = auth()->user()->info->odoo_id;
+        }
+        if ($odoo_id_user == null) {
+            dd("No tienes un id de Odoo Asignado");
+            return;
+        }
+        if ((int)$odoo_id_user <= 0) {
+            dd("El id de odoo no es valido");
+            return;
+        }
         // Guardar La cotizacion
         $quote = auth()->user()->quotes()->create([
             'lead' => 'No Definido',
@@ -119,7 +134,6 @@ class FinalizarCotizacion extends Component
             ];
 
             // Agregar la URL de la Imagen
-            // dd($product->firstImage);
             $product->image = $product->firstImage == null ? '' : $product->firstImage->image_url;
             $quoteUpdate->quoteProducts()->create([
                 'product' => json_encode($product->toArray()),
@@ -138,69 +152,122 @@ class FinalizarCotizacion extends Component
         // Enviar PDF
 
         $pdf = '';
+        $keyOdoo = '';
+        $errors = false;
+        $message = '';
+
         switch (auth()->user()->company->name) {
             case 'PROMO LIFE':
                 # code...
+                $keyOdoo = 'cd78567e59e016e964cdcc1bd99367c6';
                 $pdf = PDF::loadView('pages.pdf.promolife', ['quote' => $quote]);
                 break;
             case 'BH TRADEMARKET':
                 # code...
+                $keyOdoo = 'e877f47a2a844ded99004e444c5a9797';
                 $pdf = PDF::loadView('pages.pdf.bh', ['quote' => $quote]);
                 break;
             case 'PROMO ZALE':
                 # code...
+                $keyOdoo = '0e31683a8597606123ff4fcfab772ed7';
                 $pdf = PDF::loadView('pages.pdf.promozale', ['quote' => $quote]);
                 break;
-
             default:
                 # code...
                 break;
         }
         $pdf->setPaper('Letter', 'portrait');
         $pdf = $pdf->stream($quote->lead . ".pdf");
-        file_put_contents(public_path() . "/storage/quotes/" . time() . $quote->lead . ".pdf", $pdf);
-/*         try {
-            $url = 'https://api-promolife.vde/suite.com:5030/custom/Promolife/V2/crm-lead/create';
+        $path =  "/storage/quotes/" . time() . $quote->lead . ".pdf";
+        file_put_contents(public_path() . $path, $pdf);
+        $newPath = "";
+        try {
+            $url = 'https://api-promolife.vde-suite.com:5030/custom/Promolife/V2/crm-lead/create';
             $data =  [
-                'Name' => $this->oportunidad,
-                'Partner' => [
-                    'Name' => $this->empresa,
-                    'Email' => $this->email,
-                    'Phone' => $this->celular,
-                    'Contact' => $this->nombre,
-                ],
-                "Estimated" => (floatval($quoteUpdate->quoteProducts()->sum('precio_total'))),
-                "Rating" => 1,
-                "UserID" => 1250,
-                "File" => [
-                    'Data' => base64_encode($pdf),
-                    'Name' => 'Ninguno',
+                'Opportunities' => [
+                    [
+                        "CodeLead" => "",
+                        'Name' =>  $this->oportunidad,
+                        'Partner' => [
+                            'Name' => $this->empresa,
+                            'Email' => $this->email,
+                            'Phone' => $this->celular,
+                            'Contact' => $this->nombre,
+                        ],
+                        "Estimated" => floatval($quoteUpdate->quoteProducts()->sum('precio_total')),
+                        "Rating" => (int) $this->rank,
+                        "UserID" => (int) auth()->user()->info->odoo_id,
+                        "File" => [
+                            'Name' => $this->oportunidad,
+                            'Data' => base64_encode($pdf),
+                        ]
+                    ]
                 ]
             ];
+
             $curl = curl_init($url);
-            // 1. Set the CURLOPT_RETURNTRANSFER option to true
             curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-            // 2. Set the CURLOPT_POST option to true for POST request
             curl_setopt($curl, CURLOPT_POST, true);
-            // 3. Set the request data as JSON using json_encode function
-            curl_setopt($curl, CURLOPT_POSTFIELDS,  json_encode(['Opportunities' => $data]));
+            curl_setopt($curl, CURLOPT_POSTFIELDS,  json_encode($data));
             curl_setopt($curl, CURLOPT_HTTPHEADER, [
                 'Content-Type: application/json',
-                'X-VDE-APIKEY: cd78567e59e016e964cdcc1bd99367c6',
+                'X-VDE-APIKEY: ' . $keyOdoo,
                 'X-VDE-TYPE: Ambos',
             ]);
             $response = curl_exec($curl);
-            dd($response);
+            if ($response !== false) {
+                $dataResponse = json_decode($response);
+                if ($dataResponse->message) {
+                    if ($dataResponse->message == 'Internal Server Error') {
+                        $message = 'Error en servidor de Odoo';
+                        $errors = true;
+                        return;
+                    }
+                };
+                if ($dataResponse->success) {
+                    $listElementsOpportunities = $dataResponse->listElementsOpportunities;
+                    if ($listElementsOpportunities[0]->success) {
+                        $codeLead = $listElementsOpportunities[0]->CodeLead;
+                        $quote->lead = $codeLead;
+                        $quote->save();
+                        $newPath = "/storage/quotes/" . time() . $quote->lead . ".pdf";
+                        rename(public_path() . $path, public_path() . $newPath);
+                    } else {
+                        $errors = true;
+                        $message = $listElementsOpportunities[0]->message;
+                    }
+                }
+            } else {
+                $errors = true;
+                $message = "Error al enviar la cotizacion a odoo";
+            }
         } catch (Exception $exception) {
-            dd($exception->getMessage());
+            $message = $exception->getMessage();
         }
-        return; */
-        Mail::to($quote->latestQuotesUpdate->quotesInformation->email)->send(new SendQuote(auth()->user()->name, $quote->latestQuotesUpdate->quotesInformation->name, '/storage/quotes/' . $quote->lead . ".pdf"));
-        // Mail::to('adminportales@promolife.com.mx')->send(new SendQuote(auth()->user()->name, $quote->latestQuotesUpdate->quotesInformation->name, '/storage/quotes/' . $quote->lead . ".pdf"));
-        // Mail::mailer(env('MAIL_MAILER_ALT', 'smtpalt'))->to('adminportales@promolife.com.mx')->send(new SendQuote(auth()->user()->name, $quote->latestQuotesUpdate->quotesInformation->name, '/storage/quotes/' . $quote->lead . ".pdf"));
-        // Eliminar los datos de la cotizacion actual
-        auth()->user()->currentQuote->currentQuoteDetails()->delete();
-        auth()->user()->currentQuote()->delete();
+        try {
+            if (!$errors) {
+                Mail::to($quote->latestQuotesUpdate->quotesInformation->email)->send(new SendQuote(auth()->user()->name, $quote->latestQuotesUpdate->quotesInformation->name, $newPath));
+                unlink(public_path() . $newPath);
+                auth()->user()->currentQuote->currentQuoteDetails()->delete();
+                auth()->user()->currentQuote()->delete();
+            }
+        } catch (Exception $exception) {
+            $errors = true;
+            $message = $exception->getMessage();
+        }
+        if ($errors) {
+            DB::delete('delete from quote_update_product where quote_update_id = ' . $quoteUpdate->id);
+            $quoteUpdate->quoteProducts();
+            foreach ($quoteUpdate->quoteProducts as $qp) {
+                $qp->delete();
+            }
+            $quoteUpdate->delete();
+            $quoteInfo->delete();
+            $quoteDiscount->delete();
+            $quote->delete();
+            dd($message);
+            return;
+        }
         return redirect()->action([CotizadorController::class, 'verCotizacion'], ['quote' => $quote->id])->with('message', 'Tu cotizacion se ha guardado exitosamente.');
     }
 

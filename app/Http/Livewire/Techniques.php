@@ -19,6 +19,7 @@ class Techniques extends Component
     public function render()
     {
         $keyWord = '%' . $this->keyWord . '%';
+
         return view('livewire.techniques.view', [
             'techniques' => Technique::latest()
                 ->orWhere('nombre', 'LIKE', $keyWord)

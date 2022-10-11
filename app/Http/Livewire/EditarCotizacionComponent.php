@@ -235,6 +235,7 @@ class EditarCotizacionComponent extends Component
             }
         }
         $this->quote = Quote::find($this->quote->id);
+
         $this->puedeEditar = false;
         $this->listNewProducts = [];
         $this->listUpdateCurrent = [];
@@ -277,7 +278,6 @@ class EditarCotizacionComponent extends Component
         $this->value = $quoteDiscount->value;
         $this->type = $quoteDiscount->type;
         $this->discountStatus = $quoteDiscount->discount;
-
         $this->dispatchBrowserEvent('hideModalDiscount');
         session()->flash('message', 'Por favor espere...');
     }

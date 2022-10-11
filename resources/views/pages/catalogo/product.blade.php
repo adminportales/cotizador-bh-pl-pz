@@ -20,12 +20,13 @@
                             <div class="img-container">
                                 <img id="imgBox"
                                     src="{{ $product->firstImage ? $product->firstImage->image_url : asset('img/default.jpg') }}"
-                                    class="img-fluid" alt="imagen">
+                                    class="img-fluid" alt="imagen" style=" width: auto; max-height: 400px">
                             </div>
                             <div class="product-small-img">
                                 @foreach ($product->images as $image)
                                     <img src="{{ $image->image_url }}" class="rounded img-fluid"
-                                        alt="{{ $image->image_url }}" onclick="cambiarImagen(this)">
+                                        style=" width: auto; max-height: 100px" alt="{{ $image->image_url }}"
+                                        onclick="cambiarImagen(this)">
                                 @endforeach
                             </div>
                         </div>
@@ -70,14 +71,16 @@
                             </div>
 
                             <div class="col-md-6">
-                                <h5><strong>Categorias</strong></h5>
-                                <p><strong>Familia:</strong>
-                                    {{ $product->productCategories[0]->category->family }}
-                                </p>
-                                <p><strong>Sub
-                                        Familia:</strong>
-                                    {{ $product->productCategories[0]->subcategory->subfamily }}
-                                </p>
+                                @if (count($product->productCategories) > 0)
+                                    <h5><strong>Categorias</strong></h5>
+                                    <p><strong>Familia:</strong>
+                                        {{ $product->productCategories[0]->category->family }}
+                                    </p>
+                                    <p><strong>Sub
+                                            Familia:</strong>
+                                        {{ $product->productCategories[0]->subcategory->subfamily }}
+                                    </p>
+                                @endif
                                 @if (count($product->productAttributes) > 0)
                                     <h5><strong>Otros Atributos</strong></h5>
 

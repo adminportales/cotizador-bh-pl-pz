@@ -44,7 +44,7 @@ class CotizadorController extends Controller
 
     public function cotizaciones()
     {
-        $quotes = auth()->user()->quotes;
+        $quotes = auth()->user()->quotes()->orderBy('created_at', 'DESC')->get();
         return view('pages.catalogo.cotizaciones', compact('quotes'));
     }
     public function verCotizacion(Quote $quote)
@@ -81,5 +81,11 @@ class CotizadorController extends Controller
 
         $pdf->setPaper('Letter', 'portrait');
         return $pdf->stream('ejemplo.pdf');
+    }
+
+    public function all()
+    {
+        $quotes = Quote::orderBy('created_at', 'ASC')->get();
+        return view('pages.catalogo.cotizaciones', compact('quotes'));
     }
 }

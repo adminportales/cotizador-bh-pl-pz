@@ -16,20 +16,20 @@
                             <input wire:model='keyWord' type="text" class="form-control" name="search"
                                 id="search" placeholder="Search Prices Techniques">
                         </div>
-                        <div class="btn btn-sm btn-info" data-toggle="modal" data-target="#createDataPTModal">
+                        {{-- <div class="btn btn-sm btn-info" data-toggle="modal" data-target="#createDataPTModal">
                             <i class="fa fa-plus"></i> Add Prices Techniques
-                        </div>
+                        </div> --}}
                     </div>
                 </div>
 
                 <div class="card-body">
-                    @include('livewire.prices.create')
+                    {{-- @include('livewire.prices.create') --}}
                     @include('livewire.prices.update')
                     <div class="table-responsive">
                         <table class="table table-bordered table-sm">
                             <thead class="thead">
                                 <tr>
-                                    <td>#</td>
+                                    <th>#</th>
                                     <th>Tamaños de las tecnicas</th>
                                     <th>Escala Inicial</th>
                                     <th>Escala Final</th>
@@ -40,20 +40,40 @@
                             </thead>
                             <tbody>
                                 @foreach ($sizeMaterialTechniques as $row)
-                                    <tr>
-                                        <td>{{ $loop->iteration }}</td>
-                                        <td> <b>{{ $row->materialTechnique->material->nombre }}</b>
-                                            {{ $row->materialTechnique->technique->nombre . ' ' . $row->size->nombre }}
-                                        </td>
-                                        <td>{{ $row->escala_inicial }}</td>
-                                        <td>{{ $row->escala_final }}</td>
-                                        <td>{{ $row->precio }}</td>
-                                        <td>{{ $row->tipo_precio }}</td>
-                                        <td width="90">
-                                            <button type="button" class="btn btn-info btn-sm" wire:click="editar()">
-                                                Editar
-                                            </button>
-                                        </td>
+                                    @php
+                                        $it = $loop->iteration;
+                                    @endphp
+                                    @foreach ($row->pricesTechniques as $key => $price)
+                                        <tr>
+                                            @if ($key == 0)
+                                                <td rowspan="3" colspan="1">{{ $it }}</td>
+                                                <td rowspan="3" colspan="1">
+                                                    <b>{{ $row->materialTechnique->material->nombre }}</b>
+                                                    {{ $row->materialTechnique->technique->nombre . ' ' . $row->size->nombre }}
+                                                </td>
+                                            @endif
+                                            <td>
+                                                <p> {{ $price->escala_inicial }}</p>
+                                            </td>
+                                            <td>
+                                                <p> {{ $price->escala_final }}</p>
+                                            </td>
+                                            <td>
+                                                <p> {{ $price->precio }}</p>
+                                            </td>
+                                            <td>
+                                                <p> {{ $price->tipo_precio == 'D' ? 'Fijo' : 'Por Unidad' }}</p>
+                                            </td>
+                                            <td width="90">
+                                                <div class="btn-group">
+                                                    <a data-toggle="modal" data-target="#updateModalPrice"
+                                                        class="dropdown-item" wire:click="edit({{ $price->id }})"><i
+                                                            class="fa fa-edit"></i>
+                                                        Editar </a>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    @endforeach
                                 @endforeach
                             </tbody>
                         </table>

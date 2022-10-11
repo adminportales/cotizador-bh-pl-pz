@@ -47,7 +47,7 @@
                                                     Acciones
                                                 </button>
                                                 <div class="dropdown-menu dropdown-menu-right">
-                                                    <a data-toggle="modal" data-target="#updateModal"
+                                                    <a data-toggle="modal" data-target="#updateModalTechnique"
                                                         class="dropdown-item" wire:click="edit({{ $row->id }})"><i
                                                             class="fa fa-edit"></i> Editar </a>
                                                     <a class="dropdown-item"

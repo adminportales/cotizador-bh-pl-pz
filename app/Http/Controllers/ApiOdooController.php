@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Mail\SendDataOdoo;
 use App\Models\Client;
+use App\Models\Role;
 use App\Models\User;
+use App\Models\UserInformationOdoo;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -23,25 +25,40 @@ class ApiOdooController extends Controller
                 if ($requestData) {
                     $errors = [];
                     foreach ($requestData as $dataUser) {
-                        if (!$dataUser['display_name'] || !$dataUser['active'] || !$dataUser['login'] || !$dataUser['id']) {
+                        if (!$dataUser['display_name'] || !$dataUser['active'] || !$dataUser['login'] || !$dataUser['id'] || !$dataUser['company_id']) {
                             array_push($errors, [$dataUser, 'Falta informacion del usuario']);
                         }
                     }
                     if (count($errors) > 0) {
                         return response()->json(['errors' => 'Informacion Incompleta', 'data' => $errors]);
                     } else {
+                        // dd(1);
                         Storage::put('/public/dataUsers.txt',   json_encode($request->users));
-                        Mail::to('adminportales@promolife.com.mx')->send(new SendDataOdoo('adminportales@promolife.com.mx', '/storage/dataUsers.txt'));
+                        // Mail::to('adminportales@promolife.com.mx')->send(new SendDataOdoo('adminportales@promolife.com.mx', '/storage/dataUsers.txt'));
                         foreach ($requestData as $dataUser) {
                             if (strtolower($dataUser['active']) == "true") {
-                                $user = User::where('email', $dataUser['login'])->first();
-                                if (!$user) {
-                                    User::create([
+                                $userOdooId = UserInformationOdoo::where('odoo_id', $dataUser['id'])->first();
+                                if ($userOdooId) {
+                                    $userOdooId->user()->update([
                                         'name' => $dataUser['display_name'],
                                         'email' => $dataUser['login'],
-                                        'password' => Hash::make(Str::random(8)),
                                         'company_id' => null,
                                     ]);
+                                } else {
+                                    $userCreated =  User::create([
+                                        'name' => $dataUser['display_name'],
+                                        'email' => $dataUser['login'],
+                                        'password' => Hash::make(12345678),
+                                        'company_id' => null,
+                                    ]);
+                                    $userCreated->info()->create([
+                                        'odoo_id' => $dataUser['id'],
+                                        'company_id' => $dataUser['company_id'],
+                                    ]);
+
+                                    $roleSeller = Role::find(2);
+
+                                    $userCreated->attachRole($roleSeller);
                                 }
                             }
                         }
@@ -76,9 +93,9 @@ class ApiOdooController extends Controller
                         return response()->json(['errors' => 'Informacion Incompleta', 'data' => $errors]);
                     } else {
                         Storage::put('/public/dataClients.txt',   json_encode($request->clients));
-                        Mail::to('adminportales@promolife.com.mx')->send(new SendDataOdoo('adminportales@promolife.com.mx', '/storage/dataClients.txt'));
+                        //Mail::to('adminportales@promolife.com.mx')->send(new SendDataOdoo('adminportales@promolife.com.mx', '/storage/dataClients.txt'));
                         foreach ($requestData as $dataClient) {
-                            $client = Client::where('email', $dataClient['email'])->first();
+                            $client = Client::where('client_odoo_id', $dataClient['id'])->first();
                             if (!$client) {
                                 Client::create([
                                     'name' => $dataClient['name'],
@@ -87,6 +104,14 @@ class ApiOdooController extends Controller
                                     'contact' => $dataClient['contact'],
                                     'user_id' => $dataClient['user_id'],
                                     'client_odoo_id' => $dataClient['id'],
+                                ]);
+                            }else{
+                                $client->update([
+                                    'name' => $dataClient['name'],
+                                    'email' => $dataClient['email'],
+                                    'phone' => $dataClient['phone'],
+                                    'contact' => $dataClient['contact'],
+                                    'user_id' => $dataClient['user_id'],
                                 ]);
                             }
                         }
