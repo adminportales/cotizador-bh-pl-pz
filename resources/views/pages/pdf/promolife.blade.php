@@ -190,8 +190,7 @@
             <tr>
                 <td><img src="quotesheet/bh/icon-whatsapp.png" alt=""> {{ auth()->user()->company->phone }}
                 </td>
-                <td><img src="quotesheet/bh/icon-whatsapp.png" alt=""> +52 55 5555
-                    5555</td>
+                <td><img src="quotesheet/bh/icon-whatsapp.png" alt=""> {{auth()->user()->phone}}</td>
             </tr>
         </table>
     </div>

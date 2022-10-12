@@ -22,10 +22,10 @@
     <footer>
         <table class="footer content">
             <tr>
-                <td>{Responsable}</td>
+                <td>{{ auth()->user()->company->manager }}</td>
                 <td>Gerente Comercial</td>
-                <td>gerencia@trademarket.com.mx</td>
-                <td>{+52 55 5555 5555}</td>
+                <td>{{ auth()->user()->company->email }}</td>
+                <td>{{ auth()->user()->company->phone }}</td>
             </tr>
             <tr>
                 <td colspan="4" style="height: 10px"></td>
@@ -63,7 +63,7 @@
         <table class="content">
             <tr>
                 <td><img src="quotesheet/bh/icon-whatsapp.png" alt=""> </td>
-                <td>+52 55 5555 5555 </td>
+                <td>{{ auth()->user()->phone }}</td>
                 <td><img src="quotesheet/bh/icon-email.png" alt=""></td>
                 <td>{{ auth()->user()->email }}</td>
             </tr>

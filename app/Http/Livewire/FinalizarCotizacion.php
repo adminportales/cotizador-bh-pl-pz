@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Mail;
 class FinalizarCotizacion extends Component
 {
     public $tipoCliente, $clienteSeleccionado = '', $isClient, $nombre, $empresa, $email, $telefono, $celular, $oportunidad, $rank = '', $departamento, $informacion;
+
     public function render()
     {
         $userClients = [];
@@ -246,14 +247,34 @@ class FinalizarCotizacion extends Component
         }
         try {
             if (!$errors) {
-                Mail::to($quote->latestQuotesUpdate->quotesInformation->email)->send(new SendQuote(auth()->user()->name, $quote->latestQuotesUpdate->quotesInformation->name, $newPath));
+                $data = explode('@', auth()->user()->email);
+                $domain = $data[count($data) - 1];
+                $mailer = '';
+                switch ($domain) {
+                    case 'promolife.com.mx':
+                        $mailer = 'smtp_pl';
+                        break;
+                    case 'trademarket.com.mx':
+                        $mailer = 'smtp_bh';
+                        break;
+                    case 'bhtrademarket.com':
+                        $mailer = 'smtp_bh_usa';
+                        break;
+                        // case 'bhtrademaket':
+                        //     $mailer = 'smtp_pz';
+                        //     break;
+                    default:
+                        $mailer = 'smtp';
+                        break;
+                }
+                Mail::mailer($mailer)->to($quote->latestQuotesUpdate->quotesInformation->email)->send(new SendQuote(auth()->user()->name, $quote->latestQuotesUpdate->quotesInformation->name, $newPath));
                 unlink(public_path() . $newPath);
                 auth()->user()->currentQuote->currentQuoteDetails()->delete();
                 auth()->user()->currentQuote()->delete();
             }
         } catch (Exception $exception) {
-            $errors = true;
             $message = $exception->getMessage();
+            dd($message);
         }
         if ($errors) {
             DB::delete('delete from quote_update_product where quote_update_id = ' . $quoteUpdate->id);
@@ -265,7 +286,6 @@ class FinalizarCotizacion extends Component
             $quoteInfo->delete();
             $quoteDiscount->delete();
             $quote->delete();
-            dd($message);
             return;
         }
         return redirect()->action([CotizadorController::class, 'verCotizacion'], ['quote' => $quote->id])->with('message', 'Tu cotizacion se ha guardado exitosamente.');

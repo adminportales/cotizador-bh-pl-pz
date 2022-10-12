@@ -3,6 +3,8 @@
 namespace App\Http\Livewire;
 
 use App\Mail\SendQuote;
+use App\Mail\SendQuoteBH;
+use App\Mail\SendQuotePL;
 use App\Notifications\SendQuoteByEmail;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Mail;
@@ -50,14 +52,35 @@ class VerCotizacionComponent extends Component
         $path =  "/storage/quotes/" . time() . $this->quote->lead . ".pdf";
         file_put_contents(public_path() . $path, $pdf);
         try {
-            Mail::to($this->quote->latestQuotesUpdate->quotesInformation->email)->send(new SendQuote(auth()->user()->name, $this->quote->latestQuotesUpdate->quotesInformation->name, $path));
+            $data = explode('@', auth()->user()->email);
+            $domain = $data[count($data) - 1];
+            $mailer = '';
+            switch ($domain) {
+                case 'promolife.com.mx':
+                    $mailer = 'smtp_pl';
+                    break;
+                case 'trademarket.com.mx':
+                    $mailer = 'smtp_bh';
+                    break;
+                case 'bhtrademarket.com':
+                    $mailer = 'smtp_bh_usa';
+                    break;
+                    // case 'bhtrademaket':
+                    //     $mailer = 'smtp_pz';
+                    //     break;
+                default:
+                    $mailer = 'smtp';
+                    break;
+            }
+            Mail::mailer($mailer)->to($this->quote->latestQuotesUpdate->quotesInformation->email)->send(new SendQuoteBH(auth()->user()->name, $this->quote->latestQuotesUpdate->quotesInformation->name, $path));
             unlink(public_path() . $path);
         } catch (Exception $exception) {
             $errors = true;
             $message = $exception->getMessage();
+            $this->dispatchBrowserEvent('errorSendMail', ['message' => $message]);
         }
         if ($errors) {
-            dd($message);
+            return;
         }
         // Mail::to('antoniotd87@gmail.com')->send(new SendQuote(auth()->user()->name, $this->quote->latestQuotesUpdate->quotesInformation->name, '/storage/quotes/' . $this->quote->lead . ".pdf"));
         //dd('Enviado');

@@ -34,7 +34,6 @@ class ApiOdooController extends Controller
                     } else {
                         // dd(1);
                         Storage::put('/public/dataUsers.txt',   json_encode($request->users));
-                        // Mail::to('adminportales@promolife.com.mx')->send(new SendDataOdoo('adminportales@promolife.com.mx', '/storage/dataUsers.txt'));
                         foreach ($requestData as $dataUser) {
                             if (strtolower($dataUser['active']) == "true") {
                                 $userOdooId = UserInformationOdoo::where('odoo_id', $dataUser['id'])->first();
@@ -105,7 +104,7 @@ class ApiOdooController extends Controller
                                     'user_id' => $dataClient['user_id'],
                                     'client_odoo_id' => $dataClient['id'],
                                 ]);
-                            }else{
+                            } else {
                                 $client->update([
                                     'name' => $dataClient['name'],
                                     'email' => $dataClient['email'],
@@ -125,6 +124,7 @@ class ApiOdooController extends Controller
                 return response()->json(['message' => 'No Tienes autorizacion']);
             }
         } catch (Exception $th) {
+            Mail::to('adminportales@promolife.com.mx')->send(new SendDataOdoo('adminportales@promolife.com.mx', '/storage/dataUsers.txt'));
             return  $th->getMessage();
         }
     }

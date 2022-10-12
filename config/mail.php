@@ -44,13 +44,43 @@ return [
             'timeout' => null,
             'auth_mode' => null,
         ],
-        'smtpalt' => [
+        'smtp_pl' => [
             'transport' => 'smtp',
-            'host' => env('MAIL_HOST_ALT', 'smtp.mailgun.org'),
-            'port' => env('MAIL_PORT_ALT', 587),
-            'encryption' => env('MAIL_ENCRYPTION_ALT', 'tls'),
-            'username' => env('MAIL_USERNAME_ALT'),
-            'password' => env('MAIL_PASSWORD_ALT'),
+            'host' => env('MAIL_HOST_PL', 'smtp.mailgun.org'),
+            'port' => env('MAIL_PORT_PL', 587),
+            'encryption' => env('MAIL_ENCRYPTION_PL', 'tls'),
+            'username' => env('MAIL_USERNAME_PL'),
+            'password' => env('MAIL_PASSWORD_PL'),
+            'timeout' => null,
+            'auth_mode' => null,
+        ],
+        'smtp_bh' => [
+            'transport' => 'smtp',
+            'host' => env('MAIL_HOST_BH', 'smtp.mailgun.org'),
+            'port' => env('MAIL_PORT_BH', 587),
+            'encryption' => env('MAIL_ENCRYPTION_BH', 'tls'),
+            'username' => env('MAIL_USERNAME_BH'),
+            'password' => env('MAIL_PASSWORD_BH'),
+            'timeout' => null,
+            'auth_mode' => null,
+        ],
+        'smtp_pz' => [
+            'transport' => 'smtp',
+            'host' => env('MAIL_HOST_PZ', 'smtp.mailgun.org'),
+            'port' => env('MAIL_PORT_PZ', 587),
+            'encryption' => env('MAIL_ENCRYPTION_PZ', 'tls'),
+            'username' => env('MAIL_USERNAME_PZ'),
+            'password' => env('MAIL_PASSWORD_PZ'),
+            'timeout' => null,
+            'auth_mode' => null,
+        ],
+        'smtp_bh_usa' => [
+            'transport' => 'smtp',
+            'host' => env('MAIL_HOST_BH_USA', 'smtp.mailgun.org'),
+            'port' => env('MAIL_PORT_BH_USA', 587),
+            'encryption' => env('MAIL_ENCRYPTION_BH_USA', 'tls'),
+            'username' => env('MAIL_USERNAME_BH_USA'),
+            'password' => env('MAIL_PASSWORD_BH_USA'),
             'timeout' => null,
             'auth_mode' => null,
         ],
@@ -118,7 +148,7 @@ return [
     */
 
     'markdown' => [
-        'theme' => 'pl',
+        'theme' => 'default',
 
         'paths' => [
             resource_path('views/vendor/mail'),

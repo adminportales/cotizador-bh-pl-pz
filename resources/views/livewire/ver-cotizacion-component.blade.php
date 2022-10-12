@@ -233,5 +233,12 @@
         window.addEventListener('Editarcliente', event => {
             Swal.fire('Informacion Actualizada')
         })
+        window.addEventListener('errorSendMail', event => {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: event.detail.message,
+            })
+        })
     </script>
 </div>

@@ -156,21 +156,21 @@
         <table class="content" style="width: 100%">
             <tr>
                 <td style="text-align: right"><img src="quotesheet/bh/icon-email.png"alt=""> </td>
-                <td>{Responsable} <b>GERENTE COMERCIAL</b></td>
+                <td>{{ auth()->user()->company->manager }} <b>GERENTE COMERCIAL</b></td>
                 <td style="text-align: right"><img src="quotesheet/bh/icon-email.png"alt=""> </td>
                 <td>{{ auth()->user()->name }} <b>KAM</b></td>
             </tr>
             <tr>
                 <td style="text-align: right"><img src="quotesheet/bh/icon-email.png"alt=""> </td>
-                <td style="vertical-align: middle">gerencia@trademarket.com.mx </td>
+                <td style="vertical-align: middle">{{ auth()->user()->company->email }} </td>
                 <td style="text-align: right"><img src="quotesheet/bh/icon-email.png" alt=""> </td>
                 <td style="vertical-align: middle">{{ auth()->user()->email }}</td>
             </tr>
             <tr>
                 <td style="text-align: right"><img src="quotesheet/bh/icon-whatsapp.png" alt=""> </td>
-                <td style="vertical-align: middle"> +52 55 5555 5555 </td>
+                <td style="vertical-align: middle"> {{ auth()->user()->company->phone }} </td>
                 <td style="text-align: right"><img src="quotesheet/bh/icon-whatsapp.png" alt=""> </td>
-                <td style="vertical-align: middle">+52 55 5555 5555</td>
+                <td style="vertical-align: middle">{{ auth()->user()->phone }}</td>
             </tr>
         </table>
         <div class="firma content" style="text-align: right">

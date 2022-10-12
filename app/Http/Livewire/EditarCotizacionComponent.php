@@ -87,7 +87,6 @@ class EditarCotizacionComponent extends Component
                         $this->dispatchBrowserEvent('Editarproducto');
                     } else {
                         $isNewEdit = true;
-                        $this->dispatchBrowserEvent('Noseedito');
                     }
                     array_push($listUpdate, $productQuoteEdit);
                 }
@@ -95,7 +94,6 @@ class EditarCotizacionComponent extends Component
 
             if ($isNewEdit) {
                 array_push($this->listUpdateCurrent, $productUpdate);
-                $this->dispatchBrowserEvent('Noseedito');
             } else {
                 $this->listUpdateCurrent = $listUpdate;
                 $this->dispatchBrowserEvent('Editarproducto');
