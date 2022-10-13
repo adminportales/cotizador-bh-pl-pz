@@ -7,11 +7,11 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
-class SendQuotePL extends Mailable
+class SendQuotePZ extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public $theme = 'pl';
+    public $theme = 'pz';
     /**
      * Create a new message instance.
      *
@@ -33,11 +33,11 @@ class SendQuotePL extends Mailable
      */
     public function build()
     {
-        return $this->markdown('mail.quotepdf.promolife')
+        return $this->markdown('mail.quotepdf.promozale')
             ->with('cliente', $this->cliente)
             ->with('vendedor', $this->vendedor)
-            ->subject('Cotizacion Promo Life')
-            ->from(auth()->user()->email, 'Promo Life')
+            ->subject('Cotizacion Promo Zale')
+            ->from(auth()->user()->email, 'Promo Zale')
             ->attach(public_path() . $this->file, [
                 'as' => 'Hoja de Cotizacion.pdf',
                 'mime' => 'application/pdf',

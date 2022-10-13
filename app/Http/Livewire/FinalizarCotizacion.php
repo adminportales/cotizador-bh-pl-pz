@@ -7,6 +7,9 @@ use App\Models\PricesTechnique;
 use Livewire\Component;
 use App\Http\Controllers\CotizadorController;
 use App\Mail\SendQuote;
+use App\Mail\SendQuoteBH;
+use App\Mail\SendQuotePL;
+use App\Mail\SendQuotePZ;
 use App\Models\QuoteDiscount;
 use App\Models\QuoteInformation;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -260,14 +263,28 @@ class FinalizarCotizacion extends Component
                     case 'bhtrademarket.com':
                         $mailer = 'smtp_bh_usa';
                         break;
-                        // case 'bhtrademaket':
-                        //     $mailer = 'smtp_pz';
-                        //     break;
                     default:
                         $mailer = 'smtp';
                         break;
                 }
-                Mail::mailer($mailer)->to($quote->latestQuotesUpdate->quotesInformation->email)->send(new SendQuote(auth()->user()->name, $quote->latestQuotesUpdate->quotesInformation->name, $newPath));
+                $mailSend = '';
+                switch (auth()->user()->company->name) {
+                    case 'PROMO LIFE':
+                        $mailSend = new SendQuotePL(auth()->user()->name, $quote->latestQuotesUpdate->quotesInformation->name, $newPath);
+                        break;
+                    case 'BH TRADEMARKET':
+                        $mailSend = new SendQuoteBH(auth()->user()->name, $quote->latestQuotesUpdate->quotesInformation->name, $newPath);
+                        # code...
+                        break;
+                    case 'PROMO ZALE':
+                        $mailSend = new SendQuotePZ(auth()->user()->name, $quote->latestQuotesUpdate->quotesInformation->name, $newPath);
+                        # code...
+                        break;
+                    default:
+                        # code...
+                        break;
+                }
+                Mail::mailer($mailer)->to($quote->latestQuotesUpdate->quotesInformation->email)->send($mailSend);
                 unlink(public_path() . $newPath);
                 auth()->user()->currentQuote->currentQuoteDetails()->delete();
                 auth()->user()->currentQuote()->delete();

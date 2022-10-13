@@ -5,6 +5,7 @@ namespace App\Http\Livewire;
 use App\Mail\SendQuote;
 use App\Mail\SendQuoteBH;
 use App\Mail\SendQuotePL;
+use App\Mail\SendQuotePZ;
 use App\Notifications\SendQuoteByEmail;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Mail;
@@ -65,14 +66,28 @@ class VerCotizacionComponent extends Component
                 case 'bhtrademarket.com':
                     $mailer = 'smtp_bh_usa';
                     break;
-                    // case 'bhtrademaket':
-                    //     $mailer = 'smtp_pz';
-                    //     break;
                 default:
                     $mailer = 'smtp';
                     break;
             }
-            Mail::mailer($mailer)->to($this->quote->latestQuotesUpdate->quotesInformation->email)->send(new SendQuoteBH(auth()->user()->name, $this->quote->latestQuotesUpdate->quotesInformation->name, $path));
+            $mailSend = '';
+            switch (auth()->user()->company->name) {
+                case 'PROMO LIFE':
+                    $mailSend = new SendQuotePL(auth()->user()->name, $this->quote->latestQuotesUpdate->quotesInformation->name, $path);
+                    break;
+                case 'BH TRADEMARKET':
+                    $mailSend = new SendQuoteBH(auth()->user()->name, $this->quote->latestQuotesUpdate->quotesInformation->name, $path);
+                    # code...
+                    break;
+                case 'PROMO ZALE':
+                    $mailSend = new SendQuotePZ(auth()->user()->name, $this->quote->latestQuotesUpdate->quotesInformation->name, $path);
+                    # code...
+                    break;
+                default:
+                    # code...
+                    break;
+            }
+            Mail::mailer($mailer)->to($this->quote->latestQuotesUpdate->quotesInformation->email)->send($mailSend);
             unlink(public_path() . $path);
         } catch (Exception $exception) {
             $errors = true;
@@ -97,6 +112,7 @@ class VerCotizacionComponent extends Component
         $this->newQuoteInfo = $quoteInfo;
         $this->dispatchBrowserEvent('Editarcliente');
     }
+
     public function enviarOdoo()
     {
         $odoo_id_user = null;
