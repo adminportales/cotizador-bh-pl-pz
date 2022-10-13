@@ -3,51 +3,62 @@
         <div class="col-md-3">
             <div class="card component-card_1 m-0 w-100">
                 <div class="card-body">
-                    <h5 class="card-title">Filtros de busqueda</h5>
-                    <input wire:model='nombre' type="text" class="form-control" name="search" id="search"
+                    <p>Filtros de busqueda</p>
+                    <input wire:model='nombre' type="text" class="form-control mb-2" name="search" id="search"
                         placeholder="Nombre">
-                    <br>
-                    <input wire:model='sku' type="text" class="form-control" name="search" id="search"
+                    <input wire:model='sku' type="text" class="form-control mb-2" name="search" id="search"
                         placeholder="SKU">
-                    <br>
-                    <select wire:model='proveedor' name="proveedores" id="provee" class="form-control">
+                    <input wire:model='color' type="text" class="form-control mb-2" name="color" id="color"
+                        placeholder="Ingrese el color">
+                    <input wire:model='category' type="text" class="form-control mb-2" name="category" id="category"
+                        placeholder="Ingrese la familia">
+                    <select wire:model='proveedor' name="proveedores" id="provee" class="form-control mb-2">
                         <option value="">Seleccione Proveedor...</option>
                         @foreach ($proveedores as $provider)
                             <option value="{{ $provider->id }}">{{ $provider->company }}</option>
                         @endforeach
                     </select>
-                    <br>
+                    {{-- <select wire:model='color' name="colores" id="provee" class="form-control mb-2">
+                    <option value="">Seleccione color...</option>
+                    @foreach ($colores as $color)
+                        <option value="{{ $color->id }}">{{ $color->color }}</option>
+                    @endforeach
+                    </select> --}}
+                    <select wire:model='type' name="types" id="type" class="form-control mb-2">
+                        <option value="">Importacion o Catalogo...</option>
+                        @foreach ($types as $type)
+                            <option value="{{ $type->id }}">{{ $type->type }}</option>
+                        @endforeach
+                    </select>
                     <p class="mb-0">Precio</p>
-                    <div class="d-flex align-items-center">
+                    <div class="d-flex align-items-center mb-2">
                         <input wire:model='precioMin' type="number" class="form-control" name="search" id="search"
                             placeholder="Precio Minimo" min="0" value="0">
                         -
                         <input wire:model='precioMax' type="number" class="form-control" name="search" id="search"
                             placeholder="Precio Maximo" value="{{ $price }}" max="{{ $price }}">
                     </div>
-                    <br>
                     <p class="mb-0">Stock</p>
-                    <div class="d-flex align-items-center">
+                    <div class="d-flex align-items-center mb-2">
                         <input wire:model='stockMin' type="number" class="form-control" placeholder="Stock Minimo"
                             min="0" value="0">
                         -
                         <input wire:model='stockMax' type="number" class="form-control" placeholder="Stock Maximo"
                             value="{{ $stock }}" max="{{ $stock }}">
                     </div>
-                    <br>
                     <p class="mb-0">Ordenar por Stock</p>
-                    <select wire:model='orderStock' name="orderStock" id="provee" class="form-control">
+                    <select wire:model='orderStock' name="orderStock" id="provee" class="form-control mb-2">
                         <option value="">Ninguno</option>
                         <option value="ASC">De menor a mayor</option>
                         <option value="DESC">De mayor a menor</option>
                     </select>
-                    <br>
                     <p class="mb-0">Ordenar por Precio</p>
-                    <select wire:model='orderPrice' name="orderPrice" id="provee" class="form-control">
+                    <select wire:model='orderPrice' name="orderPrice" id="provee" class="form-control mb-2">
                         <option value="">Ninguno</option>
                         <option value="ASC">De menor a mayor</option>
                         <option value="DESC">De mayor a menor</option>
                     </select>
+                    <button class="btn btn-primary btn-block" wire:click="limpiar">Limpiar Filtros</button>
                 </div>
             </div>
         </div>
@@ -79,7 +90,8 @@
                                 <img src="{{ $row->firstImage ? $row->firstImage->image_url : '' }}"
                                     class="card-img-top " alt="{{ $row->name }}"
                                     style="max-width: 100%; max-height: 150px; width: auto">
-                                <h5 class="card-title" style="text-transform: capitalize">{{ Str::limit($row->name, 30, '...') }}</h5>
+                                <h5 class="card-title" style="text-transform: capitalize">
+                                    {{ Str::limit($row->name, 30, '...') }}</h5>
                                 <p class=" m-0 pt-1"><strong>SKU:</strong> {{ $row->sku }}</p>
                                 <div class="d-flex justify-content-between">
                                     <p class=" m-0 pt-1">Stock: {{ $row->stock }}</p>

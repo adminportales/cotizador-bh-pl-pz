@@ -186,6 +186,15 @@ class FinalizarCotizacion extends Component
         $path =  "/storage/quotes/" . time() . $quote->lead . ".pdf";
         file_put_contents(public_path() . $path, $pdf);
         $newPath = "";
+        $subtotal = floatval($quoteUpdate->quoteProducts()->sum('precio_total'));
+        $discountValue = 0;
+        if ($type == 'Fijo') {
+            $discountValue = floatval($quoteDiscount->value);
+        } else {
+            $discountValue = floatval(round(($subtotal / 100) * $quoteDiscount->value, 2));
+        }
+        $estimated = floatval($subtotal - $discountValue);
+
         try {
             $url = 'https://api-promolife.vde-suite.com:5030/custom/Promolife/V2/crm-lead/create';
             $data =  [
@@ -199,7 +208,7 @@ class FinalizarCotizacion extends Component
                             'Phone' => $this->celular,
                             'Contact' => $this->nombre,
                         ],
-                        "Estimated" => floatval($quoteUpdate->quoteProducts()->sum('precio_total')),
+                        "Estimated" => $estimated,
                         "Rating" => (int) $this->rank,
                         "UserID" => (int) auth()->user()->info->odoo_id,
                         "File" => [

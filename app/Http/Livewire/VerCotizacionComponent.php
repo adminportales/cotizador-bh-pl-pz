@@ -60,6 +60,7 @@ class VerCotizacionComponent extends Component
         $pdf = $pdf->stream($this->quote->lead . ".pdf");
         $path =  "/storage/quotes/" . time() . $this->quote->lead . ".pdf";
         file_put_contents(public_path() . $path, $pdf);
+
         try {
             $data = explode('@', auth()->user()->email);
             $domain = $data[count($data) - 1];
@@ -165,6 +166,17 @@ class VerCotizacionComponent extends Component
         $pdf = $pdf->stream($this->quote->lead . ".pdf");
         $path = "/storage/quotes/" . time() . $this->quote->lead . ".pdf";
         file_put_contents(public_path() . $path, $pdf);
+
+
+        $subtotal = floatval($this->quote->latestQuotesUpdate->quoteProducts()->sum('precio_total'));
+        $discountValue = 0;
+        if ($this->quote->latestQuotesUpdate->quoteDiscount->type == 'Fijo') {
+            $discountValue = floatval($this->quote->latestQuotesUpdate->quoteDiscount->value);
+        } else {
+            $discountValue = floatval(round(($subtotal / 100) * $this->quote->latestQuotesUpdate->quoteDiscount->value, 2));
+        }
+        $estimated = floatval($subtotal - $discountValue);
+
         try {
             $url = 'https://api-promolife.vde-suite.com:5030/custom/Promolife/V2/crm-lead/create';
             $data =  [
@@ -178,7 +190,7 @@ class VerCotizacionComponent extends Component
                             'Phone' => $this->quote->latestQuotesUpdate->quotesInformation->cell_phone,
                             'Contact' => $this->quote->latestQuotesUpdate->quotesInformation->name,
                         ],
-                        "Estimated" => (floatval($this->quote->latestQuotesUpdate->quoteProducts()->sum('precio_total'))),
+                        "Estimated" => (floatval($estimated)),
                         "Rating" => (int) $this->quote->latestQuotesUpdate->quotesInformation->rank,
                         "UserID" => (int) auth()->user()->info->odoo_id,
                         "File" => [

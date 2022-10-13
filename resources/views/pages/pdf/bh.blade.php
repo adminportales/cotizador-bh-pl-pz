@@ -28,19 +28,18 @@
     <footer>
         <table class="footer content">
             <tr>
-                <td>{{ $user->company->manager }}</td>
-                <td>Gerente Comercial</td>
-                <td>{{ $user->company->email }}</td>
-                <td>{{ $user->company->phone }}</td>
+                <td style="width: 33%; text-align: left">{{ $user->company->manager }} <br> Gerente Comercial</td>
+                <td style="width: 33%; text-align: center">{{ $user->company->email }}</td>
+                <td style="width: 33%; text-align: right">{{ $user->company->phone }}</td>
             </tr>
             <tr>
-                <td colspan="4" style="height: 10px"></td>
+                <td colspan="3" style="height: 10px"></td>
             </tr>
             <tr>
-                <td colspan="4" style="text-align: center">www.bhtrademarket.com.mx</td>
+                <td colspan="3" style="text-align: center">www.bhtrademarket.com.mx</td>
             </tr>
             <tr>
-                <td colspan="4" style="text-align: center; font-size: 10px;">San Andrés Atoto 155A Naucalpan de
+                <td colspan="3" style="text-align: center; font-size: 10px;">San Andrés Atoto 155A Naucalpan de
                     Juárez, Méx. C.P. 53550
                     Tel. +52(55) 5290 9100</td>
             </tr>
@@ -69,25 +68,25 @@
         <table class="content">
             <tr>
                 <td><img src="quotesheet/bh/icon-whatsapp.png" alt=""> </td>
-                <td>{{ $user->phone }}</td>
+                <td>{{ $user->phone == null ? 'SIN DATO' : $user->phone }}</td>
                 <td><img src="quotesheet/bh/icon-email.png" alt=""></td>
                 <td>{{ $user->email }}</td>
             </tr>
         </table>
-        <br>
+
         <div class="head-products"></div>
         <table class="content productos-body">
             <thead>
                 <tr class="titulos">
-                    <th colspan="0">Imagen</th>
-                    <th colspan="0">Descripción</th>
-                    <th colspan="1">Personalización</th>
-                    <th colspan="1">Tintas</th>
-                    <th colspan="1">Cantidad</th>
-                    <th colspan="1">Precio
+                    <th style="width: 90px">Imagen</th>
+                    <th style="width: 90px">Descripción</th>
+                    <th style="width: 90px">Personalización</th>
+                    <th style="width: 90px">Tintas</th>
+                    <th style="width: 90px">Cantidad</th>
+                    <th style="width: 90px">Precio
                         Unitario</th>
-                    <th colspan="1">Total</th>
-                    <th colspan="1">Tiempo
+                    <th style="width: 90px">Total</th>
+                    <th style="width: 90px">Tiempo
                         de entrega</th>
                 </tr>
             </thead>
@@ -98,23 +97,21 @@
                         $tecnica = json_decode($item->technique);
                     @endphp
                     <tr>
-                        <td rowspan="1">
+                        <td style="width: 90px">
                             @if ($producto->image)
                                 <img src="{{ $producto->image }}" width="40">
                             @else
                                 <img src="img/default.jpg" width="40">
                             @endif
-
-                        <td colspan="0">{{ $producto->description }}</td>
-                        <td colspan="1">{{ $tecnica->tecnica }}</td>
-                        <td colspan="1">{{ $item->color_logos }}</td>
-                        <td colspan="1">{{ $item->cantidad }}</td>
-                        <td colspan="1">${{ $item->precio_unitario }}</td>
-                        <td colspan="1">${{ $item->precio_total }}</td>
-                        <td colspan="1" style="text-align: center;">{{ $item->dias_entrega }} <br> <span
-                                style="font-size: 10px">días
-                                hábiles
-                            </span>
+                        </td>
+                        <td style="width: 90px">{{ $producto->description }}</td>
+                        <td style="width: 90px">{{ $tecnica->tecnica }}</td>
+                        <td style="width: 90px">{{ $item->color_logos }}</td>
+                        <td style="width: 90px">{{ $item->cantidad }}</td>
+                        <td style="width: 90px">${{ $item->precio_unitario }}</td>
+                        <td style="width: 90px">${{ $item->precio_total }}</td>
+                        <td style="width: 90px; text-align: center;">{{ $item->dias_entrega }} <br> <span
+                                style="font-size: 10px">días hábiles</span>
                         </td>
                     </tr>
                 @endforeach

@@ -5,6 +5,7 @@ namespace App\Http\Livewire;
 use App\Models\Catalogo\GlobalAttribute;
 use App\Models\Catalogo\Product as CatalogoProduct;
 use App\Models\Catalogo\Provider as CatalogoProvider;
+use App\Models\Catalogo\Type;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Illuminate\Pagination\Paginator;
@@ -16,7 +17,7 @@ class Catalogo extends Component
 
     protected $paginationTheme = 'bootstrap';
 
-    public $nombre, $sku, $proveedor, $precioMax, $precioMin, $stockMax, $stockMin, $orderStock = '', $orderPrice = '';
+    public $nombre, $sku, $proveedor, $color, $category, $type, $precioMax, $precioMin, $stockMax, $stockMin, $orderStock = '', $orderPrice = '';
 
     public function __construct()
     {
@@ -30,19 +31,42 @@ class Catalogo extends Component
         $this->stockMin = 0;
     }
 
+    public function mount()
+    {
+        $utilidad = GlobalAttribute::find(1);
+        $utilidad = (float) $utilidad->value;
+
+        if (auth()->user()->settingsUser) {
+            $utilidad = (float)(auth()->user()->settingsUser->utility > 0 ?  auth()->user()->settingsUser->utility :  $utilidad);
+        }
+
+        $price = DB::connection('mysql_catalogo')->table('products')->max('price');
+        $this->precioMax = round($price + $price * ($utilidad / 100), 2);
+        $this->precioMin = 0;
+        $stock = DB::connection('mysql_catalogo')->table('products')->max('stock');
+        $this->stockMax = $stock;
+        $this->stockMin = 0;
+    }
+
     public function render()
     {
         $utilidad = GlobalAttribute::find(1);
         $utilidad = (float) $utilidad->value;
 
-        $proveedores = CatalogoProvider::all();
+        if (auth()->user()->settingsUser) {
+            $utilidad = (float)(auth()->user()->settingsUser->utility > 0 ?  auth()->user()->settingsUser->utility :  $utilidad);
+        }
+        // Agrupar Colores similares
+        $types = Type::all();
         $price = DB::connection('mysql_catalogo')->table('products')->max('price');
         $price = round($price + $price * ($utilidad / 100), 2);
         $stock = DB::connection('mysql_catalogo')->table('products')->max('stock');
-
+        $proveedores = CatalogoProvider::all();
         $nombre = '%' . $this->nombre . '%';
         $sku = '%' . $this->sku . '%';
-        $proveedor = '%' . $this->proveedor . '%';
+        $color = $this->color;
+        $category = $this->category;
+        $type =  $this->type == "" ? null : $this->type;
         $precioMax = $price;
         if ($this->precioMax != null) {
             $precioMax =  round($this->precioMax / (($utilidad / 100) + 1), 2);
@@ -62,23 +86,37 @@ class Catalogo extends Component
 
         $orderPrice = $this->orderPrice;
         $orderStock = $this->orderStock;
-        $products  = CatalogoProduct::where('name', 'LIKE', $nombre)
-            ->where('sku', 'LIKE', $sku)
-            ->whereBetween('price', [$precioMin, $precioMax])
-            ->whereBetween('stock', [$stockMin, $stockMax])
-            ->where('provider_id', 'LIKE', $proveedor)
+
+        $products  = CatalogoProduct::leftjoin('product_category', 'product_category.product_id', 'products.id')
+            ->leftjoin('categories', 'product_category.category_id', 'categories.id')
+            ->leftjoin('colors', 'products.color_id', 'colors.id')
+            ->where('products.name', 'LIKE', $nombre)
+            ->where('products.visible', '=', true)
+            ->where('products.sku', 'LIKE', $sku)
+            ->whereBetween('products.price', [$precioMin, $precioMax])
+            ->whereBetween('products.stock', [$stockMin, $stockMax])
+            ->where('products.provider_id', 'LIKE', $this->proveedor)
+            ->where('products.type_id', 'LIKE', $type)
             ->when($orderStock !== '', function ($query, $orderStock) {
-                $query->orderBy('stock', $this->orderStock);
+                $query->orderBy('products.stock', $this->orderStock);
             })
             ->when($orderPrice !== '', function ($query, $orderPrice) {
-                $query->orderBy('price', $this->orderPrice);
+                $query->orderBy('products.price', $this->orderPrice);
             })
-            ->paginate(24);
-
+            ->when($color !== '' && $color !== null, function ($query, $color) {
+                $newColor  = '%' . $this->color . '%';
+                $query->where('colors.color', 'LIKE', $newColor);
+            })
+            ->when($category !== '' && $category !== null, function ($query, $category) {
+                $newCat  = '%' . $this->category . '%';
+                $query->where('categories.family', 'LIKE', $newCat);
+            })
+            ->select('products.*')
+            ->paginate(32);
         return view('pages.catalogo.catalogoComponent', [
             'products' => $products,
             'utilidad' => $utilidad,
-            'proveedores' => $proveedores,
+            'types' => $types,
             'price' => $price,
             'priceMax' => $precioMax,
             'priceMin' => $precioMin,
@@ -86,6 +124,7 @@ class Catalogo extends Component
             'stockMax' => $stockMax,
             'stockMin' => $stockMin,
             'orderStock' => $orderStock,
+            'proveedores' => $proveedores,
         ]);
     }
 }
