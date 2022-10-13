@@ -53,8 +53,8 @@ class FinalizarCotizacion extends Component
             ]);
             $this->isClient = true;
             $client = Client::find($this->clienteSeleccionado);
-            $this->nombre = $client->name;
-            $this->empresa = $client->contact;
+            $this->nombre = $client->contact;
+            $this->empresa = $client->name;
         }
 
         $this->validate([
