@@ -86,6 +86,6 @@ class CotizadorController extends Controller
     public function all()
     {
         $quotes = Quote::orderBy('created_at', 'ASC')->get();
-        return view('pages.catalogo.cotizaciones', compact('quotes'));
+        return view('pages.catalogo.cotizaciones-all', compact('quotes'));
     }
 }

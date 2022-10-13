@@ -5,8 +5,7 @@
                 <div class="card-body">
                     @if ($quote->latestQuotesUpdate)
                         <div class="d-flex justify-content-between">
-                            <h5 class="card-title">{{ $quote->latestQuotesUpdate->quotesInformation->name }} |
-                                {{ $quote->latestQuotesUpdate->quotesInformation->company }}</h5>
+                            <h5><strong>Informacion del Cliente</strong></h5>
                             <div style="width: 20px; cursor: pointer;" data-toggle="modal"
                                 data-target="#editarInfoCliente">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20"
@@ -19,13 +18,35 @@
                                 </svg>
                             </div>
                         </div>
-                        <h6><b>Numero de lead: </b> {{ $quote->lead }}</h6>
-                        <h6><b>Oportunidad: </b> {{ $quote->latestQuotesUpdate->quotesInformation->oportunity }}</h6>
+                        <h5 class="card-title">{{ $quote->latestQuotesUpdate->quotesInformation->name }} |
+                            {{ $quote->latestQuotesUpdate->quotesInformation->company }}</h5>
+                        @if (auth()->user()->hasRole('admin'))
+                            <p><b>Ejecutivo: </b> {{ $quote->user->name }}</p>
+                            <br>
+                        @endif
+                        <p><b>Numero de lead: </b> {{ $quote->lead }}</p>
+                        <p><b>Oportunidad: </b> {{ $quote->latestQuotesUpdate->quotesInformation->oportunity }}</p>
+                        <p><b>Rank: </b>
+                            @switch($quote->latestQuotesUpdate->quotesInformation->rank)
+                                @case(1)
+                                    {{ 'Medio' }}
+                                @break
+
+                                @case(2)
+                                    {{ 'Alto' }}
+                                @break
+
+                                @case(3)
+                                    {{ 'Muy Alto' }}
+                                @break
+
+                                @default
+                            @endswitch
+                        </p>
                         <br>
                         <p><b>Email: </b>{{ $quote->latestQuotesUpdate->quotesInformation->email }}</p>
                         <p><b>Telefono: </b>{{ $quote->latestQuotesUpdate->quotesInformation->landline }}</p>
                         <p><b>Celular: </b>{{ $quote->latestQuotesUpdate->quotesInformation->cell_phone }}</p>
-                        <p><b>Rank: </b>{{ $quote->latestQuotesUpdate->quotesInformation->rank }}</p>
                         <p><b>Departamento: </b>{{ $quote->latestQuotesUpdate->quotesInformation->department }}</p>
                         <p><b>Informacion adicional:
                             </b>{{ $quote->latestQuotesUpdate->quotesInformation->information }}

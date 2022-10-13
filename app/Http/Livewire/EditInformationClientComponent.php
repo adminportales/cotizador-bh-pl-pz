@@ -4,9 +4,12 @@ namespace App\Http\Livewire;
 
 use App\Models\QuoteInformation;
 use Livewire\Component;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class EditInformationClientComponent extends Component
 {
+    use AuthorizesRequests;
+
     public $quoteInfo, $quote;
     public $tipoCliente, $clienteSeleccionado = '', $nombre, $empresa, $email, $telefono, $celular, $oportunidad, $rank = '', $departamento, $informacion;
 
@@ -29,6 +32,7 @@ class EditInformationClientComponent extends Component
     }
     public function guardarCotizacion()
     {
+        $this->authorize('update', $this->quote);
         $this->validate([
             'tipoCliente' => 'required',
         ]);

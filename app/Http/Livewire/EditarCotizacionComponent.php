@@ -6,9 +6,12 @@ use App\Models\PricesTechnique;
 use App\Models\Quote;
 use App\Models\QuoteDiscount;
 use Livewire\Component;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class EditarCotizacionComponent extends Component
 {
+    use AuthorizesRequests;
+
     // Informaicon de los descuentos
     public $discount, $value, $type, $discountStatus;
     // Informaicon de los descuentos
@@ -70,6 +73,7 @@ class EditarCotizacionComponent extends Component
     }
     public function updateProduct($productUpdate)
     {
+        $this->authorize('update', $this->quote);
         // TODO: revisar si es nuevo o es actualizacion
         if ($productUpdate['currentQuote_id'] !== "") {
             // Revisar si se actualizo una actualizacion o es nueva
@@ -117,6 +121,7 @@ class EditarCotizacionComponent extends Component
 
     public function guardar()
     {
+        $this->authorize('update', $this->quote);
         if (count($this->listNewProducts) <= 0 && count($this->listUpdateCurrent) <= 0 && count($this->listDeleteCurrent) <= 0) {
 
 
@@ -239,12 +244,11 @@ class EditarCotizacionComponent extends Component
         $this->listNewProducts = [];
         $this->listUpdateCurrent = [];
         $this->listDeleteCurrent = [];
-        // dd('Guardado');
-
     }
 
     public function updateDiscount()
     {
+        $this->authorize('update', $this->quote);
         $dataDiscount = [
             'discount' => $this->discountStatus,
             'type' => $this->type,

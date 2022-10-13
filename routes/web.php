@@ -30,8 +30,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/all-cotizaciones', [CotizadorController::class, 'all'])->name('all.cotizacion');
 
     //Route Hooks - Do not delete//
-    Route::middleware(['role:admin'])->group(function () {
-        Route::view('techniques', 'livewire.techniques.index')->middleware('auth');
+    Route::prefix('admin')->middleware(['role:admin'])->group(function () {
+        Route::view('/', 'livewire.users.index')->middleware('auth');
         Route::view('importTechniques', 'livewire.import-techniques.index')->middleware('auth');
         Route::view('materials', 'livewire.materials.index')->middleware('auth');
         Route::view('sizes', 'livewire.sizes.index')->middleware('auth');

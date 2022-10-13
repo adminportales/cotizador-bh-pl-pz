@@ -11,9 +11,13 @@ use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Mail;
 use Livewire\Component;
 use Exception;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class VerCotizacionComponent extends Component
 {
+
+    use AuthorizesRequests;
+
     public $quote, $puedeEditar = false;
 
     public $newQuoteInfo = [];
@@ -21,11 +25,15 @@ class VerCotizacionComponent extends Component
     protected $listeners = ['updateQuoteInfo' => 'updateQuoteInfo'];
     public function render()
     {
+        if (!auth()->user()->hasRole('admin')) {
+            $this->authorize('view', $this->quote);
+        }
         return view('livewire.ver-cotizacion-component');
     }
 
     public function enviar()
     {
+        $this->authorize('update', $this->quote);
         $errors = false;
         $message = '';
         $pdf = '';
@@ -103,18 +111,21 @@ class VerCotizacionComponent extends Component
     }
     public function editar()
     {
+        $this->authorize('update', $this->quote);
         $this->puedeEditar = !$this->puedeEditar;
         $this->emit('puedeEditar', ['puedeEditar' => $this->puedeEditar]);
     }
 
     public function updateQuoteInfo($quoteInfo)
     {
+        $this->authorize('update', $this->quote);
         $this->newQuoteInfo = $quoteInfo;
         $this->dispatchBrowserEvent('Editarcliente');
     }
 
     public function enviarOdoo()
     {
+        $this->authorize('update', $this->quote);
         $odoo_id_user = null;
         if (auth()->user()->info) {
             $odoo_id_user = auth()->user()->info->odoo_id;

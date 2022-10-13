@@ -1,8 +1,8 @@
-@extends('layouts.cotizador')
+@extends('layouts.app')
 
 @section('title', 'Mis Cotizaciones')
 @section('content')
-    <div class="container">
+    <div class="container-fluid">
         <style>
             .table td {
                 vertical-align: middle;
