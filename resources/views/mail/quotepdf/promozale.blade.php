@@ -1,7 +1,6 @@
 @component('mail::message')
-# Buenos Dias {{ $cliente }}.
-Se ha realizado una cotizacion adjunta en este email para Promo Zale
-<hr>
-Gracias,<br>
-{{ $vendedor }}
+# Estimado: {{ $cliente }}.
+Muchas gracias por elegirnos como tu mejor opción para tus productos promocionales, recuerda que la mejor alternativa siempre estará a tu alcance con nosotros, cualquier cambio o ajuste por favor házmelo saber para enviarlo a la brevedad.
+<br>
+Saludos
 @endcomponent

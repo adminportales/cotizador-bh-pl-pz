@@ -7,6 +7,12 @@
 </head>
 
 <body>
+    @php
+        $user = auth()->user();
+        if (auth()->user()->id !== $quote->user_id) {
+            $user = $quote->user;
+        }
+    @endphp
     <header>
         <img src="quotesheet/pl/fondo-azul-superior.png" alt="" srcset="" class="fondo-head">
         <div class="content" style="text-align: right">
@@ -175,22 +181,22 @@
         <br>
         <table class="content responsable" style="width: 105%","text-align: center">
             <tr>
-                <td><img src="quotesheet/bh/icon-email.png"alt="">{{ auth()->user()->company->manager }}
+                <td><img src="quotesheet/bh/icon-email.png"alt="">{{  $user->company->manager }}
                     <b>GERENTE COMERCIAL</b>
                 </td>
                 <td><img src="quotesheet/bh/icon-email.png"alt="">
-                    {{ auth()->user()->name }} <b>KAM</b></td>
+                    {{  $user->name }} <b>KAM</b></td>
             </tr>
             <tr>
                 <td><img src="quotesheet/bh/icon-email.png"alt="">
-                    {{ auth()->user()->company->email }}</td>
+                    {{  $user->company->email }}</td>
                 <td><img src="quotesheet/bh/icon-email.png" alt="">
-                    {{ auth()->user()->email }} </td>
+                    {{  $user->email }} </td>
             </tr>
             <tr>
-                <td><img src="quotesheet/bh/icon-whatsapp.png" alt=""> {{ auth()->user()->company->phone }}
+                <td><img src="quotesheet/bh/icon-whatsapp.png" alt=""> {{  $user->company->phone }}
                 </td>
-                <td><img src="quotesheet/bh/icon-whatsapp.png" alt=""> {{auth()->user()->phone}}</td>
+                <td><img src="quotesheet/bh/icon-whatsapp.png" alt=""> {{  $user->phone }}</td>
             </tr>
         </table>
     </div>

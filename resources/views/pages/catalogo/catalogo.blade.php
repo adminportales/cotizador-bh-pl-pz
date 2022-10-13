@@ -12,6 +12,5 @@
             background: #1b55e2 !important;
             border-color: #1b55e2 !important;
         }
-
     </style>
 @endsection

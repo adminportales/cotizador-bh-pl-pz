@@ -7,6 +7,12 @@
 </head>
 
 <body>
+    @php
+        $user = auth()->user();
+        if (auth()->user()->id !== $quote->user_id) {
+            $user = $quote->user;
+        }
+    @endphp
     <header>
         <img src="quotesheet/pz/fondo-azul-superior.png" alt="" srcset="" class="fondo-head">
         <table class="head content">
@@ -156,21 +162,21 @@
         <table class="content" style="width: 100%">
             <tr>
                 <td style="text-align: right"><img src="quotesheet/bh/icon-email.png"alt=""> </td>
-                <td>{{ auth()->user()->company->manager }} <b>GERENTE COMERCIAL</b></td>
+                <td>{{ $user->company->manager }} <b>GERENTE COMERCIAL</b></td>
                 <td style="text-align: right"><img src="quotesheet/bh/icon-email.png"alt=""> </td>
-                <td>{{ auth()->user()->name }} <b>KAM</b></td>
+                <td>{{ $user->name }} <b>KAM</b></td>
             </tr>
             <tr>
                 <td style="text-align: right"><img src="quotesheet/bh/icon-email.png"alt=""> </td>
-                <td style="vertical-align: middle">{{ auth()->user()->company->email }} </td>
+                <td style="vertical-align: middle">{{ $user->company->email }} </td>
                 <td style="text-align: right"><img src="quotesheet/bh/icon-email.png" alt=""> </td>
-                <td style="vertical-align: middle">{{ auth()->user()->email }}</td>
+                <td style="vertical-align: middle">{{ $user->email }}</td>
             </tr>
             <tr>
                 <td style="text-align: right"><img src="quotesheet/bh/icon-whatsapp.png" alt=""> </td>
-                <td style="vertical-align: middle"> {{ auth()->user()->company->phone }} </td>
+                <td style="vertical-align: middle"> {{ $user->company->phone }} </td>
                 <td style="text-align: right"><img src="quotesheet/bh/icon-whatsapp.png" alt=""> </td>
-                <td style="vertical-align: middle">{{ auth()->user()->phone }}</td>
+                <td style="vertical-align: middle">{{ $user->phone }}</td>
             </tr>
         </table>
         <div class="firma content" style="text-align: right">

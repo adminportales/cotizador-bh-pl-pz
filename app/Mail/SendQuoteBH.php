@@ -11,7 +11,7 @@ class SendQuoteBH extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public $theme = 'bh';
+    public $theme = 'default';
     /**
      * Create a new message instance.
      *
@@ -37,7 +37,7 @@ class SendQuoteBH extends Mailable
             ->with('cliente', $this->cliente)
             ->with('vendedor', $this->vendedor)
             ->subject('Cotizacion BH TradeMarket')
-            ->from(auth()->user()->email, 'BH TradeMarket')
+            ->from(auth()->user()->email, auth()->user()->name)
             ->attach(public_path() . $this->file, [
                 'as' => 'Hoja de Cotizacion.pdf',
                 'mime' => 'application/pdf',

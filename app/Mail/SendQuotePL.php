@@ -11,7 +11,7 @@ class SendQuotePL extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public $theme = 'pl';
+    public $theme = 'default';
     /**
      * Create a new message instance.
      *
@@ -37,7 +37,7 @@ class SendQuotePL extends Mailable
             ->with('cliente', $this->cliente)
             ->with('vendedor', $this->vendedor)
             ->subject('Cotizacion Promo Life')
-            ->from(auth()->user()->email, 'Promo Life')
+            ->from(auth()->user()->email, auth()->user()->name)
             ->attach(public_path() . $this->file, [
                 'as' => 'Hoja de Cotizacion.pdf',
                 'mime' => 'application/pdf',

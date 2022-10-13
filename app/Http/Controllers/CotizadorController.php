@@ -59,8 +59,8 @@ class CotizadorController extends Controller
     public function previsualizar(Quote $quote)
     {
         $pdf = '';
-
-        switch (auth()->user()->company->name) {
+        $company = $quote->user->company->name;
+        switch ($company) {
             case 'PROMO LIFE':
                 # code...
                 $pdf = \PDF::loadView('pages.pdf.promolife', ['quote' => $quote]);

@@ -7,6 +7,12 @@
 </head>
 
 <body>
+    @php
+        $user = auth()->user();
+        if (auth()->user()->id !== $quote->user_id) {
+            $user = $quote->user;
+        }
+    @endphp
     <header>
         <img src="quotesheet/bh/fondo-azul-superior.jpg" alt="" srcset="" class="fondo-head">
         <table class="head content">
@@ -22,10 +28,10 @@
     <footer>
         <table class="footer content">
             <tr>
-                <td>{{ auth()->user()->company->manager }}</td>
+                <td>{{ $user->company->manager }}</td>
                 <td>Gerente Comercial</td>
-                <td>{{ auth()->user()->company->email }}</td>
-                <td>{{ auth()->user()->company->phone }}</td>
+                <td>{{ $user->company->email }}</td>
+                <td>{{ $user->company->phone }}</td>
             </tr>
             <tr>
                 <td colspan="4" style="height: 10px"></td>
@@ -63,9 +69,9 @@
         <table class="content">
             <tr>
                 <td><img src="quotesheet/bh/icon-whatsapp.png" alt=""> </td>
-                <td>{{ auth()->user()->phone }}</td>
+                <td>{{ $user->phone }}</td>
                 <td><img src="quotesheet/bh/icon-email.png" alt=""></td>
-                <td>{{ auth()->user()->email }}</td>
+                <td>{{ $user->email }}</td>
             </tr>
         </table>
         <br>
@@ -150,7 +156,7 @@
             <p style="height: 45px"></p>
             <p class="linea">______________________________</p>
             <p>Firma Vendedor</p>
-            <p>{{ auth()->user()->name }}</p>
+            <p>{{ $user->name }}</p>
         </div>
     </div>
     <br>
