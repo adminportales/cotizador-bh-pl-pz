@@ -32,10 +32,8 @@ class ApiOdooController extends Controller
                     if (count($errors) > 0) {
                         return response()->json(['errors' => 'Informacion Incompleta', 'data' => $errors]);
                     } else {
-                        // dd(1);
-                        Storage::put('/public/dataUsers.txt',   json_encode($request->users));
                         foreach ($requestData as $dataUser) {
-                            if (strtolower($dataUser['active']) == "true") {
+                            if ($dataUser['active']) {
                                 $userOdooId = UserInformationOdoo::where('odoo_id', $dataUser['id'])->first();
                                 if ($userOdooId) {
                                     $userOdooId->user()->update([
@@ -54,9 +52,7 @@ class ApiOdooController extends Controller
                                         'odoo_id' => $dataUser['id'],
                                         'company_id' => $dataUser['company_id'],
                                     ]);
-
                                     $roleSeller = Role::find(2);
-
                                     $userCreated->attachRole($roleSeller);
                                 }
                             }
@@ -71,6 +67,8 @@ class ApiOdooController extends Controller
                 return response()->json(['message' => 'No Tienes autorizacion']);
             }
         } catch (Exception $th) {
+            Storage::put('/public/dataErrorClients.txt',   json_encode($th->getMessage()));
+            Mail::to('adminportales@promolife.com.mx')->send(new SendDataOdoo('adminportales@promolife.com.mx', '/storage/dataErrorClients.txt'));
             return  $th->getMessage();
         }
     }
@@ -83,7 +81,7 @@ class ApiOdooController extends Controller
                 if ($requestData) {
                     $errors = [];
                     foreach ($requestData as $dataClient) {
-                        if (!$dataClient['user_id'] || !$dataClient['id'] || !$dataClient['name'] || !$dataClient['email'] || !$dataClient['phone'] || !$dataClient['contact']) {
+                        if (!$dataClient['user_id'] || !$dataClient['id'] || !$dataClient['name'] || !$dataClient['email'] || !$dataClient['phone']) {
                             array_push($errors, [$dataClient, 'Falta informacion del usuario']);
                         }
                     }
@@ -91,8 +89,6 @@ class ApiOdooController extends Controller
                     if (count($errors) > 0) {
                         return response()->json(['errors' => 'Informacion Incompleta', 'data' => $errors]);
                     } else {
-                        Storage::put('/public/dataClients.txt',   json_encode($request->clients));
-                        //Mail::to('adminportales@promolife.com.mx')->send(new SendDataOdoo('adminportales@promolife.com.mx', '/storage/dataClients.txt'));
                         foreach ($requestData as $dataClient) {
                             $client = Client::where('client_odoo_id', $dataClient['id'])->first();
                             if (!$client) {
@@ -100,7 +96,7 @@ class ApiOdooController extends Controller
                                     'name' => $dataClient['name'],
                                     'email' => $dataClient['email'],
                                     'phone' => $dataClient['phone'],
-                                    'contact' => $dataClient['contact'],
+                                    'contact' => $dataClient['contact'] == false ? "Sin Contacto" : $dataClient['contact'],
                                     'user_id' => $dataClient['user_id'],
                                     'client_odoo_id' => $dataClient['id'],
                                 ]);
@@ -109,7 +105,7 @@ class ApiOdooController extends Controller
                                     'name' => $dataClient['name'],
                                     'email' => $dataClient['email'],
                                     'phone' => $dataClient['phone'],
-                                    'contact' => $dataClient['contact'],
+                                    'contact' => $dataClient['contact'] == false ? "Sin Contacto" : $dataClient['contact'],
                                     'user_id' => $dataClient['user_id'],
                                 ]);
                             }
@@ -124,7 +120,8 @@ class ApiOdooController extends Controller
                 return response()->json(['message' => 'No Tienes autorizacion']);
             }
         } catch (Exception $th) {
-            Mail::to('adminportales@promolife.com.mx')->send(new SendDataOdoo('adminportales@promolife.com.mx', '/storage/dataUsers.txt'));
+            Storage::put('/public/dataErrorClients.txt',   json_encode($th->getMessage()));
+            Mail::to('adminportales@promolife.com.mx')->send(new SendDataOdoo('adminportales@promolife.com.mx', '/storage/dataErrorClients.txt'));
             return  $th->getMessage();
         }
     }
