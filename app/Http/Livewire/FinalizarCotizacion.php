@@ -10,6 +10,7 @@ use App\Mail\SendQuote;
 use App\Mail\SendQuoteBH;
 use App\Mail\SendQuotePL;
 use App\Mail\SendQuotePZ;
+use App\Models\Client;
 use App\Models\QuoteDiscount;
 use App\Models\QuoteInformation;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -31,6 +32,11 @@ class FinalizarCotizacion extends Component
     }
     public function guardarCotizacion()
     {
+        if (!auth()->user()->company) {
+            $this->dispatchBrowserEvent('isntCompany');
+            return;
+        }
+        //
         $this->validate([
             'tipoCliente' => 'required',
         ]);
@@ -46,8 +52,9 @@ class FinalizarCotizacion extends Component
                 'clienteSeleccionado' => 'required',
             ]);
             $this->isClient = true;
-            $this->nombre = 'Nombre de Oddo';
-            $this->empresa = 'Empresa de Oddo';
+            $client = Client::find($this->clienteSeleccionado);
+            $this->nombre = $client->name;
+            $this->empresa = $client->contact;
         }
 
         $this->validate([

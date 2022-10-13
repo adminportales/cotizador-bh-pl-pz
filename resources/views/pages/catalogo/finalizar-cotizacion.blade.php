@@ -25,7 +25,8 @@
                                 <select name="tipo" class="form-control" wire:model="clienteSeleccionado">
                                     <option value="">Seleccionar Cliente</option>
                                     @foreach ($userClients as $client)
-                                        <option value="{{ $client->id }}">{{ $client->name . ' | ' . $client->contact }}</option>
+                                        <option value="{{ $client->id }}">
+                                            {{ $client->name . ' | ' . $client->contact }}</option>
                                     @endforeach
                                     @if (count($userClients) < 1)
                                         <option value="">No tienes clientes asignados, si es un error, reportalo
@@ -206,4 +207,9 @@
     @else
         <p class="text-center">No tienes productos en tu cotizacion actual</p>
     @endif
+    <script>
+        window.addEventListener('isntCompany', event => {
+            Swal.fire('No tienes una empresa asignada')
+        })
+    </script>
 </div>
