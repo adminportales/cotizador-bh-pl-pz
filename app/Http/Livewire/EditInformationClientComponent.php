@@ -72,6 +72,7 @@ class EditInformationClientComponent extends Component
         $newQuoteUpdate =  $this->quote->quotesUpdate()->create([
             'quote_information_id' => $quoteInfo->id,
             'quote_discount_id' => $this->quote->latestQuotesUpdate->quote_discount_id,
+            'type' => "information"
         ]);
         foreach ($latestProductos as $product) {
             $newQuoteUpdate->quoteProducts()->create([

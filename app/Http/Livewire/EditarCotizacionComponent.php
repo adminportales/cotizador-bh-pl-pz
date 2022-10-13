@@ -130,6 +130,7 @@ class EditarCotizacionComponent extends Component
         $newQuoteUpdate =  $this->quote->quotesUpdate()->create([
             'quote_information_id' => $this->quote->latestQuotesUpdate->quote_information_id,
             'quote_discount_id' => $this->quote->latestQuotesUpdate->quote_discount_id,
+            'type' => "product"
         ]);
 
         // Buscar que productos fueron elimiandos y sarcarlos de la lista de productos
@@ -254,10 +255,11 @@ class EditarCotizacionComponent extends Component
 
         $latestProductos = $this->quote->latestQuotesUpdate->quoteProducts;
         $newQuoteUpdate =  $this->quote->quotesUpdate()->create([
-                'quote_information_id' => $this->quote->latestQuotesUpdate->quote_information_id,
-                'quote_discount_id' => $quoteDiscount->id,
+            'quote_information_id' => $this->quote->latestQuotesUpdate->quote_information_id,
+            'quote_discount_id' => $quoteDiscount->id,
+            'type' => "discount"
+        ]);
 
-            ]);
         foreach ($latestProductos as $product) {
             $newQuoteUpdate->quoteProducts()->create([
                 "product" => $product->product,

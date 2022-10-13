@@ -18,6 +18,7 @@ class CreateQuoteUpdateTable extends Migration
             $table->foreignId('quote_id')->constrained('quotes');
             $table->foreignId('quote_information_id')->constrained('quote_information');
             $table->foreignId('quote_discount_id')->constrained('quote_discounts');
+            $table->string('type');
             $table->timestamps();
         });
     }

@@ -13,6 +13,7 @@ class QuoteUpdate extends Model
         'quote_id',
         'quote_information_id',
         'quote_discount_id',
+        'type',
     ];
 
     public function quoteProducts()

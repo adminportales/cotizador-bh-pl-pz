@@ -113,6 +113,7 @@ class FinalizarCotizacion extends Component
         $quoteUpdate = $quote->quotesUpdate()->create([
             'quote_information_id' => $quoteInfo->id,
             'quote_discount_id' => $quoteDiscount->id,
+            'type' => "created"
         ]);
 
         // Ligar Productos al update
