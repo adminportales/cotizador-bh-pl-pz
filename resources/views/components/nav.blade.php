@@ -18,7 +18,7 @@
                          src="{{ asset('img') . '/' . auth()->user()->company->image }}">
                      <span class="navbar-brand-name">COTIZADOR {{ auth()->user()->company->name }}</span>
                  @else
-                     <span class="navbar-brand-name">@yield('title')</span>
+                     <span class="navbar-brand-name">Administrador</span>
                  @endif
              </a>
          </div>

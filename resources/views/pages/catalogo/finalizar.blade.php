@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.cotizador')
 @section('content')
     <div class="row px-3 w-100">
         <div class="col-md-12">

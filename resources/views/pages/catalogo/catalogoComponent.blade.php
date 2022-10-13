@@ -1,4 +1,4 @@
-<div class="container-fluid ">
+<div class="container ">
     <div class="row">
         <div class="col-md-3">
             <div class="card component-card_1 m-0 w-100">

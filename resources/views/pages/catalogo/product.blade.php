@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.cotizador')
 @section('title', $product->name)
 @section('content')
     <div class="container-fluid">
