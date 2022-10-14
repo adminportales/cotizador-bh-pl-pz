@@ -102,10 +102,10 @@
             <div wire:poll.4s class="btn btn-sm btn-success w-100" style="margin-top:0px; margin-bottom:0px;">
                 {{ session('message') }} </div>
             <div class="d-flex">
-                <div class="btn btn-sm btn-info w-50 px-1" style="margin-top:0px; margin-bottom:0px;">
-                    Ir al cotizador </div>
-                <div class="btn btn-sm btn-secondary w-50 px-1" style="margin-top:0px; margin-bottom:0px;">
-                    Ver mi cotizacion </div>
+                <a href="{{ url('/') }}" class="btn btn-sm btn-info w-50 px-1" style="margin-top:0px; margin-bottom:0px;">
+                    Ir al cotizador </a>
+                <a href="{{ url('/cotizacion-actual') }}" class="btn btn-sm btn-secondary w-50 px-1" style="margin-top:0px; margin-bottom:0px;">
+                    Ver mi cotizacion </a>
             </div>
         @endif
         <div class="d-flex justify-content-between">
