@@ -27,11 +27,11 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/previsualizar-cotizacion', [CotizadorController::class, 'previsualizar'])->name('previsualizar');
     Route::get('/actualizarCatalogo', [ActualizarCatalogoController::class, 'actualizarCatalogo'])->name('actualizarCatalogo');
     Route::get('/ver-cotizacion-pdf/{quote}', [CotizadorController::class, 'previsualizar'])->name('previsualizar.cotizacion');
-    Route::get('/all-cotizaciones', [CotizadorController::class, 'all'])->name('all.cotizacion');
 
     //Route Hooks - Do not delete//
     Route::prefix('admin')->middleware(['role:admin'])->group(function () {
         Route::view('/', 'livewire.users.index')->middleware('auth');
+        Route::get('/all-cotizaciones', [CotizadorController::class, 'all'])->name('all.cotizacion');
         Route::view('importTechniques', 'livewire.import-techniques.index')->middleware('auth');
         Route::view('materials', 'livewire.materials.index')->middleware('auth');
         Route::view('sizes', 'livewire.sizes.index')->middleware('auth');

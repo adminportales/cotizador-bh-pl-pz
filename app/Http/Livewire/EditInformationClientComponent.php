@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire;
 
+use App\Models\Client;
 use App\Models\QuoteInformation;
 use Livewire\Component;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
@@ -11,7 +12,7 @@ class EditInformationClientComponent extends Component
     use AuthorizesRequests;
 
     public $quoteInfo, $quote;
-    public $tipoCliente, $clienteSeleccionado = '', $nombre, $empresa, $email, $telefono, $celular, $oportunidad, $rank = '', $departamento, $informacion;
+    public $tipoCliente, $clienteSeleccionado = '', $nombre, $empresa, $email, $telefono, $celular, $oportunidad, $rank = '', $departamento, $informacion, $clients;
 
     public function mount()
     {
@@ -24,12 +25,22 @@ class EditInformationClientComponent extends Component
         $this->rank = $this->quoteInfo->rank;
         $this->departamento = $this->quoteInfo->department;
         $this->informacion = $this->quoteInfo->information;
+        $this->clients = auth()->user()->info->clients;
+        foreach ($this->clients as $cliente) {
+            if ($cliente->name == $this->empresa) {
+                $this->tipoCliente = 'buscar';
+                $this->clienteSeleccionado = $cliente->id;
+            } else {
+                $this->tipoCliente = 'crear';
+            }
+        }
     }
 
     public function render()
     {
         return view('livewire.edit-information-client-component');
     }
+
     public function guardarCotizacion()
     {
         $this->authorize('update', $this->quote);
@@ -46,8 +57,9 @@ class EditInformationClientComponent extends Component
             $this->validate([
                 'clienteSeleccionado' => 'required',
             ]);
-            $this->nombre = 'Nombre de Oddo';
-            $this->empresa = 'Empresa de Oddo';
+            $client = Client::find($this->clienteSeleccionado);
+            $this->nombre = $client->contact;
+            $this->empresa = $client->name;
         }
 
         $this->validate([

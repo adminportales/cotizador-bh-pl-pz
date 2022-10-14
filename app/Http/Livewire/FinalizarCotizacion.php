@@ -36,7 +36,6 @@ class FinalizarCotizacion extends Component
             $this->dispatchBrowserEvent('isntCompany');
             return;
         }
-        //
         $this->validate([
             'tipoCliente' => 'required',
         ]);
@@ -52,9 +51,6 @@ class FinalizarCotizacion extends Component
                 'clienteSeleccionado' => 'required',
             ]);
             $this->isClient = true;
-            $client = Client::find($this->clienteSeleccionado);
-            $this->nombre = $client->contact;
-            $this->empresa = $client->name;
         }
 
         $this->validate([
@@ -265,6 +261,7 @@ class FinalizarCotizacion extends Component
         } catch (Exception $exception) {
             $message = $exception->getMessage();
         }
+        $errorsMail = false;
         try {
             if (!$errors) {
                 $data = explode('@', auth()->user()->email);
@@ -308,7 +305,10 @@ class FinalizarCotizacion extends Component
             }
         } catch (Exception $exception) {
             $message = $exception->getMessage();
-            dd($message);
+            $errorsMail = true;
+            auth()->user()->currentQuote->currentQuoteDetails()->delete();
+            auth()->user()->currentQuote()->delete();
+            unlink(public_path() . $newPath);
         }
         if ($errors) {
             DB::delete('delete from quote_update_product where quote_update_id = ' . $quoteUpdate->id);
@@ -322,7 +322,26 @@ class FinalizarCotizacion extends Component
             $quote->delete();
             return;
         }
-        return redirect()->action([CotizadorController::class, 'verCotizacion'], ['quote' => $quote->id])->with('message', 'Tu cotizacion se ha guardado exitosamente.');
+        if ($errorsMail) {
+            return redirect()->action([CotizadorController::class, 'verCotizacion'], ['quote' => $quote->id])->with('messageMail', $message)->with('messageError', 'Tu cotizacion se ha guardado exitosamente, pero no se pudo enviar el e-mail debido a problemas tecnicos.');
+        }
+        return redirect()->action([CotizadorController::class, 'verCotizacion'], ['quote' => $quote->id])->with('message', 'Tu cotizacion se ha guardado exitosamente y ya fue enviada al correo electronico establecido.');
+    }
+
+    public function cargarDatosCliente()
+    {
+        $client = Client::find($this->clienteSeleccionado);
+        if ($client) {
+            $this->nombre =  $client->contact;
+            $this->empresa = $client->name;
+            $this->email = $client->email;
+            $this->telefono = $client->phone;
+        } else {
+            $this->nombre = '';
+            $this->empresa = '';
+            $this->email = '';
+            $this->telefono = '';
+        }
     }
 
     public function resetData()

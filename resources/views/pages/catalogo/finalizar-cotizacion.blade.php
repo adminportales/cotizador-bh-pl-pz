@@ -19,14 +19,15 @@
                         @endif
                     </div>
                     @if ($tipoCliente == 'buscar')
-                        <div class="col-md-8">
+                        <div class="col-md-4">
                             <div class="form-group">
                                 <label for="">Buscar Cliente</label>
-                                <select name="tipo" class="form-control" wire:model="clienteSeleccionado">
+                                <select name="tipo" class="form-control" wire:model="clienteSeleccionado"
+                                    wire:change="cargarDatosCliente">
                                     <option value="">Seleccionar Cliente</option>
                                     @foreach ($userClients as $client)
                                         <option value="{{ $client->id }}">
-                                            {{ $client->name . ' | ' . $client->contact }}</option>
+                                            {{ $client->name }}</option>
                                     @endforeach
                                     @if (count($userClients) < 1)
                                         <option value="">No tienes clientes asignados, si es un error, reportalo
@@ -41,15 +42,6 @@
                     @elseif($tipoCliente == 'crear')
                         <div class="col-md-4">
                             <div class="form-group">
-                                <label for="">Nombre</label>
-                                <input type="text" class="form-control" placeholder="Nombre" wire:model="nombre">
-                            </div>
-                            @if ($errors->has('nombre'))
-                                <span class="text-danger">{{ $errors->first('nombre') }}</span>
-                            @endif
-                        </div>
-                        <div class="col-md-4">
-                            <div class="form-group">
                                 <label for="">Nombre de la empresa</label>
                                 <input type="text" class="form-control" placeholder="Nombre de la empresa"
                                     wire:model="empresa">
@@ -58,8 +50,18 @@
                                 <span class="text-danger">{{ $errors->first('empresa') }}</span>
                             @endif
                         </div>
-                    @else
-                        <div class="col-md-8"></div>
+                    @endif
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="">Nombre del Contacto</label>
+                            <input type="text" class="form-control" placeholder="Nombre" wire:model="nombre">
+                        </div>
+                        @if ($errors->has('nombre'))
+                            <span class="text-danger">{{ $errors->first('nombre') }}</span>
+                        @endif
+                    </div>
+                    @if ($tipoCliente == '')
+                        <div class="w-100"></div>
                     @endif
                     <div class="col-md-4">
                         <div class="form-group">
@@ -200,7 +202,7 @@
                             <span class="sr-only">Loading...</span>
                         </div>
                     </div>
-                    <button class="btn btn-primary" wire:click="guardarCotizacion">Guardar Cotizacion</button>
+                    <button class="btn btn-primary" onclick="enviar()">Guardar Cotizacion</button>
                 </div>
             </div>
         </div>
@@ -211,5 +213,20 @@
         window.addEventListener('isntCompany', event => {
             Swal.fire('No tienes una empresa asignada')
         })
+
+        function enviar() {
+            Swal.fire({
+                title: 'Desea confirmar la cotizacion?',
+                showCancelButton: true,
+                confirmButtonText: 'Guardar',
+            }).then((result) => {
+                /* Read more about isConfirmed, isDenied below */
+                if (result.isConfirmed) {
+                    @this.guardarCotizacion()
+                } else {
+                    Swal.fire('No se realizo ningun cambio', '', 'info')
+                }
+            })
+        }
     </script>
 </div>

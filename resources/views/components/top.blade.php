@@ -53,21 +53,21 @@
                       </a>
                       <ul class="collapse submenu list-unstyled" id="uiKit" data-parent="#topAccordion">
                           <li>
-                              <a href="{{ url('/materials') }}"> Materiales y Tecnicas</a>
+                              <a href="{{ url('admin/materials') }}"> Materiales y Tecnicas</a>
                           </li>
                           <li>
-                              <a href="{{ url('/sizes') }}"> Tamaños </a>
+                              <a href="{{ url('admin/sizes') }}"> Tamaños </a>
                           </li>
                           <li>
-                              <a href="{{ url('/prices') }}"> Precios </a>
+                              <a href="{{ url('admin/prices') }}"> Precios </a>
                           </li>
                           <li>
-                              <a href="{{ url('/importTechniques') }}">Importar</a>
+                              <a href="{{ url('admin/importTechniques') }}">Importar</a>
                           </li>
                       </ul>
                   </li>
                   <li class="menu single-menu">
-                      <a href="{{ url('/users') }}" aria-expanded="false" class="dropdown-toggle">
+                      <a href="{{ url('admin/users') }}" aria-expanded="false" class="dropdown-toggle">
                           <div class="">
                               <span>Usuarios</span>
                           </div>
@@ -79,7 +79,7 @@
                       </a>
                   </li>
                   <li class="menu single-menu">
-                      <a href="{{ url('/clients') }}" aria-expanded="false" class="dropdown-toggle">
+                      <a href="{{ url('admin/clients') }}" aria-expanded="false" class="dropdown-toggle">
                           <div class="">
                               <span>Clientes</span>
                           </div>
@@ -91,7 +91,7 @@
                       </a>
                   </li>
                   <li class="menu single-menu">
-                      <a href="{{ url('/companies') }}" aria-expanded="false" class="dropdown-toggle">
+                      <a href="{{ url('admin/companies') }}" aria-expanded="false" class="dropdown-toggle">
                           <div class="">
                               <span>Empresas</span>
                           </div>

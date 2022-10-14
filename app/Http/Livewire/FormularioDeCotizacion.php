@@ -164,6 +164,7 @@ class FormularioDeCotizacion extends Component
         ]);
 
         session()->flash('message', 'Se ha agregado este producto a la cotizacion.');
+        $this->emit('currentQuoteAdded');
         $this->resetData();
     }
     public function resetData()

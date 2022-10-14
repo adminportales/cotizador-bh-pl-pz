@@ -20,7 +20,7 @@
         @if ($quote->latestQuotesUpdate)
             @if (count($quote->latestQuotesUpdate->quoteProducts) > 0)
                 <div class="w-100">
-                    <table class="table table-responsive">
+                    <table class="table">
                         <thead class="w-100">
                             <tr class="w-100">
                                 <th>Imagen</th>
@@ -76,19 +76,26 @@
                                     @if ($puedeEditar)
                                         <td class="text-center d-flex">
                                             <button class="btn btn-warning btn-sm"
-                                                wire:click="editarProducto({{ $auxProduct }})"><svg
-                                                    xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
-                                                    viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                                        d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                                                </svg></button>
+                                                wire:click="editarProducto({{ $auxProduct }})">
+                                                <div style="width: 1rem">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6"
+                                                        fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                                                        stroke-width="2">
+                                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                                            d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                                                    </svg>
+                                                </div>
+                                            </button>
                                             <button class="btn btn-danger btn-sm"
-                                                wire:click="deleteProducto({{ $auxProduct }})"><svg
-                                                    xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
-                                                    viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                                        d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                                                </svg>
+                                                wire:click="deleteProducto({{ $auxProduct }})">
+                                                <div style="width: 1rem">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6"
+                                                        fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                                                        stroke-width="2">
+                                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                                            d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                                    </svg>
+                                                </div>
                                             </button>
                                         </td>
                                     @endif
@@ -120,32 +127,35 @@
                                             @endphp
                                         </td>
                                         <td class="text-center d-flex">
-                                            {{-- <button class="btn btn-warning btn-sm"
-                                                wire:click="editarProducto({{ $newProduct['idNewQuote'] }}, {{ true }})"><svg
-                                                    xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
-                                                    viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                                        d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                                                </svg></button> --}}
                                             <button class="btn btn-danger btn-sm"
-                                                wire:click="deleteNewProducto({{ $newProduct['idNewQuote'] }})"><svg
-                                                    xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
-                                                    viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                                        d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                                                </svg></button>
+                                                wire:click="deleteNewProducto({{ $newProduct['idNewQuote'] }})">
+                                                <div style="width: 1rem">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6"
+                                                        fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                                                        stroke-width="2">
+                                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                                            d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                                    </svg>
+                                                </div>
+                                            </button>
                                         </td>
                                     </tr>
                                 @endforeach
                                 <tr>
                                     <td colspan="6" class="text-center">
-                                        <button class="btn btn-light btn-block shadow-none" data-toggle="modal"
+                                        <button class="btn btn-light shadow-none text-center" data-toggle="modal"
                                             data-target="#modalCotizador">
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
-                                                viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                                <path stroke-linecap="round" stroke-linejoin="round"
-                                                    d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                            </svg>
+                                            <div class="d-flex justify-content-center w-100">
+                                                <div style="width: 1rem;">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 w-100"
+                                                        fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                                                        stroke-width="2">
+                                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                                            d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                                    </svg>
+                                                </div>
+                                                Agregar Producto
+                                            </div>
                                         </button>
                                     </td>
                                 </tr>
@@ -161,7 +171,6 @@
                             </button>
                         </div>
                         <div class="col-md-6">
-
                             <div class="d-flex justify-content-center">
                                 <div wire:loading wire:target="guardar">
                                     <div class="spinner-border text-success" role="status">

@@ -1,5 +1,32 @@
 <div>
     <div class="row">
+        @if (session()->has('messageError'))
+            <div class="col-12">
+                <div class="alert alert-warning w-100 alert-dismissible fade show" role="alert"
+                    style="margin-top:0px; margin-bottom:0px;">
+                    {{ session('messageError') }}
+
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="alert alert-danger w-100 alert-dismissible fade show" role="alert"
+                    style="margin-top:0px; margin-bottom:0px;">
+                    {{ session('messageMail') }}
+
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            </div>
+        @endif
+
+        @if (session()->has('message'))
+            <div class="col-12" wire:poll.4s>
+                <div class="alert alert-success w-100" style="margin-top:0px; margin-bottom:0px;">
+                    {{ session('message') }} </div>
+            </div>
+        @endif
         <div class="col-md-4">
             <div class="card w-100 h-100">
                 <div class="card-body">
@@ -179,7 +206,8 @@
                                                 <p class="m-0"><strong>Productos Cotizados</strong></p>
                                                 @foreach ($item->quoteProducts as $product)
                                                     <div>
-                                                        <p class="m-0"><strong>Num: </strong>{{ $product->id }}</p>
+                                                        <p class="m-0"><strong>Num: </strong>{{ $product->id }}
+                                                        </p>
                                                         <br>
                                                         @php
                                                             $producto = (object) json_decode($product->product);
