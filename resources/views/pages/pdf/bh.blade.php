@@ -153,7 +153,7 @@
         <br><br>
         <p> Condiciones:</p>
         <ul>
-            <li>Condiciones de pago {plazos de pago}</li>
+            <li>Condiciones de pago acordadas con el vendedor</li>
             <li>Precios unitarios mostrados antes de IVA</li>
             <li>Precios mostrados en pesos mexicanos (MXP)</li>
             <li>El importe cotizado corresponde a la cantidad de piezas y número de tintas arriba mencionadas, si se
