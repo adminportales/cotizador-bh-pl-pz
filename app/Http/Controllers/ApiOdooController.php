@@ -81,7 +81,7 @@ class ApiOdooController extends Controller
                 if ($requestData) {
                     $errors = [];
                     foreach ($requestData as $dataClient) {
-                        if (!$dataClient['user_id'] || !$dataClient['id'] || !$dataClient['name'] || !$dataClient['email'] || !$dataClient['phone']) {
+                        if (!$dataClient['user_id'] || !$dataClient['id'] || !$dataClient['name'] || !$dataClient['email'] || !$dataClient['tradename'] || !$dataClient['phone']) {
                             array_push($errors, [$dataClient, 'Falta informacion del usuario']);
                         }
                     }
@@ -92,7 +92,7 @@ class ApiOdooController extends Controller
                         foreach ($requestData as $dataClient) {
                             $client = Client::where('client_odoo_id', $dataClient['id'])->first();
                             if (!$client) {
-                                Client::create([
+                                $client = Client::create([
                                     'name' => $dataClient['name'],
                                     'email' => $dataClient['email'],
                                     'phone' => $dataClient['phone'],
@@ -100,6 +100,11 @@ class ApiOdooController extends Controller
                                     'user_id' => $dataClient['user_id'],
                                     'client_odoo_id' => $dataClient['id'],
                                 ]);
+                                foreach ($dataClient['tradename'] as $value) {
+                                    $client->tradenames()->create([
+                                        'name' => $value['customer_label']
+                                    ]);
+                                }
                             } else {
                                 $client->update([
                                     'name' => $dataClient['name'],
@@ -108,6 +113,12 @@ class ApiOdooController extends Controller
                                     'contact' => $dataClient['contact'] == false ? "Sin Contacto" : $dataClient['contact'],
                                     'user_id' => $dataClient['user_id'],
                                 ]);
+                                $client->tradenames()->delete();
+                                foreach ($dataClient['tradename'] as $value) {
+                                    $client->tradenames()->create([
+                                        'name' => $value['customer_label']
+                                    ]);
+                                }
                             }
                         }
                         // TODO: Enviar por mail este archivo a mi mismo

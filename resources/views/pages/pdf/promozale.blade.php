@@ -61,10 +61,8 @@
                     <p> {{ $quote->latestQuotesUpdate->quotesInformation->department }}</p>
                 </td>
                 <td style="width: 40%">
-                    <p>Costumer ID: Falta ese dato</p>
-                    <p># Cotización: {{ $quote->id }}</p>
-                    <p># Lead:{{ $quote->lead }}</p>
-                    <p>Fecha Cotización: {{ $quote->updated_at->format('d/m/Y') }}</p>
+                    <p># Cotización: QuotePL-{{ $quote->id }}</p>
+                    <p>Fecha de cotización: {{ $quote->updated_at->format('d/m/Y') }}</p>
                 </td>
             </tr>
         </table>
@@ -94,12 +92,12 @@
 
                         <td rowspan="1">
                             @if ($producto->image)
-                                <img src="{{ $producto->image }}" width="40">
+                                <img src="{{ $producto->image }}" width="70">
                             @else
-                                <img src="img/default.jpg" width="40">
+                                <img src="img/default.jpg" width="70">
                             @endif
 
-                        <td colspan="2">{{ $producto->description }}</td>
+                        <td colspan="2">{{ $producto->name }}</td>
                         <td colspan="1">{{ $tecnica->tecnica }}</td>
                         <td colspan="1">{{ $item->color_logos }}</td>
                         <td colspan="1">{{ $item->cantidad }}</td>
@@ -107,8 +105,8 @@
                                 hábiles
                             </span>
                         </td>
-                        <td colspan="1">${{ $item->precio_unitario }}</td>
-                        <td colspan="1">${{ $item->precio_total }}</td>
+                        <td colspan="1">${{ number_format($item->precio_unitario, 2, '.', ',') }}</td>
+                        <td colspan="1">${{ number_format($item->precio_total, 2, '.', ',') }}</td>
                     </tr>
                 @endforeach
             </tbody>
@@ -131,6 +129,7 @@
                     <p><b>Subtotal: </b>$ {{ $subtotal }}</p>
                     <p><b>Descuento: </b>$ {{ $discount }}</p>
                     <p><b>Iva: </b>$ {{ $iva }}</p>
+                    <br>
                     <p><b>Total: </b>$ {{ $subtotal - $discount + $iva }}</p>
                 </td>
             </tr>

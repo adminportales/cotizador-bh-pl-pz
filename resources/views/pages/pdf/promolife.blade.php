@@ -14,7 +14,8 @@
         }
     @endphp
     <header>
-        <img src="quotesheet/pl/fondo-azul-superior.png" alt="" srcset="" class="fondo-head">
+        {{-- <img src="quotesheet/pl/fondo-azul-superior.png" alt="" srcset="" class="fondo-head"> --}}
+        <div class="fondo-head"></div>
         <div class="content" style="text-align: right">
             <img src="quotesheet/pl/logo.png" class="logo">
         </div>
@@ -33,14 +34,13 @@
     <footer>
         <p style="font-size: 12px; margin-left:3px; color:#000; text-align: right;" class="content">Pagina <span
                 class="pagenum"></span> </p>
-        <table style="magin-bottom: 0mm; position: absolute; bottom: 27mm; z-index: 10; width: 100%;">
-            <tr>
-                <td>
-                    <div>
-                        <img src="quotesheet/pl/fondo-azul-inferior.png" />
-                        <div class="url"style="font-size: 15px; color:#fff ;">
-                            <b>www.promolife.com.mx</b>
-                        </div>
+        <table
+            style="magin-bottom: 0mm; position: absolute; bottom: 27mm; z-index: 10; width: 100%;background-color: rebeccapurple">
+            {{-- {{ dd(1) }} --}}
+            <tr style="background-color: rebeccapurple">
+                <td style="background-color: rebeccapurple">
+                    <div class="url"style="font-size: 15px; color:#fff ;">
+                        <b>www.promolife.com.mx</b>
                     </div>
                 </td>
             </tr>
@@ -60,24 +60,19 @@
         </table>
     </footer>
     <div class="body-pdf">
+        <p class="content" style="font-size: 20px;"> <b>{{ $quote->latestQuotesUpdate->quotesInformation->company }}</b>
+        </p>
         <table class="cliente content">
             <tr>
-                <td style="width: 20%">
-                    <p>Atención a:</p>
-                    <p>Contacto: </p>
-                    <p>Departamento: </p>
-                </td>
-
-                <td style="width: 40%">
-                    <p> {{ $quote->latestQuotesUpdate->quotesInformation->company }}</p>
-                    <p>{{ $quote->latestQuotesUpdate->quotesInformation->name }}</p>
-                    <p> {{ $quote->latestQuotesUpdate->quotesInformation->department }}</p>
+                <td style="width: 60%">
+                    <p><b>Contacto:</b> {{ $quote->latestQuotesUpdate->quotesInformation->name }}</p>
+                    <p><b>Departamento:</b>
+                        {{ $quote->latestQuotesUpdate->quotesInformation->department ? $quote->latestQuotesUpdate->quotesInformation->department : 'Sin Informacion' }}
+                    </p>
                 </td>
                 <td style="width: 40%">
-                    <p>Costumer ID: Falta ese dato</p>
-                    <p># Cotización: {{ $quote->id }}</p>
-                    <p># Lead:{{ $quote->lead }}</p>
-                    <p>Fecha Cotización: {{ $quote->updated_at->format('d/m/Y') }}</p>
+                    <p><b># Cotización:</b> QuotePL-{{ $quote->id }}</p>
+                    <p><b>Fecha de cotización:</b> {{ $quote->updated_at->format('d/m/Y') }}</p>
                 </td>
             </tr>
         </table>
@@ -85,14 +80,14 @@
         <table class="content productos-body">
             <thead>
                 <tr class="titulos">
-                    <th colspan="1">Imagen Referencia</th>
-                    <th colspan="2">Descripción</th>
-                    <th colspan="1">Tecnica Personalización</th>
-                    <th colspan="1">Tintas</th>
-                    <th colspan="1">Número Piezas</th>
-                    <th colspan="1">Tiempo entrega</th>
-                    <th colspan="1">Precio Unitario</th>
-                    <th colspan="1">Importe</th>
+                    <th colspan="1" style="width: 100px">Imagen</th>
+                    <th colspan="2" style="width: 120px">Descripción</th>
+                    <th colspan="1" style="width: 90px">Tecnica</th>
+                    <th colspan="1" style="width: 70px">Tintas</th>
+                    <th colspan="1" style="width: 70px">Número Piezas</th>
+                    <th colspan="1" style="width: 90px">Tiempo entrega</th>
+                    <th colspan="1" style="width: 90px">Precio Unitario</th>
+                    <th colspan="1" style="width: 90px">Importe</th>
                 </tr>
             </thead>
             <tbody>
@@ -104,25 +99,27 @@
                     @endphp
                     <tr>
 
-                        <td rowspan="1">
+                        <td rowspan="1" style="width: 100px">
                             @if ($producto->image)
-                                <img src="{{ $producto->image }}" width="40">
+                                <img src="{{ $producto->image }}" width="60">
                             @else
-                                <img src="img/default.jpg" width="40">
+                                <img src="img/default.jpg" width="60">
                             @endif
 
                         </td>
-                        <td colspan="2">{{ $producto->description }}</td>
-                        <td colspan="1">{{ $tecnica->tecnica }}</td>
-                        <td colspan="1">{{ $item->color_logos }}</td>
-                        <td colspan="1">{{ $item->cantidad }}</td>
-                        <td colspan="1" style="text-align: center;">{{ $item->dias_entrega }} <br> <span
-                                style="font-size: 10px">días
+                        <td colspan="2" style="width: 120px">{{ $producto->description }}</td>
+                        <td colspan="1" style="width: 90px">{{ $tecnica->tecnica }}</td>
+                        <td colspan="1" style="width: 70px">{{ $item->color_logos }}</td>
+                        <td colspan="1" style="width: 70px">{{ $item->cantidad }}</td>
+                        <td colspan="1" style="text-align: center; width: 100px">{{ $item->dias_entrega }} <br>
+                            <span style="font-size: 10px">días
                                 hábiles
                             </span>
                         </td>
-                        <td colspan="1">${{ $item->precio_unitario }}</td>
-                        <td colspan="1">${{ $item->precio_total }}</td>
+                        <td colspan="1" style="width: 90px">
+                            ${{ number_format($item->precio_unitario, 2, '.', ',') }}</td>
+                        <td colspan="1" style="width: 100px">${{ number_format($item->precio_total, 2, '.', ',') }}
+                        </td>
                     </tr>
                 @endforeach
             </tbody>
@@ -143,10 +140,10 @@
                     $iva = round($subtotal * 0.16, 2);
                 @endphp
                 <td style="width: 150px">
-                    <p><b>Subtotal: </b>$ {{ $subtotal }}</p>
-                    <p><b>Descuento: </b>$ {{ $discount }}</p>
-                    <p><b>Iva: </b>$ {{ $iva }}</p>
-                    <p><b>Total: </b>$ {{ $subtotal - $discount + $iva }}</p>
+                    <p><b>Subtotal: </b>$ {{ number_format($subtotal, 2, '.', ',') }}</p>
+                    <p><b>Descuento: </b>$ {{ number_format($discount, 2, '.', ',') }}</p>
+                    <p><b>Iva: </b>$ {{ number_format($iva, 2, '.', ',') }}</p>
+                    <p><b>Total: </b>$ {{ number_format($subtotal - $discount + $iva, 2, '.', ',') }}</p>
                 </td>
             </tr>
         </table>
@@ -154,7 +151,7 @@
     <div class="content condiciones">
         <p> Condiciones:</p>
         <ul>
-            <li>Condiciones de pago {plazos de pago}</li>
+            <li>Condiciones de pago acordadas con el vendedor</li>
             <li>Precios unitarios mostrados antes de IVA</li>
             <li>Precios mostrados en pesos mexicanos (MXP)</li>
             <li>El importe cotizado corresponde a la cantidad de piezas y número de tintas arriba mencionadas, si se
@@ -163,7 +160,7 @@
             <li>El tiempo de entrega empieza a correr una vez recibida la Orden de Compra y autorizada la muestra física
                 o
                 virtual a solicitud del cliente.</li>
-            <li>Vigencia de la cotización 30 días naturales.</li>
+            <li>Vigencia de la cotización 5 días naturales.</li>
             <li>Producto cotizado de fabricación nacional o importación puede afinarse la fecha de entrega previo a la
                 emisión
                 de Orden de Compra.</li>
@@ -181,22 +178,22 @@
         <br>
         <table class="content responsable" style="width: 105%","text-align: center">
             <tr>
-                <td><img src="quotesheet/bh/icon-email.png"alt="">{{  $user->company->manager }}
+                <td><img src="quotesheet/bh/icon-email.png"alt="">{{ $user->company->manager }}
                     <b>GERENTE COMERCIAL</b>
                 </td>
                 <td><img src="quotesheet/bh/icon-email.png"alt="">
-                    {{  $user->name }} <b>KAM</b></td>
+                    {{ $user->name }} <b>KAM</b></td>
             </tr>
             <tr>
                 <td><img src="quotesheet/bh/icon-email.png"alt="">
-                    {{  $user->company->email }}</td>
+                    {{ $user->company->email }}</td>
                 <td><img src="quotesheet/bh/icon-email.png" alt="">
-                    {{  $user->email }} </td>
+                    {{ $user->email }} </td>
             </tr>
             <tr>
-                <td><img src="quotesheet/bh/icon-whatsapp.png" alt=""> {{  $user->company->phone }}
+                <td><img src="quotesheet/bh/icon-whatsapp.png" alt=""> {{ $user->company->phone }}
                 </td>
-                <td><img src="quotesheet/bh/icon-whatsapp.png" alt=""> {{  $user->phone }}</td>
+                <td><img src="quotesheet/bh/icon-whatsapp.png" alt=""> {{ $user->phone }}</td>
             </tr>
         </table>
     </div>

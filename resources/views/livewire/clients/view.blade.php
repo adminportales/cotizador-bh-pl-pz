@@ -37,6 +37,7 @@
                                     <th>Contacto</th>
                                     <th>Email</th>
                                     <th>Telefono</th>
+                                    <th>Etiquetas</th>
                                     <td>ACTIONS</td>
                                 </tr>
                             </thead>
@@ -54,6 +55,13 @@
                                         <td>{{ $row->contact }}</td>
                                         <td>{{ $row->email }}</td>
                                         <td>{{ $row->phone }}</td>
+                                        <td>
+                                            @if ($row->tradenames)
+                                                @foreach ($row->tradenames as $tradename)
+                                                    <span class="badge badge-primary">{{ $tradename->name }}</span>
+                                                @endforeach
+                                            @endif
+                                        </td>
                                         <td width="90">
                                             <div class="btn-group">
                                                 <button type="button" class="btn btn-info btn-sm dropdown-toggle"

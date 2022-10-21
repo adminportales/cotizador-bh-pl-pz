@@ -19,4 +19,14 @@ class Client extends Model
     {
         return $this->hasOne(UserInformationOdoo::class, 'odoo_id', 'user_id');
     }
+
+    public function tradenames()
+    {
+        return $this->hasMany('App\Models\Tradename');
+    }
+
+    public function firstTradename()
+    {
+        return $this->hasOne('App\Models\Tradename')->latest();
+    }
 }

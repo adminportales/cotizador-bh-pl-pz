@@ -17,7 +17,7 @@
         <img src="quotesheet/bh/fondo-azul-superior.jpg" alt="" srcset="" class="fondo-head">
         <table class="head content">
             <tr>
-                <td style="width: 240px">Presupuesto <br> Budget</td>
+                <td style="width: 240px">Presupuesto </td>
                 <td class="separator">Compañia</td>
                 <td></td>
                 <td style="text-align: center"><img src="quotesheet/bh/logo.png" class="logo"></td>
@@ -27,14 +27,6 @@
     </header>
     <footer>
         <table class="footer content">
-            <tr>
-                <td style="width: 33%; text-align: left">{{ $user->company->manager }} <br> Gerente Comercial</td>
-                <td style="width: 33%; text-align: center">{{ $user->company->email }}</td>
-                <td style="width: 33%; text-align: right">{{ $user->company->phone }}</td>
-            </tr>
-            <tr>
-                <td colspan="3" style="height: 10px"></td>
-            </tr>
             <tr>
                 <td colspan="3" style="text-align: center">www.bhtrademarket.com.mx</td>
             </tr>
@@ -59,16 +51,15 @@
 
                 </td>
                 <td style="width: 50%">
-                    <p>Cotización: {{ $quote->id }}</p>
+                    <p>Cotización: Quote-{{ $quote->id }}</p>
                     <p>Fecha Cotización: {{ $quote->updated_at->format('d/m/Y') }}</p>
-                    <p>Lead: {{ $quote->lead }}</p>
                 </td>
             </tr>
         </table>
         <table class="content">
             <tr>
                 <td><img src="quotesheet/bh/icon-whatsapp.png" alt=""> </td>
-                <td>{{ $user->phone == null ? 'SIN DATO' : $user->phone }}</td>
+                <td>{{ $user->phone == null ? 'Sin Dato' : $user->phone }}</td>
                 <td><img src="quotesheet/bh/icon-email.png" alt=""></td>
                 <td>{{ $user->email }}</td>
             </tr>
@@ -78,11 +69,11 @@
         <table class="content productos-body">
             <thead>
                 <tr class="titulos">
-                    <th style="width: 90px">Imagen</th>
-                    <th style="width: 90px">Descripción</th>
+                    <th style="width: 100px">Imagen</th>
+                    <th style="width: 120px">Descripción</th>
                     <th style="width: 90px">Personalización</th>
-                    <th style="width: 90px">Tintas</th>
-                    <th style="width: 90px">Cantidad</th>
+                    <th style="width: 70px">Tintas</th>
+                    <th style="width: 70px">Cantidad</th>
                     <th style="width: 90px">Precio
                         Unitario</th>
                     <th style="width: 90px">Total</th>
@@ -97,19 +88,19 @@
                         $tecnica = json_decode($item->technique);
                     @endphp
                     <tr>
-                        <td style="width: 90px">
+                        <td style="width: 100px">
                             @if ($producto->image)
-                                <img src="{{ $producto->image }}" width="40">
+                                <img src="{{ $producto->image }}" width="80">
                             @else
-                                <img src="img/default.jpg" width="40">
+                                <img src="img/default.jpg" width="80">
                             @endif
                         </td>
-                        <td style="width: 90px">{{ $producto->description }}</td>
+                        <td style="width: 120px">{{ $producto->name }}</td>
                         <td style="width: 90px">{{ $tecnica->tecnica }}</td>
-                        <td style="width: 90px">{{ $item->color_logos }}</td>
-                        <td style="width: 90px">{{ $item->cantidad }}</td>
-                        <td style="width: 90px">${{ $item->precio_unitario }}</td>
-                        <td style="width: 90px">${{ $item->precio_total }}</td>
+                        <td style="width: 70px">{{ $item->color_logos }}</td>
+                        <td style="width: 70px">{{ $item->cantidad }}</td>
+                        <td style="width: 90px">${{ number_format($item->precio_unitario, 2, '.', ',') }}</td>
+                        <td style="width: 90px">${{ number_format($item->precio_total, 2, '.', ',') }}</td>
                         <td style="width: 90px; text-align: center;">{{ $item->dias_entrega }} <br> <span
                                 style="font-size: 10px">días hábiles</span>
                         </td>
@@ -141,10 +132,11 @@
                     $iva = round($subtotal * 0.16, 2);
                 @endphp
                 <td style="width: 100%; text-align: right">
-                    <p><b>Subtotal: </b>$ {{ $subtotal }}</p>
-                    <p><b>Descuento: </b>$ {{ $discount }}</p>
-                    <p><b>Iva: </b>$ {{ $iva }}</p>
-                    <p><b>Total: </b>$ {{ $subtotal - $discount + $iva }}</p>
+                    <p><b>Subtotal: </b> $ {{ number_format($subtotal, 2, '.', ',') }}</p>
+                    <p><b>Descuento: </b> $ {{ number_format($discount, 2, '.', ',') }}</p>
+                    <p><b>Iva: </b> $ {{ number_format($iva, 2, '.', ',') }}</p>
+                    <br>
+                    <p><b>Total: </b>$ {{ number_format($subtotal - $discount + $iva, 2, '.', ',') }}</p>
                 </td>
             </tr>
         </table>

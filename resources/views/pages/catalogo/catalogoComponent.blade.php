@@ -93,7 +93,7 @@
                                 <h5 class="card-title" style="text-transform: capitalize">
                                     {{ Str::limit($row->name, 30, '...') }}</h5>
                                 <p class=" m-0 pt-1"><strong>SKU:</strong> {{ $row->sku }}</p>
-                                <div class="d-flex justify-content-between">
+                                <div class="">
                                     <p class=" m-0 pt-1">Stock: {{ $row->stock }}</p>
                                     <p class=" m-0 pt-1">$
                                         {{ round($priceProduct / ((100 - $utilidad) / 100), 2) }}</p>

@@ -1,7 +1,7 @@
 @extends('layouts.cotizador')
 @section('title', $product->name)
 @section('content')
-    <div class="container-fluid">
+    <div class="container">
         <div class="row px-3">
             <div class="col-md-6">
                 @if ($product->precio_unico)
