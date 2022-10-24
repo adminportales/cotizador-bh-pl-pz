@@ -21,7 +21,7 @@
                 <td colspan="6" class="company">PROMO ZALE S.A. DE C.V.</td>
             </tr>
             <tr>
-                <td style="text-align: left;" colspan="6" class="company-quote">Cotizacion / Empresa</td>
+                <td style="text-align: left;" colspan="6" class="company-quote">Cotizacion</td>
             </tr>
         </table>
     </header>
@@ -70,7 +70,7 @@
         <table class="content productos-body">
             <thead>
                 <tr class="titulos">
-                    <th colspan="1">Imagen Referencia</th>
+                    <th colspan="1">Imagen de Referencia</th>
                     <th colspan="2">Descripción</th>
                     <th colspan="1">Tecnica Personalización</th>
                     <th colspan="1">Tintas</th>
@@ -89,14 +89,13 @@
                         $tecnica = json_decode($item->technique);
                     @endphp
                     <tr>
-
                         <td rowspan="1">
                             @if ($producto->image)
-                                <img src="{{ $producto->image }}" width="70">
+                                <img src="{{ $producto->image }}" width="100">
                             @else
-                                <img src="img/default.jpg" width="70">
+                                <img src="img/default.jpg" width="100">
                             @endif
-
+                        </td>
                         <td colspan="2">{{ $producto->name }}</td>
                         <td colspan="1">{{ $tecnica->tecnica }}</td>
                         <td colspan="1">{{ $item->color_logos }}</td>
@@ -105,8 +104,8 @@
                                 hábiles
                             </span>
                         </td>
-                        <td colspan="1">${{ number_format($item->precio_unitario, 2, '.', ',') }}</td>
-                        <td colspan="1">${{ number_format($item->precio_total, 2, '.', ',') }}</td>
+                        <td colspan="1">$ {{ number_format($item->precio_unitario, 2, '.', ',') }}</td>
+                        <td colspan="1">$ {{ number_format($item->precio_total, 2, '.', ',') }}</td>
                     </tr>
                 @endforeach
             </tbody>
@@ -152,9 +151,7 @@
                 emisión
                 de Orden de Compra.</li>
             <li>Producto cotizado disponible en stock a la fecha de esta cotización puede modificarse al paso de los
-                días
-                sin
-                previo aviso. Solo se bloquea el inventario al recibir Orden de Compra</li>
+                días sin previo aviso. Solo se bloquea el inventario al recibir Orden de Compra</li>
         </ul>
     </div>
     <div style="text-align: center;">

@@ -69,7 +69,7 @@
         <table class="content productos-body">
             <thead>
                 <tr class="titulos">
-                    <th style="width: 100px">Imagen</th>
+                    <th style="width: 100px">Imagen de Referencia</th>
                     <th style="width: 120px">Descripción</th>
                     <th style="width: 90px">Personalización</th>
                     <th style="width: 70px">Tintas</th>
@@ -90,9 +90,9 @@
                     <tr>
                         <td style="width: 100px">
                             @if ($producto->image)
-                                <img src="{{ $producto->image }}" width="80">
+                                <img src="{{ $producto->image }}" width="100">
                             @else
-                                <img src="img/default.jpg" width="80">
+                                <img src="img/default.jpg" width="100">
                             @endif
                         </td>
                         <td style="width: 120px">{{ $producto->name }}</td>
