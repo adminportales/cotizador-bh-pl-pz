@@ -41,25 +41,28 @@
         </div>
     </footer>
     <div class="body-pdf">
+        @if ($nombreComercial)
+            <p class="content" style="font-size: 24px;"> <b>{{ $nombreComercial->name }}</b></p>
+        @endif
+        <p class="content" style="font-size: 20px;">{{ $quote->latestQuotesUpdate->quotesInformation->company }}</p>
         <table class="cliente content">
             <tr>
                 <td style="width: 50%">
 
-                    <p>Atención a: {{ $quote->latestQuotesUpdate->quotesInformation->company }}</p>
                     <p>Contacto: {{ $quote->latestQuotesUpdate->quotesInformation->name }}</p>
                     <p>Departamento: {{ $quote->latestQuotesUpdate->quotesInformation->department }}</p>
 
                 </td>
                 <td style="width: 50%">
-                    <p>Cotización: Quote-{{ $quote->id }}</p>
+                    <p>Cotización: QS{{ $quote->id }}</p>
                     <p>Fecha Cotización: {{ $quote->updated_at->format('d/m/Y') }}</p>
                 </td>
             </tr>
         </table>
         <table class="content">
             <tr>
-                <td><img src="quotesheet/bh/icon-whatsapp.png" alt=""> </td>
-                <td>{{ $user->phone == null ? 'Sin Dato' : $user->phone }}</td>
+                <td>{{-- <img src="quotesheet/bh/icon-whatsapp.png" alt=""> --}} </td>
+                <td>{{-- {{ $user->phone == null ? 'Sin Dato' : $user->phone }} --}}</td>
                 <td><img src="quotesheet/bh/icon-email.png" alt=""></td>
                 <td>{{ $user->email }}</td>
             </tr>
@@ -116,7 +119,9 @@
                     <p style="margin-bottom: 5px">Cotización Válida Hasta:
                         {{ $quote->updated_at->addMonth()->format('d/m/Y') }}</p>
                     <br>
-                    <p>Información Adicional: {{ $quote->latestQuotesUpdate->quotesInformation->information }}</p>
+                    @if (strlen($quote->latestQuotesUpdate->quotesInformation->information) > 0)
+                        <p>Información Adicional: {{ $quote->latestQuotesUpdate->quotesInformation->information }}</p>
+                    @endif
                     <br>
                 </td>
             </tr>

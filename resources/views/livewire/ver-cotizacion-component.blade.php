@@ -51,6 +51,7 @@
                             <p><b>Ejecutivo: </b> {{ $quote->user->name }}</p>
                             <br>
                         @endif
+                        <p><b>Nombre Comercial: </b> {{  $nombreComercial ? $nombreComercial->name : "Sin Definir" }}</p>
                         <p><b>Numero de lead: </b> {{ $quote->lead }}</p>
                         <p><b>Oportunidad: </b> {{ $quote->latestQuotesUpdate->quotesInformation->oportunity }}</p>
                         <p><b>Rank: </b>

@@ -28,7 +28,7 @@
                             <tbody>
                                 @foreach ($quotes as $quote)
                                     <tr>
-                                        <td class="text-center">{{ $loop->iteration }}</td>
+                                        <td class="text-center">QS{{ $quote->id }}</td>
                                         <th style="vertical-align: middle">{{ $quote->lead }}</th>
                                         @if ($quote->latestQuotesUpdate)
                                             <td>{{ $quote->latestQuotesUpdate->quotesInformation->name . ' | ' . $quote->latestQuotesUpdate->quotesInformation->company }}

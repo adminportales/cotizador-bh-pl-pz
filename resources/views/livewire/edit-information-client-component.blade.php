@@ -5,7 +5,7 @@
         <div class="col-md-4">
             <div class="form-group">
                 <label for="">Opciones de Cliente</label>
-                <select name="tipo" class="form-control" wire:model="tipoCliente">
+                <select name="tipo" class="form-control" wire:model="tipoCliente" disabled>
                     <option value="">Como vas a registrar el cliente</option>
                     <option value="buscar">Seleccionar Cliente</option>
                     <option value="crear">Crear Prospecto</option>
@@ -19,7 +19,7 @@
             <div class="col-md-4">
                 <div class="form-group">
                     <label for="">Buscar Cliente</label>
-                    <select name="tipo" class="form-control" wire:model="clienteSeleccionado">
+                    <select name="tipo" class="form-control" wire:model="clienteSeleccionado" disabled>
                         <option value="">Seleccionar Cliente</option>
                         @foreach ($clients as $client)
                             <option value="{{ $client->id }}">
@@ -39,7 +39,8 @@
             <div class="col-md-4">
                 <div class="form-group">
                     <label for="">Nombre de la empresa</label>
-                    <input type="text" class="form-control" placeholder="Nombre de la empresa" wire:model="empresa">
+                    <input type="text" class="form-control" placeholder="Nombre de la empresa" wire:model="empresa"
+                        disabled>
                 </div>
                 @if ($errors->has('empresa'))
                     <span class="text-danger">{{ $errors->first('empresa') }}</span>
@@ -48,7 +49,7 @@
         @endif
         <div class="col-md-4">
             <div class="form-group">
-                <label for="">Nombre</label>
+                <label for="">Nombre de contacto</label>
                 <input type="text" class="form-control" placeholder="Nombre" wire:model="nombre">
             </div>
             @if ($errors->has('nombre'))

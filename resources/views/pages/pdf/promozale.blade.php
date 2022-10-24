@@ -47,21 +47,24 @@
         </table>
     </footer>
     <div class="body-pdf">
+        @if ($nombreComercial)
+            <p class="content" style="font-size: 24px;"> <b>{{ $nombreComercial->name }}</b></p>
+        @endif
+        <p class="content" style="font-size: 20px;"> <b>{{ $quote->latestQuotesUpdate->quotesInformation->company }}</b>
+        </p>
         <table class="cliente content">
             <tr>
                 <td style="width: 20%">
-                    <p>Atención a:</p>
                     <p>Contacto: </p>
                     <p>Departamento: </p>
                 </td>
 
                 <td style="width: 40%">
-                    <p> {{ $quote->latestQuotesUpdate->quotesInformation->company }}</p>
                     <p>{{ $quote->latestQuotesUpdate->quotesInformation->name }}</p>
                     <p> {{ $quote->latestQuotesUpdate->quotesInformation->department }}</p>
                 </td>
                 <td style="width: 40%">
-                    <p># Cotización: QuotePL-{{ $quote->id }}</p>
+                    <p># Cotización: QS{{ $quote->id }}</p>
                     <p>Fecha de cotización: {{ $quote->updated_at->format('d/m/Y') }}</p>
                 </td>
             </tr>
@@ -71,7 +74,7 @@
             <thead>
                 <tr class="titulos">
                     <th colspan="1">Imagen de Referencia</th>
-                    <th colspan="2">Descripción</th>
+                    <th colspan="1">Descripción</th>
                     <th colspan="1">Tecnica Personalización</th>
                     <th colspan="1">Tintas</th>
                     <th colspan="1">NÚMERO PIEZAS</th>
@@ -96,7 +99,7 @@
                                 <img src="img/default.jpg" width="100">
                             @endif
                         </td>
-                        <td colspan="2">{{ $producto->name }}</td>
+                        <td colspan="1">{{ $producto->name }}</td>
                         <td colspan="1">{{ $tecnica->tecnica }}</td>
                         <td colspan="1">{{ $item->color_logos }}</td>
                         <td colspan="1">{{ $item->cantidad }}</td>
@@ -104,8 +107,8 @@
                                 hábiles
                             </span>
                         </td>
-                        <td colspan="1">$ {{ number_format($item->precio_unitario, 2, '.', ',') }}</td>
-                        <td colspan="1">$ {{ number_format($item->precio_total, 2, '.', ',') }}</td>
+                        <td colspan="1">${{ number_format($item->precio_unitario, 2, '.', ',') }}</td>
+                        <td colspan="1">${{ number_format($item->precio_total, 2, '.', ',') }}</td>
                     </tr>
                 @endforeach
             </tbody>
@@ -171,8 +174,8 @@
             <tr>
                 <td style="text-align: right"><img src="quotesheet/bh/icon-whatsapp.png" alt=""> </td>
                 <td style="vertical-align: middle"> {{ $user->company->phone }} </td>
-                <td style="text-align: right"><img src="quotesheet/bh/icon-whatsapp.png" alt=""> </td>
-                <td style="vertical-align: middle">{{ $user->phone }}</td>
+                <td style="text-align: right">{{-- <img src="quotesheet/bh/icon-whatsapp.png" alt=""> --}} </td>
+                <td style="vertical-align: middle">{{-- {{ $user->phone }} --}}</td>
             </tr>
         </table>
         <div class="firma content" style="text-align: right">

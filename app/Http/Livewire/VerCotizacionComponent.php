@@ -6,6 +6,7 @@ use App\Mail\SendQuote;
 use App\Mail\SendQuoteBH;
 use App\Mail\SendQuotePL;
 use App\Mail\SendQuotePZ;
+use App\Models\Client;
 use App\Notifications\SendQuoteByEmail;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Mail;
@@ -28,7 +29,12 @@ class VerCotizacionComponent extends Component
         if (!auth()->user()->hasRole('admin')) {
             $this->authorize('view', $this->quote);
         }
-        return view('livewire.ver-cotizacion-component');
+        $empresa = Client::where("name", $this->quote->latestQuotesUpdate->quotesInformation->company)->first();
+        $nombreComercial = null;
+        if ($empresa) {
+            $nombreComercial = $empresa->firstTradename;
+        }
+        return view('livewire.ver-cotizacion-component', ['nombreComercial' => $nombreComercial]);
     }
 
     public function enviar()

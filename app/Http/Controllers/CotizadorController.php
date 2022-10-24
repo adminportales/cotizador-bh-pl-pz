@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Catalogo\GlobalAttribute;
 use App\Models\Catalogo\Product;
+use App\Models\Client;
 use App\Models\Quote;
 use Illuminate\Http\Request;
 
@@ -58,20 +59,26 @@ class CotizadorController extends Controller
     }
     public function previsualizar(Quote $quote)
     {
+        $empresa = Client::where("name", $quote->latestQuotesUpdate->quotesInformation->company)->first();
+        $nombreComercial = null;
+        if ($empresa) {
+            $nombreComercial = $empresa->firstTradename;
+        }
+
         $pdf = '';
         $company = $quote->user->company->name;
         switch ($company) {
             case 'PROMO LIFE':
                 # code...
-                $pdf = \PDF::loadView('pages.pdf.promolife', ['quote' => $quote]);
+                $pdf = \PDF::loadView('pages.pdf.promolife', ['quote' => $quote, 'nombreComercial' => $nombreComercial]);
                 break;
             case 'BH TRADEMARKET':
                 # code...
-                $pdf = \PDF::loadView('pages.pdf.bh', ['quote' => $quote]);
+                $pdf = \PDF::loadView('pages.pdf.bh', ['quote' => $quote, 'nombreComercial' => $nombreComercial]);
                 break;
             case 'PROMO ZALE':
                 # code...
-                $pdf = \PDF::loadView('pages.pdf.promozale', ['quote' => $quote]);
+                $pdf = \PDF::loadView('pages.pdf.promozale', ['quote' => $quote, 'nombreComercial' => $nombreComercial]);
                 break;
 
             default:

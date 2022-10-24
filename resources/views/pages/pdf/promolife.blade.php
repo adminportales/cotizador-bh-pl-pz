@@ -25,8 +25,7 @@
                     <span class="titulo1">Cotizacion</span>
                 </div>
                 <div style="width: 280px; text-align: center">
-                    <span class="titulo2">QUOTATION
-                        SHEET</span>
+                    <span class="titulo2">QUOTATION SHEET</span>
                 </div>
             </div>
         </div>
@@ -60,6 +59,9 @@
         </table>
     </footer>
     <div class="body-pdf">
+        @if ($nombreComercial)
+            <p class="content" style="font-size: 24px;"> <b>{{ $nombreComercial->name }}</b></p>
+        @endif
         <p class="content" style="font-size: 20px;"> <b>{{ $quote->latestQuotesUpdate->quotesInformation->company }}</b>
         </p>
         <table class="cliente content">
@@ -71,7 +73,7 @@
                     </p>
                 </td>
                 <td style="width: 40%">
-                    <p><b># Cotización:</b> QuotePL-{{ $quote->id }}</p>
+                    <p><b># Cotización:</b> QS{{ $quote->id }}</p>
                     <p><b>Fecha de cotización:</b> {{ $quote->updated_at->format('d/m/Y') }}</p>
                 </td>
             </tr>
@@ -193,7 +195,7 @@
             <tr>
                 <td><img src="quotesheet/bh/icon-whatsapp.png" alt=""> {{ $user->company->phone }}
                 </td>
-                <td><img src="quotesheet/bh/icon-whatsapp.png" alt=""> {{ $user->phone }}</td>
+                <td>{{-- <img src="quotesheet/bh/icon-whatsapp.png" alt=""> {{ $user->phone }} --}}</td>
             </tr>
         </table>
     </div>
