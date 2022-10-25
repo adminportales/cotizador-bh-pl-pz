@@ -4,6 +4,7 @@ namespace App\Http\Livewire;
 
 use App\Models\Client;
 use App\Models\QuoteInformation;
+use App\Models\User;
 use Livewire\Component;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
@@ -25,7 +26,13 @@ class EditInformationClientComponent extends Component
         $this->rank = $this->quoteInfo->rank;
         $this->departamento = $this->quoteInfo->department;
         $this->informacion = $this->quoteInfo->information;
-        $this->clients = auth()->user()->info->clients;
+        $this->clients = [];
+        if ($this->quote->user_id == auth()->user()->id) {
+            $this->clients = auth()->user()->info->clients;
+        } else {
+            $user = User::find($this->quote->user_id);
+            $this->clients = $user->info->clients;
+        }
         foreach ($this->clients as $cliente) {
             if ($cliente->name == $this->empresa) {
                 $this->tipoCliente = 'buscar';

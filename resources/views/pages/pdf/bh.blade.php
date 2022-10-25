@@ -61,8 +61,8 @@
         </table>
         <table class="content">
             <tr>
-                <td>{{-- <img src="quotesheet/bh/icon-whatsapp.png" alt=""> --}} </td>
-                <td>{{-- {{ $user->phone == null ? 'Sin Dato' : $user->phone }} --}}</td>
+                <td> <img src="quotesheet/bh/icon-whatsapp.png" alt=""> </td>
+                <td> {{ $user->phone == null ? 'Sin Dato' : $user->phone }} </td>
                 <td><img src="quotesheet/bh/icon-email.png" alt=""></td>
                 <td>{{ $user->email }}</td>
             </tr>
@@ -139,19 +139,12 @@
                 <td style="width: 100%; text-align: right">
                     <p><b>Subtotal: </b> $ {{ number_format($subtotal, 2, '.', ',') }}</p>
                     <p><b>Descuento: </b> $ {{ number_format($discount, 2, '.', ',') }}</p>
-                    <p><b>Iva: </b> $ {{ number_format($iva, 2, '.', ',') }}</p>
+                    <p><b>IVA: </b> $ {{ number_format($iva, 2, '.', ',') }}</p>
                     <br>
                     <p><b>Total: </b>$ {{ number_format($subtotal - $discount + $iva, 2, '.', ',') }}</p>
                 </td>
             </tr>
         </table>
-        <div class="firma content">
-            <br><br><br>
-            <p style="height: 45px"></p>
-            <p class="linea">______________________________</p>
-            <p>Firma Vendedor</p>
-            <p>{{ $user->name }}</p>
-        </div>
     </div>
     <br>
     <div class="content condiciones">

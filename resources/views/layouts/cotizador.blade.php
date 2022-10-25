@@ -79,6 +79,9 @@
     <div id="app">
         @include('layouts.components.navbar')
         @yield('content')
+        @if (!auth()->user()->phone)
+            @livewire('check-phone-component')
+        @endif
     </div>
     @livewireScripts
     <!-- Bootstrap core JavaScript-->

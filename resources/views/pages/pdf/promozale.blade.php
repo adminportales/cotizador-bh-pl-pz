@@ -130,7 +130,7 @@
                 <td style="width: 150px">
                     <p><b>Subtotal: </b>$ {{ $subtotal }}</p>
                     <p><b>Descuento: </b>$ {{ $discount }}</p>
-                    <p><b>Iva: </b>$ {{ $iva }}</p>
+                    <p><b>IVA: </b>$ {{ $iva }}</p>
                     <br>
                     <p><b>Total: </b>$ {{ $subtotal - $discount + $iva }}</p>
                 </td>
@@ -174,15 +174,10 @@
             <tr>
                 <td style="text-align: right"><img src="quotesheet/bh/icon-whatsapp.png" alt=""> </td>
                 <td style="vertical-align: middle"> {{ $user->company->phone }} </td>
-                <td style="text-align: right">{{-- <img src="quotesheet/bh/icon-whatsapp.png" alt=""> --}} </td>
-                <td style="vertical-align: middle">{{-- {{ $user->phone }} --}}</td>
+                <td style="text-align: right"> <img src="quotesheet/bh/icon-whatsapp.png" alt=""> </td>
+                <td style="vertical-align: middle"> {{ $user->phone }} </td>
             </tr>
         </table>
-        <div class="firma content" style="text-align: right">
-            <p style="height: 45px"></p>
-            <p class="linea">__________________________</p>
-            <p style>Firma Digital</p>
-        </div>
     </div>
 </body>
 

@@ -144,7 +144,7 @@
                 <td style="width: 150px">
                     <p><b>Subtotal: </b>$ {{ number_format($subtotal, 2, '.', ',') }}</p>
                     <p><b>Descuento: </b>$ {{ number_format($discount, 2, '.', ',') }}</p>
-                    <p><b>Iva: </b>$ {{ number_format($iva, 2, '.', ',') }}</p>
+                    <p><b>IVA: </b>$ {{ number_format($iva, 2, '.', ',') }}</p>
                     <p><b>Total: </b>$ {{ number_format($subtotal - $discount + $iva, 2, '.', ',') }}</p>
                 </td>
             </tr>
@@ -173,11 +173,6 @@
         </ul>
     </div>
     <div>
-        <div class="firma content" style="text-align: center">
-            <p>Firma Digital</p>
-            <p class="linea">__________________________</p>
-        </div>
-        <br>
         <table class="content responsable" style="width: 105%","text-align: center">
             <tr>
                 <td><img src="quotesheet/bh/icon-email.png"alt="">{{ $user->company->manager }}
@@ -195,7 +190,7 @@
             <tr>
                 <td><img src="quotesheet/bh/icon-whatsapp.png" alt=""> {{ $user->company->phone }}
                 </td>
-                <td>{{-- <img src="quotesheet/bh/icon-whatsapp.png" alt=""> {{ $user->phone }} --}}</td>
+                <td><img src="quotesheet/bh/icon-whatsapp.png" alt=""> {{ $user->phone }}</td>
             </tr>
         </table>
     </div>
