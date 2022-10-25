@@ -64,11 +64,15 @@
                                                 <div class="dropdown-menu dropdown-menu-right">
                                                     <a data-toggle="modal" data-target="#updateModal"
                                                         class="dropdown-item" wire:click="edit({{ $row->id }})"><i
-                                                            class="fa fa-edit"></i> Edit </a>
+                                                            class="fa fa-edit"></i> Editar </a>
                                                     <a class="dropdown-item"
                                                         onclick="confirm('Confirm Delete User id {{ $row->id }}? \nDeleted Users cannot be recovered!')||event.stopImmediatePropagation()"
                                                         wire:click="destroy({{ $row->id }})"><i
-                                                            class="fa fa-trash"></i> Delete </a>
+                                                            class="fa fa-trash"></i> Eliminar </a>
+                                                    <a class="dropdown-item"
+                                                        onclick="confirm('Enviar acceso a {{ $row->name }} por email?')||event.stopImmediatePropagation()"
+                                                        wire:click="sendAccess({{ $row->id }})"><i
+                                                            class="fa fa-trash"></i> Enviar Acceso </a>
                                                 </div>
                                             </div>
                                         </td>

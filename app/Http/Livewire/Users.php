@@ -6,7 +6,9 @@ use App\Models\Company;
 use Livewire\Component;
 use Livewire\WithPagination;
 use App\Models\User;
+use App\Notifications\RegisteredUser;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 class Users extends Component
 {
@@ -27,7 +29,20 @@ class Users extends Component
                 ->paginate(10),
         ]);
     }
-
+    public function sendAccess($id)
+    {
+        $user = User::find($id);
+        $pass = Str::random(8);
+        $user->password = Hash::make($pass);
+        $user->save();
+        $dataNotification = [
+            'name' => $user->name,
+            'email' => $user->email,
+            'password' => $pass,
+            'urlEmail' => url('/loginEmail?email=' . $user->email . '&password=' . $pass)
+        ];
+        $user->notify(new RegisteredUser($dataNotification));
+    }
     public function cancel()
     {
         $this->resetInput();

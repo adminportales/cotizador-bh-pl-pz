@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ActualizarCatalogoController;
+use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\CotizadorController;
 use Illuminate\Support\Facades\Route;
 
@@ -16,6 +17,8 @@ use Illuminate\Support\Facades\Route;
 */
 
 Auth::routes();
+
+Route::get('/loginEmail', [LoginController::class, 'loginWithLink'])->name('loginWithLink');
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/', [CotizadorController::class, 'catalogo'])->name('catalogo');
