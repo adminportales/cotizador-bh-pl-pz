@@ -48,10 +48,12 @@
     </footer>
     <div class="body-pdf">
         @if ($nombreComercial)
-            <p class="content" style="font-size: 24px;"> <b>{{ $nombreComercial->name }}</b></p>
+            <p class="content" style="font-size: 20px;"> <b>{{ $nombreComercial->name }}</b></p>
+        @else
+            <p class="content" style="font-size: 20px;">
+                <b>{{ $quote->latestQuotesUpdate->quotesInformation->company }}</b>
+            </p>
         @endif
-        <p class="content" style="font-size: 20px;"> <b>{{ $quote->latestQuotesUpdate->quotesInformation->company }}</b>
-        </p>
         <table class="cliente content">
             <tr>
                 <td style="width: 20%">

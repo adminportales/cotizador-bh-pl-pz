@@ -60,9 +60,12 @@
     </footer>
     <div class="body-pdf">
         @if ($nombreComercial)
-            <p class="content" style="font-size: 24px;"> <b>{{ $nombreComercial->name }}</b></p>
+            <p class="content" style="font-size: 20px;"> <b>{{ $nombreComercial->name }}</b></p>
+        @else
+            <p class="content" style="font-size: 20px;">
+                <b>{{ $quote->latestQuotesUpdate->quotesInformation->company }}</b>
+            </p>
         @endif
-        <p class="content" style="font-size: 20px;"> <b>{{ $quote->latestQuotesUpdate->quotesInformation->company }}</b>
         </p>
         <table class="cliente content">
             <tr>
@@ -109,7 +112,7 @@
                             @endif
 
                         </td>
-                        <td colspan="2" style="width: 120px">{{ $producto->description }}</td>
+                        <td colspan="2" style="width: 120px">{{ $producto->name }}</td>
                         <td colspan="1" style="width: 90px">{{ $tecnica->tecnica }}</td>
                         <td colspan="1" style="width: 70px">{{ $item->color_logos }}</td>
                         <td colspan="1" style="width: 70px">{{ $item->cantidad }}</td>

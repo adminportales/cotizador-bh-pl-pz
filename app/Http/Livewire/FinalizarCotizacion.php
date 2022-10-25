@@ -39,7 +39,7 @@ class FinalizarCotizacion extends Component
         $this->validate([
             'tipoCliente' => 'required',
         ]);
-
+        $nombreComercial = null;
         if ($this->tipoCliente == 'crear') {
             $this->validate([
                 'nombre' => 'required',
@@ -51,6 +51,10 @@ class FinalizarCotizacion extends Component
                 'clienteSeleccionado' => 'required',
             ]);
             $this->isClient = true;
+            $empresa = Client::where("name", $this->empresa)->first();
+            if ($empresa) {
+                $nombreComercial = $empresa->firstTradename;
+            }
         }
 
         $this->validate([
@@ -168,17 +172,17 @@ class FinalizarCotizacion extends Component
             case 'PROMO LIFE':
                 # code...
                 $keyOdoo = 'cd78567e59e016e964cdcc1bd99367c6';
-                $pdf = PDF::loadView('pages.pdf.promolife', ['quote' => $quote]);
+                $pdf = PDF::loadView('pages.pdf.promolife', ['quote' => $quote, 'nombreComercial' => $nombreComercial]);
                 break;
             case 'BH TRADEMARKET':
                 # code...
                 $keyOdoo = 'e877f47a2a844ded99004e444c5a9797';
-                $pdf = PDF::loadView('pages.pdf.bh', ['quote' => $quote]);
+                $pdf = PDF::loadView('pages.pdf.bh', ['quote' => $quote, 'nombreComercial' => $nombreComercial]);
                 break;
             case 'PROMO ZALE':
                 # code...
                 $keyOdoo = '0e31683a8597606123ff4fcfab772ed7';
-                $pdf = PDF::loadView('pages.pdf.promozale', ['quote' => $quote]);
+                $pdf = PDF::loadView('pages.pdf.promozale', ['quote' => $quote, 'nombreComercial' => $nombreComercial]);
                 break;
             default:
                 # code...

@@ -40,21 +40,26 @@ class VerCotizacionComponent extends Component
     public function enviar()
     {
         $this->authorize('update', $this->quote);
+        $empresa = Client::where("name", $this->quote->latestQuotesUpdate->quotesInformation->company)->first();
+        $nombreComercial = null;
+        if ($empresa) {
+            $nombreComercial = $empresa->firstTradename;
+        }
         $errors = false;
         $message = '';
         $pdf = '';
         switch (auth()->user()->company->name) {
             case 'PROMO LIFE':
                 # code...
-                $pdf = PDF::loadView('pages.pdf.promolife', ['quote' => $this->quote]);
+                $pdf = \PDF::loadView('pages.pdf.promolife', ['quote' => $this->quote, 'nombreComercial' => $nombreComercial]);
                 break;
             case 'BH TRADEMARKET':
                 # code...
-                $pdf = PDF::loadView('pages.pdf.bh', ['quote' => $this->quote]);
+                $pdf = \PDF::loadView('pages.pdf.bh', ['quote' => $this->quote, 'nombreComercial' => $nombreComercial]);
                 break;
             case 'PROMO ZALE':
                 # code...
-                $pdf = PDF::loadView('pages.pdf.promozale', ['quote' => $this->quote]);
+                $pdf = \PDF::loadView('pages.pdf.promozale', ['quote' => $this->quote, 'nombreComercial' => $nombreComercial]);
                 break;
 
             default:
@@ -145,7 +150,11 @@ class VerCotizacionComponent extends Component
             dd("El id de odoo no es valido");
             return;
         }
-
+        $empresa = Client::where("name", $this->quote->latestQuotesUpdate->quotesInformation->company)->first();
+        $nombreComercial = null;
+        if ($empresa) {
+            $nombreComercial = $empresa->firstTradename;
+        }
         $pdf = '';
         $keyOdoo = '';
         $errors = false;
@@ -153,15 +162,15 @@ class VerCotizacionComponent extends Component
         switch (auth()->user()->company->name) {
             case 'PROMO LIFE':
                 $keyOdoo = 'cd78567e59e016e964cdcc1bd99367c6';
-                $pdf = PDF::loadView('pages.pdf.promolife', ['quote' => $this->quote]);
+                $pdf = PDF::loadView('pages.pdf.promolife', ['quote' => $this->quote, 'nombreComercial' => $nombreComercial]);
                 break;
             case 'BH TRADEMARKET':
                 $keyOdoo = 'e877f47a2a844ded99004e444c5a9797';
-                $pdf = PDF::loadView('pages.pdf.bh', ['quote' => $this->quote]);
+                $pdf = PDF::loadView('pages.pdf.bh', ['quote' => $this->quote, 'nombreComercial' => $nombreComercial]);
                 break;
             case 'PROMO ZALE':
                 $keyOdoo = '0e31683a8597606123ff4fcfab772ed7';
-                $pdf = PDF::loadView('pages.pdf.promozale', ['quote' => $this->quote]);
+                $pdf = PDF::loadView('pages.pdf.promozale', ['quote' => $this->quote, 'nombreComercial' => $nombreComercial]);
                 break;
 
             default:
