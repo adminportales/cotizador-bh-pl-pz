@@ -7,16 +7,17 @@ use Livewire\Component;
 
 class CheckPhoneComponent extends Component
 {
+    public $phone;
     public function render()
     {
         return view('livewire.check-phone-component');
     }
 
-    public function changePhone($phone)
+    public function changePhone()
     {
         try {
             $user = auth()->user();
-            $user->phone = $phone;
+            $user->phone = $this->phone;
             $user->save();
             return 1;
         } catch (Exception $th) {

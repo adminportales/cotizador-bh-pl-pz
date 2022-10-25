@@ -1,5 +1,4 @@
 <div>
-    DFROJI
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const solicitarInfo = () => {
@@ -13,21 +12,23 @@
                     showLoaderOnConfirm: true,
                     allowOutsideClick: false,
                     allowEscapeKey: false,
-                }).then((result) => {
+                }).then(async (result) => {
                     if (result.value == undefined) {
                         solicitarInfo()
                     } else if (result.value.trim() !== "") {
                         if (!isNaN(result.value.trim())) {
-                            let result = @this.changePhone("result.value.trim()")
-                            result.then(response => {
-                                if (response == 1) {
-                                    Swal.fire('La informacion se registro correctamente', '',
-                                        'success')
-                                }
-                            }, () => {
-                                Swal.fire('¡Error al registrar la informacion!', '', 'error')
+                            @this.phone = await result.value.trim();
+
+                            let respuesta = await @this.changePhone()
+                            if (respuesta == 1) {
+                                Swal.fire('La informacion se registro correctamente',
+                                    '',
+                                    'success')
+                            } else {
+                                Swal.fire('¡Error al registrar la informacion!', '',
+                                    'error')
                                 solicitarInfo()
-                            })
+                            }
                             return
                         } else {
                             solicitarInfo()
