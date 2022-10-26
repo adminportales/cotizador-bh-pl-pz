@@ -28,7 +28,7 @@
     <footer>
         <table class="footer content">
             <tr>
-                <td colspan="3" style="text-align: center">www.bhtrademarket.com.mx</td>
+                <td colspan="3" style="text-align: center">www.trademarket.com.mx</td>
             </tr>
             <tr>
                 <td colspan="3" style="text-align: center; font-size: 10px;">San Andrés Atoto 155A Naucalpan de

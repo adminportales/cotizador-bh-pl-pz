@@ -120,8 +120,6 @@
             </div>
         </div>
     </div>
-@endsection
-@section('styles')
     <link rel="stylesheet" href="{{ asset('assets/css/components/custom-carousel.css') }}">
     <style>
         .product-small-img img {
@@ -146,8 +144,6 @@
             padding: 10px;
         }
     </style>
-@endsection
-@section('scripts')
     <script>
         function cambiarImagen(smallImg) {
             let fullImg = document.querySelector('#imgBox')

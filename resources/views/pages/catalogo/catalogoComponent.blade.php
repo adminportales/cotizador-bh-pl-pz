@@ -87,9 +87,11 @@
                                         $priceProduct = round($priceProduct - $priceProduct * ($row->provider->discount / 100), 2);
                                     }
                                 @endphp
-                                <img src="{{ $row->firstImage ? $row->firstImage->image_url : '' }}"
-                                    class="card-img-top " alt="{{ $row->name }}"
-                                    style="max-width: 100%; max-height: 150px; width: auto">
+                                <div class="text-center" style="height: 140px">
+                                    <img src="{{ $row->firstImage ? $row->firstImage->image_url : '' }}"
+                                        class="card-img-top " alt="{{ $row->name }}"
+                                        style="width: 100%; max-width: 100px; max-height: 140px; width: auto">
+                                </div>
                                 <h5 class="card-title" style="text-transform: capitalize">
                                     {{ Str::limit($row->name, 30, '...') }}</h5>
                                 <p class=" m-0 pt-1"><strong>SKU:</strong> {{ $row->sku }}</p>
