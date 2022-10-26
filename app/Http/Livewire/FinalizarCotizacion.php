@@ -335,17 +335,18 @@ class FinalizarCotizacion extends Component
     public function cargarDatosCliente()
     {
         $client = Client::find($this->clienteSeleccionado);
-        if ($client) {
+        if ($client && $this->tipoCliente == "buscar") {
             $this->nombre =  $client->contact;
             $this->empresa = $client->name;
             $this->email = $client->email;
             $this->telefono = $client->phone;
-        } else {
-            $this->nombre = '';
-            $this->empresa = '';
-            $this->email = '';
-            $this->telefono = '';
+            return;
         }
+        $this->nombre = '';
+        $this->empresa = '';
+        $this->email = '';
+        $this->telefono = '';
+        $this->clienteSeleccionado = "";
     }
 
     public function resetData()
