@@ -127,4 +127,15 @@ class Catalogo extends Component
             'proveedores' => $proveedores,
         ]);
     }
+    public function limpiar()
+    {
+        $this->nombre = '';
+        $this->sku = '';
+        $this->color = '';
+        $this->category = '';
+        $this->proveedor = null;
+        $this->type = null;
+        $this->orderPrice = '';
+        $this->orderStock = '';
+    }
 }
