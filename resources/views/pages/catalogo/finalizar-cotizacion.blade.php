@@ -8,7 +8,8 @@
                     <div class="col-md-4">
                         <div class="form-group">
                             <label for="">Opciones de Cliente</label>
-                            <select name="tipo" class="form-control" wire:model="tipoCliente"  wire:change="cargarDatosCliente">
+                            <select name="tipo" class="form-control" wire:model="tipoCliente"
+                                wire:change="cargarDatosCliente">
                                 <option value="">Como vas a registrar el cliente</option>
                                 <option value="buscar">Seleccionar uno de mis clientes</option>
                                 <option value="crear">Crear un nuevo prospecto</option>
