@@ -99,7 +99,7 @@
                 <div class="card-body">
                     <h3>Total de la cotizacion</h3>
                     <button type="button"
-                        class="btn {{ auth()->user()->currentQuote->discount ? 'btn-warning' : 'btn-info' }} btn-block my-1"
+                        class="btn {{ auth()->user()->currentQuote->discount ? 'btn-warning' : 'btn-info' }} btn-block btn-sm my-1"
                         data-toggle="modal" data-target="#discountModal">
                         {{ auth()->user()->currentQuote->discount ? 'Editar Descuento' : 'Agregar Descuento' }}
                     </button>

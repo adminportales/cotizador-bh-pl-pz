@@ -96,6 +96,9 @@
         window.livewire.on('closeModal', () => {
             $('#createDataModal').modal('hide');
         });
+        $(function() {
+            $('[data-toggle="tooltip"]').tooltip()
+        })
     </script>
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>

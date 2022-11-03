@@ -33,7 +33,7 @@
                     @if ($quote->latestQuotesUpdate)
                         <div class="d-flex justify-content-between">
                             <h5><strong>Informacion del Cliente</strong></h5>
-                            <div style="width: 20px; cursor: pointer;" data-toggle="modal"
+                            <div class="text-success" style="width: 25px; cursor: pointer;" data-toggle="modal"
                                 data-target="#editarInfoCliente">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20"
                                     fill="currentColor">
@@ -54,7 +54,7 @@
                         <p><b>Nombre Comercial: </b> {{  $nombreComercial ? $nombreComercial->name : "Sin Definir" }}</p>
                         <p><b>Numero de lead: </b> {{ $quote->lead }}</p>
                         <p><b>Oportunidad: </b> {{ $quote->latestQuotesUpdate->quotesInformation->oportunity }}</p>
-                        <p><b>Rank: </b>
+                        <p><b>Probabilidad de Venta: </b>
                             @switch($quote->latestQuotesUpdate->quotesInformation->rank)
                                 @case(1)
                                     {{ 'Medio' }}
@@ -194,7 +194,7 @@
                                                     {{ $item->quotesInformation->cell_phone }}</p>
                                                 <p class="m-0"> <strong>Oportunidad: </strong>
                                                     {{ $item->quotesInformation->oportunity }}</p>
-                                                <p class="m-0"><strong>Rank: </strong>
+                                                <p class="m-0"><strong>Probabilidad de Venta: </strong>
                                                     {{ $item->quotesInformation->rank }}</p>
                                                 <p class="m-0"><strong>Departamento: </strong>
                                                     {{ $item->quotesInformation->department }}</p>

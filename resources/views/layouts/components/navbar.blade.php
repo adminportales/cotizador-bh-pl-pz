@@ -31,7 +31,7 @@
             <!-- Topbar Navbar -->
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item d-flex align-items-center">
-                    <a class="nav-link text-white" aria-current="page" href="{{ route('catalogo') }}">
+                    <a class="nav-link text-white" aria-current="page" href="{{ route('catalogo') }}" data-toggle="tooltip" data-placement="bottom" title="Inicio">
                         <div style="width: 2rem">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                 stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
@@ -45,7 +45,7 @@
                     @livewire('count-cart-quote')
                 </li>
                 <li class="nav-item d-flex align-items-center">
-                    <a class="nav-link text-white" aria-current="page" href="{{ route('cotizaciones') }}">
+                    <a class="nav-link text-white" aria-current="page" href="{{ route('cotizaciones') }}" data-toggle="tooltip" data-placement="bottom" title="Lista de Cotizaciones">
                         <div style="width: 2rem">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                 stroke-width="1.5" stroke="currentColor" class="w-6 h-6">

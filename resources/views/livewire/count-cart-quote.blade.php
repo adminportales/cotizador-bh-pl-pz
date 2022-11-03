@@ -1,5 +1,5 @@
 <div>
-    <a class="nav-link text-white" aria-current="page" href="{{ route('cotizacion') }}">
+    <a class="nav-link text-white" aria-current="page" href="{{ route('cotizacion') }}" data-toggle="tooltip" data-placement="bottom" title="Cotizacion Actual">
         <div style="width: 2rem">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                 stroke="currentColor" class="w-6 h-6">

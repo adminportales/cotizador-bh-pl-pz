@@ -96,9 +96,9 @@
         </div>
         <div class="col-md-4">
             <div class="form-group">
-                <label for="">Rank</label>
+                <label for="">Probabilidad de Venta</label>
                 <select name="tipo" class="form-control" wire:model="rank">
-                    <option value="">Seleccione el rank</option>
+                    <option value="">Seleccione la Probabilidad de Venta</option>
                     <option value="1">Medio</option>
                     <option value="2">Alto</option>
                     <option value="3">Muy Alto</option>

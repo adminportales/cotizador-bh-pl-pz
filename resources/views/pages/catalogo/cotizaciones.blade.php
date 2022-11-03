@@ -19,7 +19,7 @@
                                     <th scope="col">Lead</th>
                                     <th scope="col">Cliente</th>
                                     <th scope="col">Oportunidad</th>
-                                    <th scope="col">Rank</th>
+                                    <th scope="col">Probabilidad de Venta</th>
                                     <th scope="col" class="text-center">Total</th>
                                     <th scope="col" class="text-center">Fecha</th>
                                     <th scope="col" class="text-center">Acciones</th>

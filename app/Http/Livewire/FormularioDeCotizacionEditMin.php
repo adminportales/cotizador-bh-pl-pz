@@ -58,8 +58,13 @@ class FormularioDeCotizacionEditMin extends Component
         }
 
         $preciosDisponibles = [];
-        if ($this->sizeSeleccionado !== null && $this->sizeSeleccionado !== "") {
-            $preciosDisponibles = SizeMaterialTechnique::where('material_technique_id', $materialTechnique->id)->where('size_id', (int)$this->sizeSeleccionado)->first()->pricesTechniques;
+        if ($materialTechnique) {
+            if ($this->sizeSeleccionado !== null && $this->sizeSeleccionado !== "") {
+                $preciosDisponibles = SizeMaterialTechnique::where('material_technique_id', $materialTechnique->id)->where('size_id', (int)$this->sizeSeleccionado)->first()->pricesTechniques;
+            } else {
+                $preciosDisponibles = [];
+                $this->sizeSeleccionado = null;
+            }
         } else {
             $preciosDisponibles = [];
             $this->sizeSeleccionado = null;
