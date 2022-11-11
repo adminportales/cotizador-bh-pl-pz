@@ -81,6 +81,8 @@
         @yield('content')
         @if (!auth()->user()->phone)
             @livewire('check-phone-component')
+        @elseif(!auth()->user()->company)
+            @livewire('check-company-component')
         @endif
     </div>
     @livewireScripts

@@ -186,4 +186,9 @@ class FormularioDeCotizacionMinComponent extends Component
         $this->precioCalculado = 0;
         $this->precioTotal = 0;
     }
+
+    public function resetSizes()
+    {
+        $this->sizeSeleccionado = null;
+    }
 }

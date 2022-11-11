@@ -171,4 +171,8 @@ class FormularioDeCotizacionCurrentMin extends Component
         $this->dispatchBrowserEvent('closeModal', ['currentQuote' => $this->currentQuote->id]);
         $this->emit('updateProductCurrent');
     }
+    public function resetSizes()
+    {
+        $this->sizeSeleccionado = null;
+    }
 }

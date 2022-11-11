@@ -20,6 +20,9 @@
                         <div class="btn btn-sm btn-info" data-toggle="modal" data-target="#createDataModal">
                             <i class="fa fa-plus"></i> Add Users
                         </div>
+                        <div class="btn btn-sm btn-info" onclick="enviar()">
+                            <i class="fa fa-plus"></i> Enviar Acceso
+                        </div>
                     </div>
                 </div>
 
@@ -85,4 +88,27 @@
             </div>
         </div>
     </div>
+    <script>
+        function enviar(id) {
+            Swal.fire({
+                title: 'Esta seguro?',
+                text: "Se enviara un email a todos los usuarios!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Si, eliminar!',
+                cancelButtonText: 'Cancelar!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    @this.sendAccessAll()
+                    Swal.fire(
+                        'Eliminado!',
+                        'El producto se ha eliminado.',
+                        'success'
+                    )
+                }
+            })
+        }
+    </script>
 </div>

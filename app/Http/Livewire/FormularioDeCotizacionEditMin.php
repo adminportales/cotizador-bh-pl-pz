@@ -215,4 +215,8 @@ class FormularioDeCotizacionEditMin extends Component
         $this->precioTotal = 0;
         $this->currentQuote_id = '';
     }
+    public function resetSizes()
+    {
+        $this->sizeSeleccionado = null;
+    }
 }

@@ -100,11 +100,13 @@ class ApiOdooController extends Controller
                                     'user_id' => $dataClient['user_id'],
                                     'client_odoo_id' => $dataClient['id'],
                                 ]);
-                                if (count($dataClient['tradename']) > 0) {
-                                    foreach ($dataClient['tradename'] as $value) {
-                                        $client->tradenames()->create([
-                                            'name' => $value['customer_label']
-                                        ]);
+                                if ($dataClient['tradename']) {
+                                    if (count($dataClient['tradename']) > 0) {
+                                        foreach ($dataClient['tradename'] as $value) {
+                                            $client->tradenames()->create([
+                                                'name' => $value['customer_label']
+                                            ]);
+                                        }
                                     }
                                 }
                             } else {
@@ -115,12 +117,14 @@ class ApiOdooController extends Controller
                                     'contact' => $dataClient['contact'] == false ? "Sin Contacto" : $dataClient['contact'],
                                     'user_id' => $dataClient['user_id'],
                                 ]);
-                                if (count($dataClient['tradename']) > 0) {
-                                    $client->tradenames()->delete();
-                                    foreach ($dataClient['tradename'] as $value) {
-                                        $client->tradenames()->create([
-                                            'name' => $value['customer_label']
-                                        ]);
+                                if ($dataClient['tradename']) {
+                                    if (count($dataClient['tradename']) > 0) {
+                                        $client->tradenames()->delete();
+                                        foreach ($dataClient['tradename'] as $value) {
+                                            $client->tradenames()->create([
+                                                'name' => $value['customer_label']
+                                            ]);
+                                        }
                                     }
                                 }
                             }

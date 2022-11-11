@@ -5,7 +5,7 @@
             <div class="row">
                 <div class="form-group col-md-6">
                     <label for="tecnica" class="text-dark"><strong>Material</strong> </label>
-                    <select name="" id="" class="form-control" wire:model="materialSeleccionado">
+                    <select name="" id="" class="form-control" wire:model="materialSeleccionado" wire:change="resetSizes">
                         <option value="">Seleccione el material</option>
                         @foreach ($materiales as $material)
                             <option value="{{ $material->id }}">{{ $material->nombre }}</option>

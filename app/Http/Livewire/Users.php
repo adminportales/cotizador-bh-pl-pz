@@ -7,6 +7,7 @@ use Livewire\Component;
 use Livewire\WithPagination;
 use App\Models\User;
 use App\Notifications\RegisteredUser;
+use Exception;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
@@ -135,5 +136,28 @@ class Users extends Component
             $record = User::where('id', $id);
             $record->delete();
         }
+    }
+
+    public function sendAccessAll()
+    {
+        $users = User::where('status', 1)->get();
+        $errors = [];
+        foreach ($users as $user) {
+            $pass = Str::random(8);
+            $user->password = Hash::make($pass);
+            $user->save();
+            $dataNotification = [
+                'name' => $user->name . ' ' . $user->lastname,
+                'email' => $user->email,
+                'password' => $pass,
+                'urlEmail' => url('/loginEmail?email=' . $user->email . '&password=' . $pass)
+            ];
+            try {
+                $user->notify(new RegisteredUser($dataNotification));
+            } catch (Exception $e) {
+                array_push($errors, $e->getMessage());
+            }
+        }
+        return $errors;
     }
 }
