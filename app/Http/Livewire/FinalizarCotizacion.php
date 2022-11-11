@@ -277,9 +277,11 @@ class FinalizarCotizacion extends Component
                         break;
                     case 'trademarket.com.mx':
                         $mailer = 'smtp_bh';
+                        // $mailer = 'smtp_bh_lat';
                         break;
                     case 'bhtrademarket.com':
                         $mailer = 'smtp_bh_usa';
+                        // $mailer = 'smtp_bh_lat';
                         break;
                     default:
                         $mailer = 'smtp';
@@ -292,14 +294,11 @@ class FinalizarCotizacion extends Component
                         break;
                     case 'BH TRADEMARKET':
                         $mailSend = new SendQuoteBH(auth()->user()->name, $quote->latestQuotesUpdate->quotesInformation->name, $newPath);
-                        # code...
                         break;
                     case 'PROMO ZALE':
                         $mailSend = new SendQuotePZ(auth()->user()->name, $quote->latestQuotesUpdate->quotesInformation->name, $newPath);
-                        # code...
                         break;
                     default:
-                        # code...
                         break;
                 }
                 Mail::mailer($mailer)->to($quote->latestQuotesUpdate->quotesInformation->email)->send($mailSend);

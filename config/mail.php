@@ -84,6 +84,16 @@ return [
             'timeout' => null,
             'auth_mode' => null,
         ],
+        'smtp_bh_lat' => [
+            'transport' => 'smtp',
+            'host' => env('MAIL_HOST_BH_LAT', 'smtp.mailgun.org'),
+            'port' => env('MAIL_PORT_BH_LAT', 587),
+            'encryption' => env('MAIL_ENCRYPTION_BH_LAT', 'tls'),
+            'username' => env('MAIL_USERNAME_BH_LAT'),
+            'password' => env('MAIL_PASSWORD_BH_LAT'),
+            'timeout' => null,
+            'auth_mode' => null,
+        ],
 
         'ses' => [
             'transport' => 'ses',

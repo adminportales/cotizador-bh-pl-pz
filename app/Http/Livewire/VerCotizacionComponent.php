@@ -82,9 +82,11 @@ class VerCotizacionComponent extends Component
                     break;
                 case 'trademarket.com.mx':
                     $mailer = 'smtp_bh';
+                    // $mailer = 'smtp_bh_lat';
                     break;
                 case 'bhtrademarket.com':
                     $mailer = 'smtp_bh_usa';
+                    // $mailer = 'smtp_bh_lat';
                     break;
                 default:
                     $mailer = 'smtp';
