@@ -140,10 +140,47 @@
                             <span class="text-danger">{{ $errors->first('departamento') }}</span>
                         @endif
                     </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="">Logo del Cliente</label>
+                            <div class="form-group" x-data="{ isUploading: false, progress: 5 }"
+                                x-on:livewire-upload-start="isUploading = true"
+                                x-on:livewire-upload-finish="isUploading = false"
+                                x-on:livewire-upload-error="isUploading = false"
+                                x-on:livewire-upload-progress="progress = $event.detail.progress">
+                                <input type="file" class="form-control" wire:model="logo">
+                                <div x-show="isUploading" class="progress">
+                                    <div class="progress-bar" role="progressbar" x-bind:style="`width: ${progress}%`"
+                                        aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                            </div>
+                            @if ($logo)
+                                <div class="btn btn-danger btn-sm" wire:click="limpiarLogo()">Eliminar</div>
+                            @else
+                                <p>No hay un logo de cliente cargado</p>
+                            @endif
+                        </div>
+                        @if ($errors->has('logo'))
+                            <span class="text-danger">{{ $errors->first('departamento') }}</span>
+                        @endif
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            @if ($logo)
+                                <div class="text-center">
+                                    <p>Logo del cliente</p>
+                                    <p class="text-warning">Revisa que tenga fondo blanco o que se un archivo PNG</p>
+                                    <img src="{{ $logo->temporaryUrl() }}" alt=""
+                                        style="max-width: 100%; height: 160px;">
+                                </div>
+                            @endif
+                        </div>
+                    </div>
                     <div class="col-md-12">
                         <div class="form-group">
                             <label for="">Informacion Adicional (Opcional)</label>
-                            <textarea name="" id="" cols="30" rows="2" class="form-control" wire:model="informacion"></textarea>
+                            <textarea name="" id="" cols="30" rows="2" class="form-control"
+                                wire:model="informacion"></textarea>
                         </div>
                         @if ($errors->has('informacion'))
                             <span class="text-danger">{{ $errors->first('informacion') }}</span>
@@ -222,6 +259,7 @@
     @else
         <p class="text-center">No tienes productos en tu cotizacion actual</p>
     @endif
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <script>
         window.addEventListener('isntCompany', event => {
             Swal.fire('No tienes una empresa asignada')

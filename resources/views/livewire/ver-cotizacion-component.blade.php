@@ -83,7 +83,13 @@
                     @else
                         <p>Sin informacion</p>
                     @endif
-
+                    @if ($quote->logo)
+                        <div class="text-center">
+                            <p>Logo del cliente</p>
+                            <img src="{{ asset($quote->logo) }}" alt=""
+                                style="max-width: 100%; height: 130px;">
+                        </div>
+                    @endif
                     @if ($quote->latestQuotesUpdate)
                         <!-- Modal -->
                         <div class="modal fade" id="editarInfoCliente" tabindex="-1"

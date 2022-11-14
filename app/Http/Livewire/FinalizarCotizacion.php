@@ -17,10 +17,12 @@ use Barryvdh\DomPDF\Facade\Pdf;
 use Exception;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
+use Livewire\WithFileUploads;
 
 class FinalizarCotizacion extends Component
 {
-    public $tipoCliente, $clienteSeleccionado = '', $isClient, $nombre, $empresa, $email, $telefono, $celular, $oportunidad, $rank = '', $departamento, $informacion, $ivaByItem;
+    use WithFileUploads;
+    public $tipoCliente, $clienteSeleccionado = '', $isClient, $nombre, $empresa, $email, $telefono, $celular, $oportunidad, $rank = '', $departamento, $informacion, $ivaByItem, $logo;
 
     public function render()
     {
@@ -30,6 +32,12 @@ class FinalizarCotizacion extends Component
         }
         return view('pages.catalogo.finalizar-cotizacion', compact('userClients'));
     }
+
+    public function limpiarLogo()
+    {
+        $this->logo = null;
+    }
+
     public function guardarCotizacion()
     {
         if (!auth()->user()->company) {
@@ -77,10 +85,17 @@ class FinalizarCotizacion extends Component
             dd("El id de odoo no es valido");
             return;
         }
-        // Guardar La cotizacion
+        $pathLogo = null;
+        if ($this->logo != null) {
+            $name = time() . $this->empresa .  $this->logo->getClientOriginalExtension();
+            $pathLogo = 'storage/logos/' . $name;
+            $this->logo->storeAs('public/logos', $name);
+            // Guardar La cotizacion
+        }
         $quote = auth()->user()->quotes()->create([
             'lead' => 'No Definido',
             'iva_by_item' => boolval($this->ivaByItem),
+            'logo' => $pathLogo,
         ]);
 
         // Guardar la Info de la cotizacion

@@ -18,6 +18,7 @@ class CreateQuotesTable extends Migration
             $table->foreignId('user_id')->constrained();
             $table->string('lead');
             $table->boolean('iva_by_item')->default(false);
+            $table->text('logo')->nullable();
             // $table->boolean('client');
             $table->timestamps();
         });

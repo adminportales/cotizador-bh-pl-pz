@@ -41,6 +41,11 @@
         </div>
     </footer>
     <div class="body-pdf">
+        @if ($quote->logo != null)
+            <div class="content">
+                <img src="{{ $quote->logo }}" width="100">
+            </div>
+        @endif
         @if ($nombreComercial)
             <p class="content" style="font-size: 20px;"> <b>{{ $nombreComercial->name }}</b></p>
         @else
