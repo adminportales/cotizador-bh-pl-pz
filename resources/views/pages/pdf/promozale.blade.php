@@ -109,7 +109,13 @@
                                 hábiles
                             </span>
                         </td>
-                        <td colspan="1">${{ number_format($item->precio_unitario, 2, '.', ',') }}</td>
+                        <td colspan="1">${{ number_format($item->precio_unitario, 2, '.', ',') }}
+                            @if ($quote->iva_by_item)
+                                <p style="font-size: 12px"><b>IVA:
+                                    </b>${{ number_format($item->precio_total * 0.16, 2, '.', ',') }}
+                                </p>
+                            @endif
+                        </td>
                         <td colspan="1">${{ number_format($item->precio_total, 2, '.', ',') }}</td>
                     </tr>
                 @endforeach
@@ -130,11 +136,13 @@
                     $iva = round($subtotal * 0.16, 2);
                 @endphp
                 <td style="width: 150px">
-                    <p><b>Subtotal: </b>$ {{ $subtotal }}</p>
-                    <p><b>Descuento: </b>$ {{ $discount }}</p>
-                    <p><b>IVA: </b>$ {{ $iva }}</p>
+                    <p><b>Subtotal: </b>$ {{ number_format($subtotal, 2, '.', ',') }}</p>
+                    <p><b>Descuento: </b>$ {{ number_format($discount, 2, '.', ',') }}</p>
+                    @if (!$quote->iva_by_item)
+                        <p><b>IVA: </b> $ {{ number_format($iva, 2, '.', ',') }}</p>
+                    @endif
                     <br>
-                    <p><b>Total: </b>$ {{ $subtotal - $discount + $iva }}</p>
+                    <p><b>Total: </b>$ {{ number_format($subtotal - $discount + $iva, 2, '.', ',') }}</p>
                 </td>
             </tr>
         </table>

@@ -51,7 +51,7 @@
                             <p><b>Ejecutivo: </b> {{ $quote->user->name }}</p>
                             <br>
                         @endif
-                        <p><b>Nombre Comercial: </b> {{  $nombreComercial ? $nombreComercial->name : "Sin Definir" }}</p>
+                        <p><b>Nombre Comercial: </b> {{ $nombreComercial ? $nombreComercial->name : 'Sin Definir' }}</p>
                         <p><b>Numero de lead: </b> {{ $quote->lead }}</p>
                         <p><b>Oportunidad: </b> {{ $quote->latestQuotesUpdate->quotesInformation->oportunity }}</p>
                         <p><b>Probabilidad de Venta: </b>
@@ -76,6 +76,7 @@
                         <p><b>Telefono: </b>{{ $quote->latestQuotesUpdate->quotesInformation->landline }}</p>
                         <p><b>Celular: </b>{{ $quote->latestQuotesUpdate->quotesInformation->cell_phone }}</p>
                         <p><b>Departamento: </b>{{ $quote->latestQuotesUpdate->quotesInformation->department }}</p>
+                        <p><b>El IVA se muestra: </b>{{ $quote->iva_by_item ? 'Por Producto' : 'En el total' }}</p>
                         <p><b>Informacion adicional:
                             </b>{{ $quote->latestQuotesUpdate->quotesInformation->information }}
                         </p>

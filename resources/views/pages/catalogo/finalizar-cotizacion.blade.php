@@ -128,6 +128,18 @@
                             <span class="text-danger">{{ $errors->first('departamento') }}</span>
                         @endif
                     </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="">Como mostrar el IVA</label>
+                            <select name="tipo" class="form-control" wire:model="ivaByItem">
+                                <option value="0">Mostrar el IVA en el monto total</option>
+                                <option value="1">Mostrar el IVA por partida</option>
+                            </select>
+                        </div>
+                        @if ($errors->has('ivaByItem'))
+                            <span class="text-danger">{{ $errors->first('departamento') }}</span>
+                        @endif
+                    </div>
                     <div class="col-md-12">
                         <div class="form-group">
                             <label for="">Informacion Adicional (Opcional)</label>

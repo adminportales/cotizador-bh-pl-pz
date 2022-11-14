@@ -20,7 +20,7 @@ use Illuminate\Support\Facades\Mail;
 
 class FinalizarCotizacion extends Component
 {
-    public $tipoCliente, $clienteSeleccionado = '', $isClient, $nombre, $empresa, $email, $telefono, $celular, $oportunidad, $rank = '', $departamento, $informacion;
+    public $tipoCliente, $clienteSeleccionado = '', $isClient, $nombre, $empresa, $email, $telefono, $celular, $oportunidad, $rank = '', $departamento, $informacion, $ivaByItem;
 
     public function render()
     {
@@ -80,7 +80,7 @@ class FinalizarCotizacion extends Component
         // Guardar La cotizacion
         $quote = auth()->user()->quotes()->create([
             'lead' => 'No Definido',
-            'client' => $this->isClient,
+            'iva_by_item' => boolval($this->ivaByItem),
         ]);
 
         // Guardar la Info de la cotizacion
@@ -113,8 +113,6 @@ class FinalizarCotizacion extends Component
         ];
 
         $quoteDiscount = QuoteDiscount::create($dataDiscount);
-
-
 
         // Guardar la actualizacion
         $quoteUpdate = $quote->quotesUpdate()->create([

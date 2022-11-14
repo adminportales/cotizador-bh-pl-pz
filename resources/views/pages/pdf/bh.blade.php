@@ -106,7 +106,13 @@
                         <td style="width: 70px">{{ $item->color_logos }}</td>
                         <td style="width: 70px">{{ $item->cantidad }}</td>
                         <td style="width: 90px">${{ number_format($item->precio_unitario, 2, '.', ',') }}</td>
-                        <td style="width: 90px">${{ number_format($item->precio_total, 2, '.', ',') }}</td>
+                        <td style="width: 90px">${{ number_format($item->precio_total, 2, '.', ',') }}
+                            @if ($quote->iva_by_item)
+                                <p style="font-size: 12px"><b>IVA:
+                                    </b>${{ number_format($item->precio_total * 0.16, 2, '.', ',') }}
+                                </p>
+                            @endif
+                        </td>
                         <td style="width: 90px; text-align: center;">{{ $item->dias_entrega }} <br> <span
                                 style="font-size: 10px">días hábiles</span>
                         </td>
@@ -142,7 +148,9 @@
                 <td style="width: 100%; text-align: right">
                     <p><b>Subtotal: </b> $ {{ number_format($subtotal, 2, '.', ',') }}</p>
                     <p><b>Descuento: </b> $ {{ number_format($discount, 2, '.', ',') }}</p>
-                    <p><b>IVA: </b> $ {{ number_format($iva, 2, '.', ',') }}</p>
+                    @if (!$quote->iva_by_item)
+                        <p><b>IVA: </b> $ {{ number_format($iva, 2, '.', ',') }}</p>
+                    @endif
                     <br>
                     <p><b>Total: </b>$ {{ number_format($subtotal - $discount + $iva, 2, '.', ',') }}</p>
                 </td>

@@ -12,6 +12,7 @@ class Quote extends Model
     protected $fillable = [
         'user_id',
         'lead',
+        'iva_by_item',
         // 'client'
     ];
 

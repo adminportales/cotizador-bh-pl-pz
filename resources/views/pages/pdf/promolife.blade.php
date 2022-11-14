@@ -122,7 +122,13 @@
                             </span>
                         </td>
                         <td colspan="1" style="width: 90px">
-                            ${{ number_format($item->precio_unitario, 2, '.', ',') }}</td>
+                            ${{ number_format($item->precio_unitario, 2, '.', ',') }}
+                            @if ($quote->iva_by_item)
+                                <p style="font-size: 12px"><b>IVA:
+                                    </b>${{ number_format($item->precio_total * 0.16, 2, '.', ',') }}
+                                </p>
+                            @endif
+                        </td>
                         <td colspan="1" style="width: 100px">${{ number_format($item->precio_total, 2, '.', ',') }}
                         </td>
                     </tr>
@@ -147,7 +153,9 @@
                 <td style="width: 150px">
                     <p><b>Subtotal: </b>$ {{ number_format($subtotal, 2, '.', ',') }}</p>
                     <p><b>Descuento: </b>$ {{ number_format($discount, 2, '.', ',') }}</p>
-                    <p><b>IVA: </b>$ {{ number_format($iva, 2, '.', ',') }}</p>
+                    @if (!$quote->iva_by_item)
+                        <p><b>IVA: </b> $ {{ number_format($iva, 2, '.', ',') }}</p>
+                    @endif
                     <p><b>Total: </b>$ {{ number_format($subtotal - $discount + $iva, 2, '.', ',') }}</p>
                 </td>
             </tr>

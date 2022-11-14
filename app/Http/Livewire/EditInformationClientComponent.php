@@ -13,10 +13,11 @@ class EditInformationClientComponent extends Component
     use AuthorizesRequests;
 
     public $quoteInfo, $quote;
-    public $tipoCliente, $clienteSeleccionado = '', $nombre, $empresa, $email, $telefono, $celular, $oportunidad, $rank = '', $departamento, $informacion, $clients;
+    public $tipoCliente, $clienteSeleccionado = '', $nombre, $empresa, $email, $telefono, $celular, $oportunidad, $rank = '', $departamento, $informacion, $clients, $ivaByItem;
 
     public function mount()
     {
+        $this->ivaByItem = $this->quote->ivaByItem;
         $this->nombre = $this->quoteInfo->name;
         $this->empresa = $this->quoteInfo->company;
         $this->email = $this->quoteInfo->email;
@@ -78,6 +79,7 @@ class EditInformationClientComponent extends Component
             'rank' => 'required',
         ]);
 
+        $this->quote->update(['iva_by_item' => boolval($this->ivaByItem)]);
         // Guardar la Info de la cotizacion
         $quoteInfo = QuoteInformation::create([
             'name' => $this->nombre,
