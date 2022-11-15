@@ -78,8 +78,8 @@ class ApiOdooController extends Controller
         try {
             if ($request->header('token') == 'PL489FWVJJVMEWO') {
                 $requestData = ($request->clients);
+                $errors = [];
                 if ($requestData) {
-                    $errors = [];
                     foreach ($requestData as $dataClient) {
                         if (!$dataClient['user_id'] || !$dataClient['id'] || !$dataClient['name'] || !$dataClient['tradename'] || !$dataClient['phone']) {
                             array_push($errors, [$dataClient, 'Falta informacion del usuario']);
@@ -87,6 +87,8 @@ class ApiOdooController extends Controller
                     }
 
                     if (count($errors) > 0) {
+                        Storage::put('/public/dataErrorClients.txt',   json_encode($errors));
+                        Mail::to('adminportales@promolife.com.mx')->send(new SendDataOdoo('adminportales@promolife.com.mx', '/storage/dataErrorClients.txt'));
                         return response()->json(['errors' => 'Informacion Incompleta', 'data' => $errors]);
                     } else {
                         foreach ($requestData as $dataClient) {
@@ -133,6 +135,8 @@ class ApiOdooController extends Controller
                         return response()->json(['message' => 'Actualizacion Completa', 'data' => ($request->clients)]);
                     }
                 } else {
+                    Storage::put('/public/dataErrorClients.txt',   json_encode($errors));
+                    Mail::to('adminportales@promolife.com.mx')->send(new SendDataOdoo('adminportales@promolife.com.mx', '/storage/dataErrorClients.txt'));
                     return response()->json(['errors' => 'Informacion Incompleta']);
                 }
             } else {
