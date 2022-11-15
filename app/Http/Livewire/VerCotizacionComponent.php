@@ -4,6 +4,7 @@ namespace App\Http\Livewire;
 
 use App\Mail\SendQuote;
 use App\Mail\SendQuoteBH;
+use App\Mail\SendQuoteGeneric;
 use App\Mail\SendQuotePL;
 use App\Mail\SendQuotePZ;
 use App\Models\Client;
@@ -98,11 +99,11 @@ class VerCotizacionComponent extends Component
                     $mailSend = new SendQuotePL(auth()->user()->name, $this->quote->latestQuotesUpdate->quotesInformation->name, $path);
                     break;
                 case 'BH TRADEMARKET':
-                    $mailSend = new SendQuoteBH(auth()->user()->name, $this->quote->latestQuotesUpdate->quotesInformation->name, $path);
+                    $mailSend = new SendQuoteGeneric(auth()->user()->name, $this->quote->latestQuotesUpdate->quotesInformation->name, $path, auth()->user()->email);
                     # code...
                     break;
                 case 'PROMO ZALE':
-                    $mailSend = new SendQuotePZ(auth()->user()->name, $this->quote->latestQuotesUpdate->quotesInformation->name, $path);
+                    $mailSend = new SendQuoteGeneric(auth()->user()->name, $this->quote->latestQuotesUpdate->quotesInformation->name, $path, auth()->user()->email);
                     # code...
                     break;
                 default:

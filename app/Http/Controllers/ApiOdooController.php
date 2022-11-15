@@ -81,7 +81,7 @@ class ApiOdooController extends Controller
                 if ($requestData) {
                     $errors = [];
                     foreach ($requestData as $dataClient) {
-                        if (!$dataClient['user_id'] || !$dataClient['id'] || !$dataClient['name'] || !$dataClient['email'] || !$dataClient['tradename'] || !$dataClient['phone']) {
+                        if (!$dataClient['user_id'] || !$dataClient['id'] || !$dataClient['name'] || !$dataClient['tradename'] || !$dataClient['phone']) {
                             array_push($errors, [$dataClient, 'Falta informacion del usuario']);
                         }
                     }
@@ -94,7 +94,7 @@ class ApiOdooController extends Controller
                             if (!$client) {
                                 $client = Client::create([
                                     'name' => $dataClient['name'],
-                                    'email' => $dataClient['email'],
+                                    'email' => array_key_exists('email', $dataClient) ? $dataClient['email'] : "",
                                     'phone' => $dataClient['phone'],
                                     'contact' => $dataClient['contact'] == false ? "Sin Contacto" : $dataClient['contact'],
                                     'user_id' => $dataClient['user_id'],

@@ -306,10 +306,10 @@ class FinalizarCotizacion extends Component
                         $mailSend = new SendQuotePL(auth()->user()->name, $quote->latestQuotesUpdate->quotesInformation->name, $newPath);
                         break;
                     case 'BH TRADEMARKET':
-                        $mailSend = new SendQuoteBH(auth()->user()->name, $quote->latestQuotesUpdate->quotesInformation->name, $newPath);
+                        $mailSend = new SendQuoteGeneric(auth()->user()->name, $this->quote->latestQuotesUpdate->quotesInformation->name, $path, auth()->user()->email);
                         break;
                     case 'PROMO ZALE':
-                        $mailSend = new SendQuotePZ(auth()->user()->name, $quote->latestQuotesUpdate->quotesInformation->name, $newPath);
+                        $mailSend = new SendQuoteGeneric(auth()->user()->name, $this->quote->latestQuotesUpdate->quotesInformation->name, $path, auth()->user()->email);
                         break;
                     default:
                         break;
