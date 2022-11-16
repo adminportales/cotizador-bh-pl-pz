@@ -326,7 +326,7 @@ class FinalizarCotizacion extends Component
                         "nameSeller" => auth()->user()->name,
                         "client" => $quote->latestQuotesUpdate->quotesInformation->name,
                         // "fileUrl" => "https://scielo.conicyt.cl/pdf/ijmorphol/v31n4/art56.pdf",
-                        "fileUrl" => url("/") . $newPath,
+                        "fileUrl" => str_replace(' ', '%20', url("/") . $newPath),
                         "emailSeller" => auth()->user()->email
                     ];
                     $curl = curl_init("https://api-promoconnect-sendmails.tonytd.xyz/sendMailBH");
@@ -353,7 +353,7 @@ class FinalizarCotizacion extends Component
                         "nameSeller" => auth()->user()->name,
                         "client" => $quote->latestQuotesUpdate->quotesInformation->name,
                         // "fileUrl" => "https://scielo.conicyt.cl/pdf/ijmorphol/v31n4/art56.pdf",
-                        "fileUrl" => url("/") . $newPath,
+                        "fileUrl" => str_replace(' ', '%20', url("/") . $newPath),
                         "emailSeller" => auth()->user()->email
                     ];
                     $curl = curl_init("https://api-promoconnect-sendmails.tonytd.xyz/sendMailPZ");

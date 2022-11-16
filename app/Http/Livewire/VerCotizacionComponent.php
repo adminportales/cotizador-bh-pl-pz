@@ -105,7 +105,7 @@ class VerCotizacionComponent extends Component
                         "nameSeller" => auth()->user()->name,
                         "client" => $this->quote->latestQuotesUpdate->quotesInformation->name,
                         // "fileUrl" => "https://scielo.conicyt.cl/pdf/ijmorphol/v31n4/art56.pdf",
-                        "fileUrl" => url("/") . $path,
+                        "fileUrl" => str_replace(' ', '%20', url("/") . $path),
                         "emailSeller" => auth()->user()->email
                     ];
                     $curl = curl_init("https://api-promoconnect-sendmails.tonytd.xyz/sendMailBH");
@@ -135,7 +135,7 @@ class VerCotizacionComponent extends Component
                         "nameSeller" => auth()->user()->name,
                         "client" => $this->quote->latestQuotesUpdate->quotesInformation->name,
                         // "fileUrl" => "https://scielo.conicyt.cl/pdf/ijmorphol/v31n4/art56.pdf",
-                        "fileUrl" => url("/") . $path,
+                        "fileUrl" => str_replace(' ', '%20', url("/") . $path),
                         "emailSeller" => auth()->user()->email
                     ];
                     $curl = curl_init("https://api-promoconnect-sendmails.tonytd.xyz/sendMailPZ");
