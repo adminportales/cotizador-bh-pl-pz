@@ -225,7 +225,7 @@ class FinalizarCotizacion extends Component
             $discountValue = floatval(round(($subtotal / 100) * $quoteDiscount->value, 2));
         }
         $estimated = floatval($subtotal - $discountValue);
-
+        $responseOdoo = '';
         try {
             $url = 'https://api-promolife.vde-suite.com:5030/custom/Promolife/V2/crm-lead/create';
             $data =  [
@@ -260,6 +260,7 @@ class FinalizarCotizacion extends Component
                 'X-VDE-TYPE: Ambos',
             ]);
             $response = curl_exec($curl);
+            $responseOdoo = json_decode($response);
             if ($response !== false) {
                 $dataResponse = json_decode($response);
                 if ($dataResponse->message) {
@@ -387,7 +388,7 @@ class FinalizarCotizacion extends Component
             unlink(public_path() . $newPath);
         }
         if ($errors || $errorsMail) {
-            Storage::put('/public/dataErrorToCreateQuote.txt',   json_encode(["messageMail" => $messageMail, "messageOdoo" => $message]));
+            Storage::put('/public/dataErrorToCreateQuote.txt',   json_encode(["messageMail" => $messageMail, "messageOdoo" => $message, 'responseOdoo' => $responseOdoo]));
             Mail::to('adminportales@promolife.com.mx')->send(new SendDataErrorCreateQuote('adminportales@promolife.com.mx', '/storage/dataErrorToCreateQuote.txt'));
             return redirect()->action([CotizadorController::class, 'verCotizacion'], ['quote' => $quote->id])->with('messageMail', $message . ' ' . $messageMail)
                 ->with('messageError', 'Tu cotizacion se ha guardado exitosamente. ' .
