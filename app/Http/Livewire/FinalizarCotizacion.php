@@ -260,7 +260,7 @@ class FinalizarCotizacion extends Component
                 'X-VDE-TYPE: Ambos',
             ]);
             $response = curl_exec($curl);
-            $responseOdoo = json_decode($response);
+            $responseOdoo = $response;
             if ($response !== false) {
                 $dataResponse = json_decode($response);
                 if ($dataResponse->message) {
@@ -390,7 +390,7 @@ class FinalizarCotizacion extends Component
         if ($errors || $errorsMail) {
             Storage::put('/public/dataErrorToCreateQuote.txt',   json_encode(["messageMail" => $messageMail, "messageOdoo" => $message, 'responseOdoo' => $responseOdoo]));
             Mail::to('adminportales@promolife.com.mx')->send(new SendDataErrorCreateQuote('adminportales@promolife.com.mx', '/storage/dataErrorToCreateQuote.txt'));
-            return redirect()->action([CotizadorController::class, 'verCotizacion'], ['quote' => $quote->id])->with('messageMail', $message . ' ' . $messageMail)
+            return redirect()->action([CotizadorController::class, 'verCotizacion'], ['quote' => $quote->id])->with('messageMail', json_encode($message) . ' ' . json_encode($messageMail))
                 ->with('messageError', 'Tu cotizacion se ha guardado exitosamente. ' .
                     ($errorsMail ? "No se pudo enviar el email debido a problemas tecnicos. " : "") .
                     ($errors ? "No se puedo guardar el lead debido a problemas en la conexion con Odoo, lo intentaremos nuevamente mas tarde" : ""));
