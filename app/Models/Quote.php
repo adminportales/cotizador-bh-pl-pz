@@ -14,6 +14,7 @@ class Quote extends Model
         'lead',
         'iva_by_item',
         'logo',
+        "pending_odoo"
         // 'client'
     ];
 

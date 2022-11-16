@@ -19,6 +19,7 @@ class CreateQuotesTable extends Migration
             $table->string('lead');
             $table->boolean('iva_by_item')->default(false);
             $table->text('logo')->nullable();
+            $table->boolean('pending_odoo')->default(false);
             // $table->boolean('client');
             $table->timestamps();
         });

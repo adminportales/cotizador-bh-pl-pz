@@ -6,6 +6,8 @@ use App\Models\Catalogo\Product;
 use App\Models\PricesTechnique;
 use Livewire\Component;
 use App\Http\Controllers\CotizadorController;
+use App\Mail\SendDataErrorCreateQuote;
+use App\Mail\SendDataOdoo;
 use App\Mail\SendQuote;
 use App\Mail\SendQuoteBH;
 use App\Mail\SendQuoteGeneric;
@@ -18,6 +20,7 @@ use Barryvdh\DomPDF\Facade\Pdf;
 use Exception;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Storage;
 use Livewire\WithFileUploads;
 
 class FinalizarCotizacion extends Component
@@ -97,6 +100,7 @@ class FinalizarCotizacion extends Component
             'lead' => 'No Definido',
             'iva_by_item' => boolval($this->ivaByItem),
             'logo' => $pathLogo,
+            'pending_odoo' => true,
         ]);
 
         // Guardar la Info de la cotizacion
@@ -181,6 +185,7 @@ class FinalizarCotizacion extends Component
         $keyOdoo = '';
         $errors = false;
         $message = '';
+        $messageMail = '';
 
         switch (auth()->user()->company->name) {
             case 'PROMO LIFE':
@@ -256,14 +261,14 @@ class FinalizarCotizacion extends Component
                     if ($dataResponse->message == 'Internal Server Error') {
                         $message = 'Error en servidor de Odoo';
                         $errors = true;
-                        return;
                     }
                 };
-                if ($dataResponse->success) {
+                if (!$errors && $dataResponse->success) {
                     $listElementsOpportunities = $dataResponse->listElementsOpportunities;
                     if ($listElementsOpportunities[0]->success) {
                         $codeLead = $listElementsOpportunities[0]->CodeLead;
                         $quote->lead = $codeLead;
+                        $quote->pending_odoo = false;
                         $quote->save();
                         $newPath = "/storage/quotes/" . time() . $quote->lead . ".pdf";
                         rename(public_path() . $path, public_path() . $newPath);
@@ -281,114 +286,108 @@ class FinalizarCotizacion extends Component
         }
         $errorsMail = false;
         try {
-            if (!$errors) {
-                $data = explode('@', auth()->user()->email);
-                $domain = $data[count($data) - 1];
-                $mailer = '';
-                switch ($domain) {
-                    case 'promolife.com.mx':
-                        $mailer = 'smtp_pl';
-                        break;
-                    case 'trademarket.com.mx':
-                        $mailer = 'smtp_bh';
-                        // $mailer = 'smtp_bh_lat';
-                        break;
-                    case 'bhtrademarket.com':
-                        $mailer = 'smtp_bh_usa';
-                        // $mailer = 'smtp_bh_lat';
-                        break;
-                    default:
-                        $mailer = 'smtp';
-                        break;
-                }
-                $mailSend = '';
-                switch (auth()->user()->company->name) {
-                    case 'PROMO LIFE':
-                        $mailSend = new SendQuotePL(auth()->user()->name, $quote->latestQuotesUpdate->quotesInformation->name, $newPath);
-                        Mail::mailer($mailer)->to($quote->latestQuotesUpdate->quotesInformation->email)->send($mailSend);
-                        break;
-                    case 'BH TRADEMARKET':
-                        $datosEmail = [
-                            "clienteEmail" => $quote->latestQuotesUpdate->quotesInformation->email,
-                            "nameSeller" => auth()->user()->name,
-                            "client" => $quote->latestQuotesUpdate->quotesInformation->name,
-                            // "fileUrl" => "https://scielo.conicyt.cl/pdf/ijmorphol/v31n4/art56.pdf",
-                            "fileUrl" => url("/") . $newPath,
-                            "emailSeller" => auth()->user()->email
-                        ];
-                        $curl = curl_init("https://api-promoconnect-sendmails.tonytd.xyz/sendMailBH");
-                        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-                        curl_setopt($curl, CURLOPT_POST, true);
-                        curl_setopt($curl, CURLOPT_POSTFIELDS,  json_encode($datosEmail));
-                        curl_setopt($curl, CURLOPT_HTTPHEADER, [
-                            'Content-Type: application/json',
-                            'token: FJRIOFJIEOFNC',
-                        ]);
-                        $response = curl_exec($curl);
-                        if (json_decode($response)->msg == 1) {
-                            $this->dispatchBrowserEvent('errorSendMail', ['message' => json_decode($response)->msg]);
-                        } else {
-                            $errorsMail = true;
-                            $message = json_decode($response)->msg;
-                        }
-                        // $mailSend = new SendQuoteGeneric(auth()->user()->name, $this->quote->latestQuotesUpdate->quotesInformation->name, $path, auth()->user()->email);
-                        // Mail::mailer($mailer)->to($quote->latestQuotesUpdate->quotesInformation->email)->send($mailSend);
-                        break;
-                    case 'PROMO ZALE':
-                        $datosEmail = [
-                            "clienteEmail" => $quote->latestQuotesUpdate->quotesInformation->email,
-                            "nameSeller" => auth()->user()->name,
-                            "client" => $quote->latestQuotesUpdate->quotesInformation->name,
-                            // "fileUrl" => "https://scielo.conicyt.cl/pdf/ijmorphol/v31n4/art56.pdf",
-                            "fileUrl" => url("/") . $newPath,
-                            "emailSeller" => auth()->user()->email
-                        ];
-                        $curl = curl_init("https://api-promoconnect-sendmails.tonytd.xyz/sendMailPZ");
-                        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-                        curl_setopt($curl, CURLOPT_POST, true);
-                        curl_setopt($curl, CURLOPT_POSTFIELDS,  json_encode($datosEmail));
-                        curl_setopt($curl, CURLOPT_HTTPHEADER, [
-                            'Content-Type: application/json',
-                            'token: FJRIOFJIEOFNC',
-                        ]);
-                        $response = curl_exec($curl);
-                        if (json_decode($response)->msg == 1) {
-                            $this->dispatchBrowserEvent('errorSendMail', ['message' => json_decode($response)->msg]);
-                        } else {
-                            $errorsMail = true;
-                            $message = json_decode($response)->msg;
-                        }
-                        // $mailSend = new SendQuoteGeneric(auth()->user()->name, $this->quote->latestQuotesUpdate->quotesInformation->name, $path, auth()->user()->email);
-                        // Mail::mailer($mailer)->to($quote->latestQuotesUpdate->quotesInformation->email)->send($mailSend);
-                        break;
-                    default:
-                        break;
-                }
-                unlink(public_path() . $newPath);
-                auth()->user()->currentQuote->currentQuoteDetails()->delete();
-                auth()->user()->currentQuote()->delete();
+            if ($errors) {
+                $newPath = $path;
             }
+            $data = explode('@', auth()->user()->email);
+            $domain = $data[count($data) - 1];
+            $mailer = '';
+            switch ($domain) {
+                case 'promolife.com.mx':
+                    $mailer = 'smtp_pl';
+                    break;
+                case 'trademarket.com.mx':
+                    $mailer = 'smtp_bh';
+                    // $mailer = 'smtp_bh_lat';
+                    break;
+                case 'bhtrademarket.com':
+                    $mailer = 'smtp_bh_usa';
+                    // $mailer = 'smtp_bh_lat';
+                    break;
+                default:
+                    $mailer = 'smtp';
+                    break;
+            }
+            $mailSend = '';
+            switch (auth()->user()->company->name) {
+                case 'PROMO LIFE':
+                    $mailSend = new SendQuotePL(auth()->user()->name, $quote->latestQuotesUpdate->quotesInformation->name, $newPath);
+                    Mail::mailer($mailer)->to($quote->latestQuotesUpdate->quotesInformation->email)->send($mailSend);
+                    break;
+                case 'BH TRADEMARKET':
+                    $datosEmail = [
+                        "clienteEmail" => $quote->latestQuotesUpdate->quotesInformation->email,
+                        "nameSeller" => auth()->user()->name,
+                        "client" => $quote->latestQuotesUpdate->quotesInformation->name,
+                        // "fileUrl" => "https://scielo.conicyt.cl/pdf/ijmorphol/v31n4/art56.pdf",
+                        "fileUrl" => url("/") . $newPath,
+                        "emailSeller" => auth()->user()->email
+                    ];
+                    $curl = curl_init("https://api-promoconnect-sendmails.tonytd.xyz/sendMailBH");
+                    curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+                    curl_setopt($curl, CURLOPT_POST, true);
+                    curl_setopt($curl, CURLOPT_POSTFIELDS,  json_encode($datosEmail));
+                    curl_setopt($curl, CURLOPT_HTTPHEADER, [
+                        'Content-Type: application/json',
+                        'token: FJRIOFJIEOFNC',
+                    ]);
+                    $response = curl_exec($curl);
+                    if (json_decode($response)->msg == 1) {
+                        $this->dispatchBrowserEvent('errorSendMail', ['message' => json_decode($response)->msg]);
+                    } else {
+                        $errorsMail = true;
+                        $messageMail = json_decode($response)->msg;
+                    }
+                    // $mailSend = new SendQuoteGeneric(auth()->user()->name, $this->quote->latestQuotesUpdate->quotesInformation->name, $path, auth()->user()->email);
+                    // Mail::mailer($mailer)->to($quote->latestQuotesUpdate->quotesInformation->email)->send($mailSend);
+                    break;
+                case 'PROMO ZALE':
+                    $datosEmail = [
+                        "clienteEmail" => $quote->latestQuotesUpdate->quotesInformation->email,
+                        "nameSeller" => auth()->user()->name,
+                        "client" => $quote->latestQuotesUpdate->quotesInformation->name,
+                        // "fileUrl" => "https://scielo.conicyt.cl/pdf/ijmorphol/v31n4/art56.pdf",
+                        "fileUrl" => url("/") . $newPath,
+                        "emailSeller" => auth()->user()->email
+                    ];
+                    $curl = curl_init("https://api-promoconnect-sendmails.tonytd.xyz/sendMailPZ");
+                    curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+                    curl_setopt($curl, CURLOPT_POST, true);
+                    curl_setopt($curl, CURLOPT_POSTFIELDS,  json_encode($datosEmail));
+                    curl_setopt($curl, CURLOPT_HTTPHEADER, [
+                        'Content-Type: application/json',
+                        'token: FJRIOFJIEOFNC',
+                    ]);
+                    $response = curl_exec($curl);
+                    if (json_decode($response)->msg == 1) {
+                        $this->dispatchBrowserEvent('errorSendMail', ['message' => json_decode($response)->msg]);
+                    } else {
+                        $errorsMail = true;
+                        $message = json_decode($response)->msg;
+                    }
+                    // $mailSend = new SendQuoteGeneric(auth()->user()->name, $this->quote->latestQuotesUpdate->quotesInformation->name, $path, auth()->user()->email);
+                    // Mail::mailer($mailer)->to($quote->latestQuotesUpdate->quotesInformation->email)->send($mailSend);
+                    break;
+                default:
+                    break;
+            }
+            unlink(public_path() . $newPath);
+            auth()->user()->currentQuote->currentQuoteDetails()->delete();
+            auth()->user()->currentQuote()->delete();
         } catch (Exception $exception) {
-            $message = $exception->getMessage();
+            $messageMail = $exception->getMessage();
             $errorsMail = true;
             auth()->user()->currentQuote->currentQuoteDetails()->delete();
             auth()->user()->currentQuote()->delete();
             unlink(public_path() . $newPath);
         }
-        if ($errors) {
-            DB::delete('delete from quote_update_product where quote_update_id = ' . $quoteUpdate->id);
-            $quoteUpdate->quoteProducts();
-            foreach ($quoteUpdate->quoteProducts as $qp) {
-                $qp->delete();
-            }
-            $quoteUpdate->delete();
-            $quoteInfo->delete();
-            $quoteDiscount->delete();
-            $quote->delete();
-            return;
-        }
-        if ($errorsMail) {
-            return redirect()->action([CotizadorController::class, 'verCotizacion'], ['quote' => $quote->id])->with('messageMail', $message)->with('messageError', 'Tu cotizacion se ha guardado exitosamente, pero no se pudo enviar el e-mail debido a problemas tecnicos.');
+        if ($errors || $errorsMail) {
+            Storage::put('/public/dataErrorToCreateQuote.txt',   json_encode(["messageMail" => $messageMail, "messageOdoo" => $message]));
+            Mail::to('adminportales@promolife.com.mx')->send(new SendDataErrorCreateQuote('adminportales@promolife.com.mx', '/storage/dataErrorToCreateQuote.txt'));
+            return redirect()->action([CotizadorController::class, 'verCotizacion'], ['quote' => $quote->id])->with('messageMail', $message . ' ' . $messageMail)
+                ->with('messageError', 'Tu cotizacion se ha guardado exitosamente. ' .
+                    ($errorsMail ? "No se pudo enviar el email debido a problemas tecnicos. " : "") .
+                    ($errors ? "No se puedo guardar el lead debido a problemas en la conexion con Odoo, lo intentaremos nuevamente mas tarde" : ""));
         }
         return redirect()->action([CotizadorController::class, 'verCotizacion'], ['quote' => $quote->id])->with('message', 'Tu cotizacion se ha guardado exitosamente y ya fue enviada al correo electronico establecido.');
     }
