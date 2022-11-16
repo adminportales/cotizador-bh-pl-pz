@@ -28,6 +28,11 @@ class FinalizarCotizacion extends Component
     use WithFileUploads;
     public $tipoCliente, $clienteSeleccionado = '', $isClient, $nombre, $empresa, $email, $telefono, $celular, $oportunidad, $rank = '', $departamento, $informacion, $ivaByItem, $logo;
 
+    public function mount()
+    {
+        $this->ivaByItem = false;
+    }
+
     public function render()
     {
         $userClients = [];

@@ -48,8 +48,8 @@
     </footer>
     <div class="body-pdf">
         @if ($quote->logo != null)
-            <div class="content">
-                <img src="{{ $quote->logo }}" width="100">
+            <div class="content" style="width: 50%; text-align: center; margin-bottom: 10px;">
+                <img src="{{ $quote->logo }}" style="max-height: 130px; width: auto">
             </div>
         @endif
         @if ($nombreComercial)
@@ -83,7 +83,6 @@
                     <th colspan="1">Imagen de Referencia</th>
                     <th colspan="1">Descripción</th>
                     <th colspan="1">Tecnica Personalización</th>
-                    <th colspan="1">Tintas</th>
                     <th colspan="1">NÚMERO PIEZAS</th>
                     <th colspan="1">Tiempo
                         entrega</th>
@@ -101,27 +100,29 @@
                     <tr>
                         <td rowspan="1">
                             @if ($producto->image)
-                                <img src="{{ $producto->image }}" width="100">
+                                <img src="{{ $producto->image }}" width="180">
                             @else
-                                <img src="img/default.jpg" width="100">
+                                <img src="img/default.jpg" width="180">
                             @endif
                         </td>
                         <td colspan="1">{{ $producto->name }}</td>
-                        <td colspan="1">{{ $tecnica->tecnica }}</td>
-                        <td colspan="1">{{ $item->color_logos }}</td>
+                        <td colspan="1">{{ $tecnica->tecnica }}
+                            <p style="font-size: 12px"><b>Tintas: </b>{{ $item->color_logos }}</p>
+                        </td>
                         <td colspan="1">{{ $item->cantidad }}</td>
                         <td colspan="1" style="text-align: center;">{{ $item->dias_entrega }} <br> <span>días
                                 hábiles
                             </span>
                         </td>
                         <td colspan="1">${{ number_format($item->precio_unitario, 2, '.', ',') }}
+                        </td>
+                        <td colspan="1">${{ number_format($item->precio_total, 2, '.', ',') }}
                             @if ($quote->iva_by_item)
                                 <p style="font-size: 12px"><b>IVA:
                                     </b>${{ number_format($item->precio_total * 0.16, 2, '.', ',') }}
                                 </p>
                             @endif
                         </td>
-                        <td colspan="1">${{ number_format($item->precio_total, 2, '.', ',') }}</td>
                     </tr>
                 @endforeach
             </tbody>
