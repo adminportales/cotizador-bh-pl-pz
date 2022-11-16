@@ -8,6 +8,7 @@ use Livewire\Component;
 use App\Http\Controllers\CotizadorController;
 use App\Mail\SendQuote;
 use App\Mail\SendQuoteBH;
+use App\Mail\SendQuoteGeneric;
 use App\Mail\SendQuotePL;
 use App\Mail\SendQuotePZ;
 use App\Models\Client;
@@ -304,17 +305,59 @@ class FinalizarCotizacion extends Component
                 switch (auth()->user()->company->name) {
                     case 'PROMO LIFE':
                         $mailSend = new SendQuotePL(auth()->user()->name, $quote->latestQuotesUpdate->quotesInformation->name, $newPath);
+                        Mail::mailer($mailer)->to($quote->latestQuotesUpdate->quotesInformation->email)->send($mailSend);
                         break;
                     case 'BH TRADEMARKET':
-                        $mailSend = new SendQuoteGeneric(auth()->user()->name, $this->quote->latestQuotesUpdate->quotesInformation->name, $path, auth()->user()->email);
+                        $datosEmail = [
+                            "clienteEmail" => $quote->latestQuotesUpdate->quotesInformation->email,
+                            "nameSeller" => auth()->user()->name,
+                            "client" => $quote->latestQuotesUpdate->quotesInformation->name,
+                            // "fileUrl" => "https://scielo.conicyt.cl/pdf/ijmorphol/v31n4/art56.pdf",
+                            "fileUrl" => url("/") . $newPath,
+                            "emailSeller" => auth()->user()->email
+                        ];
+                        $curl = curl_init("https://api-promoconnect-sendmails.tonytd.xyz/sendMailBH");
+                        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+                        curl_setopt($curl, CURLOPT_POST, true);
+                        curl_setopt($curl, CURLOPT_POSTFIELDS,  json_encode($datosEmail));
+                        curl_setopt($curl, CURLOPT_HTTPHEADER, [
+                            'Content-Type: application/json',
+                            'token: FJRIOFJIEOFNC',
+                        ]);
+                        $response = curl_exec($curl);
+                        if (json_decode($response)->msg !== "Envio Correcto") {
+                            $this->dispatchBrowserEvent('errorSendMail', ['message' => json_decode($response)->msg]);
+                        }
+                        // $mailSend = new SendQuoteGeneric(auth()->user()->name, $this->quote->latestQuotesUpdate->quotesInformation->name, $path, auth()->user()->email);
+                        // Mail::mailer($mailer)->to($quote->latestQuotesUpdate->quotesInformation->email)->send($mailSend);
                         break;
                     case 'PROMO ZALE':
-                        $mailSend = new SendQuoteGeneric(auth()->user()->name, $this->quote->latestQuotesUpdate->quotesInformation->name, $path, auth()->user()->email);
+                        $datosEmail = [
+                            "clienteEmail" => $quote->latestQuotesUpdate->quotesInformation->email,
+                            "nameSeller" => auth()->user()->name,
+                            "client" => $quote->latestQuotesUpdate->quotesInformation->name,
+                            // "fileUrl" => "https://scielo.conicyt.cl/pdf/ijmorphol/v31n4/art56.pdf",
+                            "fileUrl" => url("/") . $newPath,
+                            "emailSeller" => auth()->user()->email
+                        ];
+                        $curl = curl_init("https://api-promoconnect-sendmails.tonytd.xyz/sendMailPZ");
+                        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+                        curl_setopt($curl, CURLOPT_POST, true);
+                        curl_setopt($curl, CURLOPT_POSTFIELDS,  json_encode($datosEmail));
+                        curl_setopt($curl, CURLOPT_HTTPHEADER, [
+                            'Content-Type: application/json',
+                            'token: FJRIOFJIEOFNC',
+                        ]);
+                        $response = curl_exec($curl);
+                        if (json_decode($response)->msg !== "Envio Correcto") {
+                            $this->dispatchBrowserEvent('errorSendMail', ['message' => json_decode($response)->msg]);
+                        }
+                        // $mailSend = new SendQuoteGeneric(auth()->user()->name, $this->quote->latestQuotesUpdate->quotesInformation->name, $path, auth()->user()->email);
+                        // Mail::mailer($mailer)->to($quote->latestQuotesUpdate->quotesInformation->email)->send($mailSend);
                         break;
                     default:
                         break;
                 }
-                Mail::mailer($mailer)->to($quote->latestQuotesUpdate->quotesInformation->email)->send($mailSend);
                 unlink(public_path() . $newPath);
                 auth()->user()->currentQuote->currentQuoteDetails()->delete();
                 auth()->user()->currentQuote()->delete();
