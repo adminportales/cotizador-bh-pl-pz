@@ -325,8 +325,11 @@ class FinalizarCotizacion extends Component
                             'token: FJRIOFJIEOFNC',
                         ]);
                         $response = curl_exec($curl);
-                        if (json_decode($response)->msg !== "Envio Correcto") {
+                        if (json_decode($response)->msg == 1) {
                             $this->dispatchBrowserEvent('errorSendMail', ['message' => json_decode($response)->msg]);
+                        } else {
+                            $errorsMail = true;
+                            $message = json_decode($response)->msg;
                         }
                         // $mailSend = new SendQuoteGeneric(auth()->user()->name, $this->quote->latestQuotesUpdate->quotesInformation->name, $path, auth()->user()->email);
                         // Mail::mailer($mailer)->to($quote->latestQuotesUpdate->quotesInformation->email)->send($mailSend);
@@ -349,8 +352,11 @@ class FinalizarCotizacion extends Component
                             'token: FJRIOFJIEOFNC',
                         ]);
                         $response = curl_exec($curl);
-                        if (json_decode($response)->msg !== "Envio Correcto") {
+                        if (json_decode($response)->msg == 1) {
                             $this->dispatchBrowserEvent('errorSendMail', ['message' => json_decode($response)->msg]);
+                        } else {
+                            $errorsMail = true;
+                            $message = json_decode($response)->msg;
                         }
                         // $mailSend = new SendQuoteGeneric(auth()->user()->name, $this->quote->latestQuotesUpdate->quotesInformation->name, $path, auth()->user()->email);
                         // Mail::mailer($mailer)->to($quote->latestQuotesUpdate->quotesInformation->email)->send($mailSend);

@@ -117,8 +117,13 @@ class VerCotizacionComponent extends Component
                         'token: FJRIOFJIEOFNC',
                     ]);
                     $response = curl_exec($curl);
-                    if (json_decode($response)->msg !== "Envio Correcto") {
+                    if (json_decode($response)->msg == 1) {
                         $this->dispatchBrowserEvent('errorSendMail', ['message' => json_decode($response)->msg]);
+                    } else {
+                        $errors = true;
+                        $message = json_decode($response)->msg;
+                        $this->dispatchBrowserEvent('errorSendMail', ['message' => $message]);
+                        return;
                     }
                     // $mailSend = new SendQuoteGeneric(auth()->user()->name, $this->quote->latestQuotesUpdate->quotesInformation->name, $path, auth()->user()->email);
                     // Mail::mailer($mailer)->to($this->quote->latestQuotesUpdate->quotesInformation->email)->send($mailSend);
@@ -142,8 +147,13 @@ class VerCotizacionComponent extends Component
                         'token: FJRIOFJIEOFNC',
                     ]);
                     $response = curl_exec($curl);
-                    if (json_decode($response)->msg !== "Envio Correcto") {
+                    if (json_decode($response)->msg == 1) {
                         $this->dispatchBrowserEvent('errorSendMail', ['message' => json_decode($response)->msg]);
+                    } else {
+                        $errors = true;
+                        $message = json_decode($response)->msg;
+                        $this->dispatchBrowserEvent('errorSendMail', ['message' => $message]);
+                        return;
                     }
                     // $mailSend = new SendQuoteGeneric(auth()->user()->name, $this->quote->latestQuotesUpdate->quotesInformation->name, $path, auth()->user()->email);
                     // Mail::mailer($mailer)->to($this->quote->latestQuotesUpdate->quotesInformation->email)->send($mailSend);
