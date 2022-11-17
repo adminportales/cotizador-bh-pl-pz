@@ -61,7 +61,8 @@
     <div class="body-pdf">
         @if ($quote->logo != null)
             <div class="content" style="width: 280px; text-align: center; margin-bottom: 10px;">
-                <img src="{{ $quote->logo }}" style="max-height: 130px; width: auto">
+                <img src="{{ $quote->logo }}"
+                    style="max-height: 130px; width: auto; max-width: 260px;margin-bottom: 10px;">
             </div>
         @endif
         @if ($nombreComercial)
