@@ -47,16 +47,16 @@
                                         <td>{{ $row->name }}</td>
                                         <td>{{ $row->email }}</td>
                                         <td>
-                                            <p><strong>Empresa: </strong>
-                                                @if ($row->company)
-                                                    {{ $row->company->name }}
-                                                @endif
-                                            </p>
-                                            <p><strong>Id Odoo: </strong>
-                                                @if ($row->info)
-                                                    {{ $row->info->odoo_id }}
-                                                @endif
-                                            </p>
+                                            @foreach ($row->info as $infoOdoo)
+                                                <p><strong>Empresa: </strong>
+                                                        {{ $infoOdoo->company }}
+                                                </p>
+                                                <p><strong>Id Odoo: </strong>
+                                                    @if ($infoOdoo->info)
+                                                        {{ $infoOdoo->odoo_id }}
+                                                    @endif
+                                                </p>
+                                            @endforeach
                                         </td>
                                         <td width="90">
                                             <div class="btn-group">

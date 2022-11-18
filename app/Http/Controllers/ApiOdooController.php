@@ -37,7 +37,7 @@ class ApiOdooController extends Controller
                         foreach ($requestData as $dataUser) {
                             if ($dataUser['active']) {
                                 // Buscamos el Id de odoo y la empresa
-                                $userOdooId = UserInformationOdoo::where('odoo_id', $dataUser['id'])->where('company_id', $dataUser['company'])->first();
+                                $userOdooId = UserInformationOdoo::where('odoo_id', $dataUser['id'])->where('company_id', $dataUser['company_id'])->first();
                                 // Si ya existe, actualizamos su informacion de usuario
                                 if ($userOdooId) {
                                     $userOdooId->user()->update([
@@ -102,12 +102,9 @@ class ApiOdooController extends Controller
                     }
 
                     if (count($errors) > 0) {
-                        Storage::put('/public/dataClients.txt', Storage::get('/public/dataClients.txt') .  json_encode($requestData));
-                        Mail::to('adminportales@promolife.com.mx')->send(new SendDataOdoo('adminportales@promolife.com.mx', '/storage/dataErrorClients.txt'));
                         return response()->json(['errors' => 'Informacion Incompleta', 'data' => $errors]);
                     } else {
-                        Storage::put('/public/dataClients.txt',   json_encode($requestData));
-                        Mail::to('adminportales@promolife.com.mx')->send(new SendDataOdoo('adminportales@promolife.com.mx', '/storage/dataClients.txt'));
+                        Storage::put('/public/dataClients.txt', Storage::get('/public/dataClients.txt') .  json_encode($requestData));
                         foreach ($requestData as $dataClient) {
                             $client = Client::where('client_odoo_id', $dataClient['id'])->where('company_id', $dataClient['company_id'])->first();
                             if (!$client) {
