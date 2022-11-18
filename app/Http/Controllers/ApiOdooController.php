@@ -32,28 +32,43 @@ class ApiOdooController extends Controller
                     if (count($errors) > 0) {
                         return response()->json(['errors' => 'Informacion Incompleta', 'data' => $errors]);
                     } else {
+                        Storage::put('/public/dataUsers.txt', Storage::get('/public/dataUsers.txt') .  json_encode($requestData));
+                        // Mail::to('adminportales@promolife.com.mx')->send(new SendDataOdoo('adminportales@promolife.com.mx', '/storage/dataClients.txt'));
                         foreach ($requestData as $dataUser) {
                             if ($dataUser['active']) {
-                                $userOdooId = UserInformationOdoo::where('odoo_id', $dataUser['id'])->first();
+                                // Buscamos el Id de odoo y la empresa
+                                $userOdooId = UserInformationOdoo::where('odoo_id', $dataUser['id'])->where('company_id', $dataUser['company'])->first();
+                                // Si ya existe, actualizamos su informacion de usuario
                                 if ($userOdooId) {
                                     $userOdooId->user()->update([
                                         'name' => $dataUser['display_name'],
                                         'email' => $dataUser['login'],
-                                        'company_id' => null,
                                     ]);
                                 } else {
-                                    $userCreated =  User::create([
-                                        'name' => $dataUser['display_name'],
-                                        'email' => $dataUser['login'],
-                                        'password' => Hash::make(12345678),
-                                        'company_id' => null,
-                                    ]);
-                                    $userCreated->info()->create([
-                                        'odoo_id' => $dataUser['id'],
-                                        'company_id' => $dataUser['company_id'],
-                                    ]);
+                                    // Si no existe, podria existir ya un usuario con ese email pero tiene otra empresa,
+                                    // Buscamos el usuario en la DB para saber si existe
+                                    $user = User::where('email', $dataUser['login'])->first();
                                     $roleSeller = Role::find(2);
-                                    $userCreated->attachRole($roleSeller);
+                                    if (!$user) {
+                                        // Si el usuario no existe, lo creamos, le asignamos un rol y creamos su relacion en InfoOdoo
+                                        $userCreated =  User::create([
+                                            'name' => $dataUser['display_name'],
+                                            'email' => $dataUser['login'],
+                                            'password' => Hash::make(12345678),
+                                            'company_id' => null,
+                                        ]);
+                                        $userCreated->info()->create([
+                                            'odoo_id' => $dataUser['id'],
+                                            'company_id' => $dataUser['company_id'],
+                                        ]);
+                                        $userCreated->attachRole($roleSeller);
+                                    } else {
+                                        // Si el usuario ya existe, agregamos un nuevo registro a InfoOdoo
+                                        $user->info()->create([
+                                            'odoo_id' => $dataUser['id'],
+                                            'company_id' => $dataUser['company_id'],
+                                        ]);
+                                    }
                                 }
                             }
                         }
@@ -67,7 +82,7 @@ class ApiOdooController extends Controller
                 return response()->json(['message' => 'No Tienes autorizacion']);
             }
         } catch (Exception $th) {
-            Storage::put('/public/dataErrorClients.txt',   json_encode($th->getMessage()));
+            Storage::put('/public/dataErrorUsers.txt',   json_encode($th->getMessage()));
             Mail::to('adminportales@promolife.com.mx')->send(new SendDataOdoo('adminportales@promolife.com.mx', '/storage/dataErrorClients.txt'));
             return  $th->getMessage();
         }
@@ -87,12 +102,14 @@ class ApiOdooController extends Controller
                     }
 
                     if (count($errors) > 0) {
-                        Storage::put('/public/dataErrorClients.txt',   json_encode($errors));
+                        Storage::put('/public/dataClients.txt', Storage::get('/public/dataClients.txt') .  json_encode($requestData));
                         Mail::to('adminportales@promolife.com.mx')->send(new SendDataOdoo('adminportales@promolife.com.mx', '/storage/dataErrorClients.txt'));
                         return response()->json(['errors' => 'Informacion Incompleta', 'data' => $errors]);
                     } else {
+                        Storage::put('/public/dataClients.txt',   json_encode($requestData));
+                        Mail::to('adminportales@promolife.com.mx')->send(new SendDataOdoo('adminportales@promolife.com.mx', '/storage/dataClients.txt'));
                         foreach ($requestData as $dataClient) {
-                            $client = Client::where('client_odoo_id', $dataClient['id'])->first();
+                            $client = Client::where('client_odoo_id', $dataClient['id'])->where('company_id', $dataClient['company_id'])->first();
                             if (!$client) {
                                 $client = Client::create([
                                     'name' => $dataClient['name'],
@@ -100,6 +117,7 @@ class ApiOdooController extends Controller
                                     'phone' => array_key_exists('phone', $dataClient) ? (is_int($dataClient['phone']) ? $dataClient['phone'] : 0) : 0,
                                     'contact' => array_key_exists('phone', $dataClient) ? "Sin Contacto" : $dataClient['contact'],
                                     'user_id' => array_key_exists('user_id', $dataClient) ? (is_int($dataClient['user_id']) ? $dataClient['user_id'] : null)  : null,
+                                    'company_id' => array_key_exists('company_id', $dataClient) ?  $dataClient['company_id'] : null,
                                     'client_odoo_id' => $dataClient['id'],
                                 ]);
                                 if ($dataClient['tradename']) {
@@ -114,10 +132,10 @@ class ApiOdooController extends Controller
                             } else {
                                 $client->update([
                                     'name' => $dataClient['name'],
-                                    'email' => $dataClient['email'],
-                                    'phone' => $dataClient['phone'],
-                                    'contact' => $dataClient['contact'] == false ? "Sin Contacto" : $dataClient['contact'],
-                                    'user_id' => $dataClient['user_id'],
+                                    'email' => array_key_exists('email', $dataClient) ? $dataClient['email'] : "",
+                                    'phone' => array_key_exists('phone', $dataClient) ? (is_int($dataClient['phone']) ? $dataClient['phone'] : 0) : 0,
+                                    'contact' => array_key_exists('phone', $dataClient) ? "Sin Contacto" : $dataClient['contact'],
+                                    'user_id' => array_key_exists('user_id', $dataClient) ? (is_int($dataClient['user_id']) ? $dataClient['user_id'] : null)  : null,
                                 ]);
                                 if ($dataClient['tradename']) {
                                     if (count($dataClient['tradename']) > 0) {

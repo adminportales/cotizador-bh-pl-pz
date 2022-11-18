@@ -21,6 +21,7 @@ class CreateClientsTable extends Migration
             $table->string('contact');
             $table->string('email');
             $table->string('phone');
+            $table->string('company_id');
             $table->timestamps();
         });
     }

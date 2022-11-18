@@ -15,8 +15,14 @@ class UserInformationOdoo extends Model
     {
         return $this->belongsTo(User::class, 'user_id');
     }
+
     public function clients()
     {
         return $this->hasMany(Client::class, 'user_id', 'odoo_id');
+    }
+
+    public function company()
+    {
+        return $this->belongsTo(Company::class, 'company_id');
     }
 }

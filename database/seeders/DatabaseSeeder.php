@@ -26,13 +26,6 @@ class DatabaseSeeder extends Seeder
             'display_name' => 'User Vendedor', // optional
             'description' => 'User is allowed to manage and edit other users', // optional
         ]);
-        Company::create([
-            'name' => 'BH TRADEMARKET',
-            'image' => 'bhtrade.png',
-            'manager' => 'Ricardo Zamora Rodriguez',
-            'email' => 'ricardo@trademarket.com.mx',
-            'phone' => '6969585847'
-        ]);
 
         Company::create([
             'name' => 'PROMO LIFE',
@@ -48,6 +41,14 @@ class DatabaseSeeder extends Seeder
             'manager' => 'Daniel Levy Hano',
             'email' => 'daniel@trademarket.com.mx',
             'phone' => '5522552255'
+        ]);
+
+        Company::create([
+            'name' => 'BH TRADEMARKET',
+            'image' => 'bhtrade.png',
+            'manager' => 'Ricardo Zamora Rodriguez',
+            'email' => 'ricardo@trademarket.com.mx',
+            'phone' => '6969585847'
         ]);
 
         User::create([

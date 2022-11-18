@@ -13,7 +13,7 @@ class Client extends Model
 
     protected $table = 'clients';
 
-    protected $fillable = ['user_id', 'client_odoo_id', 'name', 'contact', 'email', 'phone'];
+    protected $fillable = ['user_id', 'client_odoo_id', 'name', 'contact', 'email', 'phone', 'company_id'];
 
     public function userOdoo()
     {

@@ -20,6 +20,7 @@ class CreateQuotesTable extends Migration
             $table->boolean('iva_by_item')->default(false);
             $table->text('logo')->nullable();
             $table->boolean('pending_odoo')->default(false);
+            $table->foreignId('company_id')->constrained();
             // $table->boolean('client');
             $table->timestamps();
         });
