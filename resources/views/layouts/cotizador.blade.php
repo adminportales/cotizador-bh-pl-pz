@@ -76,6 +76,13 @@
 </head>
 
 <body>
+    @php
+        $companySession = auth()->user()->company_session;
+        if ($companySession == null && !auth()->user()->hasRole('admin')) {
+            auth()->user()->company_session = auth()->user()->info[0]->company_id;
+            auth()->user()->save();
+        }
+    @endphp
     <div id="app">
         @include('layouts.components.navbar')
         @yield('content')

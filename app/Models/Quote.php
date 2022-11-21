@@ -32,4 +32,9 @@ class Quote extends Model
     {
         return $this->hasOne(QuoteUpdate::class)->latestOfMany();
     }
+
+    public function company()
+    {
+        return $this->belongsTo(Company::class);
+    }
 }

@@ -36,8 +36,10 @@ class FinalizarCotizacion extends Component
     public function render()
     {
         $userClients = [];
-        if (auth()->user()->info) {
-            $userClients = auth()->user()->info->clients;
+        foreach (auth()->user()->info as $info) {
+            if ($info->company_id == auth()->user()->company_session) {
+                $userClients = $info->clients()->where('company_id', $info->company_id)->get();
+            }
         }
         return view('pages.catalogo.finalizar-cotizacion', compact('userClients'));
     }
@@ -49,7 +51,7 @@ class FinalizarCotizacion extends Component
 
     public function guardarCotizacion()
     {
-        if (!auth()->user()->company) {
+        if (count(auth()->user()->info) < 1) {
             $this->dispatchBrowserEvent('isntCompany');
             return;
         }
@@ -83,8 +85,12 @@ class FinalizarCotizacion extends Component
             'rank' => 'required',
         ]);
         $odoo_id_user = null;
-        if (auth()->user()->info) {
-            $odoo_id_user = auth()->user()->info->odoo_id;
+        if (count(auth()->user()->info) > 0) {
+            foreach (auth()->user()->info as $infoOdoo) {
+                if ($infoOdoo->company_id == auth()->user()->company_session) {
+                    $odoo_id_user = $infoOdoo->odoo_id;
+                }
+            }
         }
         if ($odoo_id_user == null) {
             dd("No tienes un id de Odoo Asignado");
@@ -106,6 +112,7 @@ class FinalizarCotizacion extends Component
             'iva_by_item' => boolval($this->ivaByItem),
             'logo' => $pathLogo,
             'pending_odoo' => true,
+            "company_id" => auth()->user()->company_session
         ]);
 
         // Guardar la Info de la cotizacion
@@ -192,7 +199,7 @@ class FinalizarCotizacion extends Component
         $message = '';
         $messageMail = '';
 
-        switch (auth()->user()->company->name) {
+        switch (auth()->user()->companySession->name) {
             case 'PROMO LIFE':
                 # code...
                 $keyOdoo = 'cd78567e59e016e964cdcc1bd99367c6';
@@ -315,7 +322,7 @@ class FinalizarCotizacion extends Component
                     break;
             }
             $mailSend = '';
-            switch (auth()->user()->company->name) {
+            switch (auth()->user()->companySession->name) {
                 case 'PROMO LIFE':
                     $mailSend = new SendQuotePL(auth()->user()->name, $quote->latestQuotesUpdate->quotesInformation->name, $newPath);
                     Mail::mailer($mailer)->to($quote->latestQuotesUpdate->quotesInformation->email)->send($mailSend);

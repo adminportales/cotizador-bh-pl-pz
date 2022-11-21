@@ -49,13 +49,12 @@
                                         <td>
                                             @foreach ($row->info as $infoOdoo)
                                                 <p><strong>Empresa: </strong>
-                                                        {{ $infoOdoo->company }}
+                                                    {{ $infoOdoo->company->name }}
                                                 </p>
                                                 <p><strong>Id Odoo: </strong>
-                                                    @if ($infoOdoo->info)
-                                                        {{ $infoOdoo->odoo_id }}
-                                                    @endif
+                                                    {{ $infoOdoo->odoo_id }}
                                                 </p>
+                                                <hr>
                                             @endforeach
                                         </td>
                                         <td width="90">

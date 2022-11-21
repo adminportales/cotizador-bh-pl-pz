@@ -27,21 +27,6 @@ class EditInformationClientComponent extends Component
         $this->rank = $this->quoteInfo->rank;
         $this->departamento = $this->quoteInfo->department;
         $this->informacion = $this->quoteInfo->information;
-        $this->clients = [];
-        if ($this->quote->user_id == auth()->user()->id) {
-            $this->clients = auth()->user()->info->clients;
-        } else {
-            $user = User::find($this->quote->user_id);
-            $this->clients = $user->info->clients;
-        }
-        foreach ($this->clients as $cliente) {
-            if ($cliente->name == $this->empresa) {
-                $this->tipoCliente = 'buscar';
-                $this->clienteSeleccionado = $cliente->id;
-            } else {
-                $this->tipoCliente = 'crear';
-            }
-        }
     }
 
     public function render()

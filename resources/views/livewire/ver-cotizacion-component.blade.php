@@ -27,23 +27,32 @@
                     {{ session('message') }} </div>
             </div>
         @endif
+        @if ($quote->company_id != auth()->user()->company_session)
+            <div class="alert alert-warning w-100 alert-dismissible fade show" role="alert"
+                style="margin-top:0px; margin-bottom:0px;">
+                Esta cotizacion fue realizada con {{ $quote->company->name }}. Algunas opciones, estan
+                deshabilitadas
+            </div>
+        @endif
         <div class="col-md-4">
             <div class="card w-100 h-100">
                 <div class="card-body">
                     @if ($quote->latestQuotesUpdate)
                         <div class="d-flex justify-content-between">
                             <h5><strong>Informacion del Cliente</strong></h5>
-                            <div class="text-success" style="width: 25px; cursor: pointer;" data-toggle="modal"
-                                data-target="#editarInfoCliente">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20"
-                                    fill="currentColor">
-                                    <path
-                                        d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z" />
-                                    <path fill-rule="evenodd"
-                                        d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z"
-                                        clip-rule="evenodd" />
-                                </svg>
-                            </div>
+                            @if ($quote->company_id == auth()->user()->company_session)
+                                <div class="text-success" style="width: 25px; cursor: pointer;" data-toggle="modal"
+                                    data-target="#editarInfoCliente">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20"
+                                        fill="currentColor">
+                                        <path
+                                            d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z" />
+                                        <path fill-rule="evenodd"
+                                            d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z"
+                                            clip-rule="evenodd" />
+                                    </svg>
+                                </div>
+                            @endif
                         </div>
                         <h5 class="card-title">{{ $quote->latestQuotesUpdate->quotesInformation->name }} |
                             {{ $quote->latestQuotesUpdate->quotesInformation->company }}</h5>
@@ -122,28 +131,31 @@
                                 <a class="btn btn-success w-100" target="_blank"
                                     href="{{ route('previsualizar.cotizacion', ['quote' => $quote]) }}">Ver PDF</a>
                             </div>
-                            <div class="col-md-4">
-                                <div class="d-flex justify-content-center">
-                                    <div wire:loading wire:target="enviar">
-                                        <div class="spinner-border text-primary" role="status">
-                                            <span class="sr-only">loading...</span>
+                            @if ($quote->company_id == auth()->user()->company_session)
+                                <div class="col-md-4">
+                                    <div class="d-flex justify-content-center">
+                                        <div wire:loading wire:target="enviar">
+                                            <div class="spinner-border text-primary" role="status">
+                                                <span class="sr-only">loading...</span>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <button class="btn btn-primary w-100" wire:click="enviar">Enviar al Cliente</button>
+                                        <button class="btn btn-primary w-100" wire:click="enviar">Enviar al
+                                            Cliente</button>
 
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="d-flex justify-content-center">
-                                    <div wire:loading wire:target="enviarOdoo">
-                                        <div class="spinner-border text-danger" role="status">
-                                            <span class="sr-only">loading...</span>
+                                <div class="col-md-4">
+                                    <div class="d-flex justify-content-center">
+                                        <div wire:loading wire:target="enviarOdoo">
+                                            <div class="spinner-border text-danger" role="status">
+                                                <span class="sr-only">loading...</span>
+                                            </div>
                                         </div>
+                                        <button class="btn btn-danger w-100" wire:click="enviarOdoo">Enviar a
+                                            ODOO</button>
                                     </div>
-                                    <button class="btn btn-danger w-100" wire:click="enviarOdoo">Enviar a ODOO</button>
                                 </div>
-                            </div>
-
+                            @endif
                         </div>
                     </div>
                 @endif

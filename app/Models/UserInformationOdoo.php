@@ -23,6 +23,6 @@ class UserInformationOdoo extends Model
 
     public function company()
     {
-        return $this->belongsTo(Company::class, 'company_id');
+        return $this->belongsTo(Company::class);
     }
 }

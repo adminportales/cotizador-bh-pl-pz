@@ -191,7 +191,7 @@
     <div>
         <table class="content responsable" style="width: 105%","text-align: center">
             <tr>
-                <td><img src="quotesheet/bh/icon-email.png"alt="">{{ $user->company->manager }}
+                <td><img src="quotesheet/bh/icon-email.png"alt="">{{ $user->companySession->manager }}
                     <b>GERENTE COMERCIAL</b>
                 </td>
                 <td><img src="quotesheet/bh/icon-email.png"alt="">
@@ -199,12 +199,12 @@
             </tr>
             <tr>
                 <td><img src="quotesheet/bh/icon-email.png"alt="">
-                    {{ $user->company->email }}</td>
+                    {{ $user->companySession->email }}</td>
                 <td><img src="quotesheet/bh/icon-email.png" alt="">
                     {{ $user->email }} </td>
             </tr>
             <tr>
-                <td><img src="quotesheet/bh/icon-whatsapp.png" alt=""> {{ $user->company->phone }}
+                <td><img src="quotesheet/bh/icon-whatsapp.png" alt=""> {{ $user->companySession->phone }}
                 </td>
                 <td><img src="quotesheet/bh/icon-whatsapp.png" alt=""> {{ $user->phone }}</td>
             </tr>

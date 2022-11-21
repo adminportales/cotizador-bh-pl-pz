@@ -8,15 +8,15 @@
     <div class="container">
         <a href="/" class="navbar-brand p-0">
             <div class="text-light d-flex align-items-center">
-                @if (auth()->user()->company)
+                @if (auth()->user()->companySession)
                     <div class="p-1 bg-white rounded m-1">
                         <img alt="logo" class="imagen" height="50"
-                            src="{{ asset('img') . '/' . auth()->user()->company->image }}">
+                            src="{{ asset('img') . '/' . auth()->user()->companySession->image }}">
                     </div>
                 @endif
                 <div>
                     <h6 class="m-0 text-white font-weight-bold" style="font-family:'Myriad Pro Bold';font-weight:bold;">
-                        COTIZADOR {{ auth()->user()->company ? auth()->user()->company->name : '' }}
+                        COTIZADOR {{ auth()->user()->companySession ? auth()->user()->companySession->name : '' }}
                     </h6>
                     <p class="m-0 text-white d-none d-sm-block"
                         style="font-family:'Myriad Pro Regular';font-weight:normal;">Cotiza tus Productos</p>
@@ -28,10 +28,30 @@
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
+            @if (count(auth()->user()->info) > 1)
+                <ul class="navbar-nav mr-auto">
+                    <li>
+                        <div class="dropdown">
+                            <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton"
+                                style="background-color: transparent; color:white" data-toggle="dropdown"
+                                aria-haspopup="true" aria-expanded="false">
+                                {{ auth()->user()->companySession->name }}
+                            </button>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                @foreach (auth()->user()->info as $companyInfo)
+                                    <a class="dropdown-item {{ $companyInfo->company->id == auth()->user()->company_session ? 'disabled' : '' }}"
+                                        href="{{ route('changeCompany.cotizador', ['company' => $companyInfo->company_id]) }}">{{ $companyInfo->company->name }}</a>
+                                @endforeach
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            @endif
             <!-- Topbar Navbar -->
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item d-flex align-items-center">
-                    <a class="nav-link text-white" aria-current="page" href="{{ route('catalogo') }}" data-toggle="tooltip" data-placement="bottom" title="Inicio">
+                    <a class="nav-link text-white" aria-current="page" href="{{ route('catalogo') }}"
+                        data-toggle="tooltip" data-placement="bottom" title="Inicio">
                         <div style="width: 2rem">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                 stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
@@ -45,7 +65,8 @@
                     @livewire('count-cart-quote')
                 </li>
                 <li class="nav-item d-flex align-items-center">
-                    <a class="nav-link text-white" aria-current="page" href="{{ route('cotizaciones') }}" data-toggle="tooltip" data-placement="bottom" title="Lista de Cotizaciones">
+                    <a class="nav-link text-white" aria-current="page" href="{{ route('cotizaciones') }}"
+                        data-toggle="tooltip" data-placement="bottom" title="Lista de Cotizaciones">
                         <div style="width: 2rem">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                 stroke-width="1.5" stroke="currentColor" class="w-6 h-6">

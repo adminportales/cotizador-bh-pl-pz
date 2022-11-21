@@ -268,10 +268,11 @@
         function enviar() {
             Swal.fire({
                 title: '¿Desea confirmar la cotización?',
-                text: "Se enviará una copia de la cotización al correo electrónico establecido y se registra como un lead nuevo en Odoo",
+                html: "{{ auth()->user()->companySession->name }}<br><br>Se enviará una copia de la cotización al correo electrónico establecido y se registra como un lead nuevo en Odoo.",
                 showCancelButton: true,
                 icon: 'warning',
                 confirmButtonText: 'Guardar',
+                cancelButtonText: 'Cancelar',
             }).then((result) => {
                 /* Read more about isConfirmed, isDenied below */
                 if (result.isConfirmed) {

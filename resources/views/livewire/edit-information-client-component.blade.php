@@ -4,51 +4,6 @@
     <div class="row">
         <div class="col-md-4">
             <div class="form-group">
-                <label for="">Opciones de Cliente</label>
-                <select name="tipo" class="form-control" wire:model="tipoCliente" disabled>
-                    <option value="">Como vas a registrar el cliente</option>
-                    <option value="buscar">Seleccionar Cliente</option>
-                    <option value="crear">Crear Prospecto</option>
-                </select>
-            </div>
-            @if ($errors->has('tipoCliente'))
-                <span class="text-danger">{{ $errors->first('tipoCliente') }}</span>
-            @endif
-        </div>
-        @if ($tipoCliente == 'buscar')
-            <div class="col-md-4">
-                <div class="form-group">
-                    <label for="">Buscar Cliente</label>
-                    <select name="tipo" class="form-control" wire:model="clienteSeleccionado" disabled>
-                        <option value="">Seleccionar Cliente</option>
-                        @foreach ($clients as $client)
-                            <option value="{{ $client->id }}">
-                                {{ $client->name . ' | ' . $client->contact }}</option>
-                        @endforeach
-                        @if (count($clients) < 1)
-                            <option value="">No tienes clientes asignados, si es un error, reportalo
-                                con el area de desarrollo</option>
-                        @endif
-                    </select>
-                </div>
-                @if ($errors->has('clienteSeleccionado'))
-                    <span class="text-danger">{{ $errors->first('clienteSeleccionado') }}</span>
-                @endif
-            </div>
-        @elseif($tipoCliente == 'crear')
-            <div class="col-md-4">
-                <div class="form-group">
-                    <label for="">Nombre de la empresa</label>
-                    <input type="text" class="form-control" placeholder="Nombre de la empresa" wire:model="empresa"
-                        disabled>
-                </div>
-                @if ($errors->has('empresa'))
-                    <span class="text-danger">{{ $errors->first('empresa') }}</span>
-                @endif
-            </div>
-        @endif
-        <div class="col-md-4">
-            <div class="form-group">
                 <label for="">Nombre de contacto</label>
                 <input type="text" class="form-control" placeholder="Nombre" wire:model="nombre">
             </div>
@@ -56,7 +11,6 @@
                 <span class="text-danger">{{ $errors->first('nombre') }}</span>
             @endif
         </div>
-        <div class="w-100"></div>
         <div class="col-md-4">
             <div class="form-group">
                 <label for="">Email</label>

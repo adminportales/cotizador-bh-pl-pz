@@ -6,6 +6,7 @@ use App\Models\Catalogo\GlobalAttribute;
 use App\Models\Catalogo\Product;
 use App\Models\Client;
 use App\Models\Quote;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class CotizadorController extends Controller
@@ -66,7 +67,7 @@ class CotizadorController extends Controller
         }
 
         $pdf = '';
-        $company = $quote->user->company->name;
+        $company = $quote->company->name;
         switch ($company) {
             case 'PROMO LIFE':
                 # code...
@@ -94,5 +95,13 @@ class CotizadorController extends Controller
     {
         $quotes = Quote::orderBy('created_at', 'ASC')->get();
         return view('pages.catalogo.cotizaciones-all', compact('quotes'));
+    }
+
+    public function changeCompany($company)
+    {
+        $user = User::find(auth()->user()->id);
+        $user->company_session = $company;
+        $user->save();
+        return back();
     }
 }

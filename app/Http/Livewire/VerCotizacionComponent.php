@@ -49,7 +49,7 @@ class VerCotizacionComponent extends Component
         $errors = false;
         $message = '';
         $pdf = '';
-        switch (auth()->user()->company->name) {
+        switch ($this->quote->company->name) {
             case 'PROMO LIFE':
                 # code...
                 $pdf = \PDF::loadView('pages.pdf.promolife', ['quote' => $this->quote, 'nombreComercial' => $nombreComercial]);
@@ -94,7 +94,7 @@ class VerCotizacionComponent extends Component
                     break;
             }
             $mailSend = '';
-            switch (auth()->user()->company->name) {
+            switch ($this->quote->company->name) {
                 case 'PROMO LIFE':
                     $mailSend = new SendQuotePL(auth()->user()->name, $this->quote->latestQuotesUpdate->quotesInformation->name, $path);
                     Mail::mailer($mailer)->to($this->quote->latestQuotesUpdate->quotesInformation->email)->send($mailSend);
@@ -214,7 +214,7 @@ class VerCotizacionComponent extends Component
         $keyOdoo = '';
         $errors = false;
         $message = '';
-        switch (auth()->user()->company->name) {
+        switch ($this->quote->company->name) {
             case 'PROMO LIFE':
                 $keyOdoo = 'cd78567e59e016e964cdcc1bd99367c6';
                 $pdf = PDF::loadView('pages.pdf.promolife', ['quote' => $this->quote, 'nombreComercial' => $nombreComercial]);

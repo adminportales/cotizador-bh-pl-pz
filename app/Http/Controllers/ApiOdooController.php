@@ -63,11 +63,14 @@ class ApiOdooController extends Controller
                                         ]);
                                         $userCreated->attachRole($roleSeller);
                                     } else {
-                                        // Si el usuario ya existe, agregamos un nuevo registro a InfoOdoo
-                                        $user->info()->create([
-                                            'odoo_id' => $dataUser['id'],
-                                            'company_id' => $dataUser['company_id'],
-                                        ]);
+                                        // Si el usuario ya existe, agregamos un nuevo registro a InfoOdoo en caso de que no exista
+                                        $registerOdooCompany = $user->info()->where('odoo_id', $dataUser['id'])->where('company_id', $dataUser['company_id'])->first();
+                                        if (!$registerOdooCompany) {
+                                            $user->info()->create([
+                                                'odoo_id' => $dataUser['id'],
+                                                'company_id' => $dataUser['company_id'],
+                                            ]);
+                                        }
                                     }
                                 }
                             }
