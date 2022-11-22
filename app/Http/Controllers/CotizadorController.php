@@ -103,4 +103,9 @@ class CotizadorController extends Controller
         $user->save();
         return back();
     }
+
+    public function addProductCreate()
+    {
+        return view('pages.catalogo.addProduct');
+    }
 }

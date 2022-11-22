@@ -68,6 +68,32 @@
                     @endif
                 </div>
             @endif
+            <div class="card px-3 py-1 mb-1 shadow-sm">
+                <p class="m-0">Tipo de Producto: </p>
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1"
+                                value="option1">
+                            <label class="form-check-label" for="inlineRadio1">Catalogo</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="inlineRadioOptions"
+                                id="inlineRadio2" value="option2">
+                            <label class="form-check-label" for="inlineRadio2">Importacion</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="inlineRadioOptions"
+                                id="inlineRadio3" value="option2">
+                            <label class="form-check-label" for="inlineRadio3">Productos de Referencia</label>
+                        </div>
+                    </div>
+                    <div>
+                        <a href="{{ route('addProduct.cotizador') }}" class="btn btn-sm btn-info">Agregar Nuevo
+                            Producto</a>
+                    </div>
+                </div>
+            </div>
             <div class="row">
                 @foreach ($products as $row)
                     <div class="col-md-4 col-lg-3 col-sm-6  d-flex justify-content-center">
