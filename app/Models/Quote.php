@@ -16,7 +16,6 @@ class Quote extends Model
         'logo',
         "pending_odoo",
         "company_id",
-        // 'client'
     ];
 
     public function quotesUpdate()

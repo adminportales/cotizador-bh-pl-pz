@@ -36,27 +36,27 @@ class EditInformationClientComponent extends Component
 
     public function guardarCotizacion()
     {
-        $this->authorize('update', $this->quote);
-        $this->validate([
-            'tipoCliente' => 'required',
-        ]);
+        // $this->authorize('update', $this->quote);
+        // $this->validate([
+        //     'tipoCliente' => 'required',
+        // ]);
 
-        if ($this->tipoCliente == 'crear') {
-            $this->validate([
-                'nombre' => 'required',
-                'empresa' => 'required',
-            ]);
-        } else {
-            $this->validate([
-                'clienteSeleccionado' => 'required',
-            ]);
-            $client = Client::find($this->clienteSeleccionado);
-            $this->nombre = $client->contact;
-            $this->empresa = $client->name;
-        }
+        // if ($this->tipoCliente == 'crear') {
+        //     $this->validate([
+        //         'nombre' => 'required',
+        //         'empresa' => 'required',
+        //     ]);
+        // } else {
+        //     $this->validate([
+        //         'clienteSeleccionado' => 'required',
+        //     ]);
+        //     $client = Client::find($this->clienteSeleccionado);
+        //     $this->nombre = $client->contact;
+        //     $this->empresa = $client->name;
+        // }
 
         $this->validate([
-            'tipoCliente' => 'required',
+            // 'tipoCliente' => 'rsequired',
             'email' => 'required|email',
             'telefono' => 'required|numeric',
             'celular' => 'required|numeric',
@@ -67,8 +67,8 @@ class EditInformationClientComponent extends Component
         $this->quote->update(['iva_by_item' => boolval($this->ivaByItem)]);
         // Guardar la Info de la cotizacion
         $quoteInfo = QuoteInformation::create([
-            'name' => $this->nombre,
-            'company' => $this->empresa,
+            'name' => $this->quoteInfo->name,
+            'company' => $this->quoteInfo->company,
             'email' => $this->email,
             'landline' => $this->telefono,
             'cell_phone' => $this->celular,

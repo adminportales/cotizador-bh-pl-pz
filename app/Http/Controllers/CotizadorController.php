@@ -46,8 +46,7 @@ class CotizadorController extends Controller
 
     public function cotizaciones()
     {
-        $quotes = auth()->user()->quotes()->orderBy('created_at', 'DESC')->get();
-        return view('pages.catalogo.cotizaciones', compact('quotes'));
+        return view('pages.catalogo.cotizaciones');
     }
     public function verCotizacion(Quote $quote)
     {

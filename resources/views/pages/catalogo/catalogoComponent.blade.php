@@ -18,18 +18,12 @@
                             <option value="{{ $provider->id }}">{{ $provider->company }}</option>
                         @endforeach
                     </select>
-                    {{-- <select wire:model='color' name="colores" id="provee" class="form-control mb-2">
-                    <option value="">Seleccione color...</option>
-                    @foreach ($colores as $color)
-                        <option value="{{ $color->id }}">{{ $color->color }}</option>
-                    @endforeach
-                    </select> --}}
-                    <select wire:model='type' name="types" id="type" class="form-control mb-2">
+                    {{-- <select wire:model='type' name="types" id="type" class="form-control mb-2">
                         <option value="">Importacion o Catalogo...</option>
                         @foreach ($types as $type)
                             <option value="{{ $type->id }}">{{ $type->type }}</option>
                         @endforeach
-                    </select>
+                    </select> --}}
                     <p class="mb-0">Precio</p>
                     <div class="d-flex align-items-center mb-2">
                         <input wire:model='precioMin' type="number" class="form-control" name="search" id="search"

@@ -46,6 +46,7 @@ class Catalogo extends Component
         $stock = DB::connection('mysql_catalogo')->table('products')->max('stock');
         $this->stockMax = $stock;
         $this->stockMin = 0;
+        $this->type = 1;
     }
 
     public function render()
