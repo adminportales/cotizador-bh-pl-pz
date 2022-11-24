@@ -262,7 +262,6 @@ class FinalizarCotizacion extends Component
                     ]
                 ]
             ];
-
             $curl = curl_init($url);
             curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
             curl_setopt($curl, CURLOPT_POST, true);
@@ -302,6 +301,7 @@ class FinalizarCotizacion extends Component
             }
         } catch (Exception $exception) {
             $message = $exception->getMessage();
+            $errors = true;
         }
         $errorsMail = false;
         try {
@@ -388,6 +388,7 @@ class FinalizarCotizacion extends Component
                     // Mail::mailer($mailer)->to($quote->latestQuotesUpdate->quotesInformation->email)->send($mailSend);
                     break;
                 default:
+                    dd(1);
                     break;
             }
             unlink(public_path() . $newPath);
