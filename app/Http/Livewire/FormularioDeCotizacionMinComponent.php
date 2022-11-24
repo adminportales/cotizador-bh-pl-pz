@@ -16,7 +16,7 @@ class FormularioDeCotizacionMinComponent extends Component
 
     public $precio, $precioCalculado, $precioTotal = 0;
 
-    public $tecnica = null, $colores = null, $operacion = null, $utilidad = null, $entrega = null, $cantidad = null, $priceTechnique;
+    public $tecnica = null, $colores = null, $operacion = null, $utilidad = null, $entrega = null, $cantidad = null, $priceTechnique,  $newPriceTechnique = null;
 
     public $materialSeleccionado;
     public $tecnicaSeleccionada;
@@ -121,11 +121,24 @@ class FormularioDeCotizacionMinComponent extends Component
             $this->cantidad = null;
         if (!is_numeric($this->utilidad))
             $this->utilidad = null;
-        $nuevoPrecio = round(($this->precio + ($precioDeTecnica * $this->colores) + $this->operacion) / ((100 - $this->utilidad) / 100), 2);
+        if ($this->utilidad > 99)
+            $this->utilidad = 99;
+        if (!is_numeric($this->newPriceTechnique))
+            $this->newPriceTechnique = null;
+        $precioDeTecnicaUsado = $precioDeTecnica;
+        if ($this->newPriceTechnique != null && $this->newPriceTechnique > 0)
+            $precioDeTecnicaUsado = $this->newPriceTechnique;
+        $nuevoPrecio = round(($this->precio + ($precioDeTecnicaUsado * $this->colores) + $this->operacion) / ((100 - $this->utilidad) / 100), 2);
 
         $this->precioCalculado = $nuevoPrecio;
         $this->precioTotal = $nuevoPrecio * $this->cantidad;
-        return view('pages.catalogo.formulario-de-cotizacion-min', ['materiales' => $materiales, 'techniquesAvailables' => $techniquesAvailables, 'sizesAvailables' => $sizesAvailables, 'preciosDisponibles' => $preciosDisponibles]);
+        return view('pages.catalogo.formulario-de-cotizacion-min', [
+            'materiales' => $materiales,
+            'techniquesAvailables' => $techniquesAvailables,
+            'sizesAvailables' => $sizesAvailables,
+            'preciosDisponibles' => $preciosDisponibles,
+            "precioDeTecnica" => $precioDeTecnica
+        ]);
     }
 
     public function agregarCotizacion()
@@ -157,10 +170,13 @@ class FormularioDeCotizacionMinComponent extends Component
 
         $product = $this->product->toArray();
         $product['image'] = $this->product->firstImage ? $this->product->firstImage->image_url : '';
+        if (!is_numeric($this->newPriceTechnique))
+        $this->newPriceTechnique = null;
         $newQuote = [
             'idNewQuote' => time(),
             'product' => json_encode($product),
             'prices_techniques_id' => $this->priceTechnique->id,
+            'newPriceTechnique' => $this->newPriceTechnique,
             'color_logos' => $this->colores,
             'costo_indirecto' => $this->operacion,
             'utilidad' => $this->utilidad,

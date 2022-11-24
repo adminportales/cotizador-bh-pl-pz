@@ -98,6 +98,8 @@ class FormularioDeCotizacionEditMin extends Component
             $this->operacion = null;
         if (!is_numeric($this->cantidad))
             $this->cantidad = null;
+        if (!is_numeric($this->utilidad))
+            $this->utilidad = null;
         if ($this->utilidad > 99)
             $this->utilidad = 99;
         if (!is_numeric($this->newPriceTechnique))
@@ -147,11 +149,14 @@ class FormularioDeCotizacionEditMin extends Component
         }
         $product = $this->product->toArray();
         $product['image'] = $this->product->firstImage ? $this->product->firstImage->image_url : '';
+        if (!is_numeric($this->newPriceTechnique))
+            $this->newPriceTechnique = null;
         $newQuote = [
             'currentQuote_id' => $this->currentQuote_id,
             'idNewQuote' => $this->idNewQuote,
             'product' => json_encode($product),
             'prices_techniques_id' => $this->priceTechnique->id,
+            'newPriceTechnique' => $this->newPriceTechnique,
             'color_logos' => $this->colores,
             'costo_indirecto' => $this->operacion,
             'utilidad' => $this->utilidad,

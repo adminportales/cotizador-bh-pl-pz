@@ -174,7 +174,12 @@ class EditarCotizacionComponent extends Component
                         ];
                         $productQuote->product = $productQuoteEdit['product'];
                         $productQuote->technique = json_encode($infoTecnica);
-                        $productQuote->prices_techniques =  $price_tecnica;
+                        $productQuote->prices_techniques = $productQuoteEdit['newPriceTechnique'] != null
+                            ? $productQuoteEdit['newPriceTechnique']
+                            : ($tecnica->tipo_precio == 'D'
+                                ? round($tecnica->precio / $productQuoteEdit['cantidad'], 2)
+                                : $tecnica->precio);
+                        $productQuote->new_price_technique = $productQuoteEdit['newPriceTechnique'];
                         $productQuote->color_logos = $productQuoteEdit['color_logos'];
                         $productQuote->costo_indirecto = $productQuoteEdit['costo_indirecto'];
                         $productQuote->utilidad = $productQuoteEdit['utilidad'];
@@ -227,7 +232,11 @@ class EditarCotizacionComponent extends Component
                 $newQuoteUpdate->quoteProducts()->create([
                     'product' => $item['product'],
                     'technique' =>  json_encode($infoTecnica),
-                    'prices_techniques' => $price_tecnica,
+                    'prices_techniques' =>  $item['newPriceTechnique'] != null
+                        ? $item['newPriceTechnique']
+                        : ($tecnica->tipo_precio == 'D'
+                            ? round($tecnica->precio / $item['cantidad'], 2)
+                            : $tecnica->precio),
                     'color_logos' => $item['color_logos'],
                     'costo_indirecto' => $item['costo_indirecto'],
                     'utilidad' => $item['utilidad'],
