@@ -20,6 +20,7 @@ class CreateCurrentQuotesDetailsTable extends Migration
             $table->foreignId('prices_techniques_id')->constrained('prices_techniques');
             $table->integer('color_logos');
             $table->decimal('costo_indirecto', 8, 2);
+            $table->decimal('new_price_technique', 8, 2)->nullable();
             $table->decimal('utilidad', 8, 2);
             $table->integer('dias_entrega');
             $table->integer('cantidad');

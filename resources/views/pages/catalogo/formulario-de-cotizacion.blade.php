@@ -1,11 +1,12 @@
 <div>
-    <form wire:submit.prevent="agregarCotizacion">
+    <form wire:submit.prevent="agregarCotizacion" novalidate>
         <p class="w-100"><strong>Personalizacion de la tecnica</strong></p>
         <div class="border border-primary rounded p-2">
             <div class="row">
                 <div class="form-group col-md-6">
                     <label for="tecnica" class="text-dark"><strong>Material</strong> </label>
-                    <select name="" id="" class="form-control" wire:model="materialSeleccionado" wire:change="resetSizes">
+                    <select name="" id="" class="form-control" wire:model="materialSeleccionado"
+                        wire:change="resetSizes">
                         <option value="">Seleccione el material</option>
                         @foreach ($materiales as $material)
                             <option value="{{ $material->id }}">{{ $material->nombre }}</option>
@@ -78,7 +79,7 @@
             </div>
             <div class="form-group d-flex align-items-center">
                 <label for="margen" class="w-50 text-dark"><strong>Margen de Utilidad</strong> </label>
-                <input type="number" name="margen" wire:model="utilidad" placeholder="Margen de Utilidad"
+                <input type="number" name="margen" wire:model="utilidad" placeholder="Margen de Utilidad. Max: 99" max="99" maxlength="2"
                     class="form-control" max="100">
             </div>
 
@@ -92,6 +93,13 @@
                 <input type="number" name="dias" wire:model="entrega" placeholder="Dias de entrega estimada"
                     class="form-control">
             </div>
+            <div class="form-group">
+                <label for="dias" class="text-dark"><strong>Precio actual de la tecnica por articulo: $
+                        {{ $precioDeTecnica }}</strong><br> <span class="text-warning">*Solo modificar cuando sea
+                        necesario*</span> </label>
+                <input type="number" name="dias" wire:model="newPriceTechnique"
+                    placeholder="Nuevo precio de la tecnica" class="form-control">
+            </div>
         </div>
         <br>
         @if (session()->has('error'))
@@ -102,9 +110,11 @@
             <div wire:poll.4s class="btn btn-sm btn-success w-100" style="margin-top:0px; margin-bottom:0px;">
                 {{ session('message') }} </div>
             <div class="d-flex">
-                <a href="{{ url('/') }}" class="btn btn-sm btn-info w-50 px-1" style="margin-top:0px; margin-bottom:0px;">
+                <a href="{{ url('/') }}" class="btn btn-sm btn-info w-50 px-1"
+                    style="margin-top:0px; margin-bottom:0px;">
                     Ir al cotizador </a>
-                <a href="{{ url('/cotizacion-actual') }}" class="btn btn-sm btn-secondary w-50 px-1" style="margin-top:0px; margin-bottom:0px;">
+                <a href="{{ url('/cotizacion-actual') }}" class="btn btn-sm btn-secondary w-50 px-1"
+                    style="margin-top:0px; margin-bottom:0px;">
                     Ver mi cotizacion </a>
             </div>
         @endif

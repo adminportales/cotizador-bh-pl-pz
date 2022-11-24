@@ -43,7 +43,13 @@
                                                     {{ $quote->utilidad }}%
                                                 </p>
                                                 <p class="m-0"><strong>Costo de
-                                                        Impresion:</strong>${{ $quote->prices_techniques_id }}</p>
+                                                        Impresion:</strong>
+                                                    ${{ $quote->new_price_technique
+                                                        ? $quote->new_price_technique
+                                                        : ($quote->priceTechnique->tipo_precio == 'D'
+                                                            ? round($quote->priceTechnique->precio / $quote->cantidad, 2)
+                                                            : $quote->priceTechnique->precio) }}
+                                                </p>
                                                 <p class="m-0"><strong>Colores/Logos:</strong>
                                                     {{ $quote->color_logos }}
                                                 </p>
