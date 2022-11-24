@@ -15,6 +15,7 @@ class CurrentQuoteDetails extends Model
         'current_quote_id',
         'product_id',
         'prices_techniques_id',
+        'new_price_technique',
         'color_logos',
         'costo_indirecto',
         'utilidad',
@@ -27,5 +28,10 @@ class CurrentQuoteDetails extends Model
     public function product()
     {
         return $this->belongsTo(Product::class);
+    }
+
+    public function priceTechnique()
+    {
+        return $this->belongsTo(PricesTechnique::class, 'prices_techniques_id');
     }
 }

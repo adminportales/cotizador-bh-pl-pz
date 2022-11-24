@@ -15,7 +15,7 @@ class FormularioDeCotizacionEditMin extends Component
 {
     public $product, $currentQuote_id = '', $idNewQuote = '';
     public $precio, $precioCalculado, $precioTotal = 0;
-    public $tecnica = null, $colores = null, $operacion = null, $utilidad = null, $entrega = null, $cantidad = null, $priceTechnique;
+    public $tecnica = null, $colores = null, $operacion = null, $utilidad = null, $entrega = null, $cantidad = null, $priceTechnique, $newPriceTechnique = null;
     public $materialSeleccionado;
     public $tecnicaSeleccionada;
     public $sizeSeleccionado;
@@ -98,13 +98,24 @@ class FormularioDeCotizacionEditMin extends Component
             $this->operacion = null;
         if (!is_numeric($this->cantidad))
             $this->cantidad = null;
-        if (!is_numeric($this->utilidad))
-            $this->utilidad = null;
-        $nuevoPrecio = round(($this->precio + ($precioDeTecnica * $this->colores) + $this->operacion) / ((100 - $this->utilidad) / 100), 2);
+        if ($this->utilidad > 99)
+            $this->utilidad = 99;
+        if (!is_numeric($this->newPriceTechnique))
+            $this->newPriceTechnique = null;
+        $precioDeTecnicaUsado = $precioDeTecnica;
+        if ($this->newPriceTechnique != null && $this->newPriceTechnique > 0)
+            $precioDeTecnicaUsado = $this->newPriceTechnique;
+        $nuevoPrecio = round(($this->precio + ($precioDeTecnicaUsado * $this->colores) + $this->operacion) / ((100 - $this->utilidad) / 100), 2);
 
         $this->precioCalculado = $nuevoPrecio;
         $this->precioTotal = $nuevoPrecio * $this->cantidad;
-        return view('livewire.formulario-de-cotizacion-current-min', ['materiales' => $materiales, 'techniquesAvailables' => $techniquesAvailables, 'sizesAvailables' => $sizesAvailables, 'preciosDisponibles' => $preciosDisponibles]);
+        return view('livewire.formulario-de-cotizacion-current-min', [
+            'materiales' => $materiales,
+            'techniquesAvailables' => $techniquesAvailables,
+            'sizesAvailables' => $sizesAvailables,
+            'preciosDisponibles' => $preciosDisponibles,
+            "precioDeTecnica" => $precioDeTecnica
+        ]);
     }
 
     public function agregarCotizacion()
@@ -176,7 +187,7 @@ class FormularioDeCotizacionEditMin extends Component
 
             $this->product = Product::find($product->id);
             $techniquesInfo =  (object) json_decode($productEdit['technique']);
-            // dd($techniquesInfo);
+
             $this->materialSeleccionado = $techniquesInfo->material_id;
             $this->tecnicaSeleccionada = $techniquesInfo->tecnica_id;
             $this->sizeSeleccionado = $techniquesInfo->size_id;
@@ -189,6 +200,7 @@ class FormularioDeCotizacionEditMin extends Component
         $this->cantidad = $productEdit['cantidad'];
         $this->utilidad = $productEdit['utilidad'];
         $this->entrega = $productEdit['dias_entrega'];
+        $this->newPriceTechnique = $productEdit['prices_techniques'];
 
 
         $utilidad = GlobalAttribute::find(1);

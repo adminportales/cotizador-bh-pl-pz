@@ -16,7 +16,7 @@ class FormularioDeCotizacion extends Component
 
     public $precio, $precioCalculado, $precioTotal = 0;
 
-    public $tecnica = null, $colores = null, $operacion = null, $utilidad = null, $entrega = null, $cantidad = null, $priceTechnique;
+    public $tecnica = null, $colores = null, $operacion = null, $utilidad = null, $entrega = null, $cantidad = null, $priceTechnique, $newPriceTechnique = null;
 
     public $materialSeleccionado;
     public $tecnicaSeleccionada;
@@ -109,11 +109,25 @@ class FormularioDeCotizacion extends Component
             $this->cantidad = null;
         if (!is_numeric($this->utilidad))
             $this->utilidad = null;
-        $nuevoPrecio = round(($this->precio + ($precioDeTecnica * $this->colores) + $this->operacion) / ((100 - $this->utilidad) / 100), 2);
+        if ($this->utilidad > 99)
+            $this->utilidad = 99;
+        if (!is_numeric($this->newPriceTechnique))
+            $this->newPriceTechnique = null;
+        $precioDeTecnicaUsado = $precioDeTecnica;
+        if ($this->newPriceTechnique != null && $this->newPriceTechnique > 0)
+            $precioDeTecnicaUsado = $this->newPriceTechnique;
+
+        $nuevoPrecio = round(($this->precio + ($precioDeTecnicaUsado * $this->colores) + $this->operacion) / ((100 - $this->utilidad) / 100), 2);
 
         $this->precioCalculado = $nuevoPrecio;
         $this->precioTotal = $nuevoPrecio * $this->cantidad;
-        return view('pages.catalogo.formulario-de-cotizacion', ['materiales' => $materiales, 'techniquesAvailables' => $techniquesAvailables, 'sizesAvailables' => $sizesAvailables, 'preciosDisponibles' => $preciosDisponibles]);
+        return view('pages.catalogo.formulario-de-cotizacion', [
+            'materiales' => $materiales,
+            'techniquesAvailables' => $techniquesAvailables,
+            'sizesAvailables' => $sizesAvailables,
+            'preciosDisponibles' => $preciosDisponibles,
+            "precioDeTecnica" => $precioDeTecnica
+        ]);
     }
 
     public function agregarCotizacion()
@@ -150,10 +164,12 @@ class FormularioDeCotizacion extends Component
                 'discount' => false
             ]);
         }
-
+        if (!is_numeric($this->newPriceTechnique))
+            $this->newPriceTechnique = null;
         $currentQuote->currentQuoteDetails()->create([
             'product_id' => $this->product->id,
             'prices_techniques_id' => $this->priceTechnique->id,
+            'new_price_technique' => $this->newPriceTechnique,
             'color_logos' => $this->colores,
             'costo_indirecto' => $this->operacion,
             'utilidad' => $this->utilidad,
@@ -177,6 +193,7 @@ class FormularioDeCotizacion extends Component
         $this->cantidad = 0;
         $this->precioCalculado = 0;
         $this->precioTotal = 0;
+        $this->newPriceTechnique = 0;
     }
     public function resetSizes()
     {
