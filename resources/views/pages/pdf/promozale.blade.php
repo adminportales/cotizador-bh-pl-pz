@@ -82,7 +82,7 @@
             <thead>
                 <tr class="titulos">
                     <th colspan="1">Imagen de Referencia</th>
-                    <th colspan="1">Descripción</th>
+                    <th colspan="1">Nombre</th>
                     <th colspan="1">Tecnica Personalización</th>
                     <th colspan="1">NÚMERO PIEZAS</th>
                     <th colspan="1">Tiempo

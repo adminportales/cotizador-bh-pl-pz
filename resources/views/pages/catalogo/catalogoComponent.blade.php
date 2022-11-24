@@ -58,9 +58,9 @@
         </div>
         <div class="col-md-9">
             <div class="card px-4 py-3 mb-1 shadow-sm">
-                <p class="m-0">Tipo de Producto: </p>
                 <div class="d-flex justify-content-between align-items-center">
-                    <div>
+                    <p class="m-0">¿Vas a cotizar un producto que no esta en el catalogo? </p>
+                    {{-- <div>
                         <div class="form-check form-check-inline">
                             <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1"
                                 value="option1">
@@ -76,7 +76,7 @@
                                 id="inlineRadio3" value="option2">
                             <label class="form-check-label" for="inlineRadio3">Productos de Referencia</label>
                         </div>
-                    </div>
+                    </div> --}}
                     <div>
                         <a href="{{ route('addProduct.cotizador') }}" class="btn btn-sm btn-info">Agregar Nuevo
                             Producto</a>

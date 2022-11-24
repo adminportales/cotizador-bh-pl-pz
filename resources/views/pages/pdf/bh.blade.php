@@ -82,7 +82,7 @@
             <thead>
                 <tr class="titulos">
                     <th style="width: 180px">Imagen de Referencia</th>
-                    <th style="width: 120px">Descripción</th>
+                    <th style="width: 120px">Nombre</th>
                     <th style="width: 80px">Personalización</th>
                     <th style="width: 60px">Cantidad</th>
                     <th style="width: 90px">Precio
