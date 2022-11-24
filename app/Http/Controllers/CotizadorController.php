@@ -108,4 +108,20 @@ class CotizadorController extends Controller
     {
         return view('pages.catalogo.addProduct');
     }
+
+    public function addProductStore(Request $request)
+    {
+        $request->validate([
+            'nombre' => 'required',
+            'descripcion' => 'required',
+            'precio' => 'required',
+            'stock' => 'required',
+            'proveedor' => 'required',
+            'imagen' => 'required|image|max:1024',
+            'informacion' => 'required',
+        ]);
+        $utilidad = GlobalAttribute::find(1);
+        $utilidad = (float) $utilidad->value;
+        return view('pages.catalogo.product', compact('product', 'utilidad'));
+    }
 }
