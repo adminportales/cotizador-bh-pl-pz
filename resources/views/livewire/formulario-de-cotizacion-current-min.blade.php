@@ -106,9 +106,8 @@
                 <div class="col-md-12">
                     <div class="form-group">
                         <label for="dias" class="text-dark"><strong>Precio inicial de la tecnica por articulo: $
-                                {{ $precioDeTecnica }}</strong><br> Nuevo precio de la tecnica <span class="text-warning">*Solo modificar cuando
-                                sea
-                                necesario*</span> </label>
+                                {{ $precioDeTecnica }}</strong><br> Nuevo precio de la tecnica <span
+                                class="text-warning">*Solo modificar cuando sea necesario*</span></label>
                         <input type="number" name="dias" wire:model="newPriceTechnique"
                             placeholder="Nuevo precio de la tecnica" class="form-control">
                     </div>

@@ -23,6 +23,9 @@ class EditarCotizacionComponent extends Component
     // Variables Editables
     public $listNewProducts = [], $listUpdateCurrent = [], $listDeleteCurrent = [], $newDiscount;
 
+    // Informacion a mostrar
+    public $showProduct;
+
     public function mount()
     {
         $discount = $this->quote->latestQuotesUpdate->quoteDiscount;
@@ -37,6 +40,12 @@ class EditarCotizacionComponent extends Component
     {
         $quote = Quote::find($this->quote->id);
         return view('livewire.editar-cotizacion-component', ['quote' => $quote]);
+    }
+
+    public function verDetalles($product)
+    {
+        $this->showProduct = $product;
+        $this->dispatchBrowserEvent('showProduct');
     }
 
     public function editar()

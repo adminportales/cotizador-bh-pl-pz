@@ -182,6 +182,7 @@ class FinalizarCotizacion extends Component
 
             // Agregar la URL de la Imagen
             $product->image = $product->firstImage == null ? '' : $product->firstImage->image_url;
+            $product->provider;
             $quoteUpdate->quoteProducts()->create([
                 'product' => json_encode($product->toArray()),
                 'technique' =>  json_encode($infoTecnica),

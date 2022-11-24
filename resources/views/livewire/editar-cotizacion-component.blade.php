@@ -341,7 +341,56 @@
             </div>
         </div>
     </div>
+    <div class="modal fade" id="modalVerProducto" tabindex="-1" aria-labelledby="modalVerProductoLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalVerProductoLabel">Informacion del producto</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    @if ($showProduct)
+                        @php
+                            $productoShow = (object) json_decode($showProduct['product']);
+                            $tecnicaShow = (object) json_decode($showProduct['technique']);
+                        @endphp
+                        <p class="m-0">Informacion del Producto: </p>
+                        <p class="m-0"><b>Nombre: </b>{{ $productoShow->name }} </p>
+                        <p class="m-0"><b>Descripcion: </b>{{ $productoShow->description }} </p>
+                        <p class="m-0"><b>Precio: </b>{{ $productoShow->price }} </p>
+                        @if (property_exists($productoShow, 'provider'))
+                            <p class="m-0"><b>Proveedor: </b>{{ $productoShow->provider->company }} </p>
+                        @endif
+                        <br>
+                        <p class="m-0">Informacion de la Tecnica: </p>
+                        <p class="m-0"><b>Material: </b>{{ $tecnicaShow->material }} </p>
+                        <p class="m-0"><b>Tecnica: </b>{{ $tecnicaShow->tecnica }} </p>
+                        <p class="m-0"><b>Tamaño: </b>{{ $tecnicaShow->size }}</p>
+                        <br>
+                        <p class="m-0"><b>Precio de la tecnica:</b> $ {{ $showProduct['prices_techniques'] }}</p>
+                        <p class="m-0"><b>Numero de tintas o logos:</b> {{ $showProduct['color_logos'] }}</p>
+                        <p class="m-0"><b>Costo Indirecto:</b> $ {{ $showProduct['costo_indirecto'] }}</p>
+                        <p class="m-0"><b>Margen de Utilidad:</b> {{ $showProduct['utilidad'] }} %</p>
+                        <p class="m-0"><b>Precio Unitario:</b> $ {{ $showProduct['precio_unitario'] }} </p>
+                        <p class="m-0"><b>Cantidad:</b> {{ $showProduct['cantidad'] }} </p>
+                        <p class="m-0"><b>Precio Total:</b> $ {{ $showProduct['precio_total'] }} </p>
+                        <p class="m-0"><b>Dias de entrega:</b> {{ $showProduct['dias_entrega'] }} </p>
+                        {{-- {{ dd($showProduct) }} --}}
+                    @endif
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
     <script>
+        window.addEventListener('showProduct', event => {
+            $('#modalVerProducto').modal('show')
+        })
         window.addEventListener('showModalEditar', event => {
             $('#modalEditarProducto').modal('show')
         })
