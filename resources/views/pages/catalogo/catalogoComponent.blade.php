@@ -57,18 +57,7 @@
             </div>
         </div>
         <div class="col-md-9">
-            @php
-                $counter = $products->perPage() * $products->currentPage() - $products->perPage() + 1;
-            @endphp
-            @if (count($products) <= 0)
-                <div class="d-flex flex-wrap justify-content-center align-items-center flex-column">
-                    <p>No hay resultados de busqueda en la pagina actual</p>
-                    @if (count($products->items()) == 0 && $products->currentPage() > 1)
-                        <p>Click en la paginacion para ver mas resultados</p>
-                    @endif
-                </div>
-            @endif
-            <div class="card px-3 py-1 mb-1 shadow-sm">
+            <div class="card px-4 py-3 mb-1 shadow-sm">
                 <p class="m-0">Tipo de Producto: </p>
                 <div class="d-flex justify-content-between align-items-center">
                     <div>
@@ -78,8 +67,8 @@
                             <label class="form-check-label" for="inlineRadio1">Catalogo</label>
                         </div>
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="inlineRadioOptions"
-                                id="inlineRadio2" value="option2">
+                            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2"
+                                value="option2">
                             <label class="form-check-label" for="inlineRadio2">Importacion</label>
                         </div>
                         <div class="form-check form-check-inline">
@@ -94,6 +83,17 @@
                     </div>
                 </div>
             </div>
+            @php
+                $counter = $products->perPage() * $products->currentPage() - $products->perPage() + 1;
+            @endphp
+            @if (count($products) <= 0)
+                <div class="d-flex flex-wrap justify-content-center align-items-center flex-column">
+                    <p>No hay resultados de busqueda en la pagina actual</p>
+                    @if (count($products->items()) == 0 && $products->currentPage() > 1)
+                        <p>Click en la paginacion para ver mas resultados</p>
+                    @endif
+                </div>
+            @endif
             <div class="row">
                 @foreach ($products as $row)
                     <div class="col-md-4 col-lg-3 col-sm-6  d-flex justify-content-center">

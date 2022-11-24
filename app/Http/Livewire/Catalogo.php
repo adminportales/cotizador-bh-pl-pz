@@ -62,7 +62,7 @@ class Catalogo extends Component
         $price = DB::connection('mysql_catalogo')->table('products')->max('price');
         $price = round($price + $price * ($utilidad / 100), 2);
         $stock = DB::connection('mysql_catalogo')->table('products')->max('stock');
-        $proveedores = CatalogoProvider::all();
+        $proveedores = CatalogoProvider::where('id', "<", 15)->get();
         $nombre = '%' . $this->nombre . '%';
         $sku = '%' . $this->sku . '%';
         $color = $this->color;
