@@ -140,7 +140,7 @@ class Users extends Component
 
     public function sendAccessAll()
     {
-        $users = User::where('status', 1)->get();
+        $users = User::all();
         $errors = [];
         foreach ($users as $user) {
             $pass = Str::random(8);
@@ -155,9 +155,13 @@ class Users extends Component
             try {
                 $user->notify(new RegisteredUser($dataNotification));
             } catch (Exception $e) {
-                array_push($errors, $e->getMessage());
+                array_push($errors, [$user->email, json_encode($e->getMessage())]);
             }
         }
-        return $errors;
+        if (count($errors) == 0) {
+            return 1;
+        } else {
+            return json_encode($errors);
+        }
     }
 }

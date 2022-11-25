@@ -68,6 +68,7 @@
                                         </tbody>
                                     </table>
                                 @endif
+                                <p><strong>Ultima Actualizacion: </strong> {{ ($product->updated_at->diffForHumans()) }}
                             </div>
 
                             <div class="col-md-6">

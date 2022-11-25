@@ -96,16 +96,33 @@
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
                 cancelButtonColor: '#d33',
-                confirmButtonText: 'Si, eliminar!',
+                confirmButtonText: 'Si!',
                 cancelButtonText: 'Cancelar!'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    @this.sendAccessAll()
-                    Swal.fire(
-                        'Eliminado!',
-                        'El producto se ha eliminado.',
-                        'success'
-                    )
+
+
+                    let respuesta = @this.sendAccessAll()
+                    Swal.fire('Por Favor Espere');
+                    respuesta
+                        .then((response) => {
+                            console.log(response);
+                            if (response == 1) {
+                                Swal.fire(
+                                    'Se han enviado los accesos',
+                                    'Cada usuario ya tiene su acceso.',
+                                    'success'
+                                )
+                            }
+                            if (response != 1) {
+                                Swal.fire(
+                                    'Se enviaron los accesos, pero estos no se pudieron enviar',
+                                    response, 'success')
+                            }
+                        }, function() {
+                            // one or more failed
+                            Swal.fire('¡Error al autorizar!', '', 'error')
+                        });
                 }
             })
         }
