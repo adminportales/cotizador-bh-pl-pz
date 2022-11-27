@@ -15,7 +15,7 @@ class FormularioDeCotizacionCurrentMin extends Component
 {
     public $product, $currentQuote;
     public $precio, $precioCalculado, $precioTotal = 0;
-    public $tecnica = null, $colores = null, $operacion = null, $utilidad = null, $entrega = null, $cantidad = null, $priceTechnique, $newPriceTechnique = null;
+    public $tecnica = null, $colores = null, $operacion = null, $utilidad = null, $entrega = null, $cantidad = null, $priceTechnique, $newPriceTechnique = null, $newDescription = null;
     public $materialSeleccionado;
     public $tecnicaSeleccionada;
     public $sizeSeleccionado;
@@ -31,6 +31,7 @@ class FormularioDeCotizacionCurrentMin extends Component
             $this->utilidad =  $this->currentQuote->utilidad;
             $this->entrega =  $this->currentQuote->dias_entrega;
             $this->newPriceTechnique =  $this->currentQuote->new_price_technique;
+            $this->newDescription =  $this->currentQuote->new_description;
 
             $prices_techniques = PricesTechnique::find($this->currentQuote->prices_techniques_id);
             $this->materialSeleccionado = $prices_techniques->sizeMaterialTechnique->materialTechnique->material->id;
@@ -170,10 +171,15 @@ class FormularioDeCotizacionCurrentMin extends Component
         }
         if (!is_numeric($this->newPriceTechnique))
             $this->newPriceTechnique = null;
+        if (trim($this->newDescription) == "")
+            $this->newDescription = null;
+        if (trim($this->newDescription) == "")
+            $this->newDescription = null;
         $this->currentQuote->update([
             'product_id' => $this->product->id,
             'prices_techniques_id' => $this->priceTechnique->id,
             'new_price_technique' => $this->newPriceTechnique,
+            'new_description' => $this->newDescription,
             'color_logos' => $this->colores,
             'costo_indirecto' => $this->operacion,
             'utilidad' => $this->utilidad,

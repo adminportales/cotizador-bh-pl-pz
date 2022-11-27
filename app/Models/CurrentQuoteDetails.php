@@ -16,6 +16,7 @@ class CurrentQuoteDetails extends Model
         'product_id',
         'prices_techniques_id',
         'new_price_technique',
+        'new_description',
         'color_logos',
         'costo_indirecto',
         'utilidad',

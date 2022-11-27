@@ -189,6 +189,7 @@ class EditarCotizacionComponent extends Component
                                 ? round($tecnica->precio / $productQuoteEdit['cantidad'], 2)
                                 : $tecnica->precio);
                         $productQuote->new_price_technique = $productQuoteEdit['newPriceTechnique'];
+                        $productQuote->new_description = $productQuoteEdit['new_description'];
                         $productQuote->color_logos = $productQuoteEdit['color_logos'];
                         $productQuote->costo_indirecto = $productQuoteEdit['costo_indirecto'];
                         $productQuote->utilidad = $productQuoteEdit['utilidad'];
@@ -209,6 +210,7 @@ class EditarCotizacionComponent extends Component
                 "product" => $productQuote->product,
                 "technique" => $productQuote->technique,
                 "prices_techniques" => $productQuote->prices_techniques,
+                "new_description" => $productQuote->new_description,
                 "color_logos" => $productQuote->color_logos,
                 "costo_indirecto" => $productQuote->costo_indirecto,
                 "utilidad" => $productQuote->utilidad,
@@ -246,6 +248,7 @@ class EditarCotizacionComponent extends Component
                         : ($tecnica->tipo_precio == 'D'
                             ? round($tecnica->precio / $item['cantidad'], 2)
                             : $tecnica->precio),
+                    "new_description" => $item['new_description'],
                     'color_logos' => $item['color_logos'],
                     'costo_indirecto' => $item['costo_indirecto'],
                     'utilidad' => $item['utilidad'],

@@ -15,7 +15,7 @@ class FormularioDeCotizacionEditMin extends Component
 {
     public $product, $currentQuote_id = '', $idNewQuote = '';
     public $precio, $precioCalculado, $precioTotal = 0;
-    public $tecnica = null, $colores = null, $operacion = null, $utilidad = null, $entrega = null, $cantidad = null, $priceTechnique, $newPriceTechnique = null;
+    public $tecnica = null, $colores = null, $operacion = null, $utilidad = null, $entrega = null, $cantidad = null, $priceTechnique, $newPriceTechnique = null, $newDescription = null;
     public $materialSeleccionado;
     public $tecnicaSeleccionada;
     public $sizeSeleccionado;
@@ -151,12 +151,15 @@ class FormularioDeCotizacionEditMin extends Component
         $product['image'] = $this->product->firstImage ? $this->product->firstImage->image_url : '';
         if (!is_numeric($this->newPriceTechnique))
             $this->newPriceTechnique = null;
+        if (trim($this->newDescription) == "")
+            $this->newDescription = null;
         $newQuote = [
             'currentQuote_id' => $this->currentQuote_id,
             'idNewQuote' => $this->idNewQuote,
             'product' => json_encode($product),
             'prices_techniques_id' => $this->priceTechnique->id,
             'newPriceTechnique' => $this->newPriceTechnique,
+            'new_description' => $this->newDescription,
             'color_logos' => $this->colores,
             'costo_indirecto' => $this->operacion,
             'utilidad' => $this->utilidad,
@@ -206,6 +209,7 @@ class FormularioDeCotizacionEditMin extends Component
         $this->utilidad = $productEdit['utilidad'];
         $this->entrega = $productEdit['dias_entrega'];
         $this->newPriceTechnique = $productEdit['prices_techniques'];
+        $this->newDescription =  $productEdit['new_description'];
 
 
         $utilidad = GlobalAttribute::find(1);

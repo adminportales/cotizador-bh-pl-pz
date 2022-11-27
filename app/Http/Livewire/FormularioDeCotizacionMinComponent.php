@@ -16,7 +16,7 @@ class FormularioDeCotizacionMinComponent extends Component
 
     public $precio, $precioCalculado, $precioTotal = 0;
 
-    public $tecnica = null, $colores = null, $operacion = null, $utilidad = null, $entrega = null, $cantidad = null, $priceTechnique,  $newPriceTechnique = null;
+    public $tecnica = null, $colores = null, $operacion = null, $utilidad = null, $entrega = null, $cantidad = null, $priceTechnique,  $newPriceTechnique = null, $newDescription = null;
 
     public $materialSeleccionado;
     public $tecnicaSeleccionada;
@@ -171,12 +171,15 @@ class FormularioDeCotizacionMinComponent extends Component
         $product = $this->product->toArray();
         $product['image'] = $this->product->firstImage ? $this->product->firstImage->image_url : '';
         if (!is_numeric($this->newPriceTechnique))
-        $this->newPriceTechnique = null;
+            $this->newPriceTechnique = null;
+        if (trim($this->newDescription) == "")
+            $this->newDescription = null;
         $newQuote = [
             'idNewQuote' => time(),
             'product' => json_encode($product),
             'prices_techniques_id' => $this->priceTechnique->id,
             'newPriceTechnique' => $this->newPriceTechnique,
+            'new_description' => $this->newDescription,
             'color_logos' => $this->colores,
             'costo_indirecto' => $this->operacion,
             'utilidad' => $this->utilidad,

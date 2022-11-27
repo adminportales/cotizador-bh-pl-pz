@@ -16,7 +16,7 @@ class FormularioDeCotizacion extends Component
 
     public $precio, $precioCalculado, $precioTotal = 0;
 
-    public $tecnica = null, $colores = null, $operacion = null, $utilidad = null, $entrega = null, $cantidad = null, $priceTechnique, $newPriceTechnique = null;
+    public $tecnica = null, $colores = null, $operacion = null, $utilidad = null, $entrega = null, $cantidad = null, $priceTechnique, $newPriceTechnique = null, $newDescription = null;
 
     public $materialSeleccionado;
     public $tecnicaSeleccionada;
@@ -166,10 +166,13 @@ class FormularioDeCotizacion extends Component
         }
         if (!is_numeric($this->newPriceTechnique))
             $this->newPriceTechnique = null;
+        if (trim($this->newDescription) == "")
+            $this->newDescription = null;
         $currentQuote->currentQuoteDetails()->create([
             'product_id' => $this->product->id,
             'prices_techniques_id' => $this->priceTechnique->id,
             'new_price_technique' => $this->newPriceTechnique,
+            'new_description' => $this->newDescription,
             'color_logos' => $this->colores,
             'costo_indirecto' => $this->operacion,
             'utilidad' => $this->utilidad,

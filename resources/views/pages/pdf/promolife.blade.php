@@ -92,7 +92,7 @@
             <thead>
                 <tr class="titulos">
                     <th colspan="1" style="width: 180px">Imagen de Referencia</th>
-                    <th colspan="2" style="width: 120px">Nombre</th>
+                    <th colspan="2" style="width: 120px">Descripcion</th>
                     <th colspan="1" style="width: 90px">Tecnica</th>
                     <th colspan="1" style="width: 70px">Número Piezas</th>
                     <th colspan="1" style="width: 90px">Tiempo entrega</th>
@@ -116,7 +116,8 @@
                                 <img src="img/default.jpg" width="180">
                             @endif
                         </td>
-                        <td colspan="2" style="width: 120px">{{ $producto->name }}</td>
+                        <td colspan="2" style="width: 120px">
+                            {{ $item->new_description ? $item->new_description : $producto->description }}</td>
                         <td style="width: 80px">{{ $tecnica->tecnica }}
                             <p style="font-size: 14px"><b>Tintas: </b>{{ $item->color_logos }}</p>
                         </td>

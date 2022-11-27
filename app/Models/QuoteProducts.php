@@ -12,6 +12,7 @@ class QuoteProducts extends Model
         'product',
         'technique',
         'prices_techniques',
+        'new_description',
         'color_logos',
         'costo_indirecto',
         'utilidad',

@@ -79,8 +79,8 @@
             </div>
             <div class="form-group d-flex align-items-center">
                 <label for="margen" class="w-50 text-dark"><strong>Margen de Utilidad</strong> </label>
-                <input type="number" name="margen" wire:model="utilidad" placeholder="Margen de Utilidad. Max: 99" max="99" maxlength="2"
-                    class="form-control" max="100">
+                <input type="number" name="margen" wire:model="utilidad" placeholder="Margen de Utilidad. Max: 99"
+                    max="99" maxlength="2" class="form-control" max="100">
             </div>
 
             <div class="form-group d-flex align-items-center">
@@ -94,11 +94,18 @@
                     class="form-control">
             </div>
             <div class="form-group">
-                <label for="dias" class="text-dark"><strong>Precio actual de la tecnica por articulo: $
+                <label for="newTechnique" class="text-dark"><strong>Precio actual de la tecnica por articulo: $
                         {{ $precioDeTecnica }}</strong><br> <span class="text-warning">*Solo modificar cuando sea
                         necesario*</span> </label>
-                <input type="number" name="dias" wire:model="newPriceTechnique"
+                <input type="number" name="newTechnique" wire:model="newPriceTechnique"
                     placeholder="Nuevo precio de la tecnica" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="newDescription" class="text-dark"><strong>Coloca la descripcion que se mostrara en la
+                        cotizacion:</strong><br> <span class="text-warning">*Solo modificar cuando sea
+                        necesario*</span> </label>
+                <input type="text" name="newDescription" wire:model="newDescription"
+                    placeholder="Descripcion del producto " class="form-control">
             </div>
         </div>
         <br>

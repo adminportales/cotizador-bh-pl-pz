@@ -187,6 +187,7 @@ class FinalizarCotizacion extends Component
                 'product' => json_encode($product->toArray()),
                 'technique' =>  json_encode($infoTecnica),
                 'prices_techniques' => $price_tecnica,
+                'new_description' => $item->new_description,
                 'color_logos' => $item->color_logos,
                 'costo_indirecto' => $item->costo_indirecto,
                 'utilidad' => $item->utilidad,
@@ -199,7 +200,7 @@ class FinalizarCotizacion extends Component
 
         // Enviar PDF
 
-        $pdf = '';
+/*         $pdf = '';
         $keyOdoo = '';
         $errors = false;
         $message = '';
@@ -408,7 +409,7 @@ class FinalizarCotizacion extends Component
                 ->with('messageError', 'Tu cotizacion se ha guardado exitosamente. ' .
                     ($errorsMail ? "No se pudo enviar el email debido a problemas tecnicos. " : "") .
                     ($errors ? "No se puedo guardar el lead debido a problemas en la conexion con Odoo, lo intentaremos nuevamente mas tarde" : ""));
-        }
+        } */
         return redirect()->action([CotizadorController::class, 'verCotizacion'], ['quote' => $quote->id])->with('message', 'Tu cotizacion se ha guardado exitosamente y ya fue enviada al correo electronico establecido.');
     }
 

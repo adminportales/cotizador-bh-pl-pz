@@ -4,7 +4,8 @@
         <div class="row">
             <div class="form-group col-md-6">
                 <label for="tecnica" class="text-dark"><strong>Material</strong> </label>
-                <select name="" id="" class="form-control" wire:model="materialSeleccionado"  wire:change="resetSizes">
+                <select name="" id="" class="form-control" wire:model="materialSeleccionado"
+                    wire:change="resetSizes">
                     <option value="">Seleccione el material</option>
                     @foreach ($materiales as $material)
                         <option value="{{ $material->id }}">{{ $material->nombre }}</option>
@@ -83,8 +84,8 @@
                     <label for="margen" class="text-dark">
                         <strong>Margen de Utilidad</strong>
                     </label>
-                    <input type="number" name="margen" wire:model="utilidad" placeholder="Margen de Utilidad"
-                        class="form-control" max="100">
+                    <input type="number" name="margen" wire:model="utilidad" placeholder="Margen de Utilidad. Max: 99"
+                        max="99" maxlength="2" class="form-control" max="100">
                 </div>
             </div>
             <div class="col-md-6">
