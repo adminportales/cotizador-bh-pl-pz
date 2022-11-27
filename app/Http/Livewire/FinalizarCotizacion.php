@@ -7,18 +7,12 @@ use App\Models\PricesTechnique;
 use Livewire\Component;
 use App\Http\Controllers\CotizadorController;
 use App\Mail\SendDataErrorCreateQuote;
-use App\Mail\SendDataOdoo;
-use App\Mail\SendQuote;
-use App\Mail\SendQuoteBH;
-use App\Mail\SendQuoteGeneric;
 use App\Mail\SendQuotePL;
-use App\Mail\SendQuotePZ;
 use App\Models\Client;
 use App\Models\QuoteDiscount;
 use App\Models\QuoteInformation;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Exception;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use Livewire\WithFileUploads;
@@ -200,7 +194,7 @@ class FinalizarCotizacion extends Component
 
         // Enviar PDF
 
-/*         $pdf = '';
+        $pdf = '';
         $keyOdoo = '';
         $errors = false;
         $message = '';
@@ -409,7 +403,7 @@ class FinalizarCotizacion extends Component
                 ->with('messageError', 'Tu cotizacion se ha guardado exitosamente. ' .
                     ($errorsMail ? "No se pudo enviar el email debido a problemas tecnicos. " : "") .
                     ($errors ? "No se puedo guardar el lead debido a problemas en la conexion con Odoo, lo intentaremos nuevamente mas tarde" : ""));
-        } */
+        }
         return redirect()->action([CotizadorController::class, 'verCotizacion'], ['quote' => $quote->id])->with('message', 'Tu cotizacion se ha guardado exitosamente y ya fue enviada al correo electronico establecido.');
     }
 
