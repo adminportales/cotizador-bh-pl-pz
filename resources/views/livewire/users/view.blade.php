@@ -36,6 +36,7 @@
                                     <td>#</td>
                                     <th>Name</th>
                                     <th>Email</th>
+                                    <th>Ultimo Login</th>
                                     <th>Informacion</th>
                                     <td>ACTIONS</td>
                                 </tr>
@@ -46,6 +47,13 @@
                                         <td>{{ $loop->iteration }}</td>
                                         <td>{{ $row->name }}</td>
                                         <td>{{ $row->email }}</td>
+                                        <td>
+                                            @if ($row->last_login)
+                                                {{ $row->last_login }}
+                                            @else
+                                                <p>No hay registro</p>
+                                            @endif
+                                        </td>
                                         <td>
                                             @foreach ($row->info as $infoOdoo)
                                                 <p><strong>Empresa: </strong>
