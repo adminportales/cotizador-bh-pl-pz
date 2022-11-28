@@ -26,6 +26,7 @@ class User extends Authenticatable
         'company_id',
         'company_session',
         "visible",
+        "last_login",
         'phone'
     ];
 
