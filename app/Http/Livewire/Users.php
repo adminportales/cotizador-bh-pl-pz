@@ -140,7 +140,7 @@ class Users extends Component
 
     public function sendAccessAll()
     {
-        $users = User::all();
+        $users = User::where('visible', true)->get();
         $errors = [];
         foreach ($users as $user) {
             $pass = Str::random(8);
