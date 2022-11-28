@@ -249,7 +249,7 @@ class FinalizarCotizacion extends Component
                         ],
                         "Estimated" => $estimated,
                         "Rating" => (int) $this->rank,
-                        "UserID" => (int) auth()->user()->info->odoo_id,
+                        "UserID" => (int) $odoo_id_user,
                         "File" => [
                             'Name' => $this->oportunidad,
                             'Data' => base64_encode($pdf),

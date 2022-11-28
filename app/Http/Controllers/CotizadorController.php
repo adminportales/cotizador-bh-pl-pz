@@ -12,6 +12,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\File;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class CotizadorController extends Controller
 {
@@ -118,6 +119,16 @@ class CotizadorController extends Controller
         $cotizacionesAEnviar = Quote::where("pending_odoo", true)->get();
         $erroresAlCotizar = [];
         foreach ($cotizacionesAEnviar as $cotizacion) {
+
+            $odoo_id_user = null;
+            if (count($cotizacion->user->info) > 0) {
+                foreach ($cotizacion->user->info as $infoOdoo) {
+                    if ($infoOdoo->company_id == $cotizacion->company_id) {
+                        $odoo_id_user = $infoOdoo->odoo_id;
+                    }
+                }
+            }
+
             $type = 'Fijo';
             $value = 0;
             $discount = false;
@@ -178,27 +189,6 @@ class CotizadorController extends Controller
                     'Opportunities' => [
                         [
                             "CodeLead" => "",
-                            'Name' =>  $this->oportunidad,
-                            'Partner' => [
-                                'Name' => $this->empresa,
-                                'Email' => $this->email,
-                                'Phone' => $this->celular,
-                                'Contact' => $this->nombre,
-                            ],
-                            "Estimated" => $estimated,
-                            "Rating" => (int) $this->rank,
-                            "UserID" => (int) auth()->user()->info->odoo_id,
-                            "File" => [
-                                'Name' => $this->oportunidad,
-                                'Data' => base64_encode($pdf),
-                            ]
-                        ]
-                    ]
-                ];
-                $data =  [
-                    'Opportunities' => [
-                        [
-                            "CodeLead" => "",
                             'Name' => $cotizacion->latestQuotesUpdate->quotesInformation->oportunity,
                             'Partner' => [
                                 'Name' => $cotizacion->latestQuotesUpdate->quotesInformation->company,
@@ -208,7 +198,7 @@ class CotizadorController extends Controller
                             ],
                             "Estimated" => (floatval($estimated)),
                             "Rating" => (int) $cotizacion->latestQuotesUpdate->quotesInformation->rank,
-                            "UserID" => (int) $cotizacion->user->info->odoo_id,
+                            "UserID" => (int) $odoo_id_user,
                             "File" => [
                                 'Name' => $cotizacion->latestQuotesUpdate->quotesInformation->oportunity,
                                 'Data' => base64_encode($pdf),
@@ -216,7 +206,6 @@ class CotizadorController extends Controller
                         ]
                     ]
                 ];
-                // dd($data);
                 $curl = curl_init($url);
                 curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
                 curl_setopt($curl, CURLOPT_POST, true);

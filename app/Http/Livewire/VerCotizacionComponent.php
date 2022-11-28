@@ -194,9 +194,14 @@ class VerCotizacionComponent extends Component
     {
         $this->authorize('update', $this->quote);
         $odoo_id_user = null;
-        if (auth()->user()->info) {
-            $odoo_id_user = auth()->user()->info->odoo_id;
+        if (count(auth()->user()->info) > 0) {
+            foreach (auth()->user()->info as $infoOdoo) {
+                if ($infoOdoo->company_id == auth()->user()->company_session) {
+                    $odoo_id_user = $infoOdoo->odoo_id;
+                }
+            }
         }
+
         if ($odoo_id_user == null) {
             dd("No tienes un id de Odoo Asignado");
             return;
@@ -262,7 +267,7 @@ class VerCotizacionComponent extends Component
                         ],
                         "Estimated" => (floatval($estimated)),
                         "Rating" => (int) $this->quote->latestQuotesUpdate->quotesInformation->rank,
-                        "UserID" => (int) auth()->user()->info->odoo_id,
+                        "UserID" => (int) $odoo_id_user,
                         "File" => [
                             'Name' => $this->quote->latestQuotesUpdate->quotesInformation->oportunity,
                             'Data' => base64_encode($pdf),
