@@ -48,3 +48,5 @@ Route::middleware(['auth'])->group(function () {
         Route::view('companies', 'livewire.companies.index')->middleware('auth');
     });
 });
+
+Route::get('/sendQuotesOdoo', [CotizadorController::class, 'enviarCotizacionesAOdoo']);
