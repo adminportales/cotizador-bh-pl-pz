@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\SendDataErrorCreateQuote;
 use App\Models\Catalogo\Color;
 use App\Models\Catalogo\GlobalAttribute;
 use App\Models\Catalogo\Product;
@@ -13,6 +14,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\File;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\Mail;
 
 class CotizadorController extends Controller
 {
@@ -131,9 +133,7 @@ class CotizadorController extends Controller
 
             $type = 'Fijo';
             $value = 0;
-            $discount = false;
             if ($cotizacion->latestQuotesUpdate->quoteDiscount) {
-                $discount = true;
                 $type = $cotizacion->latestQuotesUpdate->quoteDiscount->type;
                 $value = $cotizacion->latestQuotesUpdate->quoteDiscount->value;
             }
@@ -247,8 +247,9 @@ class CotizadorController extends Controller
                 $message = $exception->getMessage();
                 $errors = true;
             }
-
-            array_push($erroresAlCotizar, [$message, $responseOdoo, $cotizacion]);
+            if ($errors) {
+                array_push($erroresAlCotizar, [$message, $responseOdoo, $cotizacion]);
+            }
         }
 
         if (count($erroresAlCotizar) > 0) {
