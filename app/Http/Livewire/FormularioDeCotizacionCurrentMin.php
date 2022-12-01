@@ -145,30 +145,14 @@ class FormularioDeCotizacionCurrentMin extends Component
 
     public function agregarCotizacion()
     {
-        if (!(int)$this->colores >= 0) {
-            session()->flash('error', 'No se ha especificado la cantidad de logos.');
-            return;
-        }
-        if (!(int)$this->operacion >= 0) {
-            session()->flash('error', 'No se ha especificado el costo de operacion.');
-            return;
-        }
-        if (!(int)$this->utilidad >= 0) {
-            session()->flash('error', 'No se ha especificado el margen de utilidad.');
-            return;
-        }
-        if (!(int)$this->cantidad >= 0) {
-            session()->flash('error', 'No se ha especificado la cantidad de productos.');
-            return;
-        }
-        if (!(int)$this->entrega >= 0) {
-            session()->flash('error', 'No se ha especificado el tiempo de entrega.');
-            return;
-        }
-        if (!$this->priceTechnique) {
-            session()->flash('error', 'No se ha especificado la tecnica de personalizacion.');
-            return;
-        }
+        $this->validate([
+            'colores' => 'required|numeric|min:1',
+            'operacion' => 'required|numeric|min:0',
+            'utilidad' => 'required|numeric|min:0|max:99',
+            'cantidad' => 'required|numeric|min:1',
+            'entrega' => 'required|numeric|min:0',
+            'priceTechnique' => 'required',
+        ]);
         if (!is_numeric($this->newPriceTechnique))
             $this->newPriceTechnique = null;
         if (trim($this->newDescription) == "")

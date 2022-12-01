@@ -127,9 +127,36 @@
             </div>
         </div>
         <br>
-        @if (session()->has('error'))
-            <div wire:poll.4s class="btn btn-sm btn-danger w-100" style="margin-top:0px; margin-bottom:0px;">
-                {{ session('error') }} </div>
+        @if ($errors)
+            <div wire:poll.12s>
+                @if ($errors->has('colores'))
+                    <div class="btn btn-sm btn-danger w-100" style="margin-top:0px; margin-bottom:0px;">
+                        No se han especificado la cantidad de colores</div>
+                @endif
+                @if ($errors->has('operacion'))
+                    <div class="btn btn-sm btn-danger w-100" style="margin-top:0px; margin-bottom:0px;">
+                        Es necesario el costo de operacion</div>
+                @endif
+                @if ($errors->has('utilidad'))
+                    <div class="btn btn-sm btn-danger w-100" style="margin-top:0px; margin-bottom:0px;">
+                        No se ha colocado el margen de utilidad</div>
+                @endif
+                @if ($errors->has('cantidad'))
+                    <div class="btn btn-sm btn-danger w-100" style="margin-top:0px; margin-bottom:0px;">
+                        No se ha colocado la cantidad de productos</div>
+                @endif
+                @if ($errors->has('entrega'))
+                    <div class="btn btn-sm btn-danger w-100" style="margin-top:0px; margin-bottom:0px;">
+                        No se han colocado los dias de entrega </div>
+                @endif
+                @if ($errors->has('priceTechnique'))
+                    <div class="btn btn-sm btn-danger w-100" style="margin-top:0px; margin-bottom:0px;">
+                        No se ha seleccionado una tecnica de personalizacion </div>
+                @endif
+            </div>
+            @php
+                $errors = null;
+            @endphp
         @endif
         @if (session()->has('message'))
             <div wire:poll.4s class="btn btn-sm btn-success w-100" style="margin-top:0px; margin-bottom:0px;">
