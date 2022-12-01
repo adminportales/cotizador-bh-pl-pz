@@ -133,23 +133,23 @@ class FormularioDeCotizacion extends Component
     public function agregarCotizacion()
     {
 
-        if (!(int)$this->colores > 0) {
+        if (!(int)$this->colores >= 0) {
             session()->flash('error', 'No se ha especificado la cantidad de logos.');
             return;
         }
-        if (!(int)$this->operacion > 0) {
+        if (!(int)$this->operacion >= 0) {
             session()->flash('error', 'No se ha especificado el costo de operacion.');
             return;
         }
-        if (!(int)$this->utilidad > 0) {
+        if (!(int)$this->utilidad >= 0) {
             session()->flash('error', 'No se ha especificado el margen de utilidad.');
             return;
         }
-        if (!(int)$this->cantidad > 0) {
+        if (!(int)$this->cantidad >= 0) {
             session()->flash('error', 'No se ha especificado la cantidad de productos.');
             return;
         }
-        if (!(int)$this->entrega > 0) {
+        if (!(int)$this->entrega >= 0) {
             session()->flash('error', 'No se ha especificado el tiempo de entrega.');
             return;
         }
