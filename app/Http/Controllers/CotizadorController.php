@@ -15,6 +15,8 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\File;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Mail;
+use PhpOffice\PhpSpreadsheet\IOFactory;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
 
 class CotizadorController extends Controller
 {
@@ -256,5 +258,54 @@ class CotizadorController extends Controller
             Storage::put('/public/dataErrorToTrySendQuote.txt',   json_encode($erroresAlCotizar));
             Mail::to('adminportales@promolife.com.mx')->send(new SendDataErrorCreateQuote('adminportales@promolife.com.mx', '/storage/dataErrorToTrySendQuote.txt'));
         }
+    }
+
+    public function exportUsuarios()
+    {
+
+        $documento = new Spreadsheet();
+        $documento
+            ->getProperties()
+            ->setCreator("Aquí va el creador, como cadena")
+            ->setLastModifiedBy('Parzibyte') // última vez modificado por
+            ->setTitle('Mi primer documento creado con PhpSpreadSheet')
+            ->setSubject('El asunto')
+            ->setDescription('Este documento fue generado para parzibyte.me')
+            ->setKeywords('etiquetas o palabras clave separadas por espacios')
+            ->setCategory('La categoría');
+
+        $nombreDelDocumento = "Reporte de Usuarios con corte al " . now()->format('d-m-Y') . ".xlsx";
+
+        $hoja = $documento->getActiveSheet();
+        $hoja->setTitle("Usuarios");
+        $users = User::where('visible', 1)->get();
+        $i = 2;
+        $hoja->setCellValueByColumnAndRow(1, 1,  'Nombre');
+        $hoja->setCellValueByColumnAndRow(2, 1,  'Apellido');
+        $hoja->setCellValueByColumnAndRow(3, 1,  'Correo');
+        $hoja->setCellValueByColumnAndRow(4, 1,  'Ultimo Inicio de Sesion');
+
+        foreach ($users as $user) {
+            $hoja->setCellValueByColumnAndRow(1, $i,  $user->name);
+            $hoja->setCellValueByColumnAndRow(2, $i,  $user->lastname);
+            $hoja->setCellValueByColumnAndRow(3, $i,  $user->email);
+            $hoja->setCellValueByColumnAndRow(4, $i,  $user->last_login != null ? $user->last_login : "No hay Registro");
+            $i++;
+        }
+
+        /**
+         * Los siguientes encabezados son necesarios para que
+         * el navegador entienda que no le estamos mandando
+         * simple HTML
+         * Por cierto: no hagas ningún echo ni cosas de esas; es decir, no imprimas nada
+         */
+
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename="' . $nombreDelDocumento . '"');
+        header('Cache-Control: max-age=0');
+
+        $writer = IOFactory::createWriter($documento, 'Xlsx');
+        $writer->save('php://output');
+        exit;
     }
 }

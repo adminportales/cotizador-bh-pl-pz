@@ -23,6 +23,10 @@
                         <div class="btn btn-sm btn-info" onclick="enviar()">
                             <i class="fa fa-plus"></i> Enviar Acceso
                         </div>
+                        <div class="">
+                            <a href="{{ route('exportUsuarios.cotizador') }}" class="btn btn-sm btn-info">Descargar Usuarios</a>
+
+                        </div>
                     </div>
                 </div>
 

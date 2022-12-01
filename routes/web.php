@@ -33,6 +33,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/changeCompany/{company}', [CotizadorController::class, 'changeCompany'])->name('changeCompany.cotizador');
     Route::get('/addProduct/create', [CotizadorController::class, 'addProductCreate'])->name('addProduct.cotizador');
     Route::post('/addProduct/store', [CotizadorController::class, 'addProductStore'])->name('storeproduct.cotizador');
+    Route::get('/exportUsuarios', [CotizadorController::class, 'exportUsuarios'])->name('exportUsuarios.cotizador');
 
     //Route Hooks - Do not delete//
     Route::prefix('admin')->middleware(['role:admin'])->group(function () {
