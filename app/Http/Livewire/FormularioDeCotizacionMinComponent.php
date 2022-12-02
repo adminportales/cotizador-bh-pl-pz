@@ -126,7 +126,7 @@ class FormularioDeCotizacionMinComponent extends Component
         if (!is_numeric($this->newPriceTechnique))
             $this->newPriceTechnique = null;
         $precioDeTecnicaUsado = $precioDeTecnica;
-        if ($this->newPriceTechnique != null && $this->newPriceTechnique > 0)
+        if ($this->newPriceTechnique != null && $this->newPriceTechnique >= 0)
             $precioDeTecnicaUsado = $this->newPriceTechnique;
         $nuevoPrecio = round(($this->precio + ($precioDeTecnicaUsado * $this->colores) + $this->operacion) / ((100 - $this->utilidad) / 100), 2);
 
