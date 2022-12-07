@@ -247,12 +247,41 @@
                             target="_blank">Previsualizar
                             Cotizacion</a> --}}
                     <div wire:loading wire:target="guardarCotizacion">
-
                         <div class="spinner-border text-primary" role="status">
                             <span class="sr-only">Loading...</span>
                         </div>
                     </div>
+                    <button class="btn btn-primary" onclick="preview()">Previsualizar Cotizacion</button>
+                    <br>
                     <button class="btn btn-primary" onclick="enviar()">Guardar Cotizacion</button>
+                </div>
+            </div>
+        </div>
+        <!-- Modal -->
+        <div wire:ignore.self class="modal fade" id="modalPreview" tabindex="-1"
+            aria-labelledby="modalPreviewLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modalPreviewLabel">Vista Previa de la Cotizacion</h5>
+                        <button type="button" class="close" onclick="cerrarPreview()">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div wire:loading.flex wire:target="previewQuote" class="justify-content-center">
+                            <div class="spinner-border text-primary" role="status">
+                                <span class="sr-only">Loading...</span>
+                            </div>
+                        </div>
+                        @if ($urlPDFPreview)
+                            <iframe src="{{ $urlPDFPreview }}" style="width:100%; height:700px;"
+                                frameborder="0"></iframe>
+                        @endif
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" onclick="cerrarPreview()">Cerrar</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -264,6 +293,15 @@
         window.addEventListener('isntCompany', event => {
             Swal.fire('No tienes una empresa asignada')
         })
+
+        function preview() {
+            $('#modalPreview').modal('show')
+            @this.previewQuote()
+        }
+        function cerrarPreview() {
+            $('#modalPreview').modal('hide')
+            @this.urlPDFPreview = null;
+        }
 
         function enviar() {
             Swal.fire({

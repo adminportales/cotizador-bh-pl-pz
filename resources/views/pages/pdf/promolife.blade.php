@@ -149,7 +149,7 @@
         <table class="total content">
             <tr>
                 @php
-                    $subtotal = $quote->latestQuotesUpdate->quoteProducts->sum('precio_total');
+                    $subtotal = array_key_exists('preview', $quote) ? $quote->precio_total : $quote->latestQuotesUpdate->quoteProducts->sum('precio_total');
                     $discount = 0;
                     if ($quote->latestQuotesUpdate->quoteDiscount->type == 'Fijo') {
                         $discount = $quote->latestQuotesUpdate->quoteDiscount->value;

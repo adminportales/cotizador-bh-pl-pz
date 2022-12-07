@@ -21,7 +21,7 @@ class FinalizarCotizacion extends Component
 {
     use WithFileUploads;
     public $tipoCliente, $clienteSeleccionado = '', $isClient, $nombre, $empresa, $email, $telefono, $celular, $oportunidad, $rank = '', $departamento, $informacion, $ivaByItem, $logo;
-
+    public $urlPDFPreview;
     public function mount()
     {
         $this->ivaByItem = false;
@@ -425,6 +425,111 @@ class FinalizarCotizacion extends Component
         $this->email = '';
         $this->telefono = '';
         $this->clienteSeleccionado = "";
+    }
+    public function previewQuote()
+    {
+        $this->urlPDFPreview = null;
+        $type = 'Fijo';
+        $value = 0;
+        $discount = false;
+        if (auth()->user()->currentQuote->discount) {
+            $discount = true;
+            $type = auth()->user()->currentQuote->type;
+            $value = auth()->user()->currentQuote->value;
+        }
+        $products = [];
+
+        foreach (auth()->user()->currentQuote->currentQuoteDetails as $item) {
+            $product = Product::find($item->product_id);
+            $tecnica = PricesTechnique::find($item->prices_techniques_id);
+            $price_tecnica = $item->new_price_technique != null ?
+                $item->new_price_technique
+                : ($tecnica->tipo_precio == 'D'
+                    ? round($tecnica->precio / $item->cantidad, 2)
+                    : $tecnica->precio);
+
+            $material = $tecnica->sizeMaterialTechnique->materialTechnique->material->nombre;
+            $material_id = $tecnica->sizeMaterialTechnique->materialTechnique->material->id;
+            $tecnica_nombre = $tecnica->sizeMaterialTechnique->materialTechnique->technique->nombre;
+            $tecnica_id = $tecnica->sizeMaterialTechnique->materialTechnique->technique->id;
+            $size = $tecnica->sizeMaterialTechnique->size->nombre;
+            $size_id = $tecnica->sizeMaterialTechnique->size->id;
+            $infoTecnica = [
+                'material_id' => $material_id,
+                'material' => $material,
+                'tecnica' => $tecnica_nombre,
+                'tecnica_id' => $tecnica_id,
+                'size' => $size,
+                'size_id' => $size_id,
+            ];
+
+            // Agregar la URL de la Imagen
+            $product->image = $product->firstImage == null ? '' : $product->firstImage->image_url;
+            $product->provider;
+            array_push($products, (object) [
+                'product' => json_encode($product->toArray()),
+                'technique' =>  json_encode($infoTecnica),
+                'prices_techniques' => $price_tecnica,
+                'new_description' => $item->new_description,
+                'color_logos' => $item->color_logos,
+                'costo_indirecto' => $item->costo_indirecto,
+                'utilidad' => $item->utilidad,
+                'dias_entrega' => $item->dias_entrega,
+                'cantidad' => $item->cantidad,
+                'precio_unitario' => $item->precio_unitario,
+                'precio_total' => $item->precio_total
+            ]);
+        }
+        $precioTotal = 0;
+        foreach ($products as $p) {
+            $precioTotal = $precioTotal + $p->precio_total;
+        }
+        $quote = (object) [
+            "id" => "NA",
+            "user_id" => auth()->user()->id,
+            "logo" => $this->logo ? $this->logo->temporaryUrl() : null,
+            "updated_at" => now(),
+            "iva_by_item" => boolval($this->ivaByItem),
+            "precio_total" => $precioTotal,
+            "preview" => true,
+            'latestQuotesUpdate' => (object)[
+                "quotesInformation" => (object)[
+                    "company" => $this->empresa,
+                    "name" => $this->nombre,
+                    "department" => $this->departamento,
+                    "information" => $this->informacion,
+                ],
+                "quoteProducts" => (object)$products,
+                "quoteDiscount" => (object)[
+                    "type" => $type,
+                    "value" => $value,
+                    "discount" => $discount,
+                ]
+            ],
+        ];
+        $nombreComercial = [];
+        switch (auth()->user()->companySession->name) {
+            case 'PROMO LIFE':
+                # code...
+                $pdf = PDF::loadView('pages.pdf.promolife', ['quote' => $quote, 'nombreComercial' => $nombreComercial]);
+                break;
+            case 'BH TRADEMARKET':
+                # code...
+                $pdf = PDF::loadView('pages.pdf.bh', ['quote' => $quote, 'nombreComercial' => $nombreComercial]);
+                break;
+            case 'PROMO ZALE':
+                # code...
+                $pdf = PDF::loadView('pages.pdf.promozale', ['quote' => $quote, 'nombreComercial' => $nombreComercial]);
+                break;
+            default:
+                # code...
+                break;
+        }
+        $pdf->setPaper('Letter', 'portrait');
+        $pdf = $pdf->stream("Preview " . $this->oportunidad . ".pdf");
+        $path =  "/storage/quotes/tmp/" . time() . "Preview " . $this->oportunidad . ".pdf";
+        file_put_contents(public_path() . $path, $pdf);
+        $this->urlPDFPreview = url('') . $path;
     }
 
     public function resetData()
