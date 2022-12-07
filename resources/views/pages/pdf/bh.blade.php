@@ -109,7 +109,9 @@
                         <td style="width: 120px">
                             {{ $item->new_description ? $item->new_description : $producto->description }}</td>
                         <td style="width: 80px">{{ $tecnica->tecnica }}
-                            <p style="font-size: 14px"><b>Tintas: </b>{{ $item->color_logos }}</p>
+                            @if ($tecnica->tecnica !== 'No Aplica')
+                                <p style="font-size: 14px"><b>Tintas: </b>{{ $item->color_logos }}</p>
+                            @endif
                         </td>
                         <td style="width: 60px">{{ $item->cantidad }}</td>
                         <td style="width: 90px">${{ number_format($item->precio_unitario, 2, '.', ',') }}</td>
@@ -154,7 +156,9 @@
                 @endphp
                 <td style="width: 100%; text-align: right">
                     <p><b>Subtotal: </b> $ {{ number_format($subtotal, 2, '.', ',') }}</p>
-                    <p><b>Descuento: </b> $ {{ number_format($discount, 2, '.', ',') }}</p>
+                    @if ($discount > 0)
+                        <p><b>Descuento: </b>$ {{ number_format($discount, 2, '.', ',') }}</p>
+                    @endif
                     @if (!$quote->iva_by_item)
                         <p><b>IVA: </b> $ {{ number_format($iva, 2, '.', ',') }}</p>
                     @endif

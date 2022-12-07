@@ -106,9 +106,12 @@
                                 <img src="img/default.jpg" width="180">
                             @endif
                         </td>
-                        <td colspan="1">{{ $item->new_description ? $item->new_description : $producto->description }}</td>
+                        <td colspan="1">
+                            {{ $item->new_description ? $item->new_description : $producto->description }}</td>
                         <td colspan="1">{{ $tecnica->tecnica }}
-                            <p style="font-size: 12px"><b>Tintas: </b>{{ $item->color_logos }}</p>
+                            @if ($tecnica->tecnica !== 'No Aplica')
+                                <p style="font-size: 12px"><b>Tintas: </b>{{ $item->color_logos }}</p>
+                            @endif
                         </td>
                         <td colspan="1">{{ $item->cantidad }}</td>
                         <td colspan="1" style="text-align: center;">{{ $item->dias_entrega }} <br> <span>días
@@ -144,7 +147,9 @@
                 @endphp
                 <td style="width: 150px">
                     <p><b>Subtotal: </b>$ {{ number_format($subtotal, 2, '.', ',') }}</p>
-                    <p><b>Descuento: </b>$ {{ number_format($discount, 2, '.', ',') }}</p>
+                    @if ($discount > 0)
+                        <p><b>Descuento: </b>$ {{ number_format($discount, 2, '.', ',') }}</p>
+                    @endif
                     @if (!$quote->iva_by_item)
                         <p><b>IVA: </b> $ {{ number_format($iva, 2, '.', ',') }}</p>
                     @endif

@@ -96,7 +96,7 @@ class CotizadorController extends Controller
         }
 
         $pdf->setPaper('Letter', 'portrait');
-        return $pdf->stream('ejemplo.pdf');
+        return $pdf->stream("QS-" . $quote->id . " " . $quote->latestQuotesUpdate->quotesInformation->oportunity . ' ' . $quote->updated_at->format('d/m/Y') . '.pdf');
     }
 
     public function all()

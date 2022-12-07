@@ -325,7 +325,8 @@ class FinalizarCotizacion extends Component
             $mailSend = '';
             switch (auth()->user()->companySession->name) {
                 case 'PROMO LIFE':
-                    $mailSend = new SendQuotePL(auth()->user()->name, $quote->latestQuotesUpdate->quotesInformation->name, $newPath);
+                    $nameFile = "QS-" . $quote->id . " " . $quote->latestQuotesUpdate->quotesInformation->oportunity . ' ' . $quote->updated_at->format('d/m/Y') . '.pdf';
+                    $mailSend = new SendQuotePL(auth()->user()->name, $quote->latestQuotesUpdate->quotesInformation->name, $nameFile, $newPath);
                     Mail::mailer($mailer)->to($quote->latestQuotesUpdate->quotesInformation->email)->send($mailSend);
                     break;
                 case 'BH TRADEMARKET':
@@ -334,6 +335,7 @@ class FinalizarCotizacion extends Component
                         "nameSeller" => auth()->user()->name,
                         "client" => $quote->latestQuotesUpdate->quotesInformation->name,
                         // "fileUrl" => "https://scielo.conicyt.cl/pdf/ijmorphol/v31n4/art56.pdf",
+                        "nameFile" => "QS-" . $quote->id . " " . $quote->latestQuotesUpdate->quotesInformation->oportunity . ' ' . $quote->updated_at->format('d/m/Y') . '.pdf',
                         "fileUrl" => str_replace(' ', '%20', url("/") . $newPath),
                         "emailSeller" => auth()->user()->email
                     ];
@@ -361,6 +363,7 @@ class FinalizarCotizacion extends Component
                         "nameSeller" => auth()->user()->name,
                         "client" => $quote->latestQuotesUpdate->quotesInformation->name,
                         // "fileUrl" => "https://scielo.conicyt.cl/pdf/ijmorphol/v31n4/art56.pdf",
+                        "nameFile" => "QS-" . $quote->id . " " . $quote->latestQuotesUpdate->quotesInformation->oportunity . ' ' . $quote->updated_at->format('d/m/Y') . '.pdf',
                         "fileUrl" => str_replace(' ', '%20', url("/") . $newPath),
                         "emailSeller" => auth()->user()->email
                     ];

@@ -96,7 +96,8 @@ class VerCotizacionComponent extends Component
             $mailSend = '';
             switch ($this->quote->company->name) {
                 case 'PROMO LIFE':
-                    $mailSend = new SendQuotePL(auth()->user()->name, $this->quote->latestQuotesUpdate->quotesInformation->name, $path);
+                    $nameFile = "QS-" . $this->quote->id . " " . $this->quote->latestQuotesUpdate->quotesInformation->oportunity . ' ' . $this->quote->updated_at->format('d/m/Y') . '.pdf';
+                    $mailSend = new SendQuotePL(auth()->user()->name, $this->quote->latestQuotesUpdate->quotesInformation->name, $nameFile, $path);
                     Mail::mailer($mailer)->to($this->quote->latestQuotesUpdate->quotesInformation->email)->send($mailSend);
                     break;
                 case 'BH TRADEMARKET':
@@ -105,6 +106,7 @@ class VerCotizacionComponent extends Component
                         "nameSeller" => auth()->user()->name,
                         "client" => $this->quote->latestQuotesUpdate->quotesInformation->name,
                         // "fileUrl" => "https://scielo.conicyt.cl/pdf/ijmorphol/v31n4/art56.pdf",
+                        "nameFile" => "QS-" . $this->quote->id . " " . $this->quote->latestQuotesUpdate->quotesInformation->oportunity . ' ' . $this->quote->updated_at->format('d/m/Y') . '.pdf',
                         "fileUrl" => str_replace(' ', '%20', url("/") . $path),
                         "emailSeller" => auth()->user()->email
                     ];
@@ -135,6 +137,7 @@ class VerCotizacionComponent extends Component
                         "nameSeller" => auth()->user()->name,
                         "client" => $this->quote->latestQuotesUpdate->quotesInformation->name,
                         // "fileUrl" => "https://scielo.conicyt.cl/pdf/ijmorphol/v31n4/art56.pdf",
+                        "nameFile" => "QS-" . $this->quote->id . " " . $this->quote->latestQuotesUpdate->quotesInformation->oportunity . ' ' . $this->quote->updated_at->format('d/m/Y') . '.pdf',
                         "fileUrl" => str_replace(' ', '%20', url("/") . $path),
                         "emailSeller" => auth()->user()->email
                     ];
