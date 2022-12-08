@@ -43,6 +43,7 @@ class RegisteredUser extends Notification
         return (new MailMessage)
             ->markdown('mail.registered.user', ['url' => url('/'), 'data' => $this->data])
             ->subject('Usuario Registrado al sistema Cotizador Web Promo Connect')
+            ->cc(['federico.solano@promolife.com.mx', 'antonio.tomas@promolife.com.mx'])
             ->from('innovacionytecnologia@promolife.online', 'Promo Connect');
     }
 
