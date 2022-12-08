@@ -507,7 +507,14 @@ class FinalizarCotizacion extends Component
                 ]
             ],
         ];
-        $nombreComercial = [];
+        $nombreComercial = null;
+        if ($this->tipoCliente == 'crear') {
+        } else {
+            $empresa = Client::where("name", $this->empresa)->first();
+            if ($empresa) {
+                $nombreComercial = $empresa->firstTradename;
+            }
+        }
         switch (auth()->user()->companySession->name) {
             case 'PROMO LIFE':
                 # code...

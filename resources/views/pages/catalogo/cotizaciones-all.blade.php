@@ -12,7 +12,7 @@
             <div class="card w-100">
                 <div class="card-body">
                     @if (count($quotes) > 0)
-                        <table class="table">
+                        <table class="table table-sm table-hover">
                             <thead>
                                 <tr>
                                     <th scope="col" class="text-center">#</th>
@@ -75,8 +75,7 @@
 
                                         <td class="text-center">
                                             <a href="{{ route('verCotizacion', ['quote' => $quote->id]) }}"
-                                                class="btn btn-primary">Ver
-                                                Cotizacion</a>
+                                                class="btn btn-primary btn-sm">Ver</a>
                                         </td>
                                     </tr>
                                 @endforeach
