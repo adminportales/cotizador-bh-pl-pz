@@ -24,7 +24,8 @@
                             <i class="fa fa-plus"></i> Enviar Acceso
                         </div>
                         <div class="">
-                            <a href="{{ route('exportUsuarios.cotizador') }}" class="btn btn-sm btn-info">Descargar Usuarios</a>
+                            <a href="{{ route('exportUsuarios.cotizador') }}" class="btn btn-sm btn-info">Descargar
+                                Usuarios</a>
 
                         </div>
                     </div>
@@ -60,18 +61,15 @@
                                         </td>
                                         <td>
                                             @foreach ($row->info as $infoOdoo)
-                                                <p><strong>Empresa: </strong>
-                                                    {{ $infoOdoo->company->name }}
-                                                </p>
-                                                <p><strong>Id Odoo: </strong>
+                                                <p class="m-0 p-0"><strong>Empresa: </strong>
+                                                    {{ $infoOdoo->company->name }} <strong>Id Odoo: </strong>
                                                     {{ $infoOdoo->odoo_id }}
                                                 </p>
-                                                <hr>
                                             @endforeach
                                         </td>
                                         <td width="90">
                                             <div class="btn-group">
-                                                <button type="button" class="btn btn-info btn-sm dropdown-toggle"
+                                                <button type="button" class="btn btn-info btn-sm dropdown-toggle py-1 px-2"
                                                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                     Actions
                                                 </button>

@@ -64,7 +64,7 @@
                                         </td>
                                         <td width="90">
                                             <div class="btn-group">
-                                                <button type="button" class="btn btn-info btn-sm dropdown-toggle"
+                                                <button type="button" class="btn btn-info btn-sm dropdown-toggle py-1 px-2"
                                                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                     Actions
                                                 </button>

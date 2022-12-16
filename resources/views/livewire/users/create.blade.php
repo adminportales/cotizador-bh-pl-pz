@@ -47,14 +47,14 @@
                             <span class="error text-danger">{{ $message }}</span>
                         @enderror
                     </div>
-                    <div class="form-group">
+                    {{-- <div class="form-group">
                         <label for="id_odoo"></label>
                         <input wire:model="id_odoo" type="number" class="form-control" id="id_odoo"
                             placeholder="Id de Odoo">
                         @error('id_odoo')
                             <span class="error text-danger">{{ $message }}</span>
                         @enderror
-                    </div>
+                    </div> --}}
                 </form>
             </div>
             <div class="modal-footer">

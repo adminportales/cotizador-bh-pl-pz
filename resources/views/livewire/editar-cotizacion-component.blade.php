@@ -66,13 +66,15 @@
                                         <p>{{ $producto->name }}</p>
                                     </td>
                                     <td class="">
-                                        <p class="text-center">${{ $product->precio_unitario }}</p>
+                                        <p class="text-center">
+                                            ${{ number_format($product->precio_unitario, 2, '.', ',') }}</p>
                                     </td>
                                     <td class="">
                                         <p class="text-center"> {{ $product->cantidad }} piezas</p>
                                     </td>
                                     <td>
-                                        <p class="text-center">${{ $product->precio_total }}</p>
+                                        <p class="text-center">${{ number_format($product->precio_total, 2, '.', ',') }}
+                                        </p>
                                     </td>
                                     <td class="text-center d-flex">
                                         <button class="btn btn-info btn-sm"
@@ -233,10 +235,11 @@
                     @endif
                 </div>
                 <div class="d-flex flex-column">
-                    <p><b>Subtotal: </b>$ {{ $subtotal + $subtotalAdded }}</p>
-                    <p><b>Descuento: </b>$ {{ $discountValue }}
+                    <p><b>Subtotal: </b>$ {{ number_format($subtotal + $subtotalAdded, 2, '.', ',') }}</p>
+                    <p><b>Descuento: </b>$ {{ number_format($discountValue, 2, '.', ',') }}
                     </p>
-                    <p><b>Total: </b>$ {{ $subtotal + $subtotalAdded - $discountValue }}</p>
+                    <p><b>Total: </b>$ {{ number_format($subtotal + $subtotalAdded - $discountValue, 2, '.', ',') }}
+                    </p>
                 </div>
 
                 <!-- Modal -->

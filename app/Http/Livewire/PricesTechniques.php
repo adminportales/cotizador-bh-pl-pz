@@ -20,7 +20,7 @@ class PricesTechniques extends Component
     {
 		$keyWord = '%'.$this->keyWord .'%';
         return view('livewire.prices.view', [
-            'sizeMaterialTechniques' => SizeMaterialTechnique::paginate(10),
+            'sizeMaterialTechniques' => SizeMaterialTechnique::paginate(20),
         ]);
     }
 

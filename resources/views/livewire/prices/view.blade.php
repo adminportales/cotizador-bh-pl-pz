@@ -46,31 +46,28 @@
                                     @foreach ($row->pricesTechniques as $key => $price)
                                         <tr>
                                             @if ($key == 0)
-                                                <td rowspan="3" colspan="1">{{ $it }}</td>
-                                                <td rowspan="3" colspan="1">
+                                                <td rowspan="{{ $row->pricesTechniques->count() }}" colspan="1">{{ $it }}</td>
+                                                <td rowspan="{{ $row->pricesTechniques->count() }}" colspan="1">
                                                     <b>{{ $row->materialTechnique->material->nombre }}</b>
                                                     {{ $row->materialTechnique->technique->nombre . ' ' . $row->size->nombre }}
                                                 </td>
                                             @endif
                                             <td>
-                                                <p> {{ $price->escala_inicial }}</p>
+                                                <p class="m-0"> {{ $price->escala_inicial }}</p>
                                             </td>
                                             <td>
-                                                <p> {{ $price->escala_final }}</p>
+                                                <p class="m-0"> {{ $price->escala_final }}</p>
                                             </td>
                                             <td>
-                                                <p> {{ $price->precio }}</p>
+                                                <p class="m-0"> {{ $price->precio }}</p>
                                             </td>
                                             <td>
-                                                <p> {{ $price->tipo_precio == 'D' ? 'Fijo' : 'Por Unidad' }}</p>
+                                                <p class="m-0"> {{ $price->tipo_precio == 'D' ? 'Fijo' : 'Por Unidad' }}</p>
                                             </td>
-                                            <td width="90">
-                                                <div class="btn-group">
+                                            <td width="90" class="p-0">
                                                     <a data-toggle="modal" data-target="#updateModalPrice"
-                                                        class="dropdown-item" wire:click="edit({{ $price->id }})"><i
-                                                            class="fa fa-edit"></i>
+                                                        class="btn btn-sm btn-info px-2 py-1" wire:click="edit({{ $price->id }})">
                                                         Editar </a>
-                                                </div>
                                             </td>
                                         </tr>
                                     @endforeach

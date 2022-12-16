@@ -27,6 +27,19 @@
                   </a>
               </li>
 
+              <li class="menu single-menu">
+                  <a href="{{ route('dashboard') }}" class="dropdown-toggle autodroprown">
+                      <div class="">
+                          <span>Dashboard </span>
+                      </div>
+                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                          fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                          stroke-linejoin="round" class="feather feather-chevron-down">
+                          <polyline points="6 9 12 15 18 9"></polyline>
+                      </svg>
+                  </a>
+              </li>
+
               @role('admin')
                   <li class="menu single-menu">
                       <a href="{{ route('all.cotizacion') }}" aria-expanded="false" class="dropdown-toggle">
@@ -90,7 +103,7 @@
                           </svg>
                       </a>
                   </li>
-                  <li class="menu single-menu">
+                  {{--  <li class="menu single-menu">
                       <a href="{{ url('admin/tradenames') }}" aria-expanded="false" class="dropdown-toggle">
                           <div class="">
                               <span>Etiquetas de Clientes</span>
@@ -101,7 +114,7 @@
                               <polyline points="6 9 12 15 18 9"></polyline>
                           </svg>
                       </a>
-                  </li>
+                  </li> --}}
                   <li class="menu single-menu">
                       <a href="{{ url('admin/companies') }}" aria-expanded="false" class="dropdown-toggle">
                           <div class="">

@@ -16,7 +16,9 @@ class Users extends Component
     use WithPagination;
 
     protected $paginationTheme = 'bootstrap';
-    public $selected_id, $keyWord, $name, $email, $company_id, $companies, $id_odoo, $password;
+    public $selected_id, $keyWord, $name, $email, $company_id, $companies,
+        // $id_odoo,
+        $password;
     public $updateMode = false;
 
     public function render()
@@ -27,7 +29,7 @@ class Users extends Component
             'users' => User::latest()
                 ->orWhere('name', 'LIKE', $keyWord)
                 ->orWhere('email', 'LIKE', $keyWord)
-                ->paginate(10),
+                ->paginate(50),
         ]);
     }
     public function sendAccess($id)
@@ -55,7 +57,7 @@ class Users extends Component
         $this->name = null;
         $this->email = null;
         $this->company_id = null;
-        $this->id_odoo = null;
+        // $this->id_odoo = null;
         $this->password = null;
     }
 
@@ -72,10 +74,10 @@ class Users extends Component
             'password' => Hash::make($this->password),
             'company_id' => $this->company_id
         ]);
-        $user->info()->create([
-            'odoo_id' => $this->id_odoo,
-            'company_id' => $this->company_id,
-        ]);
+        // $user->info()->create([
+        //     'odoo_id' => $this->id_odoo,
+        //     'company_id' => $this->company_id,
+        // ]);
 
         $this->resetInput();
         $this->emit('closeModal');
@@ -90,9 +92,9 @@ class Users extends Component
         $this->name = $record->name;
         $this->email = $record->email;
         $this->company_id = $record->company_id;
-        if ($record->info) {
-            $this->id_odoo = $record->info->odoo_id;
-        }
+        // if ($record->info) {
+        //     $this->id_odoo = $record->info->odoo_id;
+        // }
 
         $this->updateMode = true;
     }
@@ -112,17 +114,17 @@ class Users extends Component
                 'company_id' => $this->company_id
             ]);
 
-            if (!$record->info) {
-                $record->info()->create([
-                    'odoo_id' => $this->id_odoo,
-                    'company_id' => $this->company_id,
-                ]);
-            } else {
-                $record->info()->update([
-                    'odoo_id' => $this->id_odoo,
-                    'company_id' => $this->company_id,
-                ]);
-            }
+            // if (!$record->info) {
+            //     $record->info()->create([
+            //         'odoo_id' => $this->id_odoo,
+            //         'company_id' => $this->company_id,
+            //     ]);
+            // } else {
+            //     $record->info()->update([
+            //         'odoo_id' => $this->id_odoo,
+            //         'company_id' => $this->company_id,
+            //     ]);
+            // }
 
             $this->resetInput();
             $this->updateMode = false;

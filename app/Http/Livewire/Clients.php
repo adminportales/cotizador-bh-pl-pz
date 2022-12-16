@@ -25,18 +25,18 @@ class Clients extends Component
 						->orWhere('contact', 'LIKE', $keyWord)
 						->orWhere('email', 'LIKE', $keyWord)
 						->orWhere('phone', 'LIKE', $keyWord)
-						->paginate(10),
+						->paginate(50),
         ]);
     }
-	
+
     public function cancel()
     {
         $this->resetInput();
         $this->updateMode = false;
     }
-	
+
     private function resetInput()
-    {		
+    {
 		$this->user_id = null;
 		$this->client_odoo_id = null;
 		$this->name = null;
@@ -55,7 +55,7 @@ class Clients extends Component
 		'phone' => 'required',
         ]);
 
-        Client::create([ 
+        Client::create([
 			'user_id' => $this-> user_id,
 			'client_odoo_id' => $this-> client_odoo_id,
 			'name' => $this-> name,
@@ -63,7 +63,7 @@ class Clients extends Component
 			'email' => $this-> email,
 			'phone' => $this-> phone
         ]);
-        
+
         $this->resetInput();
 		$this->emit('closeModal');
 		session()->flash('message', 'Client Successfully created.');
@@ -73,14 +73,14 @@ class Clients extends Component
     {
         $record = Client::findOrFail($id);
 
-        $this->selected_id = $id; 
+        $this->selected_id = $id;
 		$this->user_id = $record-> user_id;
 		$this->client_odoo_id = $record-> client_odoo_id;
 		$this->name = $record-> name;
 		$this->contact = $record-> contact;
 		$this->email = $record-> email;
 		$this->phone = $record-> phone;
-		
+
         $this->updateMode = true;
     }
 
@@ -96,7 +96,7 @@ class Clients extends Component
 
         if ($this->selected_id) {
 			$record = Client::find($this->selected_id);
-            $record->update([ 
+            $record->update([
 			'user_id' => $this-> user_id,
 			'client_odoo_id' => $this-> client_odoo_id,
 			'name' => $this-> name,
