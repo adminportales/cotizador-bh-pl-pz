@@ -20,6 +20,7 @@ class QuoteInformation extends Model
         'rank',
         'department',
         'information',
+        'tax_fee',
     ];
 
     public function quotesProducts()

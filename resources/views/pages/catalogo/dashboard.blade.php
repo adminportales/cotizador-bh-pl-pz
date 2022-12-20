@@ -20,7 +20,7 @@
                         <canvas id="myChartBarMoney" width="400" height="200"></canvas>
                     </div>
                     <div class="col-md-4">
-                        <p class="text-center">Usuarios que no han creado un ticket</p>
+                        <p class="text-center">Usuarios que no han creado un lead</p>
                         <table class="table table-sm">
                             <thead>
                                 <tr>
@@ -165,61 +165,61 @@
             },
         });
         /*
-                    // Chart Type
-                        const ctxDesigner = 'chartDesigner';
-                        const dataDesigner = {
-                            labels: []
-                            datasets: [{
-                                label: 'Tipos de Tickets Creados',
-                                data: [],
-                                backgroundColor: [
-                                    'rgb(255, 99, 132)',
-                                    'rgb(54, 162, 235)',
-                                    'rgb(255, 205, 86)'
-                                ],
-                                hoverOffset: 4
-                            }]
-                        };
-                        const myChartDesigner = new Chart(ctxDesigner, {
-                            type: 'pie',
-                            data: dataDesigner,
-                            options: {
-                                scales: {
-                                    y: {
-                                        beginAtZero: true
-                                    }
-                                }
-                            }
-                        });
+        // Chart Type
+        const ctxDesigner = 'chartDesigner';
+        const dataDesigner = {
+            labels: []
+            datasets: [{
+                label: 'Tipos de Tickets Creados',
+                data: [],
+                backgroundColor: [
+                    'rgb(255, 99, 132)',
+                    'rgb(54, 162, 235)',
+                    'rgb(255, 205, 86)'
+                ],
+                hoverOffset: 4
+            }]
+        };
+        const myChartDesigner = new Chart(ctxDesigner, {
+            type: 'pie',
+            data: dataDesigner,
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
 
 
-                        // Chart Type
-                        const ctxStatus = 'chartStatus';
-                        const dataStatus = {
-                            labels: [],
-                            datasets: [{
-                                label: 'Tipos de Tickets Creados',
-                                data: [],
-                                backgroundColor: [
-                                    'rgb(155, 99, 232)',
-                                    'rgb(4, 162, 23)',
-                                    'rgb(54, 12, 235)',
-                                    'rgb(255, 25, 86)',
-                                    'rgb(255, 205, 86)'
-                                ],
-                                hoverOffset: 4
-                            }]
-                        };
-                        const myChartStatus = new Chart(ctxStatus, {
-                            type: 'pie',
-                            data: dataStatus,
-                            options: {
-                                scales: {
-                                    y: {
-                                        beginAtZero: true
-                                    }
-                                }
-                            }
-                        }); */
+        // Chart Type
+        const ctxStatus = 'chartStatus';
+        const dataStatus = {
+            labels: [],
+            datasets: [{
+                label: 'Tipos de Tickets Creados',
+                data: [],
+                backgroundColor: [
+                    'rgb(155, 99, 232)',
+                    'rgb(4, 162, 23)',
+                    'rgb(54, 12, 235)',
+                    'rgb(255, 25, 86)',
+                    'rgb(255, 205, 86)'
+                ],
+                hoverOffset: 4
+            }]
+        };
+        const myChartStatus = new Chart(ctxStatus, {
+            type: 'pie',
+            data: dataStatus,
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });*/
     </script>
 @endsection

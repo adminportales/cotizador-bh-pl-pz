@@ -5,6 +5,20 @@
             <br>
             <form action="" method="post">
                 <div class="row">
+                    @if (count(auth()->user()->managments) > 1)
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="">Ejecutivos Disponibles</label>
+                                <select name="tipo" class="form-control" wire:model="selectEjecutivo"
+                                    wire:change="selectManagment">
+                                    <option value="">Seleccionar ejecutivos</option>
+                                    @foreach (auth()->user()->managments as $managment)
+                                        <option value="{{ $managment->id }}">{{ $managment->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                    @endif
                     <div class="col-md-4">
                         <div class="form-group">
                             <label for="">Opciones de Cliente</label>
@@ -176,6 +190,15 @@
                             @endif
                         </div>
                     </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="">Tax Fee (Opcional)</label>
+                            <input type="number" class="form-control" placeholder="Tax Fee" wire:model="taxFee">
+                        </div>
+                        @if ($errors->has('ivaByItem'))
+                            <span class="text-danger">{{ $errors->first('departamento') }}</span>
+                        @endif
+                    </div>
                     <div class="col-md-12">
                         <div class="form-group">
                             <label for="">Informacion Adicional (Opcional)</label>
@@ -298,6 +321,7 @@
             $('#modalPreview').modal('show')
             @this.previewQuote()
         }
+
         function cerrarPreview() {
             $('#modalPreview').modal('hide')
             @this.urlPDFPreview = null;

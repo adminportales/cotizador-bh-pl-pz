@@ -83,6 +83,15 @@
                 <span class="text-danger">{{ $errors->first('departamento') }}</span>
             @endif
         </div>
+        <div class="col-md-4">
+            <div class="form-group">
+                <label for="">Tax Fee (Opcional)</label>
+                <input type="number" class="form-control" placeholder="Tax Fee" wire:model="taxFee">
+            </div>
+            @if ($errors->has('ivaByItem'))
+                <span class="text-danger">{{ $errors->first('departamento') }}</span>
+            @endif
+        </div>
         <div class="col-md-12">
             <div class="form-group">
                 <label for="">Informacion Adicional (Opcional)</label>

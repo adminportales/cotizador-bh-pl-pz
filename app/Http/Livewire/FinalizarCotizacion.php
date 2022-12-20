@@ -11,6 +11,7 @@ use App\Mail\SendQuotePL;
 use App\Models\Client;
 use App\Models\QuoteDiscount;
 use App\Models\QuoteInformation;
+use App\Models\User;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Exception;
 use Illuminate\Support\Facades\Mail;
@@ -20,19 +21,38 @@ use Livewire\WithFileUploads;
 class FinalizarCotizacion extends Component
 {
     use WithFileUploads;
-    public $tipoCliente, $clienteSeleccionado = '', $isClient, $nombre, $empresa, $email, $telefono, $celular, $oportunidad, $rank = '', $departamento, $informacion, $ivaByItem, $logo;
+    public $tipoCliente, $clienteSeleccionado = '', $isClient, $nombre, $empresa, $email, $telefono, $celular, $oportunidad, $rank = '', $departamento, $informacion, $ivaByItem, $logo, $taxFee;
     public $urlPDFPreview;
+    public $ejecutivos, $ejecutivoSeleccionado = null, $selectEjecutivo;
+
     public function mount()
     {
+        $this->ejecutivos = auth()->user()->managments;
+        if (count($this->ejecutivos) == 1) {
+            $this->ejecutivoSeleccionado = $this->ejecutivos[0];
+        }
         $this->ivaByItem = false;
     }
 
     public function render()
     {
         $userClients = [];
+
+        if ($this->ejecutivoSeleccionado) {
+            foreach ($this->ejecutivoSeleccionado->info as $info) {
+                if ($info->company_id == auth()->user()->company_session) {
+                    foreach ($info->clients()->where('company_id', $info->company_id)->get() as $userClient) {
+                        array_push($userClients, $userClient);
+                    }
+                }
+            }
+        }
+
         foreach (auth()->user()->info as $info) {
             if ($info->company_id == auth()->user()->company_session) {
-                $userClients = $info->clients()->where('company_id', $info->company_id)->get();
+                foreach ($info->clients()->where('company_id', $info->company_id)->get() as $userClient) {
+                    array_push($userClients, $userClient);
+                }
             }
         }
         return view('pages.catalogo.finalizar-cotizacion', compact('userClients'));
@@ -41,6 +61,11 @@ class FinalizarCotizacion extends Component
     public function limpiarLogo()
     {
         $this->logo = null;
+    }
+
+    public function selectManagment()
+    {
+        $this->ejecutivoSeleccionado = User::find($this->selectEjecutivo);
     }
 
     public function guardarCotizacion()
@@ -120,6 +145,7 @@ class FinalizarCotizacion extends Component
             'rank' => $this->rank,
             'department' => $this->departamento,
             'information' => $this->informacion,
+            'tax_fee' => (int)$this->taxFee > 0 ? $this->taxFee : null,
         ]);
 
         // Guardar descuento
@@ -481,8 +507,10 @@ class FinalizarCotizacion extends Component
             ]);
         }
         $precioTotal = 0;
+        $productosTotal = 0;
         foreach ($products as $p) {
             $precioTotal = $precioTotal + $p->precio_total;
+            $productosTotal = $productosTotal + $p->cantidad;
         }
         $quote = (object) [
             "id" => "NA",
@@ -491,6 +519,7 @@ class FinalizarCotizacion extends Component
             "updated_at" => now(),
             "iva_by_item" => boolval($this->ivaByItem),
             "precio_total" => $precioTotal,
+            "productos_total" => $productosTotal,
             "preview" => true,
             'latestQuotesUpdate' => (object)[
                 "quotesInformation" => (object)[
@@ -498,6 +527,7 @@ class FinalizarCotizacion extends Component
                     "name" => $this->nombre,
                     "department" => $this->departamento,
                     "information" => $this->informacion,
+                    "tax_fee" => (int)$this->taxFee > 0 ? $this->taxFee : null
                 ],
                 "quoteProducts" => (object)$products,
                 "quoteDiscount" => (object)[

@@ -24,6 +24,7 @@ class CreateQuoteInformationTable extends Migration
             $table->string('rank');
             $table->string('department')->nullable();
             $table->text('information')->nullable();
+            $table->decimal('tax_fee', 10, 2)->nullable();
             $table->timestamps();
         });
     }

@@ -66,4 +66,13 @@ class User extends Authenticatable
     {
         return $this->hasMany(UserInformationOdoo::class);
     }
+
+    public function assistants()
+    {
+        return $this->belongsToMany(User::class, 'user_assistant', 'user_id', 'assistant_id');
+    }
+    public function managments()
+    {
+        return $this->belongsToMany(User::class, 'user_assistant', 'assistant_id', 'user_id');
+    }
 }

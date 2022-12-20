@@ -16,7 +16,7 @@ class Users extends Component
     use WithPagination;
 
     protected $paginationTheme = 'bootstrap';
-    public $selected_id, $keyWord, $name, $email, $company_id, $companies,
+    public $selected_id, $keyWord, $name, $email, $company_id, $companies, $keySearch, $allUsers, $user,
         // $id_odoo,
         $password;
     public $updateMode = false;
@@ -25,6 +25,7 @@ class Users extends Component
     {
         $this->companies = Company::all();
         $keyWord = '%' . $this->keyWord . '%';
+        $this->allUsers = User::where('visible', 1)->get();
         return view('livewire.users.view', [
             'users' => User::latest()
                 ->orWhere('name', 'LIKE', $keyWord)
@@ -87,7 +88,7 @@ class Users extends Component
     public function edit($id)
     {
         $record = User::findOrFail($id);
-
+        $this->user = $record;
         $this->selected_id = $id;
         $this->name = $record->name;
         $this->email = $record->email;
@@ -165,5 +166,15 @@ class Users extends Component
         } else {
             return json_encode($errors);
         }
+    }
+
+    public function updateAssistant($user_id)
+    {
+        $user = User::find($user_id);
+        $this->user->assistants()->toggle($user);
+        $this->user = $this->user;
+        $this->user->assistants;
+
+        session()->flash('updateSites', 'Actualizacion correcta.');
     }
 }

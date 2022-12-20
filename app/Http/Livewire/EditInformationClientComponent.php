@@ -13,7 +13,7 @@ class EditInformationClientComponent extends Component
     use AuthorizesRequests;
 
     public $quoteInfo, $quote;
-    public $tipoCliente, $clienteSeleccionado = '', $nombre, $empresa, $email, $telefono, $celular, $oportunidad, $rank = '', $departamento, $informacion, $clients, $ivaByItem;
+    public $tipoCliente, $clienteSeleccionado = '', $nombre, $empresa, $email, $telefono, $celular, $oportunidad, $rank = '', $departamento, $informacion, $clients, $ivaByItem, $taxFee;
 
     public function mount()
     {
@@ -27,6 +27,7 @@ class EditInformationClientComponent extends Component
         $this->rank = $this->quoteInfo->rank;
         $this->departamento = $this->quoteInfo->department;
         $this->informacion = $this->quoteInfo->information;
+        $this->taxFee = $this->quoteInfo->taxFee;
     }
 
     public function render()
@@ -36,7 +37,7 @@ class EditInformationClientComponent extends Component
 
     public function guardarCotizacion()
     {
-        // $this->authorize('update', $this->quote);
+        $this->authorize('update', $this->quote);
         // $this->validate([
         //     'tipoCliente' => 'required',
         // ]);
@@ -54,7 +55,6 @@ class EditInformationClientComponent extends Component
         //     $this->nombre = $client->contact;
         //     $this->empresa = $client->name;
         // }
-
         $this->validate([
             // 'tipoCliente' => 'rsequired',
             'email' => 'required|email',
@@ -66,6 +66,7 @@ class EditInformationClientComponent extends Component
 
         $this->quote->update(['iva_by_item' => boolval($this->ivaByItem)]);
         // Guardar la Info de la cotizacion
+        // dd($this->taxFee > 0 ?: null);
         $quoteInfo = QuoteInformation::create([
             'name' => $this->quoteInfo->name,
             'company' => $this->quoteInfo->company,
@@ -76,6 +77,7 @@ class EditInformationClientComponent extends Component
             'rank' => $this->rank,
             'department' => $this->departamento,
             'information' => $this->informacion,
+            'tax_fee' => $this->taxFee > 0 ? $this->taxFee : null,
         ]);
 
         $latestProductos = $this->quote->latestQuotesUpdate->quoteProducts;

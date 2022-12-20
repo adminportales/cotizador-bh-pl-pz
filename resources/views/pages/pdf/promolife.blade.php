@@ -101,11 +101,15 @@
                 </tr>
             </thead>
             <tbody>
+                @php
+                    $taxFee = $quote->latestQuotesUpdate->quotesInformation->tax_fee;
+                    $totalProducts = isset($quote->preview) ? $quote->productos_total : $quote->latestQuotesUpdate->quoteProducts->sum('cantidad');
+                    $taxFeeAddProduct = round($taxFee / $totalProducts, 2);
+                @endphp
                 @foreach ($quote->latestQuotesUpdate->quoteProducts as $item)
                     @php
                         $producto = json_decode($item->product);
                         $tecnica = json_decode($item->technique);
-
                     @endphp
                     <tr>
 
@@ -130,9 +134,10 @@
                             </span>
                         </td>
                         <td colspan="1" style="width: 90px">
-                            ${{ number_format($item->precio_unitario, 2, '.', ',') }}
+                            ${{ number_format($item->precio_unitario + $taxFeeAddProduct, 2, '.', ',') }}
                         </td>
-                        <td colspan="1" style="width: 100px">${{ number_format($item->precio_total, 2, '.', ',') }}
+                        <td colspan="1" style="width: 100px">
+                            ${{ number_format($item->precio_total + $taxFeeAddProduct * $item->cantidad, 2, '.', ',') }}
                             @if ($quote->iva_by_item)
                                 <p style="font-size: 12px"><b>IVA:
                                     </b>${{ number_format($item->precio_total * 0.16, 2, '.', ',') }}
@@ -149,7 +154,7 @@
         <table class="total content">
             <tr>
                 @php
-                    $subtotal = isset($quote->preview) ? $quote->precio_total : $quote->latestQuotesUpdate->quoteProducts->sum('precio_total');
+                    $subtotal = (isset($quote->preview) ? $quote->precio_total : $quote->latestQuotesUpdate->quoteProducts->sum('precio_total')) + $taxFee;
                     $discount = 0;
                     if ($quote->latestQuotesUpdate->quoteDiscount->type == 'Fijo') {
                         $discount = $quote->latestQuotesUpdate->quoteDiscount->value;
