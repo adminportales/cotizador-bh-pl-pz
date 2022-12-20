@@ -105,72 +105,7 @@ class CotizadorController extends Controller
     }
     public function dashboard()
     {
-        $quotes = Quote::all();
-        $pl = 0;
-        $bh = 0;
-        $pz = 0;
-        foreach ($quotes as $quote) {
-            $quote->company;
-            switch ($quote->company->name) {
-                case 'PROMO LIFE':
-                    $pl++;
-                    break;
-                case 'PROMO ZALE':
-                    $pz++;
-                    break;
-                case 'BH TRADEMARKET':
-                    $bh++;
-                    break;
-
-                default:
-                    break;
-            }
-        }
-        $dataQuoteCompany  = [$pl, $pz, $bh];
-
-
-
-        // Vendedores
-        $dataUserCreatedLeads = [];
-        $dataUserCountLeads = [];
-        $dataUserWithoutLeads = [];
-        $users = User::all();
-        foreach ($users as $userCount) {
-            $leadsCreated = $userCount
-                ->quotes()
-                // ->where('created_at', '>', now()->subMonth())
-                ->count();
-            if ($leadsCreated > 0) {
-                array_push($dataUserCreatedLeads, $userCount->name);
-                array_push($dataUserCountLeads, $leadsCreated);
-            } else {
-                if ($userCount->visible)
-                    array_push($dataUserWithoutLeads, [$userCount->name . ' ' . $userCount->lastname, $userCount->last_login]);
-            }
-        }
-        $dataUserInfoTickets = [$dataUserCreatedLeads, $dataUserCountLeads, $dataUserWithoutLeads];
-
-        // Vendedores
-        $dataUserMountLeads = [];
-        $dataUserCountLeads = [];
-        $users = User::all();
-        foreach ($users as $userCount) {
-            $leadsCreated = $userCount
-                ->quotes()
-                // ->where('created_at', '>', now()->subMonth())
-                ->count();
-            if ($leadsCreated > 0) {
-                $mount = 0;
-                foreach ($userCount->quotes as $quote) {
-                    $mount = $mount + $quote->latestQuotesUpdate->quoteProducts->sum('precio_total');
-                }
-                array_push($dataUserMountLeads, $userCount->name);
-                array_push($dataUserCountLeads, $mount);
-            }
-        }
-        $dataUserMountTickets = [$dataUserMountLeads, $dataUserCountLeads];
-
-        return view('pages.catalogo.dashboard', compact('dataQuoteCompany', 'dataUserInfoTickets', 'dataUserMountTickets'));
+        return view('pages.catalogo.dashboard');
     }
 
     public function changeCompany($company)
