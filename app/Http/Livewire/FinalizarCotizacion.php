@@ -55,6 +55,9 @@ class FinalizarCotizacion extends Component
                 }
             }
         }
+
+        if ($this->taxFee > 99)
+            $this->taxFee = 99;
         return view('pages.catalogo.finalizar-cotizacion', compact('userClients'));
     }
 

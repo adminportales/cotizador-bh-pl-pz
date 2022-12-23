@@ -102,7 +102,8 @@
             </thead>
             <tbody>
                 @php
-                    $taxFee = $quote->latestQuotesUpdate->quotesInformation->tax_fee;
+                    $st = isset($quote->preview) ? $quote->precio_total : $quote->latestQuotesUpdate->quoteProducts->sum('precio_total');
+                    $taxFee = round($st * ($quote->latestQuotesUpdate->quotesInformation->tax_fee / 100), 2);
                     $totalProducts = isset($quote->preview) ? $quote->productos_total : $quote->latestQuotesUpdate->quoteProducts->sum('cantidad');
                     $taxFeeAddProduct = round($taxFee / $totalProducts, 2);
                 @endphp

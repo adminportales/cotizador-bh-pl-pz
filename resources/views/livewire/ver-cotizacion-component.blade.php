@@ -86,7 +86,9 @@
                         <p><b>Celular: </b>{{ $quote->latestQuotesUpdate->quotesInformation->cell_phone }}</p>
                         <p><b>Departamento: </b>{{ $quote->latestQuotesUpdate->quotesInformation->department }}</p>
                         <p><b>El IVA se muestra: </b>{{ $quote->iva_by_item ? 'Por Producto' : 'En el total' }}</p>
-                        <p><b>Tax Fee: </b>$ {{ $quote->latestQuotesUpdate->quotesInformation->tax_fee }}</p>
+                        @if ($quote->latestQuotesUpdate->quotesInformation->tax_fee)
+                            <p><b>Tax Fee: </b> {{ $quote->latestQuotesUpdate->quotesInformation->tax_fee }} % </p>
+                        @endif
                         <p><b>Informacion adicional:
                             </b>{{ $quote->latestQuotesUpdate->quotesInformation->information }}
                         </p>

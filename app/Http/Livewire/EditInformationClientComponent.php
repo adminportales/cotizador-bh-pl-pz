@@ -32,29 +32,14 @@ class EditInformationClientComponent extends Component
 
     public function render()
     {
+        if ($this->taxFee > 99)
+            $this->taxFee = 99;
         return view('livewire.edit-information-client-component');
     }
 
     public function guardarCotizacion()
     {
         $this->authorize('update', $this->quote);
-        // $this->validate([
-        //     'tipoCliente' => 'required',
-        // ]);
-
-        // if ($this->tipoCliente == 'crear') {
-        //     $this->validate([
-        //         'nombre' => 'required',
-        //         'empresa' => 'required',
-        //     ]);
-        // } else {
-        //     $this->validate([
-        //         'clienteSeleccionado' => 'required',
-        //     ]);
-        //     $client = Client::find($this->clienteSeleccionado);
-        //     $this->nombre = $client->contact;
-        //     $this->empresa = $client->name;
-        // }
         $this->validate([
             // 'tipoCliente' => 'rsequired',
             'email' => 'required|email',

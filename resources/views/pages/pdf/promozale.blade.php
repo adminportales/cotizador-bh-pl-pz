@@ -94,7 +94,8 @@
             </thead>
             <tbody>
                 @php
-                    $taxFee = $quote->latestQuotesUpdate->quotesInformation->tax_fee;
+                    $st = isset($quote->preview) ? $quote->precio_total : $quote->latestQuotesUpdate->quoteProducts->sum('precio_total');
+                    $taxFee = round($st * ($quote->latestQuotesUpdate->quotesInformation->tax_fee / 100), 2);
                     $totalProducts = isset($quote->preview) ? $quote->productos_total : $quote->latestQuotesUpdate->quoteProducts->sum('cantidad');
                     $taxFeeAddProduct = round($taxFee / $totalProducts, 2);
                 @endphp
@@ -123,9 +124,11 @@
                                 hábiles
                             </span>
                         </td>
-                        <td colspan="1">${{ number_format($item->precio_unitario + $taxFeeAddProduct, 2, '.', ',') }}
+                        <td colspan="1">
+                            ${{ number_format($item->precio_unitario + $taxFeeAddProduct, 2, '.', ',') }}
                         </td>
-                        <td colspan="1">${{ number_format($item->precio_total + ($taxFeeAddProduct * $item->cantidad), 2, '.', ',') }}
+                        <td colspan="1">
+                            ${{ number_format($item->precio_total + $taxFeeAddProduct * $item->cantidad, 2, '.', ',') }}
                             @if ($quote->iva_by_item)
                                 <p style="font-size: 12px"><b>IVA:
                                     </b>${{ number_format($item->precio_total * 0.16, 2, '.', ',') }}

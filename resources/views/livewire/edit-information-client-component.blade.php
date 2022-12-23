@@ -86,7 +86,7 @@
         <div class="col-md-4">
             <div class="form-group">
                 <label for="">Tax Fee (Opcional)</label>
-                <input type="number" class="form-control" placeholder="Tax Fee" wire:model="taxFee">
+                <input type="number" class="form-control" placeholder="Tax Fee (Valor Maximo 99)" wire:model="taxFee" max="99">
             </div>
             @if ($errors->has('ivaByItem'))
                 <span class="text-danger">{{ $errors->first('departamento') }}</span>
