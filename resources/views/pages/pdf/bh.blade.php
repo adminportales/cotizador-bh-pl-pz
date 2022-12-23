@@ -82,13 +82,13 @@
             <thead>
                 <tr class="titulos">
                     <th style="width: 180px">Imagen de Referencia</th>
-                    <th style="width: 120px">Descripcion</th>
+                    <th style="width: 90px">Descripcion</th>
                     <th style="width: 80px">Personalización</th>
                     <th style="width: 60px">Cantidad</th>
                     <th style="width: 90px">Precio
                         Unitario</th>
                     <th style="width: 90px">Total</th>
-                    <th style="width: 70px">Tiempo
+                    <th style="width: 90px">Tiempo
                         de entrega</th>
                 </tr>
             </thead>
@@ -105,15 +105,16 @@
                         $tecnica = json_decode($item->technique);
                     @endphp
                     <tr>
-                        <td style="width: 150px">
+                        <td style="width: 180px">
                             @if ($producto->image)
                                 <img src="{{ $producto->image }}" width="180">
                             @else
                                 <img src="img/default.jpg" width="180">
                             @endif
                         </td>
-                        <td style="width: 120px">
-                            {{ $item->new_description ? $item->new_description : $producto->description }}</td>
+                        <td style="width: 90px">
+                             <p style="font-size: 14px">
+                            {{ $item->new_description ? $item->new_description : $producto->description }}</p></td>
                         <td style="width: 80px">{{ $tecnica->tecnica }}
                             @if ($tecnica->tecnica !== 'No Aplica')
                                 <p style="font-size: 14px"><b>Tintas: </b>{{ $item->color_logos }}</p>
