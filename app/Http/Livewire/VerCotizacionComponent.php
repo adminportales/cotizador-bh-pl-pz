@@ -247,6 +247,8 @@ class VerCotizacionComponent extends Component
 
 
         $subtotal = floatval($this->quote->latestQuotesUpdate->quoteProducts()->sum('precio_total'));
+        $taxFee = round($subtotal * ($this->quote->latestQuotesUpdate->quotesInformation->tax_fee / 100), 2);
+        $subtotal = floatval($this->quote->latestQuotesUpdate->quoteProducts()->sum('precio_total')) + $taxFee;
         $discountValue = 0;
         if ($this->quote->latestQuotesUpdate->quoteDiscount->type == 'Fijo') {
             $discountValue = floatval($this->quote->latestQuotesUpdate->quoteDiscount->value);

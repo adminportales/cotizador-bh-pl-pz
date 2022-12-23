@@ -255,6 +255,8 @@ class FinalizarCotizacion extends Component
         file_put_contents(public_path() . $path, $pdf);
         $newPath = "";
         $subtotal = floatval($quoteUpdate->quoteProducts()->sum('precio_total'));
+        $taxFee = round($subtotal * ($quoteUpdate->quotesInformation->tax_fee / 100), 2);
+        $subtotal = floatval($quoteUpdate->quoteProducts()->sum('precio_total')) + $taxFee;
         $discountValue = 0;
         if ($type == 'Fijo') {
             $discountValue = floatval($quoteDiscount->value);

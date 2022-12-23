@@ -180,6 +180,8 @@ class CotizadorController extends Controller
                 file_put_contents(public_path() . $path, $pdf);
                 $newPath = "";
                 $subtotal = floatval($cotizacion->latestQuotesUpdate->quoteProducts()->sum('precio_total'));
+                $taxFee = round($subtotal * ($cotizacion->latestQuotesUpdate->quotesInformation->tax_fee / 100), 2);
+                $subtotal = floatval($cotizacion->latestQuotesUpdate->quoteProducts()->sum('precio_total')) + $taxFee;
                 $discountValue = 0;
                 if ($type == 'Fijo') {
                     $discountValue = floatval($value);
