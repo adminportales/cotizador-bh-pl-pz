@@ -131,7 +131,7 @@
                             ${{ number_format($item->precio_total + $taxFeeAddProduct * $item->cantidad, 2, '.', ',') }}
                             @if ($quote->iva_by_item)
                                 <p style="font-size: 12px"><b>IVA:
-                                    </b>${{ number_format($item->precio_total * 0.16, 2, '.', ',') }}
+                                    </b>${{ number_format(($item->precio_total + $taxFeeAddProduct * $item->cantidad) * 0.16, 2, '.', ',') }}
                                 </p>
                             @endif
                         </td>
