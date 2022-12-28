@@ -201,7 +201,7 @@
     </div>
     <div>
         <table class="content responsable" style="width: 105%","text-align: center">
-            {{-- Modificacion en caso del user_id 52 (Ivonne Lopez) con otro gerente de la empresa PROMO LIFE--}}
+            {{-- Modificacion en caso del user_id 52 (Ivonne Lopez) con otro gerente de la empresa PROMO LIFE --}}
             <tr>
                 <td><img
                         src="quotesheet/bh/icon-email.png"alt="">{{ $user->id != 52 ? $user->companySession->manager : 'Ricardo Zamora Rodriguez' }}
@@ -212,16 +212,14 @@
             </tr>
             <tr>
                 <td><img src="quotesheet/bh/icon-email.png"alt="">
-                    {{ $user->id != 52 ? $user->companySession->email : 'ricardo@trademarket.com.mx' }}</td>
+                    {{ $user->id != 52 ? $user->companySession->email : 'ricardo.zamora@promolife.com.mx' }}</td>
                 <td><img src="quotesheet/bh/icon-email.png" alt="">
                     {{ $user->email }} </td>
             </tr>
             <tr>
                 <td>
-                    @if ($user->id != 52)
-                        <img src="quotesheet/bh/icon-whatsapp.png" alt="">
-                    @endif
-                    {{ $user->id != 52 ? $user->companySession->phone : '' }}
+                    <img src="quotesheet/bh/icon-whatsapp.png" alt="">
+                    {{ $user->id != 52 ? $user->companySession->phone : '55 1963 4472' }}
                 </td>
                 <td><img src="quotesheet/bh/icon-whatsapp.png" alt=""> {{ $user->phone }}</td>
             </tr>
