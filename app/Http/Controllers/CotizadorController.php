@@ -120,6 +120,11 @@ class CotizadorController extends Controller
     {
         return view('pages.catalogo.addProduct');
     }
+    public function listProducts()
+    {
+        $products = auth()->user()->listProducts()->paginate(30);
+        return view('pages.catalogo.listProducts', compact('products'));
+    }
 
     public function enviarCotizacionesAOdoo()
     {

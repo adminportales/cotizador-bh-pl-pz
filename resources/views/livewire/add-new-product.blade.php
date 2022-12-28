@@ -1,7 +1,7 @@
 <div>
     <h5>Agregar Nuevo Producto</h5>
-    <p><span class="text-danger">Importante:</span> Este producto solo sera registrado para esta cotizacion y no
-        sera posible volver a cotizarlo.</p>
+    {{-- <p><span class="text-danger">Importante:</span> Este producto solo sera registrado para esta cotizacion y no
+        sera posible volver a cotizarlo.</p> --}}
     <div class="row">
         <div class="col-md-6">
             <div class="form-group">

@@ -20,7 +20,7 @@
                             <div class="img-container">
                                 <img id="imgBox"
                                     src="{{ $product->firstImage ? $product->firstImage->image_url : asset('img/default.jpg') }}"
-                                    class="img-fluid" alt="imagen" style=" width: auto; max-height: 400px">
+                                    class="img-fluid" alt="imagen" style=" width: auto; max-height: 400px; height:auto;">
                             </div>
                             <div class="product-small-img">
                                 @foreach ($product->images as $image)

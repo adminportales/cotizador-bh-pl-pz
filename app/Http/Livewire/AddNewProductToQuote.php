@@ -6,7 +6,7 @@ use App\Models\Catalogo\Color;
 use App\Models\Catalogo\GlobalAttribute;
 use App\Models\Catalogo\Product;
 use App\Models\Catalogo\Provider;
-
+use App\Models\UserProduct;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 
@@ -93,6 +93,11 @@ class AddNewProductToQuote extends Component
         ]);
         $newProduct->images()->create([
             'image_url' =>   $pathImagen
+        ]);
+
+        UserProduct::create([
+            'user_id' => auth()->user()->id,
+            'product_id' => $newProduct->id,
         ]);
 
         $this->thereProduct = true;

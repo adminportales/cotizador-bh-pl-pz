@@ -80,6 +80,8 @@
                     <div>
                         <a href="{{ route('addProduct.cotizador') }}" class="btn btn-sm btn-info">Agregar Nuevo
                             Producto</a>
+                        <a href="{{ route('listProducts.cotizador') }}" class="btn btn-sm btn-info">Ver Mis
+                            Productos</a>
                     </div>
                 </div>
             </div>

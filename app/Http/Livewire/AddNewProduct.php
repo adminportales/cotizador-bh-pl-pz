@@ -6,6 +6,7 @@ use App\Http\Controllers\CotizadorController;
 use App\Models\Catalogo\Color;
 use App\Models\Catalogo\Product;
 use App\Models\Catalogo\Provider;
+use App\Models\UserProduct;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 
@@ -64,7 +65,7 @@ class AddNewProduct extends Component
         $pathImagen = null;
         if ($this->imagen != null) {
             $name = time() . $this->nombre . '.' .  $this->imagen->getClientOriginalExtension();
-            $pathImagen = url(''). '/storage/media/' . $name;
+            $pathImagen = url('') . '/storage/media/' . $name;
             $this->imagen->storeAs('public/media', $name);
             // Guardar La cotizacion
         }
@@ -87,6 +88,11 @@ class AddNewProduct extends Component
         ]);
         $newProduct->images()->create([
             'image_url' =>   $pathImagen
+        ]);
+
+        UserProduct::create([
+            'user_id' => auth()->user()->id,
+            'product_id' => $newProduct->id,
         ]);
 
         return redirect()->action([CotizadorController::class, 'verProducto'], ['product' => $newProduct->id]);
