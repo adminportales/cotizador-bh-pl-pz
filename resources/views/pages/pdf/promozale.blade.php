@@ -141,6 +141,13 @@
             </tbody>
         </table>
         <br>
+        <div class="content">
+            @if (strlen($quote->latestQuotesUpdate->quotesInformation->information) > 0)
+                <p style="text-align: justify"><span style="font-weight: bold">Información Adicional:</span>
+                    {{ $quote->latestQuotesUpdate->quotesInformation->information }}</p>
+                <br>
+            @endif
+        </div>
         <table class="total content">
             <tr>
                 @php

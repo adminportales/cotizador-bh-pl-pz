@@ -149,7 +149,8 @@
                         {{ $quote->updated_at->addMonth()->format('d/m/Y') }}</p>
                     <br>
                     @if (strlen($quote->latestQuotesUpdate->quotesInformation->information) > 0)
-                        <p>Información Adicional: {{ $quote->latestQuotesUpdate->quotesInformation->information }}</p>
+                        <p style="text-align: justify"><span style="font-weight: bold;"> Información Adicional:</span>
+                            {{ $quote->latestQuotesUpdate->quotesInformation->information }}</p>
                     @endif
                     <br>
                 </td>
