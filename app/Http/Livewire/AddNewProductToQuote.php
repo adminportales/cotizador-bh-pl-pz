@@ -27,7 +27,7 @@ class AddNewProductToQuote extends Component
     public function guardar()
     {
         $this->validate([
-            'nombre' => 'required',
+            'nombre' => 'required|max:100',
             'descripcion' => 'required',
             'precio' => 'required',
             'stock' => 'required',
@@ -70,7 +70,7 @@ class AddNewProductToQuote extends Component
         $pathImagen = null;
         if ($this->imagen != null) {
             $name = time() . $this->nombre . '.' .  $this->imagen->getClientOriginalExtension();
-            $pathImagen = url(''). '/storage/media/' . $name;
+            $pathImagen = url('') . '/storage/media/' . $name;
             $this->imagen->storeAs('public/media', $name);
             // Guardar La cotizacion
         }
@@ -110,7 +110,4 @@ class AddNewProductToQuote extends Component
     {
         $this->imagen = null;
     }
-
 }
-
-

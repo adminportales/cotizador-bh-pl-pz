@@ -97,7 +97,7 @@
                                         x-on:livewire-upload-error="isUploading = false"
                                         x-on:livewire-upload-progress="progress = $event.detail.progress">
 
-                                        <input type="file" class="form-control" wire:model="imagen">
+                                        <input type="file" class="form-control" wire:model="imagen" accept="image/*">
                                         <div x-show="isUploading" class="progress">
                                             <div class="progress-bar" role="progressbar"
                                                 x-bind:style="`width: ${progress}%`" aria-valuenow="25"
@@ -107,7 +107,7 @@
                                     @if ($imagen)
                                         <div class="btn btn-danger btn-sm" wire:click="limpiarImagen()">Eliminar</div>
                                     @else
-                                        <p>No hay un logo de cliente cargado</p>
+                                        <p>No hay un logo de producto cargado</p>
                                     @endif
                                     @if ($errors->has('imagen'))
                                         <span class="text-danger">{{ $errors->first('imagen') }}</span>

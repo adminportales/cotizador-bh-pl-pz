@@ -58,9 +58,8 @@
                                     }
                                 @endphp
                                 <tr class="{{ !$visible ? 'd-none' : '' }}">
-                                    <td class="">
-                                        <img src="{{ $producto->image == '' ? asset('img/default.jpg') : $producto->image }}"
-                                            width="80" alt="" srcset="">
+                                    <td class="text-center">
+                                        <img src="{{ $producto->image == '' ? asset('img/default.jpg') : $producto->image }}" style="max-height: 100px;height:auto;max-width: 80px;width:auto;" alt="" srcset="">
                                     </td>
                                     <td class="">
                                         <p>{{ $producto->name }}</p>

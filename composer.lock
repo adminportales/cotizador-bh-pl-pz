@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "349b32636c2786ff1319c009bcac087b",
+    "content-hash": "b28b227b215e7f3c5c5a8c08ff99e3d5",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -569,6 +569,71 @@
                 }
             ],
             "time": "2022-01-18T15:43:28+00:00"
+        },
+        {
+            "name": "econea/nusoap",
+            "version": "v0.9.12",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/f00b4r/nusoap.git",
+                "reference": "e83219ee1add324124fea8e448b4cfddf782f8ff"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/f00b4r/nusoap/zipball/e83219ee1add324124fea8e448b4cfddf782f8ff",
+                "reference": "e83219ee1add324124fea8e448b4cfddf782f8ff",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4"
+            },
+            "require-dev": {
+                "php-parallel-lint/php-parallel-lint": "~1.2.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "0.10.x-dev",
+                    "dev-develop": "1.0.x-dev"
+                }
+            },
+            "autoload": {
+                "classmap": [
+                    "src/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "LGPL-2.0-only"
+            ],
+            "authors": [
+                {
+                    "name": "Milan Felix Šulc",
+                    "homepage": "https://f3l1x.io"
+                }
+            ],
+            "description": "Fixed NuSOAP for PHP 5.4 - 8.1",
+            "homepage": "https://github.com/pwnlabs/nusoap",
+            "keywords": [
+                "client",
+                "http",
+                "nusoap",
+                "php",
+                "soap",
+                "transport",
+                "xml"
+            ],
+            "support": {
+                "issues": "https://github.com/f00b4r/nusoap/issues",
+                "source": "https://github.com/f00b4r/nusoap/tree/v0.9.12"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/f3l1x",
+                    "type": "github"
+                }
+            ],
+            "time": "2022-02-22T08:55:13+00:00"
         },
         {
             "name": "egulias/email-validator",
@@ -1697,6 +1762,72 @@
                 "source": "https://github.com/laravel/ui/tree/v3.4.5"
             },
             "time": "2022-02-21T14:59:16+00:00"
+        },
+        {
+            "name": "laraveles/spanish",
+            "version": "1.5.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Laraveles/spanish.git",
+                "reference": "2224e3db7ec399952523b0769a7677de0b6afd8b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Laraveles/spanish/zipball/2224e3db7ec399952523b0769a7677de0b6afd8b",
+                "reference": "2224e3db7ec399952523b0769a7677de0b6afd8b",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/console": ">=5.4.0",
+                "illuminate/support": ">=5.4.0",
+                "php": ">=5.6"
+            },
+            "require-dev": {
+                "orchestra/testbench": "^3.4|^4.0",
+                "phpunit/phpunit": "^5.6|^6.3|^7.0|^8.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Laraveles\\Spanish\\SpanishServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Laraveles\\Spanish\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Israel Ortuño",
+                    "email": "ai.ortuno@gmail.com"
+                },
+                {
+                    "name": "Cesar Garcia",
+                    "email": "cesargb@gmail.com",
+                    "homepage": "https://github.com/cesargb",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Conjunto de traducciones en español para Laravel",
+            "homepage": "https://github.com/Laraveles/spanish",
+            "keywords": [
+                "laravel",
+                "laraveles",
+                "spanish",
+                "traduccion"
+            ],
+            "support": {
+                "issues": "https://github.com/Laraveles/spanish/issues",
+                "source": "https://github.com/Laraveles/spanish/tree/master"
+            },
+            "time": "2020-06-30T06:01:43+00:00"
         },
         {
             "name": "league/commonmark",

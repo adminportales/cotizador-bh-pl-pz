@@ -71,7 +71,7 @@
                     x-on:livewire-upload-finish="isUploading = false" x-on:livewire-upload-error="isUploading = false"
                     x-on:livewire-upload-progress="progress = $event.detail.progress">
 
-                    <input type="file" class="form-control" wire:model="imagen">
+                    <input type="file" class="form-control" wire:model="imagen" accept="image/*">
                     <div x-show="isUploading" class="progress">
                         <div class="progress-bar" role="progressbar" x-bind:style="`width: ${progress}%`"
                             aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>

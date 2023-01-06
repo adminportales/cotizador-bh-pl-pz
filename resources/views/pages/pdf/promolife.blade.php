@@ -116,7 +116,8 @@
 
                         <td rowspan="1" style="width: 180px">
                             @if ($producto->image)
-                                <img src="{{ $producto->image }}" width="180">
+                                <img src="{{ $producto->image }}"
+                                    style="max-height: 200px;height:auto;max-width: 180px;width:auto;">
                             @else
                                 <img src="img/default.jpg" width="180">
                             @endif
@@ -203,8 +204,8 @@
         <table class="content responsable" style="width: 105%","text-align: center">
             {{-- Modificacion en caso del user_id 52 (Ivonne Lopez) con otro gerente de la empresa PROMO LIFE --}}
             <tr>
-                <td><img
-                        src="quotesheet/bh/icon-email.png"alt="">{{ $user->id != 52 ? $user->companySession->manager : 'Ricardo Zamora Rodriguez' }}
+                <td><img src="quotesheet/bh/icon-email.png"alt="">
+                    {{ $user->id == 52 || $user->id == 62 ? 'Ricardo Zamora Rodriguez' : $user->companySession->manager }}
                     <b>GERENTE COMERCIAL</b>
                 </td>
                 <td><img src="quotesheet/bh/icon-email.png"alt="">
@@ -212,14 +213,15 @@
             </tr>
             <tr>
                 <td><img src="quotesheet/bh/icon-email.png"alt="">
-                    {{ $user->id != 52 ? $user->companySession->email : 'ricardo.zamora@promolife.com.mx' }}</td>
+                    {{ $user->id == 52 || $user->id == 62 ? 'ricardo.zamora@promolife.com.mx' : $user->companySession->email }}
+                </td>
                 <td><img src="quotesheet/bh/icon-email.png" alt="">
                     {{ $user->email }} </td>
             </tr>
             <tr>
                 <td>
                     <img src="quotesheet/bh/icon-whatsapp.png" alt="">
-                    {{ $user->id != 52 ? $user->companySession->phone : '55 1963 4472' }}
+                    {{ $user->id == 52 || $user->id == 62 ? '55 1963 4472' : $user->companySession->phone }}
                 </td>
                 <td><img src="quotesheet/bh/icon-whatsapp.png" alt=""> {{ $user->phone }}</td>
             </tr>

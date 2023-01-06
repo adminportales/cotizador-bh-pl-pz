@@ -1,215 +1,227 @@
 <div>
     @if (auth()->user()->currentQuote)
         <div class="card-body">
-            <h3>Detalles del Cliente</h3>
+            <h3>Finalizar la cotizacion</h3>
             <br>
             <form action="" method="post">
-                <div class="row">
-                    @if (count(auth()->user()->managments) > 1)
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label for="">Ejecutivos Disponibles</label>
-                                <select name="tipo" class="form-control" wire:model="selectEjecutivo"
-                                    wire:change="selectManagment">
-                                    <option value="">Seleccionar ejecutivos</option>
-                                    @foreach (auth()->user()->managments as $managment)
-                                        <option value="{{ $managment->id }}">{{ $managment->name }}</option>
-                                    @endforeach
-                                </select>
+                <fieldset class="form-group border p-2">
+                    <legend class="w-auto px-2"><h5>Informacion Obligatoria</h5></legend>
+                    <div class="row">
+                        @if (count(auth()->user()->managments) > 1)
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="">Ejecutivos Disponibles</label>
+                                    <select name="tipo" class="form-control" wire:model="selectEjecutivo"
+                                        wire:change="selectManagment">
+                                        <option value="">Seleccionar ejecutivos</option>
+                                        @foreach (auth()->user()->managments as $managment)
+                                            <option value="{{ $managment->id }}">{{ $managment->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
                             </div>
-                        </div>
-                    @endif
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label for="">Opciones de Cliente</label>
-                            <select name="tipo" class="form-control" wire:model="tipoCliente"
-                                wire:change="cargarDatosCliente">
-                                <option value="">Como vas a registrar el cliente</option>
-                                <option value="buscar">Seleccionar uno de mis clientes</option>
-                                <option value="crear">Crear un nuevo prospecto</option>
-                            </select>
-                        </div>
-                        @if ($errors->has('tipoCliente'))
-                            <span class="text-danger">{{ $errors->first('tipoCliente') }}</span>
                         @endif
-                    </div>
-                    @if ($tipoCliente == 'buscar')
                         <div class="col-md-4">
                             <div class="form-group">
-                                <label for="">Buscar Cliente</label>
-                                <select name="tipo" class="form-control" wire:model="clienteSeleccionado"
+                                <label for="">Opciones de Cliente</label>
+                                <select name="tipo" class="form-control" wire:model="tipoCliente"
                                     wire:change="cargarDatosCliente">
-                                    <option value="">Seleccionar Cliente</option>
-                                    @foreach ($userClients as $client)
-                                        <option value="{{ $client->id }}">
-                                            {{ $client->name }}</option>
-                                    @endforeach
-                                    @if (count($userClients) < 1)
-                                        <option value="">No tienes clientes asignados, si es un error, reportalo
-                                            con el area de desarrollo</option>
-                                    @endif
+                                    <option value="">Como vas a registrar el cliente</option>
+                                    <option value="buscar">Seleccionar uno de mis clientes</option>
+                                    <option value="crear">Crear un nuevo prospecto</option>
                                 </select>
                             </div>
-                            @if ($errors->has('clienteSeleccionado'))
-                                <span class="text-danger">{{ $errors->first('clienteSeleccionado') }}</span>
+                            @if ($errors->has('tipoCliente'))
+                                <span class="text-danger">{{ $errors->first('tipoCliente') }}</span>
                             @endif
                         </div>
-                    @elseif($tipoCliente == 'crear')
+                        @if ($tipoCliente == 'buscar')
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="">Buscar Cliente</label>
+                                    <select name="tipo" class="form-control" wire:model="clienteSeleccionado"
+                                        wire:change="cargarDatosCliente">
+                                        <option value="">Seleccionar Cliente</option>
+                                        @foreach ($userClients as $client)
+                                            <option value="{{ $client->id }}">
+                                                {{ $client->name }}</option>
+                                        @endforeach
+                                        @if (count($userClients) < 1)
+                                            <option value="">No tienes clientes asignados, si es un error,
+                                                reportalo
+                                                con el area de desarrollo</option>
+                                        @endif
+                                    </select>
+                                </div>
+                                @if ($errors->has('clienteSeleccionado'))
+                                    <span class="text-danger">{{ $errors->first('clienteSeleccionado') }}</span>
+                                @endif
+                            </div>
+                        @elseif($tipoCliente == 'crear')
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="">Nombre de la empresa</label>
+                                    <input type="text" class="form-control" placeholder="Nombre de la empresa"
+                                        wire:model="empresa">
+                                </div>
+                                @if ($errors->has('empresa'))
+                                    <span class="text-danger">{{ $errors->first('empresa') }}</span>
+                                @endif
+                            </div>
+                        @endif
                         <div class="col-md-4">
                             <div class="form-group">
-                                <label for="">Nombre de la empresa</label>
-                                <input type="text" class="form-control" placeholder="Nombre de la empresa"
-                                    wire:model="empresa">
+                                <label for="">Nombre del Contacto</label>
+                                <input type="text" class="form-control" placeholder="Nombre" wire:model="nombre">
                             </div>
-                            @if ($errors->has('empresa'))
-                                <span class="text-danger">{{ $errors->first('empresa') }}</span>
+                            @if ($errors->has('nombre'))
+                                <span class="text-danger">{{ $errors->first('nombre') }}</span>
                             @endif
                         </div>
-                    @endif
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label for="">Nombre del Contacto</label>
-                            <input type="text" class="form-control" placeholder="Nombre" wire:model="nombre">
-                        </div>
-                        @if ($errors->has('nombre'))
-                            <span class="text-danger">{{ $errors->first('nombre') }}</span>
+                        @if ($tipoCliente == '')
+                            <div class="w-100"></div>
                         @endif
-                    </div>
-                    @if ($tipoCliente == '')
-                        <div class="w-100"></div>
-                    @endif
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label for="">Email</label>
-                            <input type="email" class="form-control" placeholder="Correo electronico del contacto"
-                                wire:model="email">
-                        </div>
-                        @if ($errors->has('email'))
-                            <span class="text-danger">{{ $errors->first('email') }}</span>
-                        @endif
-                    </div>
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label for="">Telefono</label>
-                            <input type="tel" class="form-control" placeholder="Telefono del contacto"
-                                wire:model="telefono">
-                        </div>
-                        @if ($errors->has('telefono'))
-                            <span class="text-danger">{{ $errors->first('telefono') }}</span>
-                        @endif
-                    </div>
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label for="">Celular</label>
-                            <input type="tel" class="form-control" placeholder="Celular del contacto"
-                                wire:model="celular">
-                        </div>
-                        @if ($errors->has('celular'))
-                            <span class="text-danger">{{ $errors->first('celular') }}</span>
-                        @endif
-                    </div>
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label for="">Oportunidad</label>
-                            <input type="text" class="form-control" placeholder="Oportunidad"
-                                wire:model="oportunidad">
-                        </div>
-                        @if ($errors->has('oportunidad'))
-                            <span class="text-danger">{{ $errors->first('oportunidad') }}</span>
-                        @endif
-                    </div>
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label for="">Probabilidad de Venta</label>
-                            <select name="tipo" class="form-control" wire:model="rank">
-                                <option value="">Seleccione la Probabilidad de Venta</option>
-                                <option value="1">Medio</option>
-                                <option value="2">Alto</option>
-                                <option value="3">Muy Alto</option>
-                            </select>
-                        </div>
-                        @if ($errors->has('rank'))
-                            <span class="text-danger">{{ $errors->first('rank') }}</span>
-                        @endif
-                    </div>
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label for="">Departamento (opcional)</label>
-                            <input type="text" class="form-control" placeholder="Departamento"
-                                wire:model="departamento">
-                        </div>
-                        @if ($errors->has('departamento'))
-                            <span class="text-danger">{{ $errors->first('departamento') }}</span>
-                        @endif
-                    </div>
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label for="">Como mostrar el IVA</label>
-                            <select name="tipo" class="form-control" wire:model="ivaByItem">
-                                <option value="0">Mostrar el IVA en el monto total</option>
-                                <option value="1">Mostrar el IVA por partida</option>
-                            </select>
-                        </div>
-                        @if ($errors->has('ivaByItem'))
-                            <span class="text-danger">{{ $errors->first('departamento') }}</span>
-                        @endif
-                    </div>
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label for="">Logo del Cliente</label>
-                            <div class="form-group" x-data="{ isUploading: false, progress: 5 }"
-                                x-on:livewire-upload-start="isUploading = true"
-                                x-on:livewire-upload-finish="isUploading = false"
-                                x-on:livewire-upload-error="isUploading = false"
-                                x-on:livewire-upload-progress="progress = $event.detail.progress">
-                                <input type="file" class="form-control" wire:model="logo">
-                                <div x-show="isUploading" class="progress">
-                                    <div class="progress-bar" role="progressbar" x-bind:style="`width: ${progress}%`"
-                                        aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
-                                </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="">Email</label>
+                                <input type="email" class="form-control" placeholder="Correo electronico del contacto"
+                                    wire:model="email">
                             </div>
-                            @if ($logo)
-                                <div class="btn btn-danger btn-sm" wire:click="limpiarLogo()">Eliminar</div>
-                            @else
-                                <p>No hay un logo de cliente cargado</p>
+                            @if ($errors->has('email'))
+                                <span class="text-danger">{{ $errors->first('email') }}</span>
                             @endif
                         </div>
-                        @if ($errors->has('logo'))
-                            <span class="text-danger">{{ $errors->first('departamento') }}</span>
-                        @endif
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="">Telefono</label>
+                                <input type="tel" class="form-control" placeholder="Telefono del contacto"
+                                    wire:model="telefono">
+                            </div>
+                            @if ($errors->has('telefono'))
+                                <span class="text-danger">{{ $errors->first('telefono') }}</span>
+                            @endif
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="">Celular</label>
+                                <input type="tel" class="form-control" placeholder="Celular del contacto"
+                                    wire:model="celular">
+                            </div>
+                            @if ($errors->has('celular'))
+                                <span class="text-danger">{{ $errors->first('celular') }}</span>
+                            @endif
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="">Oportunidad</label>
+                                <input type="text" class="form-control" placeholder="Oportunidad"
+                                    wire:model="oportunidad">
+                            </div>
+                            @if ($errors->has('oportunidad'))
+                                <span class="text-danger">{{ $errors->first('oportunidad') }}</span>
+                            @endif
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="">Probabilidad de Venta</label>
+                                <select name="tipo" class="form-control" wire:model="rank">
+                                    <option value="">Seleccione la Probabilidad de Venta</option>
+                                    <option value="1">Medio</option>
+                                    <option value="2">Alto</option>
+                                    <option value="3">Muy Alto</option>
+                                </select>
+                            </div>
+                            @if ($errors->has('rank'))
+                                <span class="text-danger">{{ $errors->first('rank') }}</span>
+                            @endif
+                        </div>
                     </div>
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            @if ($logo)
-                                <div class="text-center">
-                                    <p>Logo del cliente</p>
-                                    <p class="text-warning">Revisa que tenga fondo blanco o que se un archivo PNG</p>
-                                    <img src="{{ $logo->temporaryUrl() }}" alt=""
-                                        style="max-width: 100%; height: 160px;">
+                </fieldset>
+                <fieldset class="form-group border p-2">
+                    <legend class="w-auto px-2"><h5>Informacion Opcional</h5></legend>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="">Departamento (opcional)</label>
+                                <input type="text" class="form-control" placeholder="Departamento"
+                                    wire:model="departamento">
+                            </div>
+                            @if ($errors->has('departamento'))
+                                <span class="text-danger">{{ $errors->first('departamento') }}</span>
+                            @endif
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="">Como mostrar el IVA</label>
+                                <select name="tipo" class="form-control" wire:model="ivaByItem">
+                                    <option value="0">Mostrar el IVA en el monto total</option>
+                                    <option value="1">Mostrar el IVA por partida</option>
+                                </select>
+                            </div>
+                            @if ($errors->has('ivaByItem'))
+                                <span class="text-danger">{{ $errors->first('departamento') }}</span>
+                            @endif
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="">Tax Fee (Opcional)</label>
+                                <input type="number" class="form-control" placeholder="Tax Fee"
+                                    wire:model="taxFee">
+                            </div>
+                            @if ($errors->has('ivaByItem'))
+                                <span class="text-danger">{{ $errors->first('departamento') }}</span>
+                            @endif
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="">Informacion Adicional (Opcional)</label>
+                                <textarea name="" id="" cols="30" rows="2" class="form-control"
+                                    wire:model="informacion"></textarea>
+                            </div>
+                            @if ($errors->has('informacion'))
+                                <span class="text-danger">{{ $errors->first('informacion') }}</span>
+                            @endif
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="">Logo del Cliente</label>
+                                <div class="form-group" x-data="{ isUploading: false, progress: 5 }"
+                                    x-on:livewire-upload-start="isUploading = true"
+                                    x-on:livewire-upload-finish="isUploading = false"
+                                    x-on:livewire-upload-error="isUploading = false"
+                                    x-on:livewire-upload-progress="progress = $event.detail.progress">
+                                    <input type="file" class="form-control" wire:model="logo" accept="image/*">
+                                    <div x-show="isUploading" class="progress">
+                                        <div class="progress-bar" role="progressbar"
+                                            x-bind:style="`width: ${progress}%`" aria-valuenow="25" aria-valuemin="0"
+                                            aria-valuemax="100"></div>
+                                    </div>
                                 </div>
+                                @if ($logo)
+                                    <p class="text-warning">Revisa que tenga fondo blanco o que se un archivo PNG
+                                    </p>
+                                    <div class="btn btn-danger btn-sm" wire:click="limpiarLogo()">Eliminar</div>
+                                @else
+                                    <p>No hay un logo de cliente cargado</p>
+                                @endif
+                            </div>
+                            @if ($errors->has('logo'))
+                                <span class="text-danger">{{ $errors->first('departamento') }}</span>
                             @endif
                         </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label for="">Tax Fee (Opcional)</label>
-                            <input type="number" class="form-control" placeholder="Tax Fee" wire:model="taxFee">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                @if ($logo)
+                                    <div class="text-center">
+                                        <p>Logo del cliente</p>
+                                        <img src="{{ $logo->temporaryUrl() }}" alt=""
+                                            style="max-width: 100%; height: auto; max-height: 150px; width: auto">
+                                    </div>
+                                @endif
+                            </div>
                         </div>
-                        @if ($errors->has('ivaByItem'))
-                            <span class="text-danger">{{ $errors->first('departamento') }}</span>
-                        @endif
                     </div>
-                    <div class="col-md-12">
-                        <div class="form-group">
-                            <label for="">Informacion Adicional (Opcional)</label>
-                            <textarea name="" id="" cols="30" rows="2" class="form-control"
-                                wire:model="informacion"></textarea>
-                        </div>
-                        @if ($errors->has('informacion'))
-                            <span class="text-danger">{{ $errors->first('informacion') }}</span>
-                        @endif
-                    </div>
-                </div>
+                </fieldset>
             </form>
             <br>
             <h3>Tu cotizacion</h3>

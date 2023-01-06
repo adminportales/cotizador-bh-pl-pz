@@ -7,6 +7,7 @@
     "require": {
         "php": "^7.3|^8.0",
         "barryvdh/laravel-dompdf": "^1.0",
+        "econea/nusoap": "^0.9.12",
         "flightsadmin/livewire-crud": "^0.0.17",
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.0.1",
@@ -14,6 +15,7 @@
         "laravel/sanctum": "^2.11",
         "laravel/tinker": "^2.5",
         "laravel/ui": "^3.4",
+        "laraveles/spanish": "^1.5",
         "livewire/livewire": "^2.10",
         "phpoffice/phpspreadsheet": "^1.25",
         "santigarcor/laratrust": "^7.1"

@@ -107,14 +107,16 @@
                     <tr>
                         <td style="width: 180px">
                             @if ($producto->image)
-                                <img src="{{ $producto->image }}" width="180">
+                                <img src="{{ $producto->image }}"
+                                    style="max-height: 200px;height:auto;max-width: 180px;width:auto;">
                             @else
                                 <img src="img/default.jpg" width="180">
                             @endif
                         </td>
                         <td style="width: 90px">
-                             <p style="font-size: 14px">
-                            {{ $item->new_description ? $item->new_description : $producto->description }}</p></td>
+                            <p style="font-size: 14px">
+                                {{ $item->new_description ? $item->new_description : $producto->description }}</p>
+                        </td>
                         <td style="width: 80px">{{ $tecnica->tecnica }}
                             @if ($tecnica->tecnica !== 'No Aplica')
                                 <p style="font-size: 14px"><b>Tintas: </b>{{ $item->color_logos }}</p>

@@ -68,7 +68,7 @@
                                         </tbody>
                                     </table>
                                 @endif
-                                <p><strong>Ultima Actualizacion: </strong> {{ ($product->updated_at->diffForHumans()) }}
+                                <p><strong>Ultima Actualizacion: </strong> {{ $product->updated_at->diffForHumans() }}
                             </div>
 
                             <div class="col-md-6">
@@ -100,6 +100,9 @@
             </div>
             <div class="col-md-6">
                 <div class="card card-component-1">
+                    @if ($msg)
+                        <div class="alert alert-danger">{{ $msg }}</div>
+                    @endif
                     <div class="card-body">
                         <h4 class="card-title">{{ $product->name }}</h4>
                         <p class="my-1"><strong>SKU Interno: </strong> {{ $product->internal_sku }}</p>

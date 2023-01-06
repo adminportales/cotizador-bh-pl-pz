@@ -107,7 +107,8 @@
                     <tr>
                         <td rowspan="1">
                             @if ($producto->image)
-                                <img src="{{ $producto->image }}" width="180">
+                                <img src="{{ $producto->image }}"
+                                    style="max-height: 200px;height:auto;max-width: 180px;width:auto;">
                             @else
                                 <img src="img/default.jpg" width="180">
                             @endif

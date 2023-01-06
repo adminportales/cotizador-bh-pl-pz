@@ -23,7 +23,7 @@ class AddNewProduct extends Component
     public function guardar()
     {
         $this->validate([
-            'nombre' => 'required',
+            'nombre' => 'required|max:100',
             'descripcion' => 'required',
             'precio' => 'required',
             'stock' => 'required',
