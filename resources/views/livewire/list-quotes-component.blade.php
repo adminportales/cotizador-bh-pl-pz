@@ -22,7 +22,7 @@
                 @foreach ($quotes as $quote)
                     <tr>
                         <td class="text-center">QS{{ $quote->id }}</td>
-                        <th style="vertical-align: middle">{{ $quote->lead }}</th>
+                        <th style="vertical-align: middle">{{ $quote->lead }} {{ $quote->user->name }}</th>
                         @if ($quote->latestQuotesUpdate)
                             <td>{{ $quote->latestQuotesUpdate->quotesInformation->name . ' | ' . $quote->latestQuotesUpdate->quotesInformation->company }}
                             </td>

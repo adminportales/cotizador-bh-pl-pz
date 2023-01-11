@@ -59,7 +59,9 @@
                                 @endphp
                                 <tr class="{{ !$visible ? 'd-none' : '' }}">
                                     <td class="text-center">
-                                        <img src="{{ $producto->image == '' ? asset('img/default.jpg') : $producto->image }}" style="max-height: 100px;height:auto;max-width: 80px;width:auto;" alt="" srcset="">
+                                        <img src="{{ $producto->image == '' ? asset('img/default.jpg') : $producto->image }}"
+                                            style="max-height: 100px;height:auto;max-width: 80px;width:auto;"
+                                            alt="" srcset="">
                                     </td>
                                     <td class="">
                                         <p>{{ $producto->name }}</p>
@@ -359,32 +361,57 @@
                 </div>
                 <div class="modal-body">
                     @if ($showProduct)
-                        @php
-                            $productoShow = (object) json_decode($showProduct['product']);
-                            $tecnicaShow = (object) json_decode($showProduct['technique']);
-                        @endphp
-                        <p class="m-0">Informacion del Producto: </p>
-                        <p class="m-0"><b>Nombre: </b>{{ $productoShow->name }} </p>
-                        <p class="m-0"><b>Descripcion: </b>{{ $productoShow->description }} </p>
-                        <p class="m-0"><b>Precio: </b>{{ $productoShow->price }} </p>
-                        @if (property_exists($productoShow, 'provider'))
-                            <p class="m-0"><b>Proveedor: </b>{{ $productoShow->provider->company }} </p>
-                        @endif
-                        <br>
-                        <p class="m-0">Informacion de la Tecnica: </p>
-                        <p class="m-0"><b>Material: </b>{{ $tecnicaShow->material }} </p>
-                        <p class="m-0"><b>Tecnica: </b>{{ $tecnicaShow->tecnica }} </p>
-                        <p class="m-0"><b>Tamaño: </b>{{ $tecnicaShow->size }}</p>
-                        <br>
-                        <p class="m-0"><b>Precio de la tecnica:</b> $ {{ $showProduct['prices_techniques'] }}</p>
-                        <p class="m-0"><b>Numero de tintas o logos:</b> {{ $showProduct['color_logos'] }}</p>
-                        <p class="m-0"><b>Costo Indirecto:</b> $ {{ $showProduct['costo_indirecto'] }}</p>
-                        <p class="m-0"><b>Margen de Utilidad:</b> {{ $showProduct['utilidad'] }} %</p>
-                        <p class="m-0"><b>Precio Unitario:</b> $ {{ $showProduct['precio_unitario'] }} </p>
-                        <p class="m-0"><b>Cantidad:</b> {{ $showProduct['cantidad'] }} </p>
-                        <p class="m-0"><b>Precio Total:</b> $ {{ $showProduct['precio_total'] }} </p>
-                        <p class="m-0"><b>Dias de entrega:</b> {{ $showProduct['dias_entrega'] }} </p>
-                        {{-- {{ dd($showProduct) }} --}}
+                        <div class="row">
+                            <div class="col-md-6">
+                                @php
+                                    $productoShow = (object) json_decode($showProduct['product']);
+                                    $tecnicaShow = (object) json_decode($showProduct['technique']);
+                                @endphp
+                                <p class="m-0">Informacion del Producto: </p>
+                                <p class="m-0"><b>Nombre: </b>{{ $productoShow->name }} </p>
+                                <p class="m-0"><b>Descripcion: </b>{{ $productoShow->description }} </p>
+                                <p class="m-0"><b>Precio: </b> $
+                                    @php
+                                        $priceProduct = 0;
+                                        if ($dataProduct) {
+                                            $priceProduct = $dataProduct->price;
+                                            if ($dataProduct->producto_promocion) {
+                                                $priceProduct = round($priceProduct - $priceProduct * ($dataProduct->descuento / 100), 2);
+                                            } else {
+                                                $priceProduct = round($priceProduct - $priceProduct * ($dataProduct->provider->discount / 100), 2);
+                                            }
+                                        }
+                                    @endphp
+                                    {{ $priceProduct }}
+                                </p>
+                                @if (property_exists($productoShow, 'provider'))
+                                    <p class="m-0"><b>Proveedor: </b>{{ $productoShow->provider->company }} </p>
+                                @endif
+                                <br>
+                                <p class="m-0">Informacion de la Tecnica: </p>
+                                <p class="m-0"><b>Material: </b>{{ $tecnicaShow->material }} </p>
+                                <p class="m-0"><b>Tecnica: </b>{{ $tecnicaShow->tecnica }} </p>
+                                <p class="m-0"><b>Tamaño: </b>{{ $tecnicaShow->size }}</p>
+                                <br>
+                                <p class="m-0"><b>Precio de la tecnica:</b> $
+                                    {{ $showProduct['prices_techniques'] }}</p>
+                                <p class="m-0"><b>Numero de tintas o logos:</b> {{ $showProduct['color_logos'] }}
+                                </p>
+                                <p class="m-0"><b>Costo Indirecto:</b> $ {{ $showProduct['costo_indirecto'] }}</p>
+                                <p class="m-0"><b>Margen de Utilidad:</b> {{ $showProduct['utilidad'] }} %</p>
+                                <p class="m-0"><b>Precio Unitario:</b> $ {{ $showProduct['precio_unitario'] }} </p>
+                                <p class="m-0"><b>Cantidad:</b> {{ $showProduct['cantidad'] }} </p>
+                                <p class="m-0"><b>Precio Total:</b> $ {{ $showProduct['precio_total'] }} </p>
+                                <p class="m-0"><b>Dias de entrega:</b> {{ $showProduct['dias_entrega'] }} </p>
+                                {{-- {{ dd($showProduct) }} --}}
+                            </div>
+                            <div class="col-md-6">
+                                <div class="w-100">
+                                    <img src="{{ $productoShow->image }}" alt=""
+                                        style="max-width: 300px; width: auto;max-height: 500px; height: ;: auto;">
+                                </div>
+                            </div>
+                        </div>
                     @endif
                 </div>
                 <div class="modal-footer">

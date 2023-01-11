@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire;
 
+use App\Models\Catalogo\Product;
 use App\Models\PricesTechnique;
 use App\Models\Quote;
 use App\Models\QuoteDiscount;
@@ -24,7 +25,7 @@ class EditarCotizacionComponent extends Component
     public $listNewProducts = [], $listUpdateCurrent = [], $listDeleteCurrent = [], $newDiscount;
 
     // Informacion a mostrar
-    public $showProduct;
+    public $showProduct, $dataProduct;
 
     public function mount()
     {
@@ -45,6 +46,7 @@ class EditarCotizacionComponent extends Component
     public function verDetalles($product)
     {
         $this->showProduct = $product;
+        $this->dataProduct = Product::find(json_decode($product['product'])->id);
         $this->dispatchBrowserEvent('showProduct');
     }
 

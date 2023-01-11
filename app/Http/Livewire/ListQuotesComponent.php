@@ -21,10 +21,13 @@ class ListQuotesComponent extends Component
             ->join('quote_updates', 'quote_updates.quote_id', 'quotes.id')
             ->join('quote_information', 'quote_updates.quote_information_id', 'quote_information.id')
             ->where("quotes.user_id", auth()->user()->id)
-            ->where("quote_information.company", "LIKE", $keyWord)
-            // ->where("quote_information.name", "LIKE", $keyWord)
-            // ->where("quote_information.oportunity", "LIKE", $keyWord)
-            ->select('quotes.*')
+            ->where(function ($query) {
+                $query->orWhere("quote_information.company", "LIKE", '%' . $this->keyWord . '%')
+                    ->orWhere("quote_information.name", "LIKE", '%' . $this->keyWord . '%')
+                    ->orWhere("quote_information.oportunity", "LIKE", '%' . $this->keyWord  . '%')
+                    ->orWhere("quotes.id", "LIKE", '%' . str_replace('QS', '', str_replace('qs', '', $this->keyWord)) . '%')
+                    ->orWhere("quotes.lead", "LIKE", '%' . $this->keyWord . '%');
+            })->select('quotes.*')
             ->groupBy('quotes.id')
             ->orderBy('quote_information.created_at', 'DESC')
             ->simplePaginate(30);
