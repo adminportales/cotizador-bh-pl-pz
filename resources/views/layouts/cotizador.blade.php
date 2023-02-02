@@ -71,6 +71,9 @@
         h5 {
             color: #0D4654 !important;
         }
+        .container{
+            max-width: 1360px;
+        }
     </style>
     @livewireStyles
 </head>

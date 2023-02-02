@@ -22,7 +22,7 @@
                                     src="{{ $product->firstImage ? $product->firstImage->image_url : asset('img/default.jpg') }}"
                                     class="img-fluid" alt="imagen" style=" width: auto; max-height: 400px; height:auto;">
                             </div>
-                            <div class="product-small-img">
+                            <div class="product-small-img" style="overflow: auto;">
                                 @foreach ($product->images as $image)
                                     <img src="{{ $image->image_url }}" class="rounded img-fluid"
                                         style=" width: auto; max-height: 100px" alt="{{ $image->image_url }}"
@@ -104,19 +104,28 @@
                         <div class="alert alert-danger">{{ $msg }}</div>
                     @endif
                     <div class="card-body">
-                        <h4 class="card-title">{{ $product->name }}</h4>
-                        <p class="my-1"><strong>SKU Interno: </strong> {{ $product->internal_sku }}</p>
-                        <p class="my-1"><strong>SKU Proveedor: </strong> {{ $product->sku }}</p>
-                        <br>
-                        @if ($product->precio_unico)
-                            <h5 class="text-primary">
-                                $ {{ round($priceProduct + $priceProduct * ($utilidad / 100), 2) }}</p>
-                            </h5>
-                        @endif
-
+                        <div class="d-flex align-items-center justify-content-between">
+                            <div>
+                                <h4 class="card-title">{{ $product->name }}</h4>
+                            </div>
+                            @if ($product->precio_unico)
+                                <div>
+                                    <h5 class="text-primary">
+                                        $ {{ round($priceProduct + $priceProduct * ($utilidad / 100), 2) }}</p>
+                                    </h5>
+                                </div>
+                            @endif
+                        </div>
+                        <div class="d-flex align-items-center justify-content-between">
+                            <div>
+                                <p class="my-1"><strong>SKU Interno: </strong> {{ $product->internal_sku }}</p>
+                                <p class="my-1"><strong>SKU Proveedor: </strong> {{ $product->sku }}</p>
+                            </div>
+                            <div>
+                                <h5 class="text-success">Disponibles:<strong> {{ $product->stock }}</strong> </h5>
+                            </div>
+                        </div>
                         <p>{{ $product->description }}</p>
-                        <h5 class="text-success">Disponibles:<strong> {{ $product->stock }}</strong> </h5>
-                        <br>
                         <h6><strong>Informacion de la cotizacion</strong></h6>
                         @livewire('formulario-de-cotizacion', ['product' => $product])
                     </div>

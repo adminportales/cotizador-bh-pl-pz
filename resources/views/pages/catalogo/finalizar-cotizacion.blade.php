@@ -169,7 +169,7 @@
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label for="">Vigencia de la cotizacion (Opcional)</label>
-                                <input type="number" class="form-control" placeholder="Duracion de la Vigencia"
+                                <input type="number" class="form-control" placeholder="Duracion de la vigencia en dias naturales"
                                     wire:model="shelfLife">
                             </div>
                         </div>

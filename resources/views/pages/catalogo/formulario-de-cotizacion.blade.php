@@ -107,6 +107,43 @@
                 <input type="text" name="newDescription" wire:model="newDescription"
                     placeholder="Descripcion del producto " class="form-control">
             </div>
+            <div class="form-group">
+                <button type="button" class="btn btn-primary btn-sm btn-block" data-toggle="modal"
+                    data-target="#exampleModal">
+                    Selecciona la imagen que se vera en la cotizacion
+                </button>
+
+                <!-- Modal -->
+                <div wire:ignore.self class="modal fade" id="exampleModal" tabindex="-1"
+                    aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Seleccionar la imagen que se
+                                    visualizara en la cotizacion</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="d-flex flex-wrap">
+                                    @foreach ($product->images as $image)
+                                        <div class="img-select" wire:click="seleccionarImagen">
+                                            <img src="{{ $image->image_url }}" class="rounded img-fluid"
+                                                style=" width: auto; max-width: 180px; max-height: 200px"
+                                                alt="{{ $image->image_url }}">
+                                        </div>
+                                    @endforeach
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-primary">Save changes</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
         <br>
         @if ($errors)
@@ -162,4 +199,10 @@
             </div>
         </div>
     </form>
+    <style>
+        .img-select:hover {
+            z-index: 1000;
+            background-color: rgb(169, 155, 155);
+        }
+    </style>
 </div>

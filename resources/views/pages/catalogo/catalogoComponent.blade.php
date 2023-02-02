@@ -18,12 +18,6 @@
                             <option value="{{ $provider->id }}">{{ $provider->company }}</option>
                         @endforeach
                     </select>
-                    {{-- <select wire:model='type' name="types" id="type" class="form-control mb-2">
-                        <option value="">Importacion o Catalogo...</option>
-                        @foreach ($types as $type)
-                            <option value="{{ $type->id }}">{{ $type->type }}</option>
-                        @endforeach
-                    </select> --}}
                     <p class="mb-0">Precio</p>
                     <div class="d-flex align-items-center mb-2">
                         <input wire:model='precioMin' type="number" class="form-control" name="search" id="search"
@@ -60,23 +54,6 @@
             <div class="card px-4 py-3 mb-1 shadow-sm">
                 <div class="d-flex justify-content-between align-items-center">
                     <p class="m-0">¿Vas a cotizar un producto que no esta en el catalogo? </p>
-                    {{-- <div>
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1"
-                                value="option1">
-                            <label class="form-check-label" for="inlineRadio1">Catalogo</label>
-                        </div>
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2"
-                                value="option2">
-                            <label class="form-check-label" for="inlineRadio2">Importacion</label>
-                        </div>
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="inlineRadioOptions"
-                                id="inlineRadio3" value="option2">
-                            <label class="form-check-label" for="inlineRadio3">Productos de Referencia</label>
-                        </div>
-                    </div> --}}
                     <div>
                         <a href="{{ route('addProduct.cotizador') }}" class="btn btn-sm btn-info">Agregar Nuevo
                             Producto</a>
@@ -100,7 +77,7 @@
                 @foreach ($products as $row)
                     <div class="col-md-4 col-lg-3 col-sm-6  d-flex justify-content-center">
                         <div class="card mb-4" style="width: 14rem;">
-                            <div class="card-body text-center shadow-sm">
+                            <div class="card-body text-center shadow-sm p-2">
                                 @php
                                     $priceProduct = $row->price;
                                     if ($row->producto_promocion) {
@@ -109,23 +86,22 @@
                                         $priceProduct = round($priceProduct - $priceProduct * ($row->provider->discount / 100), 2);
                                     }
                                 @endphp
-                                <div class="text-center" style="height: 140px">
+                                <p class="stock-relative m-0 mb-1 pt-1" style="font-size: 16px">Stock: <span
+                                        style="font-weight: bold">{{ $row->stock }}</span></p>
+                                <div class="text-center" style="height: 110px">
                                     <img src="{{ $row->firstImage ? $row->firstImage->image_url : '' }}"
                                         class="card-img-top " alt="{{ $row->name }}"
-                                        style="width: 100%; max-width: 100px; max-height: 140px; width: auto">
+                                        style="width: 100%; max-width: 100px; max-height: 110px; height: auto">
                                 </div>
-                                <h5 class="card-title" style="text-transform: capitalize">
-                                    {{ Str::limit($row->name, 30, '...') }}</h5>
-                                <p class=" m-0 pt-1"><strong>SKU:</strong> {{ $row->sku }}</p>
-                                <div class="">
-                                    <p class=" m-0 pt-1">Stock: {{ $row->stock }}</p>
-                                    <p class=" m-0 pt-1">$
+                                <h5 class="card-title m-0" style="text-transform: capitalize">
+                                    {{ Str::limit($row->name, 22, '...') }}</h5>
+                                <p class=" m-0 pt-1" style="font-size: 16px"><strong>SKU:</strong>
+                                    {{ $row->sku }}</p>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <p class=" m-0 pt-1" style="font-weight: bold">$
                                         {{ round($priceProduct / ((100 - $utilidad) / 100), 2) }}</p>
-                                </div>
-                                <br>
-                                <div>
                                     <a href="{{ route('show.product', ['product' => $row->id]) }}"
-                                        class="btn btn-primary mb-2 btn-block">
+                                        class="btn btn-sm btn-primary">
                                         Cotizar
                                     </a>
                                 </div>
@@ -139,4 +115,14 @@
             </div>
         </div>
     </div>
+    <style>
+        .stock-relative {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: #fcfcfcf2;
+            border-radius: 5px;
+            padding: 0px 5px;
+        }
+    </style>
 </div>
