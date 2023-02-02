@@ -21,7 +21,7 @@ use Livewire\WithFileUploads;
 class FinalizarCotizacion extends Component
 {
     use WithFileUploads;
-    public $tipoCliente, $clienteSeleccionado = '', $isClient, $nombre, $empresa, $email, $telefono, $celular, $oportunidad, $rank = '', $departamento, $informacion, $ivaByItem, $logo, $taxFee;
+    public $tipoCliente, $clienteSeleccionado = '', $isClient, $nombre, $empresa, $email, $telefono, $celular, $oportunidad, $rank = '', $departamento, $informacion, $ivaByItem, $logo, $taxFee, $shelfLife;
     public $urlPDFPreview;
     public $ejecutivos, $ejecutivoSeleccionado = null, $selectEjecutivo;
 
@@ -31,6 +31,7 @@ class FinalizarCotizacion extends Component
         if (count($this->ejecutivos) == 1) {
             $this->ejecutivoSeleccionado = $this->ejecutivos[0];
         }
+        $this->shelfLife = trim($this->shelfLife) == "" ? null : $this->shelfLife;
         $this->ivaByItem = false;
     }
 
@@ -149,6 +150,7 @@ class FinalizarCotizacion extends Component
             'department' => $this->departamento,
             'information' => $this->informacion,
             'tax_fee' => (int)$this->taxFee > 0 ? $this->taxFee : null,
+            'shelf_life' =>  trim($this->shelfLife) == "" ? null : $this->shelfLife,
         ]);
 
         // Guardar descuento
@@ -222,6 +224,7 @@ class FinalizarCotizacion extends Component
         }
 
         // Enviar PDF
+        dd(1);
 
         $pdf = '';
         $keyOdoo = '';
@@ -525,6 +528,7 @@ class FinalizarCotizacion extends Component
             "iva_by_item" => boolval($this->ivaByItem),
             "precio_total" => $precioTotal,
             "productos_total" => $productosTotal,
+            "shelf_life" => $this->shelfLife,
             "preview" => true,
             'latestQuotesUpdate' => (object)[
                 "quotesInformation" => (object)[
@@ -532,6 +536,7 @@ class FinalizarCotizacion extends Component
                     "name" => $this->nombre,
                     "department" => $this->departamento,
                     "information" => $this->informacion,
+                    'shelf_life' => $this->shelfLife,
                     "tax_fee" => (int)$this->taxFee > 0 ? $this->taxFee : null
                 ],
                 "quoteProducts" => (object)$products,

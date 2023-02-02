@@ -5,7 +5,9 @@
             <br>
             <form action="" method="post">
                 <fieldset class="form-group border p-2">
-                    <legend class="w-auto px-2"><h5>Informacion Obligatoria</h5></legend>
+                    <legend class="w-auto px-2">
+                        <h5>Informacion Obligatoria</h5>
+                    </legend>
                     <div class="row">
                         @if (count(auth()->user()->managments) > 1)
                             <div class="col-md-4">
@@ -138,7 +140,9 @@
                     </div>
                 </fieldset>
                 <fieldset class="form-group border p-2">
-                    <legend class="w-auto px-2"><h5>Informacion Opcional</h5></legend>
+                    <legend class="w-auto px-2">
+                        <h5>Informacion Opcional</h5>
+                    </legend>
                     <div class="row">
                         <div class="col-md-4">
                             <div class="form-group">
@@ -164,13 +168,17 @@
                         </div>
                         <div class="col-md-4">
                             <div class="form-group">
-                                <label for="">Tax Fee (Opcional)</label>
-                                <input type="number" class="form-control" placeholder="Tax Fee"
-                                    wire:model="taxFee">
+                                <label for="">Vigencia de la cotizacion (Opcional)</label>
+                                <input type="number" class="form-control" placeholder="Duracion de la Vigencia"
+                                    wire:model="shelfLife">
                             </div>
-                            @if ($errors->has('ivaByItem'))
-                                <span class="text-danger">{{ $errors->first('departamento') }}</span>
-                            @endif
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="">Tax Fee (Opcional)</label>
+                                <input type="number" class="form-control" placeholder="Tax Fee (Valor Maximo 99)"
+                                    wire:model="taxFee" max="99">
+                            </div>
                         </div>
                         <div class="col-md-12">
                             <div class="form-group">

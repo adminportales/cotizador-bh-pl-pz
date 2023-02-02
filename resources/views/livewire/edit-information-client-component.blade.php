@@ -88,9 +88,12 @@
                 <label for="">Tax Fee (Opcional)</label>
                 <input type="number" class="form-control" placeholder="Tax Fee (Valor Maximo 99)" wire:model="taxFee" max="99">
             </div>
-            @if ($errors->has('ivaByItem'))
-                <span class="text-danger">{{ $errors->first('departamento') }}</span>
-            @endif
+        </div>
+        <div class="col-md-4">
+            <div class="form-group">
+                <label for="">Vigencia de la cotizacion (Opcional)</label>
+                <input type="number" class="form-control" placeholder="Duracion de la vigencia" wire:model="shelfLife" max="99">
+            </div>
         </div>
         <div class="col-md-12">
             <div class="form-group">

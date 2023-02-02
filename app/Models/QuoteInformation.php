@@ -21,6 +21,7 @@ class QuoteInformation extends Model
         'department',
         'information',
         'tax_fee',
+        'shelf_life',
     ];
 
     public function quotesProducts()

@@ -155,7 +155,8 @@
         <br>
         <div class="content">
             @if (strlen($quote->latestQuotesUpdate->quotesInformation->information) > 0)
-                <p style="text-align: justify; font-size: 17px; line-height: 1.2rem"><span style="font-weight: bold">Información Adicional:</span>
+                <p style="text-align: justify; font-size: 17px; line-height: 1.2rem"><span
+                        style="font-weight: bold">Información Adicional:</span>
                     {{ $quote->latestQuotesUpdate->quotesInformation->information }}</p>
                 <br>
             @endif
@@ -197,7 +198,8 @@
             <li>El tiempo de entrega empieza a correr una vez recibida la Orden de Compra y autorizada la muestra física
                 o
                 virtual a solicitud del cliente.</li>
-            <li>Vigencia de la cotización 5 días naturales.</li>
+            <li>Vigencia de la cotización {{ $quote->latestQuotesUpdate->quotesInformation->tax_fee ?: 5 }} días
+                naturales.</li>
             <li>Producto cotizado de fabricación nacional o importación puede afinarse la fecha de entrega previo a la
                 emisión
                 de Orden de Compra.</li>

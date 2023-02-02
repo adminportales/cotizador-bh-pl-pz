@@ -13,7 +13,7 @@ class EditInformationClientComponent extends Component
     use AuthorizesRequests;
 
     public $quoteInfo, $quote;
-    public $tipoCliente, $clienteSeleccionado = '', $nombre, $empresa, $email, $telefono, $celular, $oportunidad, $rank = '', $departamento, $informacion, $clients, $ivaByItem, $taxFee;
+    public $tipoCliente, $clienteSeleccionado = '', $nombre, $empresa, $email, $telefono, $celular, $oportunidad, $rank = '', $departamento, $informacion, $clients, $ivaByItem, $taxFee, $shelfLife;
 
     public function mount()
     {
@@ -28,6 +28,7 @@ class EditInformationClientComponent extends Component
         $this->departamento = $this->quoteInfo->department;
         $this->informacion = $this->quoteInfo->information;
         $this->taxFee = $this->quoteInfo->taxFee;
+        $this->shelfLife = $this->quoteInfo->shelfLife;
     }
 
     public function render()
@@ -51,7 +52,6 @@ class EditInformationClientComponent extends Component
 
         $this->quote->update(['iva_by_item' => boolval($this->ivaByItem)]);
         // Guardar la Info de la cotizacion
-        // dd($this->taxFee > 0 ?: null);
         $quoteInfo = QuoteInformation::create([
             'name' => $this->quoteInfo->name,
             'company' => $this->quoteInfo->company,
@@ -63,7 +63,9 @@ class EditInformationClientComponent extends Component
             'department' => $this->departamento,
             'information' => $this->informacion,
             'tax_fee' => $this->taxFee > 0 ? $this->taxFee : null,
+            'shelf_life' => trim($this->shelfLife) == "" ? null : $this->shelfLife,
         ]);
+
 
         $latestProductos = $this->quote->latestQuotesUpdate->quoteProducts;
         $newQuoteUpdate =  $this->quote->quotesUpdate()->create([

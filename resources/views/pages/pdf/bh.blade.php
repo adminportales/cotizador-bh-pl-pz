@@ -194,7 +194,8 @@
             <li>El tiempo de entrega empieza a correr una vez recibida la Orden de Compra y autorizada la muestra física
                 o
                 virtual a solicitud del cliente.</li>
-            <li>Vigencia de la cotización 30 días naturales.</li>
+            <li>Vigencia de la cotización {{ $quote->latestQuotesUpdate->quotesInformation->shelf_life ?: 30 }} días
+                naturales.</li>
             <li>Producto cotizado de fabricación nacional o importación puede afinarse la fecha de entrega previo a la
                 emisión
                 de Orden de Compra.</li>
