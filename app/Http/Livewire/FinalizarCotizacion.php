@@ -224,7 +224,6 @@ class FinalizarCotizacion extends Component
         }
 
         // Enviar PDF
-        dd(1);
 
         $pdf = '';
         $keyOdoo = '';
