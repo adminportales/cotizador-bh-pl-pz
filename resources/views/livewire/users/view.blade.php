@@ -20,9 +20,9 @@
                         <div class="btn btn-sm btn-info" data-toggle="modal" data-target="#createDataModal">
                             <i class="fa fa-plus"></i> Add Users
                         </div>
-                        <div class="btn btn-sm btn-info" onclick="enviar()">
-                            <i class="fa fa-plus"></i> Enviar Acceso
-                        </div>
+                        <!--<div class="btn btn-sm btn-info" onclick="enviar()">-->
+                        <!--    <i class="fa fa-plus"></i> Enviar Acceso-->
+                        <!--</div>-->
                         <div class="">
                             <a href="{{ route('exportUsuarios.cotizador') }}" class="btn btn-sm btn-info">Descargar
                                 Usuarios</a>
@@ -69,7 +69,8 @@
                                         </td>
                                         <td width="90">
                                             <div class="btn-group">
-                                                <button type="button" class="btn btn-info btn-sm dropdown-toggle py-1 px-2"
+                                                <button type="button"
+                                                    class="btn btn-info btn-sm dropdown-toggle py-1 px-2"
                                                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                     Actions
                                                 </button>
