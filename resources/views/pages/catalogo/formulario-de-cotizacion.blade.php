@@ -108,27 +108,54 @@
                     placeholder="Descripcion del producto " class="form-control">
             </div>
             <div class="form-group">
-                <button type="button" class="btn btn-primary btn-sm btn-block" data-toggle="modal"
-                    data-target="#exampleModal">
-                    Selecciona la imagen que se vera en la cotizacion
-                </button>
+                <label for="" class="text-dark"><strong>Imagen que sera visualizada en la
+                        cotizacion</strong></label>
+                @if (!$imageSelected)
+                    <button type="button" class="btn btn-primary btn-sm btn-block" data-toggle="modal"
+                        data-target="#exampleModal1">
+                        Selecciona la imagen que se vera en la cotizacion
+                    </button>
+                @else
+                    <div class="d-flex justify-content-between">
+                        <div class="text-center">
+                            <img src="{{ $imageSelected }}" class="rounded img-fluid"
+                                style=" width: auto; max-width: 180px; max-height: 100px" alt="{{ $imageSelected }}">
+                        </div>
+                        <div class="">
+                            <button type="button" class="btn btn-primary btn-sm btn-block" data-toggle="modal"
+                                data-target="#exampleModal1">
+                                Actualiza la imagen que se vera en la cotizacion
+                            </button>
+                            <button type="button" class="btn btn-danger btn-sm btn-block"
+                                wire:click="eliminarImagen">
+                                Eliminar
+                            </button>
+                        </div>
+                    </div>
+                @endif
 
-                <!-- Modal -->
-                <div wire:ignore.self class="modal fade" id="exampleModal" tabindex="-1"
-                    aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div wire:ignore.self class="modal fade" id="exampleModal1" tabindex="-1"
+                    aria-labelledby="exampleModal1Label" aria-hidden="true">
                     <div class="modal-dialog modal-lg">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLabel">Seleccionar la imagen que se
+                                <h5 class="modal-title" id="exampleModal1Label">Seleccionar la imagen que se
                                     visualizara en la cotizacion</h5>
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
                             </div>
                             <div class="modal-body">
+                                <div class="d-flex justify-content-between">
+                                    <p>Solo en caso de que no quieras que se muestre la primera imagen</p>
+                                    <div wire:loading wire:target='seleccionarImagen'>
+                                        <p>Espere...</p>
+                                    </div>
+                                </div>
                                 <div class="d-flex flex-wrap">
                                     @foreach ($product->images as $image)
-                                        <div class="img-select" wire:click="seleccionarImagen">
+                                        <div class="img-select {{ $imageSelected == $image->image_url ? 'selected' : '' }}"
+                                            wire:click="seleccionarImagen('{{ $image->image_url }}')">
                                             <img src="{{ $image->image_url }}" class="rounded img-fluid"
                                                 style=" width: auto; max-width: 180px; max-height: 200px"
                                                 alt="{{ $image->image_url }}">
@@ -137,8 +164,7 @@
                                 </div>
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                <button type="button" class="btn btn-primary">Save changes</button>
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
                             </div>
                         </div>
                     </div>
@@ -201,8 +227,18 @@
     </form>
     <style>
         .img-select:hover {
-            z-index: 1000;
-            background-color: rgb(169, 155, 155);
+            background-color: rgb(177, 191, 250);
+        }
+
+        .img-select.selected {
+            background-color: rgb(177, 191, 250);
+        }
+
+        .img-select {
+            padding: 10px;
+            margin: 0 10px;
+            border-radius: 10px;
+            background-color: rgb(251, 251, 254);
         }
     </style>
 </div>

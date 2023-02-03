@@ -152,6 +152,7 @@ class FormularioDeCotizacion extends Component
             $this->newPriceTechnique = null;
         if (trim($this->newDescription) == "")
             $this->newDescription = null;
+
         $currentQuote->currentQuoteDetails()->create([
             'product_id' => $this->product->id,
             'prices_techniques_id' => $this->priceTechnique->id,
@@ -164,12 +165,23 @@ class FormularioDeCotizacion extends Component
             'cantidad' => $this->cantidad,
             'precio_unitario' => $this->precioCalculado,
             'precio_total' => $this->precioTotal,
+            'images_selected' => $this->imageSelected,
         ]);
 
         session()->flash('message', 'Se ha agregado este producto a la cotizacion.');
         $this->emit('currentQuoteAdded');
         $this->resetData();
     }
+
+    public function seleccionarImagen($image)
+    {
+        $this->imageSelected = $image;
+    }
+    public function eliminarImagen()
+    {
+        $this->imageSelected = null;
+    }
+
     public function resetData()
     {
         $this->priceTechnique = null;
@@ -182,6 +194,7 @@ class FormularioDeCotizacion extends Component
         $this->precioTotal = 0;
         $this->newPriceTechnique = 0;
     }
+
     public function resetSizes()
     {
         $this->sizeSeleccionado = null;

@@ -22,6 +22,7 @@ class CreateCurrentQuotesDetailsTable extends Migration
             $table->decimal('costo_indirecto', 8, 2);
             $table->decimal('new_price_technique', 8, 2)->nullable();
             $table->text('new_description')->nullable();
+            $table->text('images_selected')->nullable();
             $table->decimal('utilidad', 8, 2);
             $table->integer('dias_entrega');
             $table->integer('cantidad');

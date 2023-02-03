@@ -28,7 +28,7 @@
                                             <td>
                                                 <div class="d-flex align-items-center">
                                                     <div>
-                                                        <img src="{{ $quote->product->firstImage ? $quote->product->firstImage->image_url : asset('img/default.jpg') }}"
+                                                        <img src="{{ $quote->images_selected ?: ($quote->product->firstImage ? $quote->product->firstImage->image_url : asset('img/default.jpg')) }}"
                                                             alt="" width="80">
                                                     </div>
                                                     <div>

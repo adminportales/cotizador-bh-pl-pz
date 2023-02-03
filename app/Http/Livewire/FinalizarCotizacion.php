@@ -206,7 +206,8 @@ class FinalizarCotizacion extends Component
             ];
 
             // Agregar la URL de la Imagen
-            $product->image = $product->firstImage == null ? '' : $product->firstImage->image_url;
+            $product->image = $item->images_selected == null ? ($product->firstImage == null ? '' : $product->firstImage->image_url) : $item->images_selected;
+            unset($product->firstImage);
             $product->provider;
             $quoteUpdate->quoteProducts()->create([
                 'product' => json_encode($product->toArray()),
@@ -222,6 +223,8 @@ class FinalizarCotizacion extends Component
                 'precio_total' => $item->precio_total
             ]);
         }
+
+        dd(1);
 
         // Enviar PDF
 
@@ -497,7 +500,7 @@ class FinalizarCotizacion extends Component
             ];
 
             // Agregar la URL de la Imagen
-            $product->image = $product->firstImage == null ? '' : $product->firstImage->image_url;
+            $product->image = $item->images_selected ?: ($product->firstImage == null ? '' : $product->firstImage->image_url);
             $product->provider;
             array_push($products, (object) [
                 'product' => json_encode($product->toArray()),

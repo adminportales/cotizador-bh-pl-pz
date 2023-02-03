@@ -15,7 +15,7 @@ class FormularioDeCotizacionCurrentMin extends Component
 {
     public $product, $currentQuote;
     public $precio, $precioCalculado, $precioTotal = 0;
-    public $tecnica = null, $colores = null, $operacion = null, $utilidad = null, $entrega = null, $cantidad = null, $priceTechnique, $newPriceTechnique = null, $newDescription = null;
+    public $tecnica = null, $colores = null, $operacion = null, $utilidad = null, $entrega = null, $cantidad = null, $priceTechnique, $newPriceTechnique = null, $newDescription = null, $imageSelected;
     public $materialSeleccionado;
     public $tecnicaSeleccionada;
     public $sizeSeleccionado;
@@ -32,6 +32,7 @@ class FormularioDeCotizacionCurrentMin extends Component
             $this->entrega =  $this->currentQuote->dias_entrega;
             $this->newPriceTechnique =  $this->currentQuote->new_price_technique;
             $this->newDescription =  $this->currentQuote->new_description;
+            $this->imageSelected =  $this->currentQuote->images_selected;
 
             $prices_techniques = PricesTechnique::find($this->currentQuote->prices_techniques_id);
             $this->materialSeleccionado = $prices_techniques->sizeMaterialTechnique->materialTechnique->material->id;
@@ -171,11 +172,22 @@ class FormularioDeCotizacionCurrentMin extends Component
             'cantidad' => $this->cantidad,
             'precio_unitario' => $this->precioCalculado,
             'precio_total' => $this->precioTotal,
+            'images_selected' => $this->imageSelected,
         ]);
 
         $this->dispatchBrowserEvent('closeModal', ['currentQuote' => $this->currentQuote->id]);
         $this->emit('updateProductCurrent');
     }
+
+    public function seleccionarImagen($image)
+    {
+        $this->imageSelected = $image;
+    }
+    public function eliminarImagen()
+    {
+        $this->imageSelected = null;
+    }
+
     public function resetSizes()
     {
         $this->sizeSeleccionado = null;

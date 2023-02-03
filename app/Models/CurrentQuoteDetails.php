@@ -24,6 +24,7 @@ class CurrentQuoteDetails extends Model
         'cantidad',
         'precio_unitario',
         'precio_total',
+        'images_selected'
     ];
 
     public function product()

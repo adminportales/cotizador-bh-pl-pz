@@ -15,7 +15,7 @@ class FormularioDeCotizacionEditMin extends Component
 {
     public $product, $currentQuote_id = '', $idNewQuote = '';
     public $precio, $precioCalculado, $precioTotal = 0;
-    public $tecnica = null, $colores = null, $operacion = null, $utilidad = null, $entrega = null, $cantidad = null, $priceTechnique, $newPriceTechnique = null, $newDescription = null;
+    public $tecnica = null, $colores = null, $operacion = null, $utilidad = null, $entrega = null, $cantidad = null, $priceTechnique, $newPriceTechnique = null, $newDescription = null,  $imageSelected;
     public $materialSeleccionado;
     public $tecnicaSeleccionada;
     public $sizeSeleccionado;
@@ -131,7 +131,9 @@ class FormularioDeCotizacionEditMin extends Component
             'priceTechnique' => 'required',
         ]);
         $product = $this->product->toArray();
-        $product['image'] = $this->product->firstImage ? $this->product->firstImage->image_url : '';
+        $product['image'] = $this->imageSelected ?: ($this->product->firstImage ? $this->product->firstImage->image_url : '');
+        unset($this->product->firstImage);
+        unset($this->product->images);
         if (!is_numeric($this->newPriceTechnique))
             $this->newPriceTechnique = null;
         if (trim($this->newDescription) == "")
@@ -183,6 +185,7 @@ class FormularioDeCotizacionEditMin extends Component
             $this->tecnicaSeleccionada = $techniquesInfo->tecnica_id;
             $this->sizeSeleccionado = $techniquesInfo->size_id;
             $this->currentQuote_id = $productEdit['id'];
+            $this->imageSelected = $product->image;
         }
         # code...
         // Calculo de Precio
@@ -205,6 +208,15 @@ class FormularioDeCotizacionEditMin extends Component
         }
         $this->precio = round($priceProduct + $priceProduct * ($utilidad / 100), 2);
         $this->precioCalculado = $this->precio;
+    }
+
+    public function seleccionarImagen($image)
+    {
+        $this->imageSelected = $image;
+    }
+    public function eliminarImagen()
+    {
+        $this->imageSelected = null;
     }
 
     public function resetData()

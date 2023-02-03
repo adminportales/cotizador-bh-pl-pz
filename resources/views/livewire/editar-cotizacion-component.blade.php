@@ -45,6 +45,7 @@
                                     foreach ($listUpdateCurrent as $productUpdate) {
                                         if ($product->id == $productUpdate['currentQuote_id']) {
                                             $product = (object) $productUpdate;
+                                            $producto->image = ((object) json_decode($product->product))->image;
                                             $product->id = $productUpdate['currentQuote_id'];
                                         }
                                     }
