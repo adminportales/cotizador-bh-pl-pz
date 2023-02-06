@@ -21,32 +21,32 @@
             @endif
             @foreach ($products as $row)
                 <div class="col-md-4 d-flex justify-content-center">
-                    <div class="card component-card_2 mb-4" style="width: 14rem;">
-                        <div class="card-body">
-                            <div class="h-100 d-flex justify-content-between flex-column">
+                    <div class="card mb-4" style="width: 14rem;">
+                        <div class="card-body text-center shadow-sm p-2">
+                            @php
+                                $priceProduct = $row->price;
+                                if ($row->producto_promocion) {
+                                    $priceProduct = round($priceProduct - $priceProduct * ($row->descuento / 100), 2);
+                                } else {
+                                    $priceProduct = round($priceProduct - $priceProduct * ($row->provider->discount / 100), 2);
+                                }
+                            @endphp
+                            <p class="stock-relative m-0 mb-1 pt-1" style="font-size: 16px">Stock: <span
+                                    style="font-weight: bold">{{ $row->stock }}</span></p>
+                            <div class="text-center" style="height: 110px">
+                                <img src="{{ $row->firstImage ? $row->firstImage->image_url : '' }}"
+                                    class="card-img-top " alt="{{ $row->name }}"
+                                    style="width: 100%; max-width: 100px; max-height: 110px; height: auto">
+                            </div>
+                            <h5 class="card-title m-0" style="text-transform: capitalize">
+                                {{ Str::limit($row->name, 22, '...') }}</h5>
+                            <p class=" m-0 pt-1" style="font-size: 16px"><strong>SKU:</strong>
+                                {{ $row->sku }}</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <p class=" m-0 pt-1" style="font-weight: bold">$
+                                    {{ round($priceProduct / ((100 - $utilidad) / 100), 2) }}</p>
                                 <div>
-                                    @php
-                                        $priceProduct = $row->price;
-                                        if ($row->producto_promocion) {
-                                            $priceProduct = round($priceProduct - $priceProduct * ($row->descuento / 100), 2);
-                                        } else {
-                                            $priceProduct = round($priceProduct - $priceProduct * ($row->provider->discount / 100), 2);
-                                        }
-                                    @endphp
-                                    <img src="{{ $row->firstImage ? $row->firstImage->image_url : asset('img/default.jpg') }}"
-                                        class="card-img-top" alt="{{ $row->name }}">
-                                    <h5 class="card-title" style="text-transform: capitalize">
-                                        {{ $row->name }}
-                                    </h5>
-                                    <div class="d-flex justify-content-between">
-                                        <p class=" m-0 pt-1">Stock: {{ $row->stock }}</p>
-                                        <p class=" m-0 pt-1">$
-                                            {{ round($priceProduct + $priceProduct * ($utilidad / 100), 2) }}
-                                        </p>
-                                    </div>
-                                </div>
-                                <div>
-                                    <button class="btn btn-primary mb-2 btn-block"
+                                    <button class="btn btn-primary btn-sm"
                                         wire:click="seleccionarProducto({{ $row }})"> Seleccionar </button>
                                 </div>
                             </div>
@@ -79,24 +79,47 @@
                 }
             @endphp
             <div class="d-flex">
-                <div class="img-container w-25">
-                    <img id="imgBox"
+                <div class="img-container w-25 text-center">
+                    <img id="imgBox" style="max-width: 150px; max-height: 200px"
                         src="{{ $producto->firstImage ? $producto->firstImage->image_url : asset('img/default.jpg') }}"
                         class="img-fluid" alt="imagen">
                 </div>
-                <div class="px-3">
-                    <h4 class="card-title">{{ $producto->name }}</h4>
-                    <p class="my-1"><strong>SKU Interno: </strong> {{ $producto->internal_sku }}</p>
-                    <p class="my-1"><strong>SKU Proveedor: </strong> {{ $producto->sku }}</p>
-                    <h5 class="text-primary">
-                        $ {{ round($priceProduct + $priceProduct * ($utilidad / 100), 2) }}</p>
-                    </h5>
-
-                    <h5 class="text-success">Disponibles:<strong> {{ $producto->stock }}</strong> </h5>
+                <div class="px-3 flex-grow-1">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <div>
+                            <h4 class="card-title">{{ $producto->name }}</h4>
+                        </div>
+                        @if ($producto->precio_unico)
+                            <div class="w-25">
+                                <h5 class="text-primary text-right">
+                                    $ {{ round($priceProduct + $priceProduct * ($utilidad / 100), 2) }}</p>
+                                </h5>
+                            </div>
+                        @endif
+                    </div>
+                    <div class="d-flex align-items-center justify-content-between">
+                        <div>
+                            <p class="my-1"><strong>SKU Interno: </strong> {{ $producto->internal_sku }}</p>
+                            <p class="my-1"><strong>SKU Proveedor: </strong> {{ $producto->sku }}</p>
+                        </div>
+                        <div>
+                            <h5 class="text-success">Disponibles:<strong> {{ $producto->stock }}</strong> </h5>
+                        </div>
+                    </div>
                     <br>
                 </div>
             </div>
             @livewire('formulario-de-cotizacion-min-component', ['product' => $producto])
         @endif
     </div>
+    <style>
+        .stock-relative {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: #fcfcfcf2;
+            border-radius: 5px;
+            padding: 0px 5px;
+        }
+    </style>
 </div>

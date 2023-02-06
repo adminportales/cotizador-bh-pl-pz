@@ -108,6 +108,35 @@
             <input type="text" name="newDescription" wire:model="newDescription"
                 placeholder="Descripcion del producto" class="form-control">
         </div>
+        <div class="form-group">
+            <label for="" class="text-dark"><strong>Imagen que sera visualizada en la
+                    cotizacion</strong></label>
+            @if (!$imageSelected)
+                <p>Imagen No Seleccionada. Solo Puedes Seleccionar una Imagen</p>
+                <div class="d-flex flex-wrap">
+                    @foreach ($product->images as $image)
+                        <div class="img-select {{ $imageSelected == $image->image_url ? 'selected' : '' }}"
+                            wire:click="seleccionarImagen('{{ $image->image_url }}')">
+                            <img src="{{ $image->image_url }}" class="rounded img-fluid"
+                                style=" width: auto; max-width: 150px; max-height: 145px"
+                                alt="{{ $image->image_url }}">
+                        </div>
+                    @endforeach
+                </div>
+            @else
+                <div class="d-flex justify-content-between align-items-center">
+                    <div class="text-center">
+                        <img src="{{ $imageSelected }}" class="rounded img-fluid"
+                            style=" width: auto; max-width: 180px; max-height: 100px" alt="{{ $imageSelected }}">
+                    </div>
+                    <div class="">
+                        <button type="button" class="btn btn-danger btn-sm btn-block" wire:click="eliminarImagen">
+                            Eliminar
+                        </button>
+                    </div>
+                </div>
+            @endif
+        </div>
     </div>
     <br>
     @if ($errors)

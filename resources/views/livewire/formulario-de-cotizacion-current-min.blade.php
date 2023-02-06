@@ -129,7 +129,7 @@
                         <label for="" class="text-dark"><strong>Imagen que sera visualizada en la
                                 cotizacion</strong></label>
                         @if (!$imageSelected)
-                            <p>Imagen No Seleccionada. Solo Puedes Seleccionar una Imgen</p>
+                            <p>Imagen No Seleccionada. Solo Puedes Seleccionar una Imagen</p>
                             <div class="d-flex flex-wrap">
                                 @foreach ($product->images as $image)
                                     <div class="img-select {{ $imageSelected == $image->image_url ? 'selected' : '' }}"

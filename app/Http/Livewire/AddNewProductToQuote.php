@@ -15,15 +15,24 @@ class AddNewProductToQuote extends Component
     use WithFileUploads;
 
     public $nombre, $descripcion, $precio, $stock, $color, $proveedor, $imagen,  $thereProduct = false, $producto;
+    public $isNewProduct = 1;
     public function render()
     {
         $utilidad = GlobalAttribute::find(1);
         $utilidad = (float) $utilidad->value;
 
+        // $products = auth()->user()->listProducts()->paginate(30);
         return view('livewire.add-new-product-to-quote', [
             'utilidad' => $utilidad,
+            // 'products' => $products,
         ]);
     }
+
+    // public function typeProduct($isNew)
+    // {
+    //     $this->isNewProduct = $isNew;
+    // }
+
     public function guardar()
     {
         $this->validate([

@@ -16,7 +16,7 @@ class FormularioDeCotizacionMinComponent extends Component
 
     public $precio, $precioCalculado, $precioTotal = 0;
 
-    public $tecnica = null, $colores = null, $operacion = null, $utilidad = null, $entrega = null, $cantidad = null, $priceTechnique,  $newPriceTechnique = null, $newDescription = null;
+    public $tecnica = null, $colores = null, $operacion = null, $utilidad = null, $entrega = null, $cantidad = null, $priceTechnique,  $newPriceTechnique = null, $newDescription = null, $imageSelected;
 
     public $materialSeleccionado;
     public $tecnicaSeleccionada;
@@ -153,7 +153,9 @@ class FormularioDeCotizacionMinComponent extends Component
         ]);
 
         $product = $this->product->toArray();
-        $product['image'] = $this->product->firstImage ? $this->product->firstImage->image_url : '';
+        $product['image'] = $this->imageSelected ?: ($this->product->firstImage ? $this->product->firstImage->image_url : '');
+        unset($this->product->firstImage);
+        unset($this->product->images);
         if (!is_numeric($this->newPriceTechnique))
             $this->newPriceTechnique = null;
         if (trim($this->newDescription) == "")
@@ -171,6 +173,7 @@ class FormularioDeCotizacionMinComponent extends Component
             'cantidad' => $this->cantidad,
             'precio_unitario' => $this->precioCalculado,
             'precio_total' => $this->precioTotal,
+            'images_selected' => $this->imageSelected,
         ];
 
         $this->emit('productAdded', $newQuote);
@@ -178,6 +181,16 @@ class FormularioDeCotizacionMinComponent extends Component
         $this->dispatchBrowserEvent('closeModal');
         $this->resetData();
     }
+
+    public function seleccionarImagen($image)
+    {
+        $this->imageSelected = $image;
+    }
+    public function eliminarImagen()
+    {
+        $this->imageSelected = null;
+    }
+
     public function resetData()
     {
         $this->priceTechnique = null;

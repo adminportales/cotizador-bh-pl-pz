@@ -125,9 +125,10 @@
                                         @php
                                             $producto = json_decode($newProduct['product']);
                                         @endphp
-                                        <td class="">
+                                        <td class="text-center">
                                             <img src="{{ $producto->image == '' ? asset('img/default.jpg') : $producto->image }}"
-                                                width="80" alt="" srcset="">
+                                                style="max-height: 100px;height:auto;max-width: 80px;width:auto;"
+                                                alt="" srcset="">
                                         </td>
                                         <td class="">
                                             <p>{{ $producto->name }}</p>

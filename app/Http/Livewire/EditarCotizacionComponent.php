@@ -134,8 +134,6 @@ class EditarCotizacionComponent extends Component
     {
         $this->authorize('update', $this->quote);
         if (count($this->listNewProducts) <= 0 && count($this->listUpdateCurrent) <= 0 && count($this->listDeleteCurrent) <= 0) {
-
-
             return;
         }
         // Obtener los productos
