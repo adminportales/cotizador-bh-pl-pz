@@ -17,9 +17,12 @@ use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Mail;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use Illuminate\Pagination\Paginator;
+use Livewire\WithPagination;
 
 class CotizadorController extends Controller
 {
+    use WithPagination;
     public function __construct()
     {
         $this->middleware('auth');
