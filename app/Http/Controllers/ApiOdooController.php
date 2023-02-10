@@ -19,6 +19,8 @@ class ApiOdooController extends Controller
 
     public function getUsers(Request $request)
     {
+        $time = time();
+        Storage::put('/public/dataUsers' .  $time . '.txt', json_encode($request->all()));
         try {
             if ($request->header('token') == 'PL489FWVJJVMEWO') {
                 $requestData = ($request->users);
@@ -32,7 +34,7 @@ class ApiOdooController extends Controller
                     if (count($errors) > 0) {
                         return response()->json(['errors' => 'Informacion Incompleta', 'data' => $errors]);
                     } else {
-                        Storage::put('/public/dataUsers.txt', Storage::get('/public/dataUsers.txt') .  json_encode($requestData));
+                        // Storage::put('/public/dataUsers.txt', Storage::get('/public/dataUsers.txt') .  json_encode($requestData));
                         // Mail::to('adminportales@promolife.com.mx')->send(new SendDataOdoo('adminportales@promolife.com.mx', '/storage/dataClients.txt'));
                         foreach ($requestData as $dataUser) {
                             if ($dataUser['active']) {
@@ -85,7 +87,7 @@ class ApiOdooController extends Controller
                 return response()->json(['message' => 'No Tienes autorizacion']);
             }
         } catch (Exception $th) {
-            Storage::put('/public/dataErrorUsers.txt',   json_encode($th->getMessage()));
+            Storage::put('/public/dataErrorUsers' .  $time . '.txt',   json_encode($th->getMessage()));
             Mail::to('adminportales@promolife.com.mx')->send(new SendDataOdoo('adminportales@promolife.com.mx', '/storage/dataErrorClients.txt'));
             return  $th->getMessage();
         }
@@ -93,6 +95,7 @@ class ApiOdooController extends Controller
 
     public function getClients(Request $request)
     {
+        Storage::put('/public/dataClients' . time() . '.txt', json_encode($request->all()));
         try {
             if ($request->header('token') == 'PL489FWVJJVMEWO') {
                 $requestData = ($request->clients);
@@ -107,7 +110,7 @@ class ApiOdooController extends Controller
                     if (count($errors) > 0) {
                         return response()->json(['errors' => 'Informacion Incompleta', 'data' => $errors]);
                     } else {
-                        Storage::put('/public/dataClients.txt', Storage::get('/public/dataClients.txt') .  json_encode($requestData));
+                        Storage::put('/public/dataClients.txt', json_encode($requestData));
                         foreach ($requestData as $dataClient) {
                             $client = Client::where('client_odoo_id', $dataClient['id'])->where('company_id', $dataClient['company_id'])->first();
                             if (!$client) {

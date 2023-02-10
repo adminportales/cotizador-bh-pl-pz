@@ -106,7 +106,7 @@ class DashboardComponent extends Component
                         $query->whereBetween('created_at', [$this->dates[0], $this->dates[1]]);
                     })->get();
                 foreach ($leadsByUser as $quote) {
-                    $mount = $mount + $quote->latestQuotesUpdate->quoteProducts->sum('precio_total');
+                    $mount = $mount + ($quote->latestQuotesUpdate ? $quote->latestQuotesUpdate->quoteProducts->sum('precio_total') : 0);
                 }
                 array_push($dataUserMountLeads, $userCount->name);
                 array_push($dataUserCountLeads, $mount);

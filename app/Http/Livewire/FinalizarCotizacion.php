@@ -224,7 +224,6 @@ class FinalizarCotizacion extends Component
             ]);
         }
 
-        dd(1);
 
         // Enviar PDF
 
@@ -436,7 +435,7 @@ class FinalizarCotizacion extends Component
             unlink(public_path() . $newPath);
         }
         if ($errors || $errorsMail) {
-            Storage::put('/public/dataErrorToCreateQuote.txt',   json_encode(["messageMail" => $messageMail, "messageOdoo" => $message, 'responseOdoo' => $responseOdoo, 'user' => auth()->user()]));
+            Storage::put('/public/dataErrorToCreateQuote' . auth()->user()->name . time() . '.txt',   json_encode(["messageMail" => $messageMail, "messageOdoo" => $message, 'responseOdoo' => $responseOdoo, 'user' => auth()->user()]));
             Mail::to('adminportales@promolife.com.mx')->send(new SendDataErrorCreateQuote('adminportales@promolife.com.mx', '/storage/dataErrorToCreateQuote.txt'));
             return redirect()->action([CotizadorController::class, 'verCotizacion'], ['quote' => $quote->id])->with('messageMail', json_encode($message) . ' ' . json_encode($messageMail))
                 ->with('messageError', 'Tu cotizacion se ha guardado exitosamente. ' .

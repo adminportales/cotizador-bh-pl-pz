@@ -7,13 +7,15 @@ use App\Models\QuoteInformation;
 use App\Models\User;
 use Livewire\Component;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Livewire\WithFileUploads;
 
 class EditInformationClientComponent extends Component
 {
     use AuthorizesRequests;
+    use WithFileUploads;
 
     public $quoteInfo, $quote;
-    public $tipoCliente, $clienteSeleccionado = '', $nombre, $empresa, $email, $telefono, $celular, $oportunidad, $rank = '', $departamento, $informacion, $clients, $ivaByItem, $taxFee, $shelfLife;
+    public $tipoCliente, $clienteSeleccionado = '', $nombre, $empresa, $email, $telefono, $celular, $oportunidad, $rank = '', $departamento, $informacion, $clients,  $logo,  $ivaByItem, $taxFee, $shelfLife;
 
     public function mount()
     {
@@ -50,10 +52,21 @@ class EditInformationClientComponent extends Component
             'rank' => 'required',
         ]);
 
-        $this->quote->update(['iva_by_item' => boolval($this->ivaByItem)]);
+        $pathLogo = null;
+        if ($this->logo != null) {
+            $name = time() . $this->empresa .  $this->logo->getClientOriginalExtension();
+            $pathLogo = 'storage/logos/' . $name;
+            $this->logo->storeAs('public/logos', $name);
+            // Guardar La cotizacion
+        }
+
+        $this->quote->update([
+            'iva_by_item' => boolval($this->ivaByItem),
+            'logo' => $pathLogo,
+        ]);
         // Guardar la Info de la cotizacion
         $quoteInfo = QuoteInformation::create([
-            'name' => $this->quoteInfo->name,
+            'name' => $this->nombre,
             'company' => $this->quoteInfo->company,
             'email' => $this->email,
             'landline' => $this->telefono,

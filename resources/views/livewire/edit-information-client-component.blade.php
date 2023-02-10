@@ -86,13 +86,15 @@
         <div class="col-md-4">
             <div class="form-group">
                 <label for="">Tax Fee (Opcional)</label>
-                <input type="number" class="form-control" placeholder="Tax Fee (Valor Maximo 99)" wire:model="taxFee" max="99">
+                <input type="number" class="form-control" placeholder="Tax Fee (Valor Maximo 99)" wire:model="taxFee"
+                    max="99">
             </div>
         </div>
         <div class="col-md-4">
             <div class="form-group">
                 <label for="">Vigencia de la cotizacion (Opcional)</label>
-                <input type="number" class="form-control" placeholder="Duracion de la vigencia en dias naturales" wire:model="shelfLife" max="99">
+                <input type="number" class="form-control" placeholder="Duracion de la vigencia en dias naturales"
+                    wire:model="shelfLife" max="99">
             </div>
         </div>
         <div class="col-md-12">
@@ -103,6 +105,41 @@
             @if ($errors->has('informacion'))
                 <span class="text-danger">{{ $errors->first('informacion') }}</span>
             @endif
+        </div>
+        <div class="col-md-4">
+            <div class="form-group">
+                <label for="">Logo del Cliente</label>
+                <div class="form-group" x-data="{ isUploading: false, progress: 5 }" x-on:livewire-upload-start="isUploading = true"
+                    x-on:livewire-upload-finish="isUploading = false" x-on:livewire-upload-error="isUploading = false"
+                    x-on:livewire-upload-progress="progress = $event.detail.progress">
+                    <input type="file" class="form-control" wire:model="logo" accept="image/*">
+                    <div x-show="isUploading" class="progress">
+                        <div class="progress-bar" role="progressbar" x-bind:style="`width: ${progress}%`"
+                            aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                </div>
+                @if ($logo)
+                    <p class="text-warning">Revisa que tenga fondo blanco o que se un archivo PNG
+                    </p>
+                    <div class="btn btn-danger btn-sm" wire:click="limpiarLogo()">Eliminar</div>
+                @else
+                    <p>No hay un logo de cliente cargado</p>
+                @endif
+            </div>
+            @if ($errors->has('logo'))
+                <span class="text-danger">{{ $errors->first('departamento') }}</span>
+            @endif
+        </div>
+        <div class="col-md-4">
+            <div class="form-group">
+                @if ($logo)
+                    <div class="text-center">
+                        <p>Logo del cliente</p>
+                        <img src="{{ $logo->temporaryUrl() }}" alt=""
+                            style="max-width: 100%; height: auto; max-height: 150px; width: auto">
+                    </div>
+                @endif
+            </div>
         </div>
         <div class="col-md-12">
             <div class="d-flex justify-content-center">
@@ -115,4 +152,5 @@
             </div>
         </div>
     </div>
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
 </div>
