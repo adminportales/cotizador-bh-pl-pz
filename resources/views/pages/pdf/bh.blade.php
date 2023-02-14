@@ -94,10 +94,7 @@
             </thead>
             <tbody>
                 @php
-                    $st = isset($quote->preview) ? $quote->precio_total : $quote->latestQuotesUpdate->quoteProducts->sum('precio_total');
-                    $taxFee = round($st * ($quote->latestQuotesUpdate->quotesInformation->tax_fee / 100), 2);
-                    $totalProducts = isset($quote->preview) ? $quote->productos_total : $quote->latestQuotesUpdate->quoteProducts->sum('cantidad');
-                    $taxFeeAddProduct = round($taxFee / $totalProducts, 2);
+                    $taxFee = 1 + ((int) $quote->latestQuotesUpdate->quotesInformation->tax_fee) / 100;
                 @endphp
                 @foreach ($quote->latestQuotesUpdate->quoteProducts as $item)
                     @php
@@ -124,12 +121,12 @@
                         </td>
                         <td style="width: 60px">{{ $item->cantidad }}</td>
                         <td style="width: 90px">
-                            ${{ number_format($item->precio_unitario + $taxFeeAddProduct, 2, '.', ',') }}</td>
+                            ${{ number_format($item->precio_unitario * $taxFee, 2, '.', ',') }}</td>
                         <td style="width: 70px">
-                            ${{ number_format($item->precio_total + $taxFeeAddProduct * $item->cantidad, 2, '.', ',') }}
+                            ${{ number_format($item->precio_total * $taxFee, 2, '.', ',') }}
                             @if ($quote->iva_by_item)
                                 <p style="font-size: 12px"><b>IVA:
-                                    </b>${{ number_format(($item->precio_total + $taxFeeAddProduct * $item->cantidad) * 0.16, 2, '.', ',') }}
+                                    </b>${{ number_format($item->precio_total * $taxFee * 0.16, 2, '.', ',') }}
                                 </p>
                             @endif
                         </td>
@@ -157,7 +154,7 @@
             </tr>
             <tr>
                 @php
-                    $subtotal = (isset($quote->preview) ? $quote->precio_total : $quote->latestQuotesUpdate->quoteProducts->sum('precio_total')) + $taxFee;
+                    $subtotal = (isset($quote->preview) ? $quote->precio_total : $quote->latestQuotesUpdate->quoteProducts->sum('precio_total')) * $taxFee;
                     $discount = 0;
                     if ($quote->latestQuotesUpdate->quoteDiscount->type == 'Fijo') {
                         $discount = $quote->latestQuotesUpdate->quoteDiscount->value;
