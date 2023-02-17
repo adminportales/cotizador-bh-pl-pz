@@ -4,18 +4,25 @@ namespace App\Http\Livewire;
 
 use App\Models\Quote;
 use App\Models\User;
+use Carbon\Carbon;
 use Livewire\Component;
 
 class DashboardComponent extends Component
 {
     public $company, $start, $end;
     public $dataQuoteCompany, $dataUserInfoTickets, $dataUserMountTickets, $dates;
+
+    public function mount()
+    {
+        $this->end = Carbon::now()->format("Y-m-d");
+        $this->start = Carbon::now()->subDays(5)->format("Y-m-d");
+    }
+
     public function render()
     {
         $start = date($this->start);
         $end = date($this->end);
         $this->dates = [$start, $end];
-        // dd($start, $end);
         $company = $this->company;
         $quotes = Quote::when($company !== '' && $company !== null, function ($query, $company) {
             $query->where('company_id', '=', $this->company);

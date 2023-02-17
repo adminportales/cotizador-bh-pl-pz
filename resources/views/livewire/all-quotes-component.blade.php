@@ -11,6 +11,10 @@
     <div class="row px-3">
         <div class="card w-100">
             <div class="card-body">
+                <div>
+                    <input wire:model='keyWord' type="text" class="form-control" name="search" id="search"
+                        placeholder="Buscar">
+                </div>
                 @if (count($quotes) > 0)
                     <table class="table table-sm table-hover">
                         <thead>
@@ -108,6 +112,9 @@
                             @endforeach
                         </tbody>
                     </table>
+                    <div class="text-center">
+                        {{ $quotes->links() }}
+                    </div>
                 @else
                     <div class="d-flex w-100 justify-content-center">
                         <p class="text-center m-0 my-5"><strong>No tienes cotizaciones realizadas </strong>

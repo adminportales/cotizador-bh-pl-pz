@@ -24,46 +24,70 @@
             </div>
         </section>
         <br>
-        <section class="row">
-            <div class="col-md-4">
-                <p class="text-center">Numero de Leads Por Empresa</p>
-                <canvas id="myChart" width="400" height="400"></canvas>
-            </div>
-            <div class="col-md-8">
-                <p class="text-center">Usuarios/Total de Leads</p>
-                <canvas id="myChartBarCreated" width="400" height="200"></canvas>
-            </div>
-            <div class="w-100">
-                <br>
-            </div>
-            <div class="col-md-8">
-                <p class="text-center">Usuarios/Monto Total</p>
-                <canvas id="myChartBarMoney" width="400" height="200"></canvas>
-            </div>
-            <div class="col-md-4">
-                <p class="text-center">Usuarios que no han creado un lead</p>
-                <table class="table table-sm">
-                    <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>Nombre</th>
-                            <th>Last Login</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($dataUserInfoTickets[2] as $item)
+        <div class="dashboard-content">
+            <section class="row" wire:loading.class="opacity">
+                <div class="col-md-4">
+                    <p class="text-center">Numero de Leads Por Empresa</p>
+                    <canvas id="myChart" width="400" height="400"></canvas>
+                </div>
+                <div class="col-md-8">
+                    <p class="text-center">Usuarios/Total de Leads</p>
+                    <canvas id="myChartBarCreated" width="400" height="200"></canvas>
+                </div>
+                <div class="w-100">
+                    <br>
+                </div>
+                <div class="col-md-8">
+                    <p class="text-center">Usuarios/Monto Total</p>
+                    <canvas id="myChartBarMoney" width="400" height="200"></canvas>
+                </div>
+                <div class="col-md-4">
+                    <p class="text-center">Usuarios que no han creado un lead</p>
+                    <table class="table table-sm">
+                        <thead>
                             <tr>
-                                <td>{{ $loop->iteration }}</td>
-                                <td>{{ Str::limit($item[0], 25, '...') }}</td>
-                                <td>{{ $item[1] }}</td>
+                                <th>#</th>
+                                <th>Nombre</th>
+                                <th>Last Login</th>
                             </tr>
-                        @endforeach
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            @foreach ($dataUserInfoTickets[2] as $item)
+                                <tr>
+                                    <td>{{ $loop->iteration }}</td>
+                                    <td>{{ Str::limit($item[0], 25, '...') }}</td>
+                                    <td>{{ $item[1] }}</td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+            <div wire:loading.flex>
+                <div class="spinnerloading w-100 d-flex justify-content-center">
+                    <div>
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="sr-only">Loading...</span>
+                        </div>
+                    </div>
+                </div>
             </div>
-            {{--  --}}
-        </section>
+        </div>
     </div>
+    <style>
+        .spinnerloading {
+            position: absolute;
+            top: 10px;
+        }
+
+        .dashboard-content {
+            position: relative;
+        }
+
+        .opacity {
+            opacity: .5;
+        }
+    </style>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
     <script>
         let dataQuoteCompany = @json($dataQuoteCompany);
