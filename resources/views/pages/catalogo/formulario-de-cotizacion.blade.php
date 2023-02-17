@@ -46,7 +46,7 @@
                     <div class="col-md-12">
                         <p class="m-1"><strong> Precios Por Cantidad de Articulos, de acuerdo al material,
                                 tecnica y tamaño seleccionados</strong></p>
-                        <table class="table ">
+                        <table class="table table-sm mb-0">
                             <thead>
                                 <tr>
                                     <td><strong>Escala</strong></td>
@@ -69,12 +69,12 @@
                 @endif
             </div>
         </div>
-        <p class="w-100"><strong>Costos y Utilidad</strong></p>
+        <p class="w-100 mt-2 mb-1"><strong>Costos y Utilidad</strong></p>
         <div class="border border-primary rounded p-2">
             <div class="form-group d-flex align-items-center">
                 <label for="operacion" class="w-50 text-dark"><strong>Costo Indirecto de operacion</strong>
                 </label>
-                <input type="number" name="operacion" wire:model="operacion" placeholder="Costo de operacion"
+                <input type="number" name="operacion" wire:model="operacion" placeholder="Costo indirecto de operacion"
                     class="form-control">
             </div>
             <div class="form-group d-flex align-items-center">
@@ -82,30 +82,31 @@
                 <input type="number" name="margen" wire:model="utilidad" placeholder="Margen de Utilidad. Max: 99"
                     max="99" maxlength="2" class="form-control" max="100">
             </div>
-
             <div class="form-group d-flex align-items-center">
                 <label for="cantidad" class="w-50 text-dark"><strong>Cantidad</strong> </label>
-                <input type="number" name="cantidad" wire:model="cantidad" placeholder="Cantidad de productos"
-                    class="form-control" max="{{ $product->stock }}">
+                <input type="number" name="cantidad" wire:model="cantidad"
+                    placeholder="Cantidad de productos a cotizar" class="form-control" max="{{ $product->stock }}">
             </div>
-            <div class="form-group d-flex align-items-center">
+            <div class="form-group d-flex align-items-center ">
                 <label for="dias" class="w-50 text-dark"><strong>Dias de Entrega</strong> </label>
                 <input type="number" name="dias" wire:model="entrega" placeholder="Dias de entrega estimada"
                     class="form-control">
             </div>
-            <div class="form-group">
-                <label for="newTechnique" class="text-dark"><strong>Precio actual de la tecnica por articulo: $
-                        {{ $precioDeTecnica }}</strong><br> <span class="text-warning">*Solo modificar cuando sea
-                        necesario*</span> </label>
+        </div>
+        <p class="w-100 mt-2 mb-1"><strong>Personalizacion</strong></p>
+        <div class="border border-primary rounded p-2">
+            <div class="form-group ">
+                <label for="newTechnique" class="text-dark"><strong>Precio actual de la tecnica por articulo:
+                    </strong>
+                    $ {{ $precioDeTecnica }}</label>
                 <input type="number" name="newTechnique" wire:model="newPriceTechnique"
-                    placeholder="Nuevo precio de la tecnica" class="form-control">
+                    placeholder="Nuevo precio de la tecnica (Opcional)" class="form-control">
             </div>
             <div class="form-group">
                 <label for="newDescription" class="text-dark"><strong>Coloca la descripcion que se mostrara en la
-                        cotizacion:</strong><br> <span class="text-warning">*Solo modificar cuando sea
-                        necesario*</span> </label>
+                        cotizacion:</strong> </label>
                 <input type="text" name="newDescription" wire:model="newDescription"
-                    placeholder="Descripcion del producto " class="form-control">
+                    placeholder="Descripcion del producto (Opcional)" class="form-control">
             </div>
             <div class="form-group">
                 <label for="" class="text-dark"><strong>Imagen que sera visualizada en la
