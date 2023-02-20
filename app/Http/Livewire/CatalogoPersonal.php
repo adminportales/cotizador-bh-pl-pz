@@ -21,12 +21,10 @@ class CatalogoPersonal extends Component
     {
 
         $keyWord = '%' . $this->keyWord . '%';
-        \DB::statement("SET SQL_MODE=''");
-
-
+        $nameDB = (new Product())->getConnection()->getDatabaseName();
         $products  = auth()->user()
             ->listProducts()
-            ->join('cat.products', 'products.id', 'user_products.product_id')
+            ->join($nameDB . '.products', 'products.id', 'user_products.product_id')
             ->where('name', 'LIKE', $keyWord)
             ->where('products.visible', '=', true)
             ->simplePaginate(32);
