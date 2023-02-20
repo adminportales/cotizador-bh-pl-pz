@@ -91,7 +91,7 @@
                                 <div class="text-center" style="height: 110px">
                                     <img src="{{ $row->firstImage ? $row->firstImage->image_url : '' }}"
                                         class="card-img-top " alt="{{ $row->name }}"
-                                        style="width: 100%; max-width: 100px; max-height: 110px; height: auto">
+                                        style="width: auto; max-width: 100px; max-height: 110px; height: auto">
                                 </div>
                                 <h5 class="card-title m-0" style="text-transform: capitalize">
                                     {{ Str::limit($row->name, 22, '...') }}</h5>

@@ -49,18 +49,14 @@ class AddNewProduct extends Component
             ]);
         }
 
-        $proveedor = null;
-        $proveedor = Provider::create([
-            'company' => $this->proveedor, 'email' => "no-mail",
+        $proveedor = Provider::firstOrCreate([
+            'company' => $this->proveedor
+        ], [
+            'email' => "no-mail",
             'phone' => 000,
             'contact' => "False",
             'discount' => 0
         ]);
-        if (!$proveedor) {
-            $proveedor = Color::create([
-                'proveedor' => ucfirst($this->proveedor), 'slug' => $slug,
-            ]);
-        }
 
         $pathImagen = null;
         if ($this->imagen != null) {

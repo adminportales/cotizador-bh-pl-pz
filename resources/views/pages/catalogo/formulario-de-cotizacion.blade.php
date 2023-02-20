@@ -3,10 +3,10 @@
         <p class="w-100"><strong>Personalizacion de la tecnica</strong></p>
         <div class="border border-primary rounded p-2">
             <div class="row">
-                <div class="form-group col-md-6">
-                    <label for="tecnica" class="text-dark"><strong>Material</strong> </label>
-                    <select name="" id="" class="form-control" wire:model="materialSeleccionado"
-                        wire:change="resetSizes">
+                <div class="form-group m-0 mb-1 col-md-6">
+                    <label for="tecnica" class="text-dark m-0"><strong>Material</strong> </label>
+                    <select name="" id="" class="form-control form-control-sm"
+                        wire:model="materialSeleccionado" wire:change="resetSizes">
                         <option value="">Seleccione el material</option>
                         @foreach ($materiales as $material)
                             <option value="{{ $material->id }}">{{ $material->nombre }}</option>
@@ -14,9 +14,10 @@
                     </select>
                 </div>
                 @if ($techniquesAvailables)
-                    <div class="form-group col-md-6">
-                        <label for="tecnica" class="text-dark"><strong>Tecnica</strong> </label>
-                        <select name="" id="" class="form-control" wire:model="tecnicaSeleccionada">
+                    <div class="form-group m-0 mb-1 col-md-6">
+                        <label for="tecnica" class="text-dark m-0"><strong>Tecnica</strong> </label>
+                        <select name="" id="" class="form-control form-control-sm"
+                            wire:model="tecnicaSeleccionada">
                             <option value="">Seleccione la tecnica</option>
                             @foreach ($techniquesAvailables as $technique)
                                 <option value="{{ $technique->id }}">{{ $technique->nombre }}
@@ -26,9 +27,10 @@
                     </div>
                 @endif
                 @if ($sizesAvailables)
-                    <div class="form-group col-md-6">
-                        <label for="tecnica" class="text-dark"><strong>Tamaño</strong> </label>
-                        <select name="" id="" class="form-control" wire:model="sizeSeleccionado">
+                    <div class="form-group m-0 mb-1 col-md-6">
+                        <label for="tecnica" class="text-dark m-0"><strong>Tamaño</strong> </label>
+                        <select name="" id="" class="form-control form-control-sm"
+                            wire:model="sizeSeleccionado">
                             <option value="">Seleccione el tamaño</option>
                             @foreach ($sizesAvailables as $size)
                                 <option value="{{ $size->id }}">{{ $size->nombre }}</option>
@@ -37,10 +39,10 @@
                     </div>
                 @endif
 
-                <div class="form-group col-md-6">
-                    <label for="colores" class="text-dark"><strong>Cantidad de Colores/Logos</strong> </label>
+                <div class="form-group m-0 mb-1 col-md-6">
+                    <label for="colores" class="text-dark m-0"><strong>Cantidad de Colores/Logos</strong> </label>
                     <input type="number" name="colores" wire:model="colores" placeholder="Cantidad de Colores"
-                        class="form-control" min="0">
+                        class="form-control form-control-sm" min="0">
                 </div>
                 @if ($preciosDisponibles)
                     <div class="col-md-12">
@@ -71,45 +73,48 @@
         </div>
         <p class="w-100 mt-2 mb-1"><strong>Costos y Utilidad</strong></p>
         <div class="border border-primary rounded p-2">
-            <div class="form-group d-flex align-items-center">
-                <label for="operacion" class="w-50 text-dark"><strong>Costo Indirecto de operacion</strong>
-                </label>
-                <input type="number" name="operacion" wire:model="operacion" placeholder="Costo indirecto de operacion"
-                    class="form-control">
-            </div>
-            <div class="form-group d-flex align-items-center">
-                <label for="margen" class="w-50 text-dark"><strong>Margen de Utilidad</strong> </label>
-                <input type="number" name="margen" wire:model="utilidad" placeholder="Margen de Utilidad. Max: 99"
-                    max="99" maxlength="2" class="form-control" max="100">
-            </div>
-            <div class="form-group d-flex align-items-center">
-                <label for="cantidad" class="w-50 text-dark"><strong>Cantidad</strong> </label>
-                <input type="number" name="cantidad" wire:model="cantidad"
-                    placeholder="Cantidad de productos a cotizar" class="form-control" max="{{ $product->stock }}">
-            </div>
-            <div class="form-group d-flex align-items-center ">
-                <label for="dias" class="w-50 text-dark"><strong>Dias de Entrega</strong> </label>
-                <input type="number" name="dias" wire:model="entrega" placeholder="Dias de entrega estimada"
-                    class="form-control">
+            <div class="row">
+                <div class="form-group m-0 mb-1 col-md-6">
+                    <label for="operacion" class="text-dark m-0"><strong>Costo Indirecto de operacion</strong>
+                    </label>
+                    <input type="number" name="operacion" wire:model="operacion"
+                        placeholder="Costo indirecto de operacion" class="form-control form-control-sm">
+                </div>
+                <div class="form-group m-0 mb-1 col-md-6">
+                    <label for="margen" class="text-dark m-0"><strong>Margen de Utilidad</strong> </label>
+                    <input type="number" name="margen" wire:model="utilidad" placeholder="Margen de Utilidad. Max: 99"
+                        max="99" maxlength="2" class="form-control form-control-sm" max="100">
+                </div>
+                <div class="form-group m-0 mb-1 col-md-6">
+                    <label for="cantidad" class="text-dark m-0"><strong>Cantidad</strong> </label>
+                    <input type="number" name="cantidad" wire:model="cantidad"
+                        placeholder="Cantidad de productos a cotizar" class="form-control form-control-sm"
+                        max="{{ $product->stock }}">
+                </div>
+                <div class="form-group m-0 mb-1 col-md-6 ">
+                    <label for="dias" class="text-dark m-0"><strong>Dias de Entrega</strong> </label>
+                    <input type="number" name="dias" wire:model="entrega" placeholder="Dias de entrega estimada"
+                        class="form-control form-control-sm">
+                </div>
             </div>
         </div>
         <p class="w-100 mt-2 mb-1"><strong>Personalizacion</strong></p>
         <div class="border border-primary rounded p-2">
-            <div class="form-group ">
-                <label for="newTechnique" class="text-dark"><strong>Precio actual de la tecnica por articulo:
+            <div class="form-group m-0 mb-1 ">
+                <label for="newTechnique" class="text-dark m-0"><strong>Precio actual de la tecnica por articulo:
                     </strong>
                     $ {{ $precioDeTecnica }}</label>
                 <input type="number" name="newTechnique" wire:model="newPriceTechnique"
-                    placeholder="Nuevo precio de la tecnica (Opcional)" class="form-control">
+                    placeholder="Nuevo precio de la tecnica (Opcional)" class="form-control form-control-sm">
             </div>
-            <div class="form-group">
-                <label for="newDescription" class="text-dark"><strong>Coloca la descripcion que se mostrara en la
+            <div class="form-group m-0 mb-1">
+                <label for="newDescription" class="text-dark m-0"><strong>Coloca la descripcion que se mostrara en la
                         cotizacion:</strong> </label>
-                <input type="text" name="newDescription" wire:model="newDescription"
-                    placeholder="Descripcion del producto (Opcional)" class="form-control">
+                <textarea rows="3" name="newDescription" wire:model="newDescription"
+                     class="form-control form-control-sm" placeholder="Descripcion del producto (Opcional)"> </textarea>
             </div>
-            <div class="form-group">
-                <label for="" class="text-dark"><strong>Imagen que sera visualizada en la
+            <div class="form-group m-0 mb-1">
+                <label for="" class="text-dark m-0"><strong>Imagen que sera visualizada en la
                         cotizacion</strong></label>
                 @if (!$imageSelected)
                     <button type="button" class="btn btn-primary btn-sm btn-block" data-toggle="modal"
@@ -221,7 +226,7 @@
                 <h6 class="text-success">Precio Final por Articulo: $ {{ $precioCalculado }}</h6>
                 <h6 class="text-success">Precio Total: $ {{ $precioTotal }}</h6>
             </div>
-            <div class="form-group text-center">
+            <div class="form-group m-0 mb-1 text-center">
                 <button type="submit" class="btn btn-primary py-2 px-4">Añadir a la cotizacion</button>
             </div>
         </div>

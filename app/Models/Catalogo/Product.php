@@ -29,7 +29,8 @@ class Product extends Model
         'stock',
         'type_id',
         'color_id',
-        'provider_id'
+        'provider_id',
+        'visible'
     ];
 
     /**
