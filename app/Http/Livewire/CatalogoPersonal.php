@@ -22,10 +22,10 @@ class CatalogoPersonal extends Component
 
         $keyWord = '%' . $this->keyWord . '%';
         $nameDB = (new Product())->getConnection()->getDatabaseName();
-        $products  = auth()->user()
+        $products = auth()->user()
             ->listProducts()
             ->join($nameDB . '.products', 'products.id', 'user_products.product_id')
-            ->where('name', 'LIKE', $keyWord)
+            ->where('products.name', 'LIKE', $keyWord)
             ->where('products.visible', '=', true)
             ->simplePaginate(32);
         return view('livewire.catalogo-personal', ['products' => $products,]);

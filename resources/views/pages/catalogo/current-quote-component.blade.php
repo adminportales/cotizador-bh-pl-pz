@@ -11,7 +11,6 @@
                                         <th class="text-center">#</th>
                                         <th>SKU</th>
                                         <th>Nombre</th>
-
                                         <th>Informacion Adicional</th>
                                         <th>Unidad</th>
                                         <th>Cantidad</th>

@@ -71,8 +71,18 @@
         h5 {
             color: #0D4654 !important;
         }
-        .container{
+
+        .container {
             max-width: 1360px;
+            padding-left: 0.5rem;
+            padding-right: 0.5rem;
+        }
+
+        @media(min-width:768px) {
+            .container {
+                padding-left: 1.5rem;
+                padding-right: 1.5rem;
+            }
         }
     </style>
     @livewireStyles
@@ -81,9 +91,16 @@
 <body>
     @php
         $companySession = auth()->user()->company_session;
-        if ($companySession == null && !auth()->user()->hasRole('admin')) {
+        if (
+            $companySession == null &&
+            !auth()
+                ->user()
+                ->hasRole('admin')
+        ) {
             auth()->user()->company_session = auth()->user()->info[0]->company_id;
-            auth()->user()->save();
+            auth()
+                ->user()
+                ->save();
         }
     @endphp
     <div id="app">

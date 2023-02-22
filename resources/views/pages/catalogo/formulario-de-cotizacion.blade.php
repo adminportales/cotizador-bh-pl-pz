@@ -221,7 +221,7 @@
                     Ver mi cotizacion </a>
             </div>
         @endif
-        <div class="d-flex justify-content-between">
+        <div class=" d-sm-flex justify-content-between">
             <div>
                 <h6 class="text-success">Precio Final por Articulo: $ {{ $precioCalculado }}</h6>
                 <h6 class="text-success">Precio Total: $ {{ $precioTotal }}</h6>

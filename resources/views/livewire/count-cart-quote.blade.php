@@ -1,5 +1,6 @@
 <div>
-    <a class="nav-link text-white" aria-current="page" href="{{ route('cotizacion') }}" data-toggle="tooltip" data-placement="bottom" title="Cotizacion Actual">
+    <a class="cart-icon nav-link text-white" aria-current="page" href="{{ route('cotizacion') }}" data-toggle="tooltip"
+        data-placement="bottom" title="Cotizacion Actual">
         <div style="width: 2rem">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                 stroke="currentColor" class="w-6 h-6">
@@ -11,4 +12,19 @@
             <span class="badge badge-light">{{ $total }}</span>
         @endif
     </a>
+    <style>
+        .cart-icon .badge {
+            position: absolute;
+            top: 20px;
+            right: 10px;
+        }
+        .cart-icon{
+            position: relative;
+        }
+        @media(min-width:768px) {
+            .cart-icon .badge {
+                position: initial;
+            }
+        }
+    </style>
 </div>

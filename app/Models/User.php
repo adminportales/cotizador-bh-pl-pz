@@ -78,6 +78,6 @@ class User extends Authenticatable
 
     public function listProducts()
     {
-        return $this->hasMany(UserProduct::class);
+        return $this->hasMany(UserProduct::class)->with('product');
     }
 }

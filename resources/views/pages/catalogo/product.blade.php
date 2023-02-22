@@ -2,7 +2,7 @@
 @section('title', $product->name)
 @section('content')
     <div class="container">
-        <div class="row px-3">
+        <div class="row">
             <div class="col-md-5">
                 @if ($product->precio_unico)
                     @php

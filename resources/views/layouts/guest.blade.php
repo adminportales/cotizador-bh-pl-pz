@@ -68,10 +68,17 @@
             letter-spacing: 1px;
             text-transform: uppercase;
             transition: transform 80ms ease-in;
+            width: 100%;
         }
 
         button:active {
             transform: scale(0.95);
+        }
+
+        @media(min-width:768px) {
+            button {
+                width: auto;
+            }
         }
 
         button:focus {
@@ -123,8 +130,14 @@
 
         .sign-in-container {
             left: 0;
-            width: 50%;
+            width: 100%;
             z-index: 2;
+        }
+
+        @media(min-width: 768px) {
+            .sign-in-container {
+                width: 50%;
+            }
         }
 
         .container.right-panel-active .sign-in-container {
@@ -167,8 +180,15 @@
             width: 50%;
             height: 100%;
             overflow: hidden;
+            display: none;
             transition: transform 0.6s ease-in-out;
             z-index: 100;
+        }
+
+        @media(min-width: 768px) {
+            .overlay-container {
+                display: block;
+            }
         }
 
         .container.right-panel-active .overlay-container {
@@ -266,7 +286,6 @@
             color: #3c97bf;
             text-decoration: none;
         }
-
     </style>
 </head>
 
