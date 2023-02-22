@@ -80,7 +80,10 @@
                                 <option value="ASC">De menor a mayor</option>
                                 <option value="DESC">De mayor a menor</option>
                             </select>
-                            <button class="btn btn-primary btn-block" wire:click="limpiar">Limpiar Filtros</button>
+                            <div class="d-flex">
+                                <button class="btn btn-primary w-50" wire:click="limpiar">Limpiar</button>
+                                <button class="btn btn-success w-50" data-dismiss="modal">Buscar</button>
+                            </div>
                         </div>
                     </div>
                 </div>
