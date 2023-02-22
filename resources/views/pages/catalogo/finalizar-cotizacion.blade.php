@@ -246,66 +246,69 @@
                         <br>
                         <h3>Tu cotizacion</h3>
                         <div class="d-flex justify-content-between flex-column flex-sm-row">
-                            <table>
-                                <thead>
-                                    <tr>
-                                        <th>Producto</th>
-                                        <th>Subtotal</th>
-                                        <th>Piezas</th>
-                                        <th>Total</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach (auth()->user()->currentQuote->currentQuoteDetails as $quote)
+                            <div>
+                                <table class="table table-sm table-responsive">
+                                    <thead>
                                         <tr>
-                                            <td class="pr-5">
-                                                <p>{{ $quote->product->name }}</p>
-                                            </td>
-                                            <td class="pr-5">
-                                                <p>$ {{ $quote->precio_unitario }}</p>
-                                            </td>
-                                            <td class="pr-5">
-                                                <p> {{ $quote->cantidad }} piezas</p>
-                                            </td>
-                                            <td>
-                                                <p>$ {{ $quote->precio_total }}</p>
-                                            </td>
+                                            <th>Producto</th>
+                                            <th>Subtotal</th>
+                                            <th>Piezas</th>
+                                            <th>Total</th>
                                         </tr>
-                                    @endforeach
-                                    @php
-                                        $subtotal = auth()
-                                            ->user()
-                                            ->currentQuote->currentQuoteDetails->sum('precio_total');
-                                        $discount = 0;
-                                        if (auth()->user()->currentQuote->type == 'Fijo') {
-                                            $discount = auth()->user()->currentQuote->value;
-                                        } else {
-                                            $discount = round(($subtotal / 100) * auth()->user()->currentQuote->value, 2);
-                                        }
-                                    @endphp
-                                    <tr>
-                                        <th colspan="3">Subtotal</th>
-                                        <th>$ {{ $subtotal }}</th>
-                                    </tr>
-                                    <tr>
-                                        <th colspan="3">Descuento</th>
-                                        <th>$ {{ $discount }}</th>
-                                    </tr>
-                                    <tr>
-                                        <th colspan="3">Total</th>
-                                        <th>$ {{ $subtotal - $discount }}</th>
-                                    </tr>
-                                </tbody>
-                            </table>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (auth()->user()->currentQuote->currentQuoteDetails as $quote)
+                                            <tr>
+                                                <td class="pr-5">
+                                                    <p>{{ $quote->product->name }}</p>
+                                                </td>
+                                                <td class="pr-5">
+                                                    <p>$ {{ $quote->precio_unitario }}</p>
+                                                </td>
+                                                <td class="pr-5">
+                                                    <p> {{ $quote->cantidad }} piezas</p>
+                                                </td>
+                                                <td>
+                                                    <p>$ {{ $quote->precio_total }}</p>
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                        @php
+                                            $subtotal = auth()
+                                                ->user()
+                                                ->currentQuote->currentQuoteDetails->sum('precio_total');
+                                            $discount = 0;
+                                            if (auth()->user()->currentQuote->type == 'Fijo') {
+                                                $discount = auth()->user()->currentQuote->value;
+                                            } else {
+                                                $discount = round(($subtotal / 100) * auth()->user()->currentQuote->value, 2);
+                                            }
+                                        @endphp
+                                        <tr>
+                                            <th colspan="3">Subtotal</th>
+                                            <th>$ {{ $subtotal }}</th>
+                                        </tr>
+                                        <tr>
+                                            <th colspan="3">Descuento</th>
+                                            <th>$ {{ $discount }}</th>
+                                        </tr>
+                                        <tr>
+                                            <th colspan="3">Total</th>
+                                            <th>$ {{ $subtotal - $discount }}</th>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
                             <div class="d-flex flex-column">
                                 <div wire:loading wire:target="guardarCotizacion">
                                     <div class="spinner-border text-primary" role="status">
                                         <span class="sr-only">Loading...</span>
                                     </div>
                                 </div>
-                                <button class="btn btn-primary btn-sm" onclick="preview()">Previsualizar Cotizacion</button>
-                                <br>
-                                <button class="btn btn-primary btn-sm" onclick="enviar()">Guardar Cotizacion</button>
+                                <button class="btn btn-primary btn-sm btn-block mb-1"
+                                    onclick="preview()">Previsualizar Cotizacion</button>
+                                <button class="btn btn-primary btn-sm btn-block" onclick="enviar()">Guardar
+                                    Cotizacion</button>
                             </div>
                         </div>
                     </div>
