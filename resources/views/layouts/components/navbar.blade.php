@@ -164,6 +164,7 @@
                     </a>
 
                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink">
+                        <p class="dropdown-item">{{ auth()->user()->name }}</p>
                         @role('admin')
                             <a class="dropdown-item" href="{{ url('admin/') }}">
                                 <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>

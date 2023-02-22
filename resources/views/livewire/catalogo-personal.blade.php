@@ -23,7 +23,7 @@
                     @endphp
                     @if ($row)
                         <div class="col-md-4 col-lg-3 col-sm-6  d-flex justify-content-center">
-                            <div class="card mb-4" style="width: 14rem;">
+                            <div class="card product-info">
                                 <div class="card-body text-center shadow-sm p-2">
                                     @php
                                         $priceProduct = $row->price;
@@ -52,22 +52,28 @@
                                             </svg>
                                         </div>
                                     </div>
-                                    <div class="text-center" style="height: 110px">
-                                        <img src="{{ $row->firstImage ? $row->firstImage->image_url : '' }}"
-                                            class="card-img-top " alt="{{ $row->name }}"
-                                            style="width: 100%; max-width: 100px; max-height: 110px; height: auto">
-                                    </div>
-                                    <h5 class="card-title m-0" style="text-transform: capitalize">
-                                        {{ Str::limit($row->name, 22, '...') }}</h5>
-                                    <p class=" m-0 pt-1" style="font-size: 16px"><strong>SKU:</strong>
-                                        {{ $row->sku }}</p>
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <p class=" m-0 pt-1" style="font-weight: bold">$
-                                            {{ $priceProduct }}</p>
-                                        <a href="{{ route('show.product', ['product' => $row->id]) }}"
-                                            class="btn btn-sm btn-primary">
-                                            Cotizar
-                                        </a>
+                                    <div class="d-flex flex-row flex-sm-column">
+                                        <div class="text-center" style="height: 110px">
+                                            <img src="{{ $row->firstImage ? $row->firstImage->image_url : '' }}"
+                                                class="card-img-top " alt="{{ $row->name }}"
+                                                style="width: auto; max-width: 100px; max-height: 110px; height: auto">
+                                        </div>
+                                        <div class="info-products">
+                                            <h5 class="card-title m-0" style="text-transform: capitalize">
+                                                {{ Str::limit($row->name, 22, '...') }}</h5>
+                                            <p class=" m-0 pt-1" style="font-size: 16px"><strong>SKU:</strong>
+                                                {{ $row->sku }}</p>
+                                            <p class="m-0 mb-1 pt-1 d-sm-none" style="font-size: 16px">Stock: <span
+                                                    style="font-weight: bold">{{ $row->stock }}</span></p>
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <p class=" m-0 pt-1" style="font-weight: bold">$
+                                                    {{ $priceProduct }}</p>
+                                                <a href="{{ route('show.product', ['product' => $row->id]) }}"
+                                                    class="btn btn-sm btn-primary">
+                                                    Cotizar
+                                                </a>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -255,6 +261,32 @@
         }
     </script>
     <style>
+        .product-info {
+            width: 100%;
+            margin-bottom: 0.5rem;
+        }
+
+        .info-products {
+            flex-grow: 1;
+            text-align: left;
+        }
+
+        @media(min-width:576px) {
+            .product-info {
+                width: 14rem;
+                margin-bottom: 1.5rem;
+            }
+
+            .info-products {
+                flex-grow: 0;
+                text-align: center;
+            }
+
+            .stock-relative {
+                display: block !important;
+            }
+        }
+
         .stock-relative {
             position: absolute;
             top: 10px;
@@ -262,6 +294,7 @@
             background-color: #fcfcfcf2;
             border-radius: 5px;
             padding: 0px 5px;
+            display: none;
         }
     </style>
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
