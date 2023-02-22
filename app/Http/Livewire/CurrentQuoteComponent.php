@@ -13,6 +13,7 @@ class CurrentQuoteComponent extends Component
     public $discountMount = 0;
 
     public $value, $type;
+    public $quoteEdit, $quoteShow;
 
     protected $listeners = ['updateProductCurrent' => 'resetData'];
 
@@ -43,6 +44,18 @@ class CurrentQuoteComponent extends Component
         $discount = $this->discountMount;
 
         return view('pages.catalogo.current-quote-component', ['total' => $total, 'discount' => $discount]);
+    }
+
+    public function edit($quote_id)
+    {
+        $this->quoteEdit = CurrentQuoteDetails::find($quote_id);
+        $this->dispatchBrowserEvent('show-modal-edit');
+    }
+
+    public function show($quote_id)
+    {
+        $this->quoteShow = CurrentQuoteDetails::find($quote_id);
+        $this->dispatchBrowserEvent('show-modal-show');
     }
 
     public function addDiscount()
@@ -86,9 +99,13 @@ class CurrentQuoteComponent extends Component
         if (count(auth()->user()->currentQuote->currentQuoteDetails) < 1) {
             auth()->user()->currentQuote->delete();
         }
+        $this->resetData();
+        $this->emit('currentQuoteAdded');
     }
     public function resetData()
     {
         $this->cotizacionActual = auth()->user()->currentQuote->currentQuoteDetails;
+        $this->quoteEdit = null;
+        $this->quoteShow = null;
     }
 }

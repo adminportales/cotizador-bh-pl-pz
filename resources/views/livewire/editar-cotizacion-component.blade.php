@@ -23,7 +23,7 @@
         @if ($quote->latestQuotesUpdate)
             @if (count($quote->latestQuotesUpdate->quoteProducts) > 0)
                 <div class="w-100">
-                    <table class="table">
+                    <table class="table table-responsive">
                         <thead class="w-100">
                             <tr class="w-100">
                                 <th>Imagen</th>
