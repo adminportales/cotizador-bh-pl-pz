@@ -24,6 +24,8 @@ class CurrentQuoteDetails extends Model
         'cantidad',
         'precio_unitario',
         'precio_total',
+        'quote_by_scales',
+        'scales_info',
         'images_selected'
     ];
 

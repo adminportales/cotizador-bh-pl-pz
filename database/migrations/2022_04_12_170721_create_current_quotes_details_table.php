@@ -25,9 +25,11 @@ class CreateCurrentQuotesDetailsTable extends Migration
             $table->text('images_selected')->nullable();
             $table->decimal('utilidad', 8, 2);
             $table->integer('dias_entrega');
-            $table->integer('cantidad');
-            $table->decimal('precio_unitario', 8, 2);
-            $table->decimal('precio_total', 12, 2);
+            $table->integer('cantidad')->nullable();
+            $table->decimal('precio_unitario', 8, 2)->nullable();
+            $table->decimal('precio_total', 12, 2)->nullable();
+            $table->boolean('quote_by_scales')->default(false);
+            $table->text('scales_info')->nullable();
             $table->timestamps();
         });
     }

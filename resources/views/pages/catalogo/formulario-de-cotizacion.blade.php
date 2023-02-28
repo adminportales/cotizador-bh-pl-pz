@@ -48,7 +48,7 @@
                     <div class="col-md-12">
                         <p class="m-1"><strong> Precios Por Cantidad de Articulos, de acuerdo al material,
                                 tecnica y tamaño seleccionados</strong></p>
-                        <table class="table table-sm mb-0">
+                        <table class="table table-sm table-responsive-sm mb-0">
                             <thead>
                                 <tr>
                                     <td><strong>Escala</strong></td>
@@ -71,7 +71,15 @@
                 @endif
             </div>
         </div>
-        <p class="w-100 mt-2 mb-1"><strong>Costos y Utilidad</strong></p>
+        <div class="d-flex justify-content-between flex-sm-row flex-column">
+            <p class="mt-2 mb-1"><strong>Costos y Utilidad</strong></p>
+            <div class="form-check mt-2 mb-1" wire:click='changeTypePrice'>
+                <input class="form-check-input" type="checkbox" {{ $priceScales ? 'checked' : '' }}>
+                <label class="form-check-label" style="font-weight: bold;" for="defaultCheck1">
+                    Cotizar por medio de escalas
+                </label>
+            </div>
+        </div>
         <div class="border border-primary rounded p-2">
             <div class="row">
                 <div class="form-group m-0 mb-1 col-md-6">
@@ -85,33 +93,141 @@
                     <input type="number" name="margen" wire:model="utilidad" placeholder="Margen de Utilidad. Max: 99"
                         max="99" maxlength="2" class="form-control form-control-sm" max="100">
                 </div>
-                <div class="form-group m-0 mb-1 col-md-6">
-                    <label for="cantidad" class="text-dark m-0"><strong>Cantidad</strong> </label>
-                    <input type="number" name="cantidad" wire:model="cantidad"
-                        placeholder="Cantidad de productos a cotizar" class="form-control form-control-sm"
-                        max="{{ $product->stock }}">
-                </div>
-                <div class="form-group m-0 mb-1 col-md-6 ">
-                    <label for="dias" class="text-dark m-0"><strong>Dias de Entrega</strong> </label>
-                    <input type="number" name="dias" wire:model="entrega" placeholder="Dias de entrega estimada"
-                        class="form-control form-control-sm">
-                </div>
+                @if (!$priceScales)
+                    <div class="form-group m-0 mb-1 col-md-12">
+                        <label for="cantidad" class="text-dark m-0"><strong>Cantidad</strong> </label>
+                        <input type="number" name="cantidad" wire:model="cantidad"
+                            placeholder="Cantidad de productos a cotizar" class="form-control form-control-sm"
+                            max="{{ $product->stock }}">
+                    </div>
+                @else
+                    <div class="form-group m-0 mb-1 col-md-12 text-center">
+                        @if (count($this->priceScalesComplete) > 0)
+                            <div class="col-md-12">
+                                <p class="m-1"><strong> Precios Por Cantidad de Articulos</strong></p>
+                                <table class="table table-sm table-responsive-sm">
+                                    <thead>
+                                        <tr>
+                                            <td class="text-right"><strong>Cantidad</strong></td>
+                                            <td class="text-right"><strong>Tecnica</strong></td>
+                                            <td class="text-right"><strong>Unitario</strong></td>
+                                            <td class="text-right"><strong>Total</strong></td>
+                                            <td class="text-right"><strong>...</strong></td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($priceScalesComplete as $key => $item)
+                                            <tr>
+                                                <td class="text-right">{{ $item['quantity'] }}</td>
+                                                <td class="text-right">
+                                                    ${{ number_format($item['tecniquePrice'], 2, '.', ',') }}</td>
+                                                <td class="text-right">
+                                                    ${{ number_format($item['unit_price'], 2, '.', ',') }}</td>
+                                                <td class="text-right">
+                                                    ${{ number_format($item['total_price'], 2, '.', ',') }}</td>
+                                                <td class="text-right">
+                                                    <button type="button" class="btn btn-warning btn-sm"
+                                                        wire:click="editScale({{ $key }})">
+                                                        <div style="width: 1rem">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6"
+                                                                fill="none" viewBox="0 0 24 24"
+                                                                stroke="currentColor" stroke-width="2">
+                                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                                    d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                                                            </svg>
+                                                        </div>
+                                                    </button>
+                                                    <button type="button" class="btn btn-danger btn-sm"
+                                                        onclick=" eliminarEscala({{ $key }})">
+                                                        <div style="width: 1rem">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6"
+                                                                fill="none" viewBox="0 0 24 24"
+                                                                stroke="currentColor" stroke-width="2">
+                                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                                            </svg>
+                                                        </div>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                        @endif
+                        <button type="button" class="btn btn-light shadow-none"
+                        onclick="addNew()">
+                        Agregar una nueva escala
+                    </button>
+
+                        <div wire:ignore.self class="modal fade" id="addScaleModal" tabindex="-1"
+                            aria-labelledby="addScaleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="addScaleModalLabel">
+                                            {{ $editScale?"Editar la cantidad de Productos":'Agregar una nueva cantidad' }}
+                                        </h5>
+                                        <button type="button" class="close" data-dismiss="modal"
+                                            aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body row">
+                                        <div class="form-group m-0 mb-1 col-md-4">
+                                            <label for="cantidad" class="text-dark m-0"><strong>Cantidad</strong>
+                                            </label>
+                                            <input type="number" name="cantidad" wire:model="cantidad"
+                                                placeholder="Cantidad de productos a cotizar"
+                                                class="form-control form-control-sm">
+                                        </div>
+                                        <div class="form-group m-0 mb-1 col-md-8">
+                                            <label for="newTechnique" class="text-dark m-0">
+                                                <strong>Precio actual de la tecnica: </strong>
+                                                $ {{ $precioDeTecnica }}</label>
+                                            <input type="number" name="newTechnique"
+                                                wire:model="precioTecnicaEscala"
+                                                placeholder="Nuevo precio de la tecnica (Opcional)"
+                                                class="form-control form-control-sm">
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        @if ($editScale)
+                                            <button type="button" class="btn btn-warning"
+                                                wire:click='updateScale'>Editar</button>
+                                        @else
+                                            <button type="button" class="btn btn-primary"
+                                                wire:click='addScale'>Agregar</button>
+                                        @endif
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                @endif
             </div>
         </div>
-        <p class="w-100 mt-2 mb-1"><strong>Personalizacion</strong></p>
+        <p class="w-100 mt-2 mb-1"><strong>Configuracion</strong></p>
         <div class="border border-primary rounded p-2">
             <div class="form-group m-0 mb-1 ">
-                <label for="newTechnique" class="text-dark m-0"><strong>Precio actual de la tecnica por articulo:
-                    </strong>
-                    $ {{ $precioDeTecnica }}</label>
-                <input type="number" name="newTechnique" wire:model="newPriceTechnique"
-                    placeholder="Nuevo precio de la tecnica (Opcional)" class="form-control form-control-sm">
+                <label for="dias" class="text-dark m-0"><strong>Dias de Entrega</strong> </label>
+                <input type="number" name="dias" wire:model="entrega" placeholder="Dias de entrega estimada"
+                    class="form-control form-control-sm">
             </div>
+            @if (!$priceScales)
+                <div class="form-group m-0 mb-1 ">
+                    <label for="newTechnique" class="text-dark m-0"><strong>Precio actual de la tecnica por articulo:
+                        </strong>
+                        $ {{ $precioDeTecnica }}</label>
+                    <input type="number" name="newTechnique" wire:model="newPriceTechnique"
+                        placeholder="Nuevo precio de la tecnica (Opcional)" class="form-control form-control-sm">
+                </div>
+            @endif
             <div class="form-group m-0 mb-1">
                 <label for="newDescription" class="text-dark m-0"><strong>Coloca la descripcion que se mostrara en la
                         cotizacion:</strong> </label>
-                <textarea rows="3" name="newDescription" wire:model="newDescription"
-                     class="form-control form-control-sm" placeholder="Descripcion del producto (Opcional)"> </textarea>
+                <textarea rows="3" name="newDescription" wire:model="newDescription" class="form-control form-control-sm"
+                    placeholder="Descripcion del producto (Opcional)"> </textarea>
             </div>
             <div class="form-group m-0 mb-1">
                 <label for="" class="text-dark m-0"><strong>Imagen que sera visualizada en la
@@ -222,10 +338,12 @@
             </div>
         @endif
         <div class=" d-sm-flex justify-content-between">
-            <div>
-                <h6 class="text-success">Precio Final por Articulo: $ {{ $precioCalculado }}</h6>
-                <h6 class="text-success">Precio Total: $ {{ $precioTotal }}</h6>
-            </div>
+            @if (!$priceScales)
+                <div>
+                    <h6 class="text-success">Precio Final por Articulo: $ {{ $precioCalculado }}</h6>
+                    <h6 class="text-success">Precio Total: $ {{ $precioTotal }}</h6>
+                </div>
+            @endif
             <div class="form-group m-0 mb-1 text-center">
                 <button type="submit" class="btn btn-primary py-2 px-4">Añadir a la cotizacion</button>
             </div>
@@ -247,4 +365,52 @@
             background-color: rgb(251, 251, 254);
         }
     </style>
+    <script>
+        window.addEventListener('hideModalScales', event => {
+            $('#addScaleModal').modal('hide')
+        })
+        window.addEventListener('showModalScales', event => {
+            $('#addScaleModal').modal('show')
+        })
+
+        function addNew() {
+            @this.editScale = false;
+            @this.itemEditScale = null;
+            @this.cantidad = null;
+            @this.precioTecnicaEscala = null;
+            $('#addScaleModal').modal('show')
+        }
+
+        function eliminarEscala(id) {
+            Swal.fire({
+                title: 'Esta seguro?',
+                text: "Desea eliminar esta escala",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Si!',
+                cancelButtonText: 'Cancelar!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    let respuesta = @this.deleteScale(id)
+                    Swal.fire('Por Favor Espere');
+                    respuesta
+                        .then((response) => {
+                            console.log(response);
+                            if (response == 1) {
+                                Swal.fire(
+                                    'Se ha elimiado esta escala correctamente',
+                                    '',
+                                    'success'
+                                )
+                            }
+                        }, function() {
+                            // one or more failed
+                            Swal.fire('¡Error al elimiar el producto!', '', 'error')
+                        });
+                }
+            })
+        }
+    </script>
 </div>

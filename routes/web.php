@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\ActualizarCatalogoController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\CotizadorController;
 use Illuminate\Support\Facades\Route;
@@ -28,7 +27,6 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/ver-cotizacion/{quote}', [CotizadorController::class, 'verCotizacion'])->name('verCotizacion');
     Route::get('/finalizar-cotizacion', [CotizadorController::class, 'finalizar'])->name('finalizar');
     Route::get('/previsualizar-cotizacion', [CotizadorController::class, 'previsualizar'])->name('previsualizar');
-    Route::get('/actualizarCatalogo', [ActualizarCatalogoController::class, 'actualizarCatalogo'])->name('actualizarCatalogo');
     Route::get('/ver-cotizacion-pdf/{quote}', [CotizadorController::class, 'previsualizar'])->name('previsualizar.cotizacion');
     Route::get('/changeCompany/{company}', [CotizadorController::class, 'changeCompany'])->name('changeCompany.cotizador');
     Route::get('/addProduct/create', [CotizadorController::class, 'addProductCreate'])->name('addProduct.cotizador');

@@ -76,8 +76,10 @@
                 <td>{{ $user->email }}</td>
             </tr>
         </table>
-
-        <div class="head-products"></div>
+        @php
+            $taxFee = 1 + ((int) $quote->latestQuotesUpdate->quotesInformation->tax_fee) / 100;
+        @endphp
+        {{-- <div class="head-products"></div>
         <table class="content productos-body">
             <thead>
                 <tr class="titulos">
@@ -93,9 +95,7 @@
                 </tr>
             </thead>
             <tbody>
-                @php
-                    $taxFee = 1 + ((int) $quote->latestQuotesUpdate->quotesInformation->tax_fee) / 100;
-                @endphp
+
                 @foreach ($quote->latestQuotesUpdate->quoteProducts as $item)
                     @php
                         $producto = json_decode($item->product);
@@ -136,7 +136,73 @@
                     </tr>
                 @endforeach
             </tbody>
-        </table>
+        </table> --}}
+        <div class="content">
+            <style>
+                td {
+                    vertical-align: top;
+                }
+            </style>
+            @foreach ($quote->latestQuotesUpdate->quoteProducts as $item)
+                @php
+                    $producto = json_decode($item->product);
+                    $tecnica = json_decode($item->technique);
+                @endphp
+                <table>
+                    <thead></thead>
+                    <tbody>
+                        <tr>
+                            <td>Imagen de Referencia</td>
+                            <td colspan="5">Descripcion</td>
+                        </tr>
+                        <tr>
+                            <td rowspan="5" style="width: 250px; text-align: center; vertical-align: middle">
+                                @if ($producto->image)
+                                    <img src="{{ $producto->image }}"
+                                        style="max-height: 200px;height:auto;max-width: 220px;width:auto;">
+                                @else
+                                    <img src="img/default.jpg" width="180">
+                                @endif
+                            </td>
+                            <td colspan="5">
+                                <p style="font-size: 14px; margin: 0">
+                                    {{ $item->new_description ? $item->new_description : $producto->description }}</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Tecnica de Personalizacion</td>
+                            <td>Detalle de la Personalizacion</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                {{ $tecnica->tecnica }}
+                            </td>
+                            <td>
+                                @if ($tecnica->tecnica !== 'No Aplica')
+                                <p style="font-size: 14px"><b>Tintas: </b>{{ $item->color_logos }}</p>
+                                @endif
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Tecnica de Personalizacion</td>
+                            <td>Detalle de la Personalizacion</td>
+                        </tr>
+                        <tr>
+                            <td>{{ $item->cantidad }}</td>
+                            <td>                ${{ number_format($item->precio_unitario * $taxFee, 2, '.', ',') }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                ${{ number_format($item->precio_total * $taxFee, 2, '.', ',') }}
+                @if ($quote->iva_by_item)
+                    <p style="font-size: 12px"><b>IVA:
+                        </b>${{ number_format($item->precio_total * $taxFee * 0.16, 2, '.', ',') }}
+                    </p>
+                @endif
+                {{ $item->dias_entrega }} <br> <span style="font-size: 10px">días hábiles</span>
+            @endforeach
+        </div>
         <hr>
         <br>
         <table class="total content">

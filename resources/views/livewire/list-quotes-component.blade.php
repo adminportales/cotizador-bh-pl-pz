@@ -15,7 +15,7 @@
                     <th scope="col" class="">Probabilidad de Venta</th>
                     <th scope="col" class="text-center">Total</th>
                     <th scope="col" class="text-center">Fecha</th>
-                    <th scope="col" class="text-center">Acciones</th>
+                    <th scope="col" class="text-center">...</th>
                 </tr>
             </thead>
             <tbody>
@@ -67,8 +67,7 @@
                         @endif
 
                         <td class="text-center">
-                            <a href="{{ route('verCotizacion', ['quote' => $quote->id]) }}" class="btn btn-primary">Ver
-                                Cotizacion</a>
+                            <a href="{{ route('verCotizacion', ['quote' => $quote->id]) }}" class="btn btn-primary btn-sm">Ver</a>
                         </td>
                     </tr>
                 @endforeach

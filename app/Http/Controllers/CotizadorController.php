@@ -3,16 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Mail\SendDataErrorCreateQuote;
-use App\Models\Catalogo\Color;
 use App\Models\Catalogo\GlobalAttribute;
 use App\Models\Catalogo\Product;
-use App\Models\Catalogo\Provider;
 use App\Models\Client;
 use App\Models\Quote;
 use App\Models\User;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\File;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Mail;
 use PhpOffice\PhpSpreadsheet\IOFactory;
@@ -22,7 +18,7 @@ use Livewire\WithPagination;
 
 class CotizadorController extends Controller
 {
-    use WithPagination;
+    // use WithPagination;
     public function __construct()
     {
         $this->middleware('auth');

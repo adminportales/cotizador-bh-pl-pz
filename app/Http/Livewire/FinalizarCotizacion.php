@@ -435,8 +435,13 @@ class FinalizarCotizacion extends Component
             unlink(public_path() . $newPath);
         }
         if ($errors || $errorsMail) {
-            Storage::put('/public/dataErrorToCreateQuote' . auth()->user()->name . time() . '.txt',   json_encode(["messageMail" => $messageMail, "messageOdoo" => $message, 'responseOdoo' => $responseOdoo, 'user' => auth()->user()]));
-            Mail::to('adminportales@promolife.com.mx')->send(new SendDataErrorCreateQuote('adminportales@promolife.com.mx', '/storage/dataErrorToCreateQuote.txt'));
+            try {
+                $name = '/dataErrorToCreateQuote' . auth()->user()->name . time() . '.txt';
+                Storage::put('/public' . $name,   json_encode(["messageMail" => $messageMail, "messageOdoo" => $message, 'responseOdoo' => $responseOdoo, 'user' => auth()->user()]));
+                Mail::to('adminportales@promolife.com.mx')->send(new SendDataErrorCreateQuote('adminportales@promolife.com.mx', '/storage' . $name));
+            } catch (Exception $th) {
+                //throw $th;
+            }
             return redirect()->action([CotizadorController::class, 'verCotizacion'], ['quote' => $quote->id])->with('messageMail', json_encode($message) . ' ' . json_encode($messageMail))
                 ->with('messageError', 'Tu cotizacion se ha guardado exitosamente. ' .
                     ($errorsMail ? "No se pudo enviar el email debido a problemas tecnicos. " : "") .
@@ -477,11 +482,6 @@ class FinalizarCotizacion extends Component
         foreach (auth()->user()->currentQuote->currentQuoteDetails as $item) {
             $product = Product::find($item->product_id);
             $tecnica = PricesTechnique::find($item->prices_techniques_id);
-            $price_tecnica = $item->new_price_technique != null ?
-                $item->new_price_technique
-                : ($tecnica->tipo_precio == 'D'
-                    ? round($tecnica->precio / $item->cantidad, 2)
-                    : $tecnica->precio);
 
             $material = $tecnica->sizeMaterialTechnique->materialTechnique->material->nombre;
             $material_id = $tecnica->sizeMaterialTechnique->materialTechnique->material->id;
@@ -501,19 +501,44 @@ class FinalizarCotizacion extends Component
             // Agregar la URL de la Imagen
             $product->image = $item->images_selected ?: ($product->firstImage == null ? '' : $product->firstImage->image_url);
             $product->provider;
-            array_push($products, (object) [
+
+            $dataProduct = [
                 'product' => json_encode($product->toArray()),
                 'technique' =>  json_encode($infoTecnica),
-                'prices_techniques' => $price_tecnica,
                 'new_description' => $item->new_description,
                 'color_logos' => $item->color_logos,
                 'costo_indirecto' => $item->costo_indirecto,
                 'utilidad' => $item->utilidad,
                 'dias_entrega' => $item->dias_entrega,
-                'cantidad' => $item->cantidad,
-                'precio_unitario' => $item->precio_unitario,
-                'precio_total' => $item->precio_total
-            ]);
+                // 'prices_techniques' => $price_tecnica,
+                // 'cantidad' => $item->cantidad,
+                // 'precio_unitario' => $item->precio_unitario,
+                // 'precio_total' => $item->precio_total,
+                // "quote_by_scales" => $item->quote_by_scales,
+                // "scales_info" => $item->scales_info,
+            ];
+            if (!$item->quote_by_scales) {
+                $price_tecnica = $item->new_price_technique != null ?
+                $item->new_price_technique
+                : ($tecnica->tipo_precio == 'D'
+                    ? round($tecnica->precio / $item->cantidad, 2)
+                    : $tecnica->precio);
+                $dataProduct['prices_techniques'] = $price_tecnica;
+                $dataProduct['cantidad'] = $item->cantidad;
+                $dataProduct['precio_unitario'] =$item->precio_unitario;
+                $dataProduct['precio_total'] = $item->precio_total;
+                $dataProduct['quote_by_scales'] = false;
+                $dataProduct['scales_info'] = null;
+            } else {
+                $dataProduct['new_price_technique'] = null;
+                $dataProduct['cantidad'] = null;
+                $dataProduct['precio_unitario'] = null;
+                $dataProduct['precio_total'] = null;
+                $dataProduct['quote_by_scales'] = true;
+                $dataProduct['scales_info'] = $item->scales_info;
+            }
+
+            array_push($products, (object) $dataProduct);
         }
         $precioTotal = 0;
         $productosTotal = 0;

@@ -9,13 +9,12 @@
                                 <thead>
                                     <tr>
                                         <th class="text-center">#</th>
-                                        <th>SKU</th>
+                                        <th>Imagen</th>
                                         <th>Nombre</th>
-                                        <th>Informacion Adicional</th>
-                                        <th>Unidad</th>
+                                        <th>Informacion</th>
                                         <th>Cantidad</th>
+                                        <th>Unidad</th>
                                         <th>Total</th>
-                                        <th>Dias de Entrega</th>
                                         <th class="px-0 mx-0"></th>
                                     </tr>
                                 </thead>
@@ -23,47 +22,99 @@
                                     @foreach ($cotizacionActual as $quote)
                                         <tr>
                                             <td class="text-center">{{ $loop->iteration }}</td>
-                                            <td> {{ $quote->product->internal_sku }}</td>
+                                            <td><img src="{{ $quote->images_selected ?: ($quote->product->firstImage ? $quote->product->firstImage->image_url : asset('img/default.jpg')) }}"
+                                                    alt="" width="80"></td>
                                             <td>
-                                                <div class="d-flex align-items-center">
-                                                    <div>
-                                                        <img src="{{ $quote->images_selected ?: ($quote->product->firstImage ? $quote->product->firstImage->image_url : asset('img/default.jpg')) }}"
-                                                            alt="" width="80">
-                                                    </div>
-                                                    <div>
-                                                        <p class="m-0 px-2">{{ $quote->product->name }}</p>
-                                                    </div>
+                                                <div class="d-flex flex-column">
+                                                    <p class="m-0">{{ $quote->product->name }}</p>
+                                                    <p class="m-0"> {{ $quote->product->internal_sku }}</p>
                                                 </div>
                                             </td>
                                             <td>
-                                                <p class="m-0"><strong>Costo
-                                                        Indirecto:</strong>${{ $quote->costo_indirecto }}</p>
-                                                <p class="m-0"><strong>Margen de Utilidad:</strong>
+                                                <p class="m-0">
+                                                    <strong>Indirecto:</strong>${{ number_format($quote->costo_indirecto, 2, '.', ',') }}
+                                                </p>
+                                                <p class="m-0"><strong>Utilidad:</strong>
                                                     {{ $quote->utilidad }}%
                                                 </p>
-                                                <p class="m-0"><strong>Costo de
-                                                        Impresion:</strong>
-                                                    ${{ $quote->new_price_technique
-                                                        ? $quote->new_price_technique
-                                                        : ($quote->priceTechnique->tipo_precio == 'D'
-                                                            ? round($quote->priceTechnique->precio / $quote->cantidad, 2)
-                                                            : $quote->priceTechnique->precio) }}
-                                                </p>
+                                                @if (!$quote->quote_by_scales)
+                                                    <p class="m-0"><strong>Impresion:</strong>
+                                                        ${{ number_format(
+                                                            $quote->new_price_technique
+                                                                ? $quote->new_price_technique
+                                                                : ($quote->priceTechnique->tipo_precio == 'D'
+                                                                    ? round($quote->priceTechnique->precio / $quote->cantidad, 2)
+                                                                    : $quote->priceTechnique->precio),
+                                                            2,
+                                                            '.',
+                                                            ',',
+                                                        ) }}
+                                                    </p>
+                                                @endif
                                                 <p class="m-0"><strong>Colores/Logos:</strong>
                                                     {{ $quote->color_logos }}
                                                 </p>
+                                                <p class="m-0">
+                                                    <strong>Entrega:</strong> {{ $quote->dias_entrega }} dias
+                                                </p>
                                             </td>
-                                            <td>${{ $quote->precio_unitario }}</td>
-                                            <td> {{ $quote->cantidad }} piezas</td>
-                                            <td>${{ $quote->precio_total }}</td>
-                                            <td> {{ $quote->dias_entrega }} dias habiles</td>
+                                            @if ($quote->quote_by_scales)
+                                                <td colspan="3">
+                                                    <table class="table table-sm table-bordered m-0">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Cantidad</th>
+                                                                <th>Impresion</th>
+                                                                <th>Unitario</th>
+                                                                <th>Total</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            @foreach (json_decode($quote->scales_info) as $item)
+                                                                <tr>
+                                                                    <td>{{ $item->quantity }} pz</td>
+                                                                    <td>$
+                                                                        {{ number_format($item->tecniquePrice, 2, '.', ',') }}
+                                                                    </td>
+                                                                    <td>$
+                                                                        {{ number_format($item->unit_price, 2, '.', ',') }}
+                                                                    </td>
+                                                                    <td>$
+                                                                        {{ number_format($item->total_price, 2, '.', ',') }}
+                                                                    </td>
+                                                                </tr>
+                                                            @endforeach
+                                                        </tbody>
+                                                    </table>
+                                                </td>
+                                            @else
+                                                <td> {{ $quote->cantidad }} pz</td>
+                                                <td>${{ $quote->precio_unitario }}</td>
+                                                <td>${{ $quote->precio_total }}</td>
+                                            @endif
                                             <td class="px-0 mx-0">
-                                                <button type="button" class="btn btn-warning btn-sm mb-1 w-100"
+                                                <button type="button" class="btn btn-warning btn-sm"
                                                     wire:click="edit({{ $quote->id }})">
-                                                    Editar
+                                                    <div style="width: 1rem">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6"
+                                                            fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                                                            stroke-width="2">
+                                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                                d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                                                        </svg>
+                                                    </div>
                                                 </button>
-                                                <button class="btn btn-danger btn-sm w-100 mt-1"
-                                                    onclick='eliminar({{ $quote->id }})'>Eliminar</button>
+                                                <button type="button" class="btn btn-danger btn-sm"
+                                                    onclick='eliminar({{ $quote->id }})'>
+                                                    <div style="width: 1rem">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6"
+                                                            fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                                                            stroke-width="2">
+                                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                                d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                                        </svg>
+                                                    </div>
+                                                </button>
                                             </td>
                                         </tr>
                                     @endforeach
@@ -115,21 +166,22 @@
                 <div class="card discount">
                     <div class="card-body">
                         <h4>Total de la cotizacion</h4>
-                        <button type="button"
-                            class="btn {{ auth()->user()->currentQuote->discount ? 'btn-warning' : 'btn-info' }} btn-block btn-sm my-1"
-                            data-toggle="modal" data-target="#discountModal">
-                            {{ auth()->user()->currentQuote->discount ? 'Editar Descuento' : 'Agregar Descuento' }}
-                        </button>
-
-                        <div class="d-flex justify-content-between">
-                            <p class="text-dark m-0"> Subtotal: </p>
-                            <strong class="d-flex text-primary d-block"> $ {{ $totalQuote }}</strong>
-                        </div>
-                        <div class="d-flex justify-content-between">
-                            <p class="text-dark m-0"> Descuento: </p>
-                            <strong class="d-flex text-primary d-block"> $
-                                {{ $discount }}</strong>
-                        </div>
+                        @if (!$quote->quote_by_scales)
+                            <button type="button"
+                                class="btn {{ auth()->user()->currentQuote->discount ? 'btn-warning' : 'btn-info' }} btn-block btn-sm my-1"
+                                data-toggle="modal" data-target="#discountModal">
+                                {{ auth()->user()->currentQuote->discount ? 'Editar Descuento' : 'Agregar Descuento' }}
+                            </button>
+                            <div class="d-flex justify-content-between">
+                                <p class="text-dark m-0"> Subtotal: </p>
+                                <strong class="d-flex text-primary d-block"> $ {{ $totalQuote }}</strong>
+                            </div>
+                            <div class="d-flex justify-content-between">
+                                <p class="text-dark m-0"> Descuento: </p>
+                                <strong class="d-flex text-primary d-block"> $
+                                    {{ $discount }}</strong>
+                            </div>
+                        @endif
                         <hr class="mt-1 mb-1">
                         <div class="d-flex justify-content-between" style="font-size: 1.3rem;font-weight: bold;">
                             <p class="text-dark m-0"> Total: </p>
@@ -169,7 +221,8 @@
                     </div>
                     <div class="form-group">
                         <label for="">Cantidad</label>
-                        <input type="number" class="form-control" placeholder="ej: 50, 2000" wire:model.lazy="value">
+                        <input type="number" class="form-control" placeholder="ej: 50, 2000"
+                            wire:model.lazy="value">
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -245,7 +298,8 @@
                         <p class="m-0"><strong>Cantidad: </strong> {{ $quoteShow->cantidad }} piezas</p>
                         <p class="m-0"><strong>Precio Unitario: </strong>${{ $quoteShow->precio_unitario }}</p>
                         <p class="m-0"><strong>Precio Total:</strong>${{ $quoteShow->precio_total }}</p>
-                        <p class="m-0"><strong>Tiempo de entrega: </strong> {{ $quoteShow->dias_entrega }} dias habiles
+                        <p class="m-0"><strong>Tiempo de entrega: </strong> {{ $quoteShow->dias_entrega }} dias
+                            habiles
                         </p>
                     @endif
                 </div>
