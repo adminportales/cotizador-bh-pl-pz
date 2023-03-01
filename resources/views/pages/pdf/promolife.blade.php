@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-    <title>Cotizacion Promo Life</title>
+    <title>Cotización Promo Life</title>
     <link rel="stylesheet" href="quotesheet/pl/style.css">
 </head>
 
@@ -22,7 +22,7 @@
         <div class="content">
             <div style="margin-top: -40px;">
                 <div style="width: 280px; padding-bottom: 10px;">
-                    <span class="titulo1">Cotizacion</span>
+                    <span class="titulo1">Cotización</span>
                 </div>
                 <div style="width: 280px; text-align: center">
                     <span class="titulo2">QUOTATION SHEET</span>
@@ -83,70 +83,180 @@
                 </td>
                 <td style="width: 40%">
                     <p><b># Cotización:</b> QS{{ $quote->id }}</p>
-                    <p><b>Fecha de cotización:</b> {{ $quote->updated_at->format('d/m/Y') }}</p>
+                    <p><b>Fecha de cotización:</b> {{ $quote->created_at->format('d/m/Y') }}</p>
                 </td>
             </tr>
         </table>
-        <div class="head-products content"></div>
-        <table class="content productos-body">
-            <thead>
-                <tr class="titulos">
-                    <th colspan="1" style="width: 180px">Imagen de Referencia</th>
-                    <th colspan="2" style="width: 120px">Descripcion</th>
-                    <th colspan="1" style="width: 90px">Tecnica</th>
-                    <th colspan="1" style="width: 70px">Número Piezas</th>
-                    <th colspan="1" style="width: 90px">Tiempo entrega</th>
-                    <th colspan="1" style="width: 90px">Precio Unitario</th>
-                    <th colspan="1" style="width: 90px">Importe</th>
-                </tr>
-            </thead>
-            <tbody>
-                @php
-                    $taxFee = 1 + ((int) $quote->latestQuotesUpdate->quotesInformation->tax_fee) / 100;
-                @endphp
-                @foreach ($quote->latestQuotesUpdate->quoteProducts as $item)
-                    @php
-                        $producto = json_decode($item->product);
-                        $tecnica = json_decode($item->technique);
-                    @endphp
-                    <tr>
+        <div class="content">
+            <hr>
+            <p style="font-size: 16.5px; padding: 0px 0 12px 0; font-weight: bold;">En respuesta a tu solicitud para
+                cotizarte, ponemos a tu disposición las siguientes
+                propuestas:
+            </p>
+        </div>
+        @php
+            $taxFee = 1 + ((int) $quote->latestQuotesUpdate->quotesInformation->tax_fee) / 100;
+            $quote_scales = false;
+        @endphp
+        <div class="content body-products">
+            <style>
+                td {
+                    vertical-align: top;
+                }
 
-                        <td rowspan="1" style="width: 180px">
+                .body-products table {
+                    page-break-inside: avoid;
+                }
+
+                .body-products tr.title {
+                    background-color: #1485cc;
+                    color: white;
+                    text-align: center;
+                    font-size: 17px;
+                    font-weight: bold;
+                }
+
+                .body-products td {
+                    padding: 5px 0 5px 0;
+                    font-size: 16px;
+                }
+
+                .body-products td .descripcion {
+                    padding: 5px 5px 5px 5px;
+                    text-align: justify;
+                }
+
+                .body-products td.title-tecnica {
+                    text-align: center;
+                    font-weight: bold;
+                    color: white;
+                    background-color: #1485cc;
+                }
+
+                .body-products td.detalle-tecnica {
+                    text-align: center;
+                    color: black;
+                    background-color: rgb(251, 251, 251);
+                }
+
+                .body-products td.title-entrega {
+                    margin: 5px 0 5px 0;
+                    text-align: center;
+                    font-weight: bold;
+                    color: black;
+                    background-color: rgb(251, 251, 251);
+                }
+
+                .body-products td.title-cantidad {
+                    text-align: center;
+                    font-weight: bold;
+                    color: white;
+                    background-color: #1485cc;
+                }
+
+                .body-products td.detalle-cantidad {
+                    text-align: center;
+                    color: black;
+                    background-color: rgb(251, 251, 251);
+                    vertical-align: middle;
+                }
+            </style>
+            @foreach ($quote->latestQuotesUpdate->quoteProducts as $item)
+                @php
+                    $producto = json_decode($item->product);
+                    $tecnica = json_decode($item->technique);
+                    $scales_info = json_decode($item->scales_info);
+                    if ($item->quote_by_scales) {
+                        $quote_scales = true;
+                    }
+                @endphp
+                <table style="border-collapse: collapse;width:100%;border: 1px solid #1485cc">
+                    <tr class="title">
+                        <td>
+                            <p class="title-text">Imagen de Referencia</p>
+                        </td>
+                        <td colspan="12">
+                            <p class="title-text">Descripción</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td rowspan="{{ $item->quote_by_scales ? 5 + count($scales_info) : 6 }}"
+                            style="width: 250px; text-align: center; vertical-align: middle; padding: 0; border-right: 1px solid #1485cc">
                             @if ($producto->image)
                                 <img src="{{ $producto->image }}"
-                                    style="max-height: 200px;height:auto;max-width: 180px;width:auto;">
+                                    style="max-height: 220px;height:auto;max-width: 220px;width:auto;">
                             @else
                                 <img src="img/default.jpg" width="180">
                             @endif
                         </td>
-                        <td colspan="2" style="width: 120px">
-                            {{ $item->new_description ? $item->new_description : $producto->description }}</td>
-                        <td style="width: 80px">{{ $tecnica->tecnica }}
+                        <td colspan="12">
+                            <p class="descripcion">
+                                {{ $item->new_description ? $item->new_description : $producto->description }}
+                            </p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="6" class="title-tecnica">Técnica de Personalización</td>
+                        <td colspan="6" class="title-tecnica">Detalle de la Personalización</td>
+                    </tr>
+                    <tr>
+                        <td colspan="6" class="detalle-tecnica">
+                            {{ $tecnica->tecnica }}
+                        </td>
+                        <td colspan="6" class="detalle-tecnica">
                             @if ($tecnica->tecnica !== 'No Aplica')
                                 <p style="font-size: 14px"><b>Tintas: </b>{{ $item->color_logos }}</p>
                             @endif
                         </td>
-                        <td colspan="1" style="width: 60px">{{ $item->cantidad }}</td>
-                        <td colspan="1" style="text-align: center; width: 90px">{{ $item->dias_entrega }} <br>
-                            <span style="font-size: 10px">días
-                                hábiles
-                            </span>
-                        </td>
-                        <td colspan="1" style="width: 90px">
-                            ${{ number_format($item->precio_unitario * $taxFee, 2, '.', ',') }}
-                        </td>
-                        <td colspan="1" style="width: 100px">
-                            ${{ number_format($item->precio_total * $taxFee, 2, '.', ',') }}
-                            @if ($quote->iva_by_item)
-                                <p style="font-size: 12px"><b>IVA:
-                                    </b>${{ number_format(($item->precio_total * $taxFee) * 0.16, 2, '.', ',') }}
-                                </p>
-                            @endif
-                        </td>
                     </tr>
-                @endforeach
-            </tbody>
-        </table>
+                    <tr>
+                        <td colspan="12" class="title-entrega">Tiempo de Entrega: {{ $item->dias_entrega }} días
+                            hábiles</td>
+                    </tr>
+                    <tr>
+                        <td colspan="4" class="title-cantidad">Cantidad</td>
+                        <td colspan="4" class="title-cantidad">Precio Unitario</td>
+                        <td colspan="4" class="title-cantidad">Precio Total</td>
+                    </tr>
+                    @if ($item->quote_by_scales)
+                        @foreach ($scales_info as $scale)
+                            <tr>
+                                <td colspan="4" class="detalle-cantidad">{{ $scale->quantity }} pz</td>
+                                <td colspan="4" class="detalle-cantidad">$
+                                    {{ number_format($scale->unit_price * $taxFee, 2, '.', ',') }}
+
+                                </td>
+                                <td colspan="4" class="detalle-cantidad">$
+                                    {{ number_format($scale->total_price * $taxFee, 2, '.', ',') }}
+                                    @if ($quote->iva_by_item)
+                                        <p style="font-size: 12px"><b>IVA:
+                                            </b>${{ number_format($scale->total_price * $taxFee * 0.16, 2, '.', ',') }}
+                                        </p>
+                                    @endif
+                                </td>
+                            </tr>
+                        @endforeach
+                    @else
+                        <tr>
+                            <td colspan="4" class="detalle-cantidad">{{ $item->cantidad }} pz</td>
+                            <td colspan="4" class="detalle-cantidad">$
+                                {{ number_format($item->precio_unitario * $taxFee, 2, '.', ',') }}
+
+                            </td>
+                            <td colspan="4" class="detalle-cantidad">$
+                                {{ number_format($item->precio_total * $taxFee, 2, '.', ',') }}
+                                @if ($quote->iva_by_item)
+                                    <p style="font-size: 12px"><b>IVA:
+                                        </b>${{ number_format($item->precio_total * $taxFee * 0.16, 2, '.', ',') }}
+                                    </p>
+                                @endif
+                            </td>
+                        </tr>
+                    @endif
+                </table>
+                <div style="height: 20px;"></div>
+            @endforeach
+        </div>
         <br>
         <br>
         <br>
@@ -158,30 +268,32 @@
                 <br>
             @endif
         </div>
-        <table class="total content">
-            <tr>
-                @php
-                    $subtotal = (isset($quote->preview) ? $quote->precio_total : $quote->latestQuotesUpdate->quoteProducts->sum('precio_total')) * $taxFee;
-                    $discount = 0;
-                    if ($quote->latestQuotesUpdate->quoteDiscount->type == 'Fijo') {
-                        $discount = $quote->latestQuotesUpdate->quoteDiscount->value;
-                    } else {
-                        $discount = round(($subtotal / 100) * $quote->latestQuotesUpdate->quoteDiscount->value, 2);
-                    }
-                    $iva = round($subtotal * 0.16, 2);
-                @endphp
-                <td style="width: 150px">
-                    <p><b>Subtotal: </b>$ {{ number_format($subtotal, 2, '.', ',') }}</p>
-                    @if ($discount > 0)
-                        <p><b>Descuento: </b>$ {{ number_format($discount, 2, '.', ',') }}</p>
-                    @endif
-                    @if (!$quote->iva_by_item)
-                        <p><b>IVA: </b> $ {{ number_format($iva, 2, '.', ',') }}</p>
-                    @endif
-                    <p><b>Total: </b>$ {{ number_format($subtotal - $discount + $iva, 2, '.', ',') }}</p>
-                </td>
-            </tr>
-        </table>
+        @if (!$quote_scales)
+            <table class="total content">
+                <tr>
+                    @php
+                        $subtotal = (isset($quote->preview) ? $quote->precio_total : $quote->latestQuotesUpdate->quoteProducts->sum('precio_total')) * $taxFee;
+                        $discount = 0;
+                        if ($quote->latestQuotesUpdate->quoteDiscount->type == 'Fijo') {
+                            $discount = $quote->latestQuotesUpdate->quoteDiscount->value;
+                        } else {
+                            $discount = round(($subtotal / 100) * $quote->latestQuotesUpdate->quoteDiscount->value, 2);
+                        }
+                        $iva = round($subtotal * 0.16, 2);
+                    @endphp
+                    <td style="width: 150px">
+                        <p><b>Subtotal: </b>$ {{ number_format($subtotal, 2, '.', ',') }}</p>
+                        @if ($discount > 0)
+                            <p><b>Descuento: </b>$ {{ number_format($discount, 2, '.', ',') }}</p>
+                        @endif
+                        @if (!$quote->iva_by_item)
+                            <p><b>IVA: </b> $ {{ number_format($iva, 2, '.', ',') }}</p>
+                        @endif
+                        <p><b>Total: </b>$ {{ number_format($subtotal - $discount + $iva, 2, '.', ',') }}</p>
+                    </td>
+                </tr>
+            </table>
+        @endif
     </div>
     <div class="content condiciones">
         <p> Condiciones:</p>
@@ -207,7 +319,7 @@
         </ul>
     </div>
     <div>
-        <table class="content responsable" style="width: 105%","text-align: center">
+        <table class="content responsable" style="width: 105%">
             {{-- Modificacion en caso del user_id 52 (Ivonne Lopez) con otro gerente de la empresa PROMO LIFE --}}
             <tr>
                 <td><img src="quotesheet/bh/icon-email.png"alt="">

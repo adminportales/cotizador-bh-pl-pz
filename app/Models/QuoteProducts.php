@@ -20,5 +20,7 @@ class QuoteProducts extends Model
         'cantidad',
         'precio_unitario',
         'precio_total',
+        'scales_info',
+        'quote_by_scales'
     ];
 }

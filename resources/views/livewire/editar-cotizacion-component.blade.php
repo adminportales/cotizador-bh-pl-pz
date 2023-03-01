@@ -19,11 +19,12 @@
             $subtotalAdded = 0;
             $subtotalSubstract = 0;
             $sumPrecioTotal = 0;
+            $quoteScales = false;
         @endphp
         @if ($quote->latestQuotesUpdate)
             @if (count($quote->latestQuotesUpdate->quoteProducts) > 0)
                 <div class="w-100">
-                    <table class="table table-responsive">
+                    <table class="table table-responsive-sm">
                         <thead class="w-100">
                             <tr class="w-100">
                                 <th>Imagen</th>
@@ -31,7 +32,7 @@
                                 <th>Subtotal</th>
                                 <th>Piezas</th>
                                 <th>Total</th>
-                                <th class="text-center">Acciones</th>
+                                <th>...</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -57,27 +58,35 @@
                                             $subtotalSubstract += $product->precio_total;
                                         }
                                     }
+                                    if ($product->quote_by_scales) {
+                                        $quoteScales = true;
+                                    }
                                 @endphp
                                 <tr class="{{ !$visible ? 'd-none' : '' }}">
                                     <td class="text-center">
                                         <img src="{{ $producto->image == '' ? asset('img/default.jpg') : $producto->image }}"
-                                            style="max-height: 100px;height:auto;max-width: 80px;width:auto;"
+                                            style="max-height: 80px;height:auto;max-width: 70px;width:auto;"
                                             alt="" srcset="">
                                     </td>
                                     <td class="">
                                         <p>{{ $producto->name }}</p>
                                     </td>
-                                    <td class="">
-                                        <p class="text-center">
-                                            ${{ number_format($product->precio_unitario, 2, '.', ',') }}</p>
-                                    </td>
-                                    <td class="">
-                                        <p class="text-center"> {{ $product->cantidad }} piezas</p>
-                                    </td>
-                                    <td>
-                                        <p class="text-center">${{ number_format($product->precio_total, 2, '.', ',') }}
-                                        </p>
-                                    </td>
+                                    @if (!$product->quote_by_scales)
+                                        <td class="">
+                                            <p class="text-center">
+                                                ${{ number_format($product->precio_unitario, 2, '.', ',') }}</p>
+                                        </td>
+                                        <td class="">
+                                            <p class="text-center"> {{ $product->cantidad }} piezas</p>
+                                        </td>
+                                        <td>
+                                            <p class="text-center">
+                                                ${{ number_format($product->precio_total, 2, '.', ',') }}
+                                            </p>
+                                        </td>
+                                    @else
+                                        <td colspan="3" class="text-right">Cotizacion a escala --></td>
+                                    @endif
                                     <td class="text-center d-flex">
                                         <button class="btn btn-info btn-sm"
                                             wire:click="verDetalles({{ $auxProduct }})">
@@ -211,39 +220,42 @@
                 @endif
                 {{-- INICIO DE LA PARTE DE LOS DESCUENTOS --}}
                 {{-- @livewire('edit-quote-discount-component', ['quote' => $quote]) --}}
-                @php
-                    $subtotal = $sumPrecioTotal - $subtotalSubstract;
-                    $discountValue = 0;
-                    if ($type == 'Fijo') {
-                        $discountValue = $value;
-                    } else {
-                        $discountValue = round(($subtotal / 100) * $value, 2);
-                    }
-                @endphp
-                <div class="d-flex justify-content-between">
-                    <h5 class="card-title">Informacion del descuento actual</h5>
-                    @if ($quote->company_id == auth()->user()->company_session)
-                        <div class="text-success" style="width: 25px; cursor: pointer;" data-toggle="modal"
-                            data-target="#discountModalEdit" data-toggle="tooltip" data-placement="bottom"
-                            title="Editar">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20"
-                                fill="currentColor">
-                                <path
-                                    d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z" />
-                                <path fill-rule="evenodd"
-                                    d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z"
-                                    clip-rule="evenodd" />
-                            </svg>
-                        </div>
-                    @endif
-                </div>
-                <div class="d-flex flex-column">
-                    <p><b>Subtotal: </b>$ {{ number_format($subtotal + $subtotalAdded, 2, '.', ',') }}</p>
-                    <p><b>Descuento: </b>$ {{ number_format($discountValue, 2, '.', ',') }}
-                    </p>
-                    <p><b>Total: </b>$ {{ number_format($subtotal + $subtotalAdded - $discountValue, 2, '.', ',') }}
-                    </p>
-                </div>
+                @if (!$quoteScales)
+                    @php
+                        $subtotal = $sumPrecioTotal - $subtotalSubstract;
+                        $discountValue = 0;
+                        if ($type == 'Fijo') {
+                            $discountValue = $value;
+                        } else {
+                            $discountValue = round(($subtotal / 100) * $value, 2);
+                        }
+                    @endphp
+                    <div class="d-flex justify-content-between">
+                        <h5 class="card-title">Informacion del descuento actual</h5>
+                        @if ($quote->company_id == auth()->user()->company_session)
+                            <div class="text-success" style="width: 25px; cursor: pointer;" data-toggle="modal"
+                                data-target="#discountModalEdit" data-toggle="tooltip" data-placement="bottom"
+                                title="Editar">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20"
+                                    fill="currentColor">
+                                    <path
+                                        d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z" />
+                                    <path fill-rule="evenodd"
+                                        d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z"
+                                        clip-rule="evenodd" />
+                                </svg>
+                            </div>
+                        @endif
+                    </div>
+                    <div class="d-flex flex-column">
+                        <p><b>Subtotal: </b>$ {{ number_format($subtotal + $subtotalAdded, 2, '.', ',') }}</p>
+                        <p><b>Descuento: </b>$ {{ number_format($discountValue, 2, '.', ',') }}
+                        </p>
+                        <p><b>Total: </b>$
+                            {{ number_format($subtotal + $subtotalAdded - $discountValue, 2, '.', ',') }}
+                        </p>
+                    </div>
+                @endif
 
                 <!-- Modal -->
                 <div class="modal fade" id="discountModalEdit" tabindex="-1"

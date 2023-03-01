@@ -209,22 +209,43 @@ class FinalizarCotizacion extends Component
             $product->image = $item->images_selected == null ? ($product->firstImage == null ? '' : $product->firstImage->image_url) : $item->images_selected;
             unset($product->firstImage);
             $product->provider;
-            $quoteUpdate->quoteProducts()->create([
+
+            $dataProduct = [
                 'product' => json_encode($product->toArray()),
                 'technique' =>  json_encode($infoTecnica),
-                'prices_techniques' => $price_tecnica,
                 'new_description' => $item->new_description,
                 'color_logos' => $item->color_logos,
                 'costo_indirecto' => $item->costo_indirecto,
                 'utilidad' => $item->utilidad,
                 'dias_entrega' => $item->dias_entrega,
-                'cantidad' => $item->cantidad,
-                'precio_unitario' => $item->precio_unitario,
-                'precio_total' => $item->precio_total
-            ]);
+            ];
+
+            if (!$item->quote_by_scales) {
+                $price_tecnica = $item->new_price_technique != null ?
+                    $item->new_price_technique
+                    : ($tecnica->tipo_precio == 'D'
+                        ? round($tecnica->precio / $item->cantidad, 2)
+                        : $tecnica->precio);
+                $dataProduct['prices_techniques'] = $price_tecnica;
+                $dataProduct['cantidad'] = $item->cantidad;
+                $dataProduct['precio_unitario'] = $item->precio_unitario;
+                $dataProduct['precio_total'] = $item->precio_total;
+                $dataProduct['quote_by_scales'] = false;
+                $dataProduct['scales_info'] = null;
+            } else {
+                $dataProduct['prices_techniques'] = null;
+                $dataProduct['cantidad'] = null;
+                $dataProduct['precio_unitario'] = null;
+                $dataProduct['precio_total'] = null;
+                $dataProduct['quote_by_scales'] = true;
+                $dataProduct['scales_info'] = $item->scales_info;
+            }
+
+            $quoteUpdate->quoteProducts()->create($dataProduct);
+            dd($dataProduct);
         }
 
-
+        dd(1);
         // Enviar PDF
 
         $pdf = '';
@@ -510,22 +531,16 @@ class FinalizarCotizacion extends Component
                 'costo_indirecto' => $item->costo_indirecto,
                 'utilidad' => $item->utilidad,
                 'dias_entrega' => $item->dias_entrega,
-                // 'prices_techniques' => $price_tecnica,
-                // 'cantidad' => $item->cantidad,
-                // 'precio_unitario' => $item->precio_unitario,
-                // 'precio_total' => $item->precio_total,
-                // "quote_by_scales" => $item->quote_by_scales,
-                // "scales_info" => $item->scales_info,
             ];
             if (!$item->quote_by_scales) {
                 $price_tecnica = $item->new_price_technique != null ?
-                $item->new_price_technique
-                : ($tecnica->tipo_precio == 'D'
-                    ? round($tecnica->precio / $item->cantidad, 2)
-                    : $tecnica->precio);
+                    $item->new_price_technique
+                    : ($tecnica->tipo_precio == 'D'
+                        ? round($tecnica->precio / $item->cantidad, 2)
+                        : $tecnica->precio);
                 $dataProduct['prices_techniques'] = $price_tecnica;
                 $dataProduct['cantidad'] = $item->cantidad;
-                $dataProduct['precio_unitario'] =$item->precio_unitario;
+                $dataProduct['precio_unitario'] = $item->precio_unitario;
                 $dataProduct['precio_total'] = $item->precio_total;
                 $dataProduct['quote_by_scales'] = false;
                 $dataProduct['scales_info'] = null;
@@ -550,7 +565,7 @@ class FinalizarCotizacion extends Component
             "id" => "NA",
             "user_id" => auth()->user()->id,
             "logo" => $this->logo ? $this->logo->temporaryUrl() : null,
-            "updated_at" => now(),
+            "created_at" => now(),
             "iva_by_item" => boolval($this->ivaByItem),
             "precio_total" => $precioTotal,
             "productos_total" => $productosTotal,
