@@ -283,6 +283,13 @@
                         <p class="m-0"><strong>Margen de Utilidad:</strong>
                             {{ $quoteShow->utilidad }}%
                         </p>
+
+                        <p class="m-0"><strong>Colores/Logos:</strong>
+                            {{ $quoteShow->color_logos }}
+                        </p>
+                        <p class="m-0"><strong>Tiempo de entrega: </strong> {{ $quoteShow->dias_entrega }} dias
+                            habiles
+                        </p>
                         <p class="m-0"><strong>Costo de
                                 Impresion:</strong>
                             ${{ $quoteShow->new_price_technique
@@ -291,16 +298,36 @@
                                     ? round($quoteShow->priceTechnique->precio / $quoteShow->cantidad, 2)
                                     : $quoteShow->priceTechnique->precio) }}
                         </p>
-                        <p class="m-0"><strong>Colores/Logos:</strong>
-                            {{ $quoteShow->color_logos }}
-                        </p>
-
-                        <p class="m-0"><strong>Cantidad: </strong> {{ $quoteShow->cantidad }} piezas</p>
-                        <p class="m-0"><strong>Precio Unitario: </strong>${{ $quoteShow->precio_unitario }}</p>
-                        <p class="m-0"><strong>Precio Total:</strong>${{ $quoteShow->precio_total }}</p>
-                        <p class="m-0"><strong>Tiempo de entrega: </strong> {{ $quoteShow->dias_entrega }} dias
-                            habiles
-                        </p>
+                        @if ($quoteShow->quote_by_scales)
+                            @php
+                                $priceScales = json_decode($quoteShow->scales_info);
+                            @endphp
+                            <br>
+                            <table class="table table-sm table-responsive-sm w-100">
+                                <thead>
+                                    <tr>
+                                        <th>Cantidad</th>
+                                        <th>Impresion</th>
+                                        <th>Unitario</th>
+                                        <th>Total</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($priceScales as $scale)
+                                        <tr>
+                                            <td> {{ $scale->quantity }} pz</td>
+                                            <td>$ {{ number_format($scale->tecniquePrice, 2, '.', ',') }} </td>
+                                            <td>$ {{ number_format($scale->unit_price, 2, '.', ',') }} </td>
+                                            <td>$ {{ number_format($scale->total_price, 2, '.', ',') }} </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        @else
+                            <p class="m-0"><strong>Cantidad: </strong> {{ $quoteShow->cantidad }} piezas</p>
+                            <p class="m-0"><strong>Precio Unitario: </strong>${{ $quoteShow->precio_unitario }}</p>
+                            <p class="m-0"><strong>Precio Total:</strong>${{ $quoteShow->precio_total }}</p>
+                        @endif
                     @endif
                 </div>
             </div>

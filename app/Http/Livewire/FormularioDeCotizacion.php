@@ -206,6 +206,13 @@ class FormularioDeCotizacion extends Component
             $currentQuote = auth()->user()->currentQuote()->create([
                 'discount' => false
             ]);
+        } else {
+            if (auth()->user()->currentQuote && $this->priceScales == true) {
+                auth()->user()->currentQuote->discount = false;
+                auth()->user()->currentQuote->type = null;
+                auth()->user()->currentQuote->value = null;
+                auth()->user()->currentQuote->save();
+            }
         }
         if (!is_numeric($this->newPriceTechnique))
             $this->newPriceTechnique = null;

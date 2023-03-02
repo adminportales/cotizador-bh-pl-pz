@@ -247,7 +247,7 @@
                         <h3>Tu cotizacion</h3>
                         <div class="d-flex justify-content-between flex-column flex-sm-row">
                             <div>
-                                <table class="table table-sm table-responsive">
+                                <table class="table table-sm table-responsive-sm table-bordered">
                                     <thead>
                                         <tr>
                                             <th>Producto</th>
@@ -257,45 +257,81 @@
                                         </tr>
                                     </thead>
                                     <tbody>
+                                        @php
+                                            $scales = false;
+                                        @endphp
                                         @foreach (auth()->user()->currentQuote->currentQuoteDetails as $quote)
                                             <tr>
-                                                <td class="pr-5">
-                                                    <p>{{ $quote->product->name }}</p>
+                                                <td class="pr-5" style="vertical-align: middle">
+                                                    <p class="m-0">{{ $quote->product->name }}</p>
                                                 </td>
-                                                <td class="pr-5">
-                                                    <p>$ {{ $quote->precio_unitario }}</p>
-                                                </td>
-                                                <td class="pr-5">
-                                                    <p> {{ $quote->cantidad }} piezas</p>
-                                                </td>
-                                                <td>
-                                                    <p>$ {{ $quote->precio_total }}</p>
-                                                </td>
+                                                @if ($quote->quote_by_scales)
+                                                    @php
+                                                        $scales = true;
+                                                        $priceScales = json_decode($quote->scales_info);
+                                                    @endphp
+                                                    <td colspan="3">
+                                                        <table class="table-sm table">
+                                                            <thead></thead>
+                                                            <tbody>
+                                                                @foreach ($priceScales as $it)
+                                                                    <tr>
+                                                                        <td class="">
+                                                                            <p class="m-0">$ {{ $it->unit_price }}
+                                                                            </p>
+                                                                        </td>
+                                                                        <td class="">
+                                                                            <p class="m-0"> {{ $it->quantity }} pz
+                                                                            </p>
+                                                                        </td>
+                                                                        <td>
+                                                                            <p class="m-0">$ {{ $it->total_price }}
+                                                                            </p>
+                                                                        </td>
+                                                                    </tr>
+                                                                @endforeach
+                                                            </tbody>
+                                                        </table>
+                                                        {{--  --}}
+                                                    </td>
+                                                @else
+                                                    <td class="">
+                                                        <p class="m-0">$ {{ $quote->precio_unitario }}</p>
+                                                    </td>
+                                                    <td class="">
+                                                        <p class="m-0"> {{ $quote->cantidad }} pz</p>
+                                                    </td>
+                                                    <td>
+                                                        <p class="m-0">$ {{ $quote->precio_total }}</p>
+                                                    </td>
+                                                @endif
                                             </tr>
                                         @endforeach
-                                        @php
-                                            $subtotal = auth()
-                                                ->user()
-                                                ->currentQuote->currentQuoteDetails->sum('precio_total');
-                                            $discount = 0;
-                                            if (auth()->user()->currentQuote->type == 'Fijo') {
-                                                $discount = auth()->user()->currentQuote->value;
-                                            } else {
-                                                $discount = round(($subtotal / 100) * auth()->user()->currentQuote->value, 2);
-                                            }
-                                        @endphp
-                                        <tr>
-                                            <th colspan="3">Subtotal</th>
-                                            <th>$ {{ $subtotal }}</th>
-                                        </tr>
-                                        <tr>
-                                            <th colspan="3">Descuento</th>
-                                            <th>$ {{ $discount }}</th>
-                                        </tr>
-                                        <tr>
-                                            <th colspan="3">Total</th>
-                                            <th>$ {{ $subtotal - $discount }}</th>
-                                        </tr>
+                                        @if (!$scales)
+                                            @php
+                                                $subtotal = auth()
+                                                    ->user()
+                                                    ->currentQuote->currentQuoteDetails->sum('precio_total');
+                                                $discount = 0;
+                                                if (auth()->user()->currentQuote->type == 'Fijo') {
+                                                    $discount = auth()->user()->currentQuote->value;
+                                                } else {
+                                                    $discount = round(($subtotal / 100) * auth()->user()->currentQuote->value, 2);
+                                                }
+                                            @endphp
+                                            <tr>
+                                                <th colspan="3">Subtotal</th>
+                                                <th>$ {{ $subtotal }}</th>
+                                            </tr>
+                                            <tr>
+                                                <th colspan="3">Descuento</th>
+                                                <th>$ {{ $discount }}</th>
+                                            </tr>
+                                            <tr>
+                                                <th colspan="3">Total</th>
+                                                <th>$ {{ $subtotal - $discount }}</th>
+                                            </tr>
+                                        @endif
                                     </tbody>
                                 </table>
                             </div>
