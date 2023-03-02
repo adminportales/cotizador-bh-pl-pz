@@ -79,9 +79,15 @@
                     <option value="1">Mostrar el IVA por partida</option>
                 </select>
             </div>
-            @if ($errors->has('ivaByItem'))
-                <span class="text-danger">{{ $errors->first('departamento') }}</span>
-            @endif
+        </div>
+        <div class="col-md-4">
+            <div class="form-group">
+                <label for="">El monto total es</label>
+                <select name="tipo" class="form-control" wire:model="showTotal">
+                    <option value="1">Visible</option>
+                    <option value="0">No visible</option>
+                </select>
+            </div>
         </div>
         <div class="col-md-4">
             <div class="form-group">

@@ -343,7 +343,9 @@ class FormularioDeCotizacion extends Component
     public function seleccionarImagen($image)
     {
         $this->imageSelected = $image;
+        $this->dispatchBrowserEvent('hideModalImage');
     }
+
     public function eliminarImagen()
     {
         $this->imageSelected = null;
@@ -371,6 +373,14 @@ class FormularioDeCotizacion extends Component
         $this->dispatchBrowserEvent('hideModalScales');
     }
 
+    public function openModalImage()
+    {
+        $this->dispatchBrowserEvent('showModalImage');
+    }
+    public function closeModalImage()
+    {
+        $this->dispatchBrowserEvent('hideModalImage');
+    }
     public function addScale()
     {
         $this->itemEditScale = null;

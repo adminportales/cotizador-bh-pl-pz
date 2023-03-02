@@ -13,6 +13,7 @@ class Quote extends Model
         'user_id',
         'lead',
         'iva_by_item',
+        'show_total',
         'logo',
         "pending_odoo",
         "company_id",

@@ -363,6 +363,7 @@
             </div>
         </div>
     </div>
+
     <div class="modal fade" id="modalVerProducto" tabindex="-1" aria-labelledby="modalVerProductoLabel"
         aria-hidden="true">
         <div class="modal-dialog modal-lg">
@@ -407,16 +408,46 @@
                                 <p class="m-0"><b>Tecnica: </b>{{ $tecnicaShow->tecnica }} </p>
                                 <p class="m-0"><b>Tamaño: </b>{{ $tecnicaShow->size }}</p>
                                 <br>
-                                <p class="m-0"><b>Precio de la tecnica:</b> $
-                                    {{ $showProduct['prices_techniques'] }}</p>
                                 <p class="m-0"><b>Numero de tintas o logos:</b> {{ $showProduct['color_logos'] }}
                                 </p>
                                 <p class="m-0"><b>Costo Indirecto:</b> $ {{ $showProduct['costo_indirecto'] }}</p>
                                 <p class="m-0"><b>Margen de Utilidad:</b> {{ $showProduct['utilidad'] }} %</p>
-                                <p class="m-0"><b>Precio Unitario:</b> $ {{ $showProduct['precio_unitario'] }} </p>
-                                <p class="m-0"><b>Cantidad:</b> {{ $showProduct['cantidad'] }} </p>
-                                <p class="m-0"><b>Precio Total:</b> $ {{ $showProduct['precio_total'] }} </p>
                                 <p class="m-0"><b>Dias de entrega:</b> {{ $showProduct['dias_entrega'] }} </p>
+                                @if ($showProduct['quote_by_scales'])
+                                    <table class="table table-sm table-bordered m-0">
+                                        <thead>
+                                            <tr>
+                                                <th>Cantidad</th>
+                                                <th>Impresion</th>
+                                                <th>Unitario</th>
+                                                <th>Total</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (json_decode($showProduct['scales_info']) as $item)
+                                                <tr>
+                                                    <td>{{ $item->quantity }} pz</td>
+                                                    <td>$
+                                                        {{ number_format($item->tecniquePrice, 2, '.', ',') }}
+                                                    </td>
+                                                    <td>$
+                                                        {{ number_format($item->unit_price, 2, '.', ',') }}
+                                                    </td>
+                                                    <td>$
+                                                        {{ number_format($item->total_price, 2, '.', ',') }}
+                                                    </td>
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                @else
+                                    <p class="m-0"><b>Precio de la tecnica:</b> $
+                                        {{ $showProduct['prices_techniques'] }}</p>
+                                    <p class="m-0"><b>Precio Unitario:</b> $ {{ $showProduct['precio_unitario'] }}
+                                    </p>
+                                    <p class="m-0"><b>Cantidad:</b> {{ $showProduct['cantidad'] }} </p>
+                                    <p class="m-0"><b>Precio Total:</b> $ {{ $showProduct['precio_total'] }} </p>
+                                @endif
                                 {{-- {{ dd($showProduct) }} --}}
                             </div>
                             <div class="col-md-6">

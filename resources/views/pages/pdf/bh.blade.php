@@ -263,29 +263,31 @@
                 </td>
             </tr>
             @if (!$quote_scales)
-                <tr>
-                    @php
-                        $subtotal = (isset($quote->preview) ? $quote->precio_total : $quote->latestQuotesUpdate->quoteProducts->sum('precio_total')) * $taxFee;
-                        $discount = 0;
-                        if ($quote->latestQuotesUpdate->quoteDiscount->type == 'Fijo') {
-                            $discount = $quote->latestQuotesUpdate->quoteDiscount->value;
-                        } else {
-                            $discount = round(($subtotal / 100) * $quote->latestQuotesUpdate->quoteDiscount->value, 2);
-                        }
-                        $iva = round($subtotal * 0.16, 2);
-                    @endphp
-                    <td style="width: 100%; text-align: right">
-                        <p><b>Subtotal: </b> $ {{ number_format($subtotal, 2, '.', ',') }}</p>
-                        @if ($discount > 0)
-                            <p><b>Descuento: </b>$ {{ number_format($discount, 2, '.', ',') }}</p>
-                        @endif
-                        @if (!$quote->iva_by_item)
-                            <p><b>IVA: </b> $ {{ number_format($iva, 2, '.', ',') }}</p>
-                        @endif
-                        <br>
-                        <p><b>Total: </b>$ {{ number_format($subtotal - $discount + $iva, 2, '.', ',') }}</p>
-                    </td>
-                </tr>
+                @if ($quote->show_total)
+                    <tr>
+                        @php
+                            $subtotal = (isset($quote->preview) ? $quote->precio_total : $quote->latestQuotesUpdate->quoteProducts->sum('precio_total')) * $taxFee;
+                            $discount = 0;
+                            if ($quote->latestQuotesUpdate->quoteDiscount->type == 'Fijo') {
+                                $discount = $quote->latestQuotesUpdate->quoteDiscount->value;
+                            } else {
+                                $discount = round(($subtotal / 100) * $quote->latestQuotesUpdate->quoteDiscount->value, 2);
+                            }
+                            $iva = round($subtotal * 0.16, 2);
+                        @endphp
+                        <td style="width: 100%; text-align: right">
+                            <p><b>Subtotal: </b> $ {{ number_format($subtotal, 2, '.', ',') }}</p>
+                            @if ($discount > 0)
+                                <p><b>Descuento: </b>$ {{ number_format($discount, 2, '.', ',') }}</p>
+                            @endif
+                            @if (!$quote->iva_by_item)
+                                <p><b>IVA: </b> $ {{ number_format($iva, 2, '.', ',') }}</p>
+                            @endif
+                            <br>
+                            <p><b>Total: </b>$ {{ number_format($subtotal - $discount + $iva, 2, '.', ',') }}</p>
+                        </td>
+                    </tr>
+                @endif
             @endif
         </table>
     </div>

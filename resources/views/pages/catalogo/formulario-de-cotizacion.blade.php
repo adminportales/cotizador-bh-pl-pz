@@ -231,7 +231,7 @@
                         cotizacion</strong></label>
                 @if (!$imageSelected)
                     <button type="button" class="btn btn-primary btn-sm btn-block" data-toggle="modal"
-                        data-target="#exampleModal1">
+                        wire:click='openModalImage'>
                         Selecciona la imagen que se vera en la cotizacion
                     </button>
                 @else
@@ -242,7 +242,7 @@
                         </div>
                         <div class="">
                             <button type="button" class="btn btn-primary btn-sm btn-block" data-toggle="modal"
-                                data-target="#exampleModal1">
+                                wire:click='openModalImage'>
                                 Actualiza la imagen que se vera en la cotizacion
                             </button>
                             <button type="button" class="btn btn-danger btn-sm btn-block"
@@ -253,16 +253,13 @@
                     </div>
                 @endif
 
-                <div wire:ignore.self class="modal fade" id="exampleModal1" tabindex="-1"
-                    aria-labelledby="exampleModal1Label" aria-hidden="true">
+                <div wire:ignore.self class="modal fade" id="modalImage" tabindex="-1"
+                    aria-labelledby="modalImageLabel" aria-hidden="true">
                     <div class="modal-dialog modal-lg">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModal1Label">Seleccionar la imagen que se
+                                <h5 class="modal-title" id="modalImageLabel">Seleccionar la imagen que se
                                     visualizara en la cotizacion</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
                             </div>
                             <div class="modal-body">
                                 <div class="d-flex justify-content-between">
@@ -283,7 +280,7 @@
                                 </div>
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                                <button type="button" class="btn btn-secondary" wire:click='closeModalImage'>Cerrar</button>
                             </div>
                         </div>
                     </div>
@@ -380,8 +377,11 @@
         window.addEventListener('showModalScales', event => {
             $('#addScaleModal').modal('show')
         })
-        window.addEventListener('showModalScales', event => {
-            $('#addScaleModal').modal('show')
+        window.addEventListener('showModalImage', event => {
+            $('#modalImage').modal('show')
+        })
+        window.addEventListener('hideModalImage', event => {
+            $('#modalImage').modal('hide')
         })
 
         window.addEventListener('openConfirmDelete', event => {
@@ -415,9 +415,5 @@
                 }
             })
         })
-
-        function eliminarEscala(id) {
-
-        }
     </script>
 </div>
