@@ -1,5 +1,5 @@
 <div>
-    <form wire:submit.prevent="agregarCotizacion" novalidate>
+    <form novalidate>
         <p class="w-100"><strong>Personalizacion de la tecnica</strong></p>
         <div class="border border-primary rounded p-2">
             <div class="row">
@@ -138,7 +138,7 @@
                                                         </div>
                                                     </button>
                                                     <button type="button" class="btn btn-danger btn-sm"
-                                                        onclick=" eliminarEscala({{ $key }})">
+                                                        wire:click="openDeleteScale({{ $key }})">
                                                         <div style="width: 1rem">
                                                             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6"
                                                                 fill="none" viewBox="0 0 24 24"
@@ -155,10 +155,9 @@
                                 </table>
                             </div>
                         @endif
-                        <button type="button" class="btn btn-light shadow-none"
-                        onclick="addNew()">
-                        Agregar una nueva escala
-                    </button>
+                        <button type="button" class="btn btn-light shadow-none" wire:click='openScale'>
+                            Agregar una nueva escala
+                        </button>
 
                         <div wire:ignore.self class="modal fade" id="addScaleModal" tabindex="-1"
                             aria-labelledby="addScaleModalLabel" aria-hidden="true">
@@ -166,12 +165,8 @@
                                 <div class="modal-content">
                                     <div class="modal-header">
                                         <h5 class="modal-title" id="addScaleModalLabel">
-                                            {{ $editScale?"Editar la cantidad de Productos":'Agregar una nueva cantidad' }}
+                                            {{ $editScale ? 'Editar la cantidad de Productos' : 'Agregar una nueva cantidad' }}
                                         </h5>
-                                        <button type="button" class="close" data-dismiss="modal"
-                                            aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
                                     </div>
                                     <div class="modal-body row">
                                         <div class="form-group m-0 mb-1 col-md-4">
@@ -192,11 +187,13 @@
                                         </div>
                                     </div>
                                     <div class="modal-footer">
+                                        <button type="button" class="btn btn-info btn-sm"
+                                            wire:click='closeScale'>Cerrar</button>
                                         @if ($editScale)
-                                            <button type="button" class="btn btn-warning"
+                                            <button type="button" class="btn btn-warning btn-sm"
                                                 wire:click='updateScale'>Editar</button>
                                         @else
-                                            <button type="button" class="btn btn-primary"
+                                            <button type="button" class="btn btn-primary btn-sm"
                                                 wire:click='addScale'>Agregar</button>
                                         @endif
                                     </div>
@@ -320,6 +317,10 @@
                     <div class="btn btn-sm btn-danger w-100" style="margin-top:0px; margin-bottom:0px;">
                         No se ha seleccionado una tecnica de personalizacion </div>
                 @endif
+                @if ($errors->has('infoScales'))
+                    <div class="btn btn-sm btn-danger w-100" style="margin-top:0px; margin-bottom:0px;">
+                        No se ha creado una escala de precios </div>
+                @endif
             </div>
             @php
                 $errors = null;
@@ -345,7 +346,14 @@
                 </div>
             @endif
             <div class="form-group m-0 mb-1 text-center">
-                <button type="submit" class="btn btn-primary py-2 px-4">Añadir a la cotizacion</button>
+                @if ($currentQuote)
+                    <button type="button" class="btn btn-warning py-2 px-4"
+                        wire:click='editarCurrentCotizacion'>Editar
+                        cotizacion</button>
+                @else
+                    <button type="button" class="btn btn-primary py-2 px-4" wire:click='agregarCotizacion'>Añadir a
+                        la cotizacion</button>
+                @endif
             </div>
         </div>
     </form>
@@ -372,16 +380,11 @@
         window.addEventListener('showModalScales', event => {
             $('#addScaleModal').modal('show')
         })
-
-        function addNew() {
-            @this.editScale = false;
-            @this.itemEditScale = null;
-            @this.cantidad = null;
-            @this.precioTecnicaEscala = null;
+        window.addEventListener('showModalScales', event => {
             $('#addScaleModal').modal('show')
-        }
+        })
 
-        function eliminarEscala(id) {
+        window.addEventListener('openConfirmDelete', event => {
             Swal.fire({
                 title: 'Esta seguro?',
                 text: "Desea eliminar esta escala",
@@ -393,7 +396,7 @@
                 cancelButtonText: 'Cancelar!'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    let respuesta = @this.deleteScale(id)
+                    let respuesta = @this.deleteScale(event.detail.id)
                     Swal.fire('Por Favor Espere');
                     respuesta
                         .then((response) => {
@@ -411,6 +414,10 @@
                         });
                 }
             })
+        })
+
+        function eliminarEscala(id) {
+
         }
     </script>
 </div>

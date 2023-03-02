@@ -136,7 +136,7 @@
                                             <p class="m-0"><strong>${{ $quote->precio_total }}</strong></p>
                                         </div>
                                         <div style="font-size: 14px;">
-                                            <p class="m-0"> {{ $quote->dias_entrega }} dias habiles</p>
+                                            <p class="m-0"> {{ $quote->dias_entrega }} dias naturales</p>
                                             <p class="m-0"> {{ $quote->cantidad }} piezas</p>
                                         </div>
                                     </div>
@@ -239,9 +239,9 @@
             </div>
         </div>
     </div>
-    <div class="modal fade" id="editProductModal" tabindex="-1" aria-labelledby="editProductModalLabel"
+    <div class="modal fade" id="editProductModal" tabindex="-1" aria-labelledby="editProductModalLabel" data-backdrop="static"
         aria-hidden="true" wire:ignore.self>
-        <div class="modal-dialog modal-lg">
+        <div class="modal-dialog modal-lg" >
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="editProductModalLabel">Editar Cotizacion</h5>
@@ -249,9 +249,9 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <div class="modal-body">
+                <div class="modal-body" style="max-height: 80vh; overflow: auto;">
                     @if ($quoteEdit)
-                        @livewire('formulario-de-cotizacion-current-min', ['currentQuote' => $quoteEdit], key($quoteEdit->id))
+                        @livewire('formulario-de-cotizacion', ['currentQuote' => $quoteEdit], key($quoteEdit->id))
                     @endif
                 </div>
             </div>

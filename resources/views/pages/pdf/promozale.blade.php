@@ -201,7 +201,7 @@
                     </tr>
                     <tr>
                         <td colspan="12" class="title-entrega">Tiempo de Entrega: {{ $item->dias_entrega }} días
-                            hábiles</td>
+                            naturales</td>
                     </tr>
                     <tr>
                         <td colspan="4" class="title-cantidad">Cantidad</td>

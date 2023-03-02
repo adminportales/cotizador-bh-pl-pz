@@ -3,8 +3,10 @@
 namespace App\Http\Livewire;
 
 use App\Models\Catalogo\GlobalAttribute;
+use App\Models\Catalogo\Product;
 use App\Models\Material;
 use App\Models\MaterialTechnique;
+use App\Models\PricesTechnique;
 use App\Models\SizeMaterialTechnique;
 use App\Models\Technique;
 use Exception;
@@ -14,7 +16,7 @@ use Livewire\Component;
 
 class FormularioDeCotizacion extends Component
 {
-    public $product;
+    public $product, $currentQuote;
 
     public $precio, $precioCalculado, $precioTotal = 0;
 
@@ -28,6 +30,32 @@ class FormularioDeCotizacion extends Component
 
     public function mount()
     {
+        $this->priceScales = false;
+        if ($this->currentQuote) {
+            $this->product = Product::find($this->currentQuote->product_id);
+            // Calculo de Precio
+            $this->colores = $this->currentQuote->color_logos;
+            $this->operacion = $this->currentQuote->costo_indirecto;
+            $this->cantidad =  $this->currentQuote->cantidad;
+            $this->utilidad =  $this->currentQuote->utilidad;
+            $this->entrega =  $this->currentQuote->dias_entrega;
+            $this->newPriceTechnique =  $this->currentQuote->new_price_technique;
+            $this->newDescription =  $this->currentQuote->new_description;
+            $this->imageSelected =  $this->currentQuote->images_selected;
+
+            $prices_techniques = PricesTechnique::find($this->currentQuote->prices_techniques_id);
+            $this->materialSeleccionado = $prices_techniques->sizeMaterialTechnique->materialTechnique->material->id;
+            $this->tecnicaSeleccionada = $prices_techniques->sizeMaterialTechnique->materialTechnique->technique->id;
+            $this->sizeSeleccionado = $prices_techniques->sizeMaterialTechnique->size->id;
+            $this->priceScales = $this->currentQuote->quote_by_scales;
+            if ($this->priceScales) {
+                $this->priceScalesComplete = json_decode($this->currentQuote->scales_info);
+                $this->infoScales = array_map(function ($scale) {
+                    return ['quantity' => $scale->quantity, 'tecniquePrice' => $scale->tecniquePrice];
+                }, $this->priceScalesComplete);
+            }
+        }
+
         $utilidad = GlobalAttribute::find(1);
         $utilidad = (float) $utilidad->value;
         $priceProduct = $this->product->price;
@@ -38,7 +66,6 @@ class FormularioDeCotizacion extends Component
         }
         $this->precio = round($priceProduct + $priceProduct * ($utilidad / 100), 2);
         $this->precioCalculado = $this->precio;
-        $this->priceScales = false;
     }
 
     public function render()
@@ -129,7 +156,7 @@ class FormularioDeCotizacion extends Component
             $this->precioTotal = $nuevoPrecio * $this->cantidad;
         } else {
             $this->priceScalesComplete = [];
-            foreach ($this->infoScales as $info) {
+            foreach ($this->infoScales as $key => $info) {
                 if ((int)$info['quantity'] > 0 && $preciosDisponibles && $this->sizeSeleccionado !== null) {
                     foreach ($preciosDisponibles as $precioDisponible) {
                         if ($precioDisponible->escala_final != null) {
@@ -159,13 +186,12 @@ class FormularioDeCotizacion extends Component
                     $precioDeTecnicaUsado = $info['tecniquePrice'];
 
                 $nuevoPrecio = round(($this->precio + ($precioDeTecnicaUsado * $this->colores) + $this->operacion) / ((100 - $this->utilidad) / 100), 2);
-
-                array_push($this->priceScalesComplete, [
+                $this->priceScalesComplete[$key] = [
                     'quantity' => $info['quantity'],
                     'tecniquePrice' => $info['tecniquePrice'] ?: $precioDeTecnica,
                     'unit_price' => $nuevoPrecio,
                     'total_price' => $nuevoPrecio * $info['quantity'],
-                ]);
+                ];
             }
         }
 
@@ -185,10 +211,10 @@ class FormularioDeCotizacion extends Component
             'operacion' => 'required|numeric|min:0',
             'utilidad' => 'required|numeric|min:0|max:99',
             'entrega' => 'required|numeric|min:0',
-            'priceTechnique' => 'required',
         ]);
         if (!$this->priceScales) {
             $this->validate([
+                'priceTechnique' => 'required',
                 'cantidad' => 'required|numeric|min:1',
             ]);
             $this->infoScales = [];
@@ -196,6 +222,7 @@ class FormularioDeCotizacion extends Component
             $this->validate([
                 'infoScales' => 'array|required',
                 'infoScales.*.quantity' => 'required|numeric|min:1',
+                'priceTechnique' => 'required',
             ]);
             $this->cantidad = 0;
         }
@@ -252,6 +279,67 @@ class FormularioDeCotizacion extends Component
         $this->resetData();
     }
 
+    public function editarCurrentCotizacion()
+    {
+        $this->validate([
+            'colores' => 'required|numeric|min:1',
+            'operacion' => 'required|numeric|min:0',
+            'utilidad' => 'required|numeric|min:0|max:99',
+            'entrega' => 'required|numeric|min:0',
+        ]);
+        if (!$this->priceScales) {
+            $this->validate([
+                'priceTechnique' => 'required',
+                'cantidad' => 'required|numeric|min:1',
+            ]);
+            $this->infoScales = [];
+        } else {
+            $this->validate([
+                'priceTechnique' => 'required',
+                'infoScales' => 'array|required',
+                'infoScales.*.quantity' => 'required|numeric|min:1',
+            ]);
+            $this->cantidad = 0;
+        }
+
+        if (!is_numeric($this->newPriceTechnique))
+            $this->newPriceTechnique = null;
+        if (trim($this->newDescription) == "")
+            $this->newDescription = null;
+
+        $dataQuote = [
+            'product_id' => $this->product->id,
+            'prices_techniques_id' => $this->priceTechnique->id,
+            'new_description' => $this->newDescription,
+            'color_logos' => $this->colores,
+            'costo_indirecto' => $this->operacion,
+            'utilidad' => $this->utilidad,
+            'dias_entrega' => $this->entrega,
+            'images_selected' => $this->imageSelected
+        ];
+
+        if (!$this->priceScales) {
+            $dataQuote['new_price_technique'] = $this->newPriceTechnique;
+            $dataQuote['cantidad'] = $this->cantidad;
+            $dataQuote['precio_unitario'] = $this->precioCalculado;
+            $dataQuote['precio_total'] = $this->precioTotal;
+            $dataQuote['quote_by_scales'] = false;
+            $dataQuote['scales_info'] = null;
+        } else {
+            $dataQuote['new_price_technique'] = null;
+            $dataQuote['cantidad'] = null;
+            $dataQuote['precio_unitario'] = null;
+            $dataQuote['precio_total'] = null;
+            $dataQuote['quote_by_scales'] = true;
+            $dataQuote['scales_info'] = json_encode($this->priceScalesComplete);
+        }
+
+        $this->currentQuote->update($dataQuote);
+        $this->resetData();
+        $this->dispatchBrowserEvent('closeModal', ['currentQuote' => $this->currentQuote->id]);
+        $this->emit('updateProductCurrent');
+    }
+
     public function seleccionarImagen($image)
     {
         $this->imageSelected = $image;
@@ -264,6 +352,23 @@ class FormularioDeCotizacion extends Component
     public function changeTypePrice()
     {
         $this->priceScales = !$this->priceScales;
+    }
+
+    public function openScale()
+    {
+        $this->editScale = false;
+        $this->itemEditScale = null;
+        $this->cantidad = null;
+        $this->precioTecnicaEscala = null;
+        $this->dispatchBrowserEvent('showModalScales');
+    }
+    public function closeScale()
+    {
+        $this->editScale = false;
+        $this->itemEditScale = null;
+        $this->cantidad = null;
+        $this->precioTecnicaEscala = null;
+        $this->dispatchBrowserEvent('hideModalScales');
     }
 
     public function addScale()
@@ -287,12 +392,17 @@ class FormularioDeCotizacion extends Component
     {
         try {
             unset($this->infoScales[$scale_id]);
-            array_values($this->infoScales);
             return 1;
         } catch (Exception $e) {
             return json_encode($e->getMessage());
         }
     }
+
+    public function openDeleteScale($scale_id)
+    {
+        $this->dispatchBrowserEvent('openConfirmDelete', ['id' => $scale_id]);
+    }
+
     public function editScale($scale_id)
     {
         $this->editScale =  true;

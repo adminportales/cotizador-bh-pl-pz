@@ -158,8 +158,7 @@ class FormularioDeCotizacionCurrentMin extends Component
             $this->newPriceTechnique = null;
         if (trim($this->newDescription) == "")
             $this->newDescription = null;
-        if (trim($this->newDescription) == "")
-            $this->newDescription = null;
+
         $this->currentQuote->update([
             'product_id' => $this->product->id,
             'prices_techniques_id' => $this->priceTechnique->id,
@@ -183,6 +182,7 @@ class FormularioDeCotizacionCurrentMin extends Component
     {
         $this->imageSelected = $image;
     }
+
     public function eliminarImagen()
     {
         $this->imageSelected = null;
