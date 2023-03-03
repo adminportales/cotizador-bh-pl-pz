@@ -69,7 +69,7 @@
                                             alt="" srcset="">
                                     </td>
                                     <td class="">
-                                        <p>{{ $producto->name }}</p>
+                                        <p>{{ Str::limit($producto->name, 25, '...') }}</p>
                                     </td>
                                     @if (!$product->quote_by_scales)
                                         <td class="">
@@ -85,7 +85,36 @@
                                             </p>
                                         </td>
                                     @else
-                                        <td colspan="3" class="text-right">Cotizacion a escala --></td>
+                                        <td colspan="3" class="text-right">
+                                            <table class="table table-sm table-bordered m-0">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Cantidad</th>
+                                                        <th>Utilidad</th>
+                                                        <th>Impresion</th>
+                                                        <th>Unitario</th>
+                                                        <th>Total</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @foreach (json_decode($product['scales_info']) as $item)
+                                                        <tr>
+                                                            <td>{{ $item->quantity }} pz</td>
+                                                            <td>{{ $item->utility }} %</td>
+                                                            <td>$
+                                                                {{ number_format($item->tecniquePrice, 2, '.', ',') }}
+                                                            </td>
+                                                            <td>$
+                                                                {{ number_format($item->unit_price, 2, '.', ',') }}
+                                                            </td>
+                                                            <td>$
+                                                                {{ number_format($item->total_price, 2, '.', ',') }}
+                                                            </td>
+                                                        </tr>
+                                                    @endforeach
+                                                </tbody>
+                                            </table>
+                                        </td>
                                     @endif
                                     <td class="text-center d-flex">
                                         <button class="btn btn-info btn-sm"
@@ -324,8 +353,8 @@
     </div>
 
     <!-- Modal -->
-    <div class="modal fade" id="modalCotizador" tabindex="-1" aria-labelledby="modalCotizadorLabel" data-backdrop="static"
-        aria-hidden="true">
+    <div class="modal fade" id="modalCotizador" tabindex="-1" aria-labelledby="modalCotizadorLabel"
+        data-backdrop="static" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
@@ -344,8 +373,8 @@
         </div>
     </div>
 
-    <div class="modal fade" id="modalEditarProducto" tabindex="-1" aria-labelledby="modalEditarProductoLabel" data-backdrop="static"
-        aria-hidden="true">
+    <div class="modal fade" id="modalEditarProducto" tabindex="-1" aria-labelledby="modalEditarProductoLabel"
+        data-backdrop="static" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
@@ -354,7 +383,7 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <div class="modal-body"  style="max-height: 80vh; overflow: auto;">
+                <div class="modal-body" style="max-height: 80vh; overflow: auto;">
                     @if ($puedeEditar && $productEdit)
                         @livewire('formulario-de-cotizacion', ['productEdit' => $productEdit], key($productEdit['id']))
                     @endif

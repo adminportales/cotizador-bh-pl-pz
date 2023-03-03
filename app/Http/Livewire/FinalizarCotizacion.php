@@ -21,7 +21,7 @@ use Livewire\WithFileUploads;
 class FinalizarCotizacion extends Component
 {
     use WithFileUploads;
-    public $tipoCliente, $clienteSeleccionado = '', $isClient, $nombre, $empresa, $email, $telefono, $celular, $oportunidad, $rank = '', $departamento, $informacion, $ivaByItem,$showTotal, $logo, $taxFee, $shelfLife;
+    public $tipoCliente, $clienteSeleccionado = '', $isClient, $nombre, $empresa, $email, $telefono, $celular, $oportunidad, $rank = '', $departamento, $informacion, $ivaByItem, $showTotal, $logo, $taxFee, $shelfLife;
     public $urlPDFPreview;
     public $ejecutivos, $ejecutivoSeleccionado = null, $selectEjecutivo;
 
@@ -320,7 +320,6 @@ class FinalizarCotizacion extends Component
                     ]
                 ]
             ];
-            dd(1);
             $curl = curl_init($url);
             curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
             curl_setopt($curl, CURLOPT_POST, true);
