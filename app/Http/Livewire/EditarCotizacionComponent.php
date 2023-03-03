@@ -24,6 +24,8 @@ class EditarCotizacionComponent extends Component
     // Variables Editables
     public $listNewProducts = [], $listUpdateCurrent = [], $listDeleteCurrent = [], $newDiscount;
 
+    public $productEdit = null;
+
     // Informacion a mostrar
     public $showProduct, $dataProduct;
 
@@ -58,22 +60,20 @@ class EditarCotizacionComponent extends Component
             $this->listUpdateCurrent = [];
             $this->listDeleteCurrent = [];
         }
-        // $this->dispatchBrowserEvent('show-modal')
     }
 
     public function editarProducto($product, $isNew = false)
     {
-        $productEdit = '';
         if ($isNew) {
             foreach ($this->listNewProducts as $newProduct) {
                 if ($newProduct['idNewQuote'] == $product) {
-                    $productEdit = $newProduct;
+                    $this->productEdit = $newProduct;
                 }
             }
         } else {
-            $productEdit = $product;
+            $this->productEdit = $product;
         }
-        $this->emit('editProduct', ['productEdit' => $productEdit, 'isNew' => $isNew]);
+        // $this->emit('editProduct', ['productEdit' => $this->productEdit, 'isNew' => $isNew]);
         $this->dispatchBrowserEvent('showModalEditar');
     }
 
@@ -85,7 +85,6 @@ class EditarCotizacionComponent extends Component
     public function updateProduct($productUpdate)
     {
         $this->authorize('update', $this->quote);
-        // TODO: revisar si es nuevo o es actualizacion
         if ($productUpdate['currentQuote_id'] !== "") {
             // Revisar si se actualizo una actualizacion o es nueva
             $listUpdate = [];
@@ -115,10 +114,12 @@ class EditarCotizacionComponent extends Component
             }
         }
     }
+
     public function deleteProducto($productDeleted)
     {
         array_push($this->listDeleteCurrent, $productDeleted);
     }
+
     public function deleteNewProducto($productDeleted)
     {
         $newArray = [];
@@ -166,7 +167,6 @@ class EditarCotizacionComponent extends Component
                 foreach ($this->listUpdateCurrent as $keyList => $productQuoteEdit) {
                     if ($productQuote->id == $productQuoteEdit['currentQuote_id']) {
                         $tecnica = PricesTechnique::find($productQuoteEdit['prices_techniques_id']);
-                        $price_tecnica =  $tecnica->precio;
                         $material = $tecnica->sizeMaterialTechnique->materialTechnique->material->nombre;
                         $material_id = $tecnica->sizeMaterialTechnique->materialTechnique->material->id;
                         $tecnica_nombre = $tecnica->sizeMaterialTechnique->materialTechnique->technique->nombre;
@@ -183,12 +183,15 @@ class EditarCotizacionComponent extends Component
                         ];
                         $productQuote->product = $productQuoteEdit['product'];
                         $productQuote->technique = json_encode($infoTecnica);
-                        $productQuote->prices_techniques = $productQuoteEdit['newPriceTechnique'] != null
-                            ? $productQuoteEdit['newPriceTechnique']
-                            : ($tecnica->tipo_precio == 'D'
-                                ? round($tecnica->precio / $productQuoteEdit['cantidad'], 2)
-                                : $tecnica->precio);
-                        $productQuote->new_price_technique = $productQuoteEdit['newPriceTechnique'];
+                        if (!$productQuoteEdit['quote_by_scales']) {
+                            $productQuote->prices_techniques = $productQuoteEdit['newPriceTechnique'] != null
+                                ? $productQuoteEdit['newPriceTechnique']
+                                : ($tecnica->tipo_precio == 'D'
+                                    ? round($tecnica->precio / $productQuoteEdit['cantidad'], 2)
+                                    : $tecnica->precio);
+                        } else {
+                            $productQuote->prices_techniques = null;
+                        }
                         $productQuote->new_description = $productQuoteEdit['new_description'];
                         $productQuote->color_logos = $productQuoteEdit['color_logos'];
                         $productQuote->costo_indirecto = $productQuoteEdit['costo_indirecto'];
@@ -197,13 +200,14 @@ class EditarCotizacionComponent extends Component
                         $productQuote->cantidad = $productQuoteEdit['cantidad'];
                         $productQuote->precio_unitario = $productQuoteEdit['precio_unitario'];
                         $productQuote->precio_total = $productQuoteEdit['precio_total'];
+                        $productQuote->quote_by_scales = $productQuoteEdit['quote_by_scales'];
+                        $productQuote->scales_info = $productQuoteEdit['scales_info'];
                         unset($this->listUpdateCurrent[$keyList]);
                     }
                 }
                 array_push($newLatestProducts, $productQuote);
             }
         }
-
         // Agregar los productos de la nueva lista que tiene los productos editados y no estan los elimiandos
         foreach ($latestProductos as $productQuote) {
             $newQuoteUpdate->quoteProducts()->create([
@@ -218,6 +222,8 @@ class EditarCotizacionComponent extends Component
                 "cantidad" => $productQuote->cantidad,
                 "precio_unitario" => $productQuote->precio_unitario,
                 "precio_total" => $productQuote->precio_total,
+                "quote_by_scales" => $productQuote->quote_by_scales,
+                "scales_info" => $productQuote->scales_info,
             ]);
         }
 
@@ -240,14 +246,9 @@ class EditarCotizacionComponent extends Component
                     'size' => $size,
                     'size_id' => $size_id,
                 ];
-                $newQuoteUpdate->quoteProducts()->create([
+                $dataNewQuote = [
                     'product' => $item['product'],
                     'technique' =>  json_encode($infoTecnica),
-                    'prices_techniques' =>  $item['newPriceTechnique'] != null
-                        ? $item['newPriceTechnique']
-                        : ($tecnica->tipo_precio == 'D'
-                            ? round($tecnica->precio / $item['cantidad'], 2)
-                            : $tecnica->precio),
                     "new_description" => $item['new_description'],
                     'color_logos' => $item['color_logos'],
                     'costo_indirecto' => $item['costo_indirecto'],
@@ -255,8 +256,20 @@ class EditarCotizacionComponent extends Component
                     'dias_entrega' => $item['dias_entrega'],
                     'cantidad' => $item['cantidad'],
                     'precio_unitario' => $item['precio_unitario'],
-                    'precio_total' => $item['precio_total']
-                ]);
+                    'precio_total' => $item['precio_total'],
+                    'quote_by_scales' => $item['quote_by_scales'],
+                    'scales_info' => $item['scales_info'],
+                ];
+                if (!$item['quote_by_scales']) {
+                    $dataNewQuote['prices_techniques'] =  $item['newPriceTechnique'] != null
+                        ? $item['newPriceTechnique']
+                        : ($tecnica->tipo_precio == 'D'
+                            ? round($tecnica->precio / $item['cantidad'], 2)
+                            : $tecnica->precio);
+                } else {
+                    $dataNewQuote['prices_techniques'] = null;
+                }
+                $newQuoteUpdate->quoteProducts()->create($dataNewQuote);
             }
         }
         $this->quote = Quote::find($this->quote->id);

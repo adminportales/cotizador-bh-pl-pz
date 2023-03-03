@@ -116,7 +116,7 @@
                     <br>
                 </div>
             </div>
-            @livewire('formulario-de-cotizacion-min-component', ['product' => $producto])
+            @livewire('formulario-de-cotizacion', ['productNewAdd' => $producto])
         @endif
     </div>
     <style>

@@ -324,7 +324,7 @@
     </div>
 
     <!-- Modal -->
-    <div class="modal fade" id="modalCotizador" tabindex="-1" aria-labelledby="modalCotizadorLabel"
+    <div class="modal fade" id="modalCotizador" tabindex="-1" aria-labelledby="modalCotizadorLabel" data-backdrop="static"
         aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
@@ -334,7 +334,7 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <div class="modal-body">
+                <div class="modal-body" style="max-height: 80vh; overflow: auto;">
                     @livewire('catalogo-min-component')
                 </div>
                 <div class="modal-footer">
@@ -344,7 +344,7 @@
         </div>
     </div>
 
-    <div class="modal fade" id="modalEditarProducto" tabindex="-1" aria-labelledby="modalEditarProductoLabel"
+    <div class="modal fade" id="modalEditarProducto" tabindex="-1" aria-labelledby="modalEditarProductoLabel" data-backdrop="static"
         aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
@@ -354,8 +354,10 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <div class="modal-body">
-                    @livewire('formulario-de-cotizacion-edit-min')
+                <div class="modal-body"  style="max-height: 80vh; overflow: auto;">
+                    @if ($puedeEditar && $productEdit)
+                        @livewire('formulario-de-cotizacion', ['productEdit' => $productEdit], key($productEdit['id']))
+                    @endif
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
@@ -474,6 +476,7 @@
         })
         window.addEventListener('closeModal', event => {
             $('#modalEditarProducto').modal('hide')
+            $('#modalCotizador').modal('hide')
         })
         window.addEventListener('Editarproducto', event => {
             Swal.fire('Actualizado correctamente')

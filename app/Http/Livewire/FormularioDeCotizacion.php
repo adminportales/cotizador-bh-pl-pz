@@ -16,7 +16,7 @@ use Livewire\Component;
 
 class FormularioDeCotizacion extends Component
 {
-    public $product, $currentQuote;
+    public $product, $currentQuote, $productEdit, $currentQuote_id, $productNewAdd;
 
     public $precio, $precioCalculado, $precioTotal = 0;
 
@@ -54,6 +54,37 @@ class FormularioDeCotizacion extends Component
                     return ['quantity' => $scale->quantity, 'tecniquePrice' => $scale->tecniquePrice];
                 }, $this->priceScalesComplete);
             }
+        }
+        if ($this->productEdit) {
+            $product = json_decode($this->productEdit['product']);
+            $this->product = Product::find($product->id);
+            $techniquesInfo =  (object) json_decode($this->productEdit['technique']);
+
+            $this->materialSeleccionado = $techniquesInfo->material_id;
+            $this->tecnicaSeleccionada = $techniquesInfo->tecnica_id;
+            $this->sizeSeleccionado = $techniquesInfo->size_id;
+            $this->currentQuote_id = $this->productEdit['id'];
+            $this->imageSelected = $product->image;
+
+
+            $this->colores = $this->productEdit['color_logos'];
+            $this->operacion = $this->productEdit['costo_indirecto'];
+            $this->cantidad = $this->productEdit['cantidad'];
+            $this->utilidad = $this->productEdit['utilidad'];
+            $this->entrega = $this->productEdit['dias_entrega'];
+            $this->newPriceTechnique = $this->productEdit['prices_techniques'];
+            $this->newDescription =  $this->productEdit['new_description'];
+
+            $this->priceScales = $this->productEdit['quote_by_scales'];
+            if ($this->priceScales) {
+                $this->priceScalesComplete = json_decode($this->productEdit['scales_info']);
+                $this->infoScales = array_map(function ($scale) {
+                    return ['quantity' => $scale->quantity, 'tecniquePrice' => $scale->tecniquePrice];
+                }, $this->priceScalesComplete);
+            }
+        }
+        if ($this->productNewAdd) {
+            $this->product = $this->productNewAdd;
         }
 
         $utilidad = GlobalAttribute::find(1);
@@ -338,6 +369,132 @@ class FormularioDeCotizacion extends Component
         $this->resetData();
         $this->dispatchBrowserEvent('closeModal', ['currentQuote' => $this->currentQuote->id]);
         $this->emit('updateProductCurrent');
+    }
+
+    public function editarCotizacion()
+    {
+        $this->validate([
+            'colores' => 'required|numeric|min:1',
+            'operacion' => 'required|numeric|min:0',
+            'utilidad' => 'required|numeric|min:0|max:99',
+            'entrega' => 'required|numeric|min:0',
+        ]);
+        if (!$this->priceScales) {
+            $this->validate([
+                'priceTechnique' => 'required',
+                'cantidad' => 'required|numeric|min:1',
+            ]);
+            $this->infoScales = [];
+        } else {
+            $this->validate([
+                'priceTechnique' => 'required',
+                'infoScales' => 'array|required',
+                'infoScales.*.quantity' => 'required|numeric|min:1',
+            ]);
+            $this->cantidad = 0;
+        }
+        $product = $this->product->toArray();
+        $product['image'] = $this->imageSelected ?: ($this->product->firstImage ? $this->product->firstImage->image_url : '');
+        unset($this->product->firstImage);
+        unset($this->product->images);
+        if (!is_numeric($this->newPriceTechnique))
+            $this->newPriceTechnique = null;
+        if (trim($this->newDescription) == "")
+            $this->newDescription = null;
+
+        $newQuote = [
+            'currentQuote_id' => $this->currentQuote_id,
+            'product' => json_encode($product),
+            'prices_techniques_id' => $this->priceTechnique->id,
+            'new_description' => $this->newDescription,
+            'color_logos' => $this->colores,
+            'costo_indirecto' => $this->operacion,
+            'utilidad' => $this->utilidad,
+            'dias_entrega' => $this->entrega,
+        ];
+
+        if (!$this->priceScales) {
+            $newQuote['newPriceTechnique'] = $this->newPriceTechnique;
+            $newQuote['cantidad'] = $this->cantidad;
+            $newQuote['precio_unitario'] = $this->precioCalculado;
+            $newQuote['precio_total'] = $this->precioTotal;
+            $newQuote['quote_by_scales'] = false;
+            $newQuote['scales_info'] = null;
+        } else {
+            $newQuote['newPriceTechnique'] = null;
+            $newQuote['cantidad'] = null;
+            $newQuote['precio_unitario'] = null;
+            $newQuote['precio_total'] = null;
+            $newQuote['quote_by_scales'] = true;
+            $newQuote['scales_info'] = json_encode($this->priceScalesComplete);
+        }
+
+        $this->emit('productUpdate', $newQuote);
+        $this->dispatchBrowserEvent('closeModal');
+        $this->resetData();
+    }
+
+    public function addNewProductToQuote()
+    {
+        $this->validate([
+            'colores' => 'required|numeric|min:1',
+            'operacion' => 'required|numeric|min:0',
+            'utilidad' => 'required|numeric|min:0|max:99',
+            'entrega' => 'required|numeric|min:0',
+        ]);
+        if (!$this->priceScales) {
+            $this->validate([
+                'priceTechnique' => 'required',
+                'cantidad' => 'required|numeric|min:1',
+            ]);
+            $this->infoScales = [];
+        } else {
+            $this->validate([
+                'priceTechnique' => 'required',
+                'infoScales' => 'array|required',
+                'infoScales.*.quantity' => 'required|numeric|min:1',
+            ]);
+            $this->cantidad = 0;
+        }
+
+        $product = $this->product->toArray();
+        $product['image'] = $this->imageSelected ?: ($this->product->firstImage ? $this->product->firstImage->image_url : '');
+        unset($this->product->firstImage);
+        unset($this->product->images);
+        if (!is_numeric($this->newPriceTechnique))
+            $this->newPriceTechnique = null;
+        if (trim($this->newDescription) == "")
+            $this->newDescription = null;
+        $newQuote = [
+            'idNewQuote' => time(),
+            'product' => json_encode($product),
+            'prices_techniques_id' => $this->priceTechnique->id,
+            'new_description' => $this->newDescription,
+            'color_logos' => $this->colores,
+            'costo_indirecto' => $this->operacion,
+            'utilidad' => $this->utilidad,
+            'dias_entrega' => $this->entrega,
+        ];
+
+        if (!$this->priceScales) {
+            $newQuote['newPriceTechnique'] = $this->newPriceTechnique;
+            $newQuote['cantidad'] = $this->cantidad;
+            $newQuote['precio_unitario'] = $this->precioCalculado;
+            $newQuote['precio_total'] = $this->precioTotal;
+            $newQuote['quote_by_scales'] = false;
+            $newQuote['scales_info'] = null;
+        } else {
+            $newQuote['newPriceTechnique'] = null;
+            $newQuote['cantidad'] = null;
+            $newQuote['precio_unitario'] = null;
+            $newQuote['precio_total'] = null;
+            $newQuote['quote_by_scales'] = true;
+            $newQuote['scales_info'] = json_encode($this->priceScalesComplete);
+        }
+
+        $this->emit('productAdded', $newQuote);
+        $this->dispatchBrowserEvent('closeModal');
+        $this->resetData();
     }
 
     public function seleccionarImagen($image)

@@ -557,7 +557,7 @@ class FinalizarCotizacion extends Component
                 $dataProduct['quote_by_scales'] = false;
                 $dataProduct['scales_info'] = null;
             } else {
-                $dataProduct['new_price_technique'] = null;
+                $dataProduct['prices_techniques'] = null;
                 $dataProduct['cantidad'] = null;
                 $dataProduct['precio_unitario'] = null;
                 $dataProduct['precio_total'] = null;

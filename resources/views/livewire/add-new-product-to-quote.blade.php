@@ -12,7 +12,7 @@
         </div>
     </button>
 
-    <div class="modal fade" id="modalNewProduct" tabindex="-1" aria-labelledby="modalNewProductLabel"
+    <div class="modal fade" id="modalNewProduct" tabindex="-1" aria-labelledby="modalNewProductLabel" data-backdrop="static"
         aria-hidden="true" wire:ignore.self>
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
@@ -23,18 +23,8 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <div class="modal-body text-left">
+                <div class="modal-body text-left" style="max-height: 80vh; overflow: auto;">
                     @if (!$thereProduct)
-                        {{-- <ul class="nav nav-tabs">
-                            <li class="nav-item" wire:click="typeProduct(1)">
-                                <a class="nav-link {{ !$isNewProduct ?: 'active' }}" href="#">Crear un nuevo
-                                    producto</a>
-                            </li>
-                            <li class="nav-item" wire:click="typeProduct(0)">
-                                <a class="nav-link {{ $isNewProduct ?: 'active' }}" href="#">Utilizar uno de mis
-                                    productos</a>
-                            </li>
-                        </ul> --}}
                         @if ($isNewProduct)
                             <div class="row text-left">
                                 <div class="col-md-6">
@@ -151,54 +141,6 @@
                             </div>
 
                         @endif
-                        {{-- @if (!$isNewProduct)
-                            <div class="row text-left">
-                                @foreach ($products as $row)
-                                    @php
-                                        $row = $row->product;
-                                    @endphp
-                                    @isset($row->product)
-                                        <div class="col-md-4 col-lg-3 col-sm-6  d-flex justify-content-center">
-                                            <div class="card mb-4" style="width: 14rem;">
-                                                <div class="card-body text-center shadow-sm">
-                                                    @php
-                                                        $priceProduct = $row->price;
-                                                        if ($row->producto_promocion) {
-                                                            $priceProduct = round($priceProduct - $priceProduct * ($row->descuento / 100), 2);
-                                                        } else {
-                                                            $priceProduct = round($priceProduct - $priceProduct * ($row->provider->discount / 100), 2);
-                                                        }
-                                                    @endphp
-                                                    <div class="text-center" style="height: 140px">
-                                                        <img src="{{ $row->firstImage ? $row->firstImage->image_url : '' }}"
-                                                            class="card-img-top " alt="{{ $row->name }}"
-                                                            style="width: 100%; max-width: 100px; max-height: 140px; width: auto">
-                                                    </div>
-                                                    <h5 class="card-title" style="text-transform: capitalize">
-                                                        {{ Str::limit($row->name, 30, '...') }}</h5>
-                                                    <p class=" m-0 pt-1"><strong>SKU:</strong> {{ $row->sku }}</p>
-                                                    <div class="">
-                                                        <p class=" m-0 pt-1">Stock: {{ $row->stock }}</p>
-                                                        <p class=" m-0 pt-1">$
-                                                            {{ round($priceProduct, 2) }}</p>
-                                                    </div>
-                                                    <br>
-                                                    <div>
-                                                        <a href="{{ route('show.product', ['product' => $row->id]) }}"
-                                                            class="btn btn-primary mb-2 btn-block">
-                                                            Cotizar
-                                                        </a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    @endisset
-                                @endforeach
-                            </div>
-                            <div class="d-flex justify-content-center w-100">
-                                {{ $products->links() }}
-                            </div>
-                        @endif --}}
                     @else
                         @php
                             $priceProduct = $producto->price;
@@ -226,7 +168,7 @@
                                 <br>
                             </div>
                         </div>
-                        @livewire('formulario-de-cotizacion-min-component', ['product' => $producto])
+                        @livewire('formulario-de-cotizacion', ['productNewAdd' => $producto])
                     @endif
                 </div>
                 <div class="modal-footer">

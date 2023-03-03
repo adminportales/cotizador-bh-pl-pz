@@ -29,7 +29,7 @@ class AddNewProduct extends Component
             'stock' => 'required',
             'color' => 'required',
             'proveedor' => 'required',
-            'imagen' => 'required|image|max:512',
+            'imagen' => 'required|image|max:1536',
         ]);
 
         $maxSKU = Product::max('internal_sku');

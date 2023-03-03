@@ -347,6 +347,14 @@
                     <button type="button" class="btn btn-warning py-2 px-4"
                         wire:click='editarCurrentCotizacion'>Editar
                         cotizacion</button>
+                @elseif ($productEdit)
+                    <button type="button" class="btn btn-info py-2 px-4"
+                        wire:click='editarCotizacion'>Actualizar
+                        cotizacion</button>
+                @elseif ($productNewAdd)
+                    <button type="button" class="btn btn-secondary py-2 px-4"
+                        wire:click='addNewProductToQuote'>Agregar a la
+                        cotizacion</button>
                 @else
                     <button type="button" class="btn btn-primary py-2 px-4" wire:click='agregarCotizacion'>Añadir a
                         la cotizacion</button>
