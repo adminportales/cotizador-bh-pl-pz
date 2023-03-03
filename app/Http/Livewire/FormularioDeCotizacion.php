@@ -51,7 +51,7 @@ class FormularioDeCotizacion extends Component
             if ($this->priceScales) {
                 $this->priceScalesComplete = json_decode($this->currentQuote->scales_info);
                 $this->infoScales = array_map(function ($scale) {
-                    return ['quantity' => $scale->quantity, 'tecniquePrice' => $scale->tecniquePrice];
+                    return ['quantity' => $scale->quantity, 'utility' => $scale->utility, 'tecniquePrice' => $scale->tecniquePrice];
                 }, $this->priceScalesComplete);
             }
         }
@@ -79,7 +79,7 @@ class FormularioDeCotizacion extends Component
             if ($this->priceScales) {
                 $this->priceScalesComplete = json_decode($this->productEdit['scales_info']);
                 $this->infoScales = array_map(function ($scale) {
-                    return ['quantity' => $scale->quantity, 'tecniquePrice' => $scale->tecniquePrice];
+                    return ['quantity' => $scale->quantity, 'utility' => $scale->utility, 'tecniquePrice' => $scale->tecniquePrice];
                 }, $this->priceScalesComplete);
             }
         }
@@ -216,10 +216,11 @@ class FormularioDeCotizacion extends Component
                 if ($info['tecniquePrice'] != null && $info['tecniquePrice'] >= 0)
                     $precioDeTecnicaUsado = $info['tecniquePrice'];
 
-                $nuevoPrecio = round(($this->precio + ($precioDeTecnicaUsado * $this->colores) + $this->operacion) / ((100 - $this->utilidad) / 100), 2);
+                $nuevoPrecio = round(($this->precio + ($precioDeTecnicaUsado * $this->colores) + $this->operacion) / ((100 - $info['utility']) / 100), 2);
                 $this->priceScalesComplete[$key] = [
                     'quantity' => $info['quantity'],
                     'tecniquePrice' => $info['tecniquePrice'] ?: $precioDeTecnica,
+                    'utility' => $info['utility'],
                     'unit_price' => $nuevoPrecio,
                     'total_price' => $nuevoPrecio * $info['quantity'],
                 ];
@@ -240,13 +241,13 @@ class FormularioDeCotizacion extends Component
         $this->validate([
             'colores' => 'required|numeric|min:1',
             'operacion' => 'required|numeric|min:0',
-            'utilidad' => 'required|numeric|min:0|max:99',
             'entrega' => 'required|numeric|min:0',
         ]);
         if (!$this->priceScales) {
             $this->validate([
                 'priceTechnique' => 'required',
                 'cantidad' => 'required|numeric|min:1',
+                'utilidad' => 'required|numeric|min:0|max:99',
             ]);
             $this->infoScales = [];
         } else {
@@ -256,6 +257,7 @@ class FormularioDeCotizacion extends Component
                 'priceTechnique' => 'required',
             ]);
             $this->cantidad = 0;
+            $this->utilidad = 0;
         }
 
         $currentQuote = auth()->user()->currentQuote;
@@ -283,12 +285,12 @@ class FormularioDeCotizacion extends Component
             'new_description' => $this->newDescription,
             'color_logos' => $this->colores,
             'costo_indirecto' => $this->operacion,
-            'utilidad' => $this->utilidad,
             'dias_entrega' => $this->entrega,
             'images_selected' => $this->imageSelected
         ];
 
         if (!$this->priceScales) {
+            $dataQuote['utilidad'] = $this->utilidad;
             $dataQuote['new_price_technique'] = $this->newPriceTechnique;
             $dataQuote['cantidad'] = $this->cantidad;
             $dataQuote['precio_unitario'] = $this->precioCalculado;
@@ -296,6 +298,7 @@ class FormularioDeCotizacion extends Component
             $dataQuote['quote_by_scales'] = false;
             $dataQuote['scales_info'] = null;
         } else {
+            $dataQuote['utilidad'] = null;
             $dataQuote['new_price_technique'] = null;
             $dataQuote['cantidad'] = null;
             $dataQuote['precio_unitario'] = null;
@@ -315,13 +318,13 @@ class FormularioDeCotizacion extends Component
         $this->validate([
             'colores' => 'required|numeric|min:1',
             'operacion' => 'required|numeric|min:0',
-            'utilidad' => 'required|numeric|min:0|max:99',
             'entrega' => 'required|numeric|min:0',
         ]);
         if (!$this->priceScales) {
             $this->validate([
                 'priceTechnique' => 'required',
                 'cantidad' => 'required|numeric|min:1',
+                'utilidad' => 'required|numeric|min:0|max:99',
             ]);
             $this->infoScales = [];
         } else {
@@ -331,6 +334,7 @@ class FormularioDeCotizacion extends Component
                 'infoScales.*.quantity' => 'required|numeric|min:1',
             ]);
             $this->cantidad = 0;
+            $this->utilidad = 0;
         }
 
         if (!is_numeric($this->newPriceTechnique))
@@ -344,12 +348,12 @@ class FormularioDeCotizacion extends Component
             'new_description' => $this->newDescription,
             'color_logos' => $this->colores,
             'costo_indirecto' => $this->operacion,
-            'utilidad' => $this->utilidad,
             'dias_entrega' => $this->entrega,
             'images_selected' => $this->imageSelected
         ];
 
         if (!$this->priceScales) {
+            $dataQuote['utilidad'] = $this->utilidad;
             $dataQuote['new_price_technique'] = $this->newPriceTechnique;
             $dataQuote['cantidad'] = $this->cantidad;
             $dataQuote['precio_unitario'] = $this->precioCalculado;
@@ -357,6 +361,7 @@ class FormularioDeCotizacion extends Component
             $dataQuote['quote_by_scales'] = false;
             $dataQuote['scales_info'] = null;
         } else {
+            $dataQuote['utilidad'] = null;
             $dataQuote['new_price_technique'] = null;
             $dataQuote['cantidad'] = null;
             $dataQuote['precio_unitario'] = null;
@@ -376,13 +381,13 @@ class FormularioDeCotizacion extends Component
         $this->validate([
             'colores' => 'required|numeric|min:1',
             'operacion' => 'required|numeric|min:0',
-            'utilidad' => 'required|numeric|min:0|max:99',
             'entrega' => 'required|numeric|min:0',
         ]);
         if (!$this->priceScales) {
             $this->validate([
                 'priceTechnique' => 'required',
                 'cantidad' => 'required|numeric|min:1',
+                'utilidad' => 'required|numeric|min:0|max:99',
             ]);
             $this->infoScales = [];
         } else {
@@ -392,6 +397,7 @@ class FormularioDeCotizacion extends Component
                 'infoScales.*.quantity' => 'required|numeric|min:1',
             ]);
             $this->cantidad = 0;
+            $this->utilidad = 0;
         }
         $product = $this->product->toArray();
         $product['image'] = $this->imageSelected ?: ($this->product->firstImage ? $this->product->firstImage->image_url : '');
@@ -409,11 +415,11 @@ class FormularioDeCotizacion extends Component
             'new_description' => $this->newDescription,
             'color_logos' => $this->colores,
             'costo_indirecto' => $this->operacion,
-            'utilidad' => $this->utilidad,
             'dias_entrega' => $this->entrega,
         ];
 
         if (!$this->priceScales) {
+            $newQuote['utilidad'] = $this->utilidad;
             $newQuote['newPriceTechnique'] = $this->newPriceTechnique;
             $newQuote['cantidad'] = $this->cantidad;
             $newQuote['precio_unitario'] = $this->precioCalculado;
@@ -421,6 +427,7 @@ class FormularioDeCotizacion extends Component
             $newQuote['quote_by_scales'] = false;
             $newQuote['scales_info'] = null;
         } else {
+            $newQuote['utilidad'] = null;
             $newQuote['newPriceTechnique'] = null;
             $newQuote['cantidad'] = null;
             $newQuote['precio_unitario'] = null;
@@ -439,13 +446,13 @@ class FormularioDeCotizacion extends Component
         $this->validate([
             'colores' => 'required|numeric|min:1',
             'operacion' => 'required|numeric|min:0',
-            'utilidad' => 'required|numeric|min:0|max:99',
             'entrega' => 'required|numeric|min:0',
         ]);
         if (!$this->priceScales) {
             $this->validate([
                 'priceTechnique' => 'required',
                 'cantidad' => 'required|numeric|min:1',
+                'utilidad' => 'required|numeric|min:0|max:99',
             ]);
             $this->infoScales = [];
         } else {
@@ -455,6 +462,7 @@ class FormularioDeCotizacion extends Component
                 'infoScales.*.quantity' => 'required|numeric|min:1',
             ]);
             $this->cantidad = 0;
+            $this->utilidad = 0;
         }
 
         $product = $this->product->toArray();
@@ -472,11 +480,11 @@ class FormularioDeCotizacion extends Component
             'new_description' => $this->newDescription,
             'color_logos' => $this->colores,
             'costo_indirecto' => $this->operacion,
-            'utilidad' => $this->utilidad,
             'dias_entrega' => $this->entrega,
         ];
 
         if (!$this->priceScales) {
+            $newQuote['utilidad'] = $this->utilidad;
             $newQuote['newPriceTechnique'] = $this->newPriceTechnique;
             $newQuote['cantidad'] = $this->cantidad;
             $newQuote['precio_unitario'] = $this->precioCalculado;
@@ -484,6 +492,7 @@ class FormularioDeCotizacion extends Component
             $newQuote['quote_by_scales'] = false;
             $newQuote['scales_info'] = null;
         } else {
+            $newQuote['utilidad'] = null;
             $newQuote['newPriceTechnique'] = null;
             $newQuote['cantidad'] = null;
             $newQuote['precio_unitario'] = null;
@@ -543,11 +552,13 @@ class FormularioDeCotizacion extends Component
         $this->itemEditScale = null;
         $this->validate([
             'cantidad' => 'required|numeric|min:1',
+            'utilidad' => 'required|numeric|min:0|max:99',
         ]);
         if (!is_numeric($this->precioTecnicaEscala))
             $this->precioTecnicaEscala = null;
         array_push($this->infoScales, [
             'quantity' => $this->cantidad,
+            'utility' => $this->utilidad,
             'tecniquePrice' => $this->precioTecnicaEscala ?: null,
         ]);
         $this->cantidad = null;
@@ -575,6 +586,7 @@ class FormularioDeCotizacion extends Component
         $this->editScale =  true;
         $this->itemEditScale = $scale_id;
         $this->cantidad = $this->infoScales[$scale_id]['quantity'];
+        $this->utilidad = $this->infoScales[$scale_id]['utility'];
         $this->precioTecnicaEscala = $this->infoScales[$scale_id]['tecniquePrice'];
         $this->dispatchBrowserEvent('showModalScales');
     }
@@ -588,6 +600,7 @@ class FormularioDeCotizacion extends Component
             $this->precioTecnicaEscala = null;
         $this->infoScales[$this->itemEditScale] = [
             'quantity' => $this->cantidad,
+            'utility' => $this->utilidad,
             'tecniquePrice' => $this->precioTecnicaEscala ?: null,
         ];
         $this->cantidad = null;

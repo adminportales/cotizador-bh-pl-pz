@@ -82,19 +82,20 @@
         </div>
         <div class="border border-primary rounded p-2">
             <div class="row">
-                <div class="form-group m-0 mb-1 col-md-6">
+                <div class="form-group m-0 mb-1 col-md-12">
                     <label for="operacion" class="text-dark m-0"><strong>Costo Indirecto de operacion</strong>
                     </label>
                     <input type="number" name="operacion" wire:model="operacion"
                         placeholder="Costo indirecto de operacion" class="form-control form-control-sm">
                 </div>
-                <div class="form-group m-0 mb-1 col-md-6">
-                    <label for="margen" class="text-dark m-0"><strong>Margen de Utilidad</strong> </label>
-                    <input type="number" name="margen" wire:model="utilidad" placeholder="Margen de Utilidad. Max: 99"
-                        max="99" maxlength="2" class="form-control form-control-sm" max="100">
-                </div>
                 @if (!$priceScales)
-                    <div class="form-group m-0 mb-1 col-md-12">
+                    <div class="form-group m-0 mb-1 col-md-6">
+                        <label for="margen" class="text-dark m-0"><strong>Margen de Utilidad</strong> </label>
+                        <input type="number" name="margen" wire:model="utilidad"
+                            placeholder="Margen de Utilidad. Max: 99" max="99" maxlength="2"
+                            class="form-control form-control-sm" max="100">
+                    </div>
+                    <div class="form-group m-0 mb-1 col-md-6">
                         <label for="cantidad" class="text-dark m-0"><strong>Cantidad</strong> </label>
                         <input type="number" name="cantidad" wire:model="cantidad"
                             placeholder="Cantidad de productos a cotizar" class="form-control form-control-sm"
@@ -110,6 +111,7 @@
                                         <tr>
                                             <td class="text-right"><strong>Cantidad</strong></td>
                                             <td class="text-right"><strong>Tecnica</strong></td>
+                                            <td class="text-right"><strong>Utilidad</strong></td>
                                             <td class="text-right"><strong>Unitario</strong></td>
                                             <td class="text-right"><strong>Total</strong></td>
                                             <td class="text-right"><strong>...</strong></td>
@@ -121,6 +123,8 @@
                                                 <td class="text-right">{{ $item['quantity'] }}</td>
                                                 <td class="text-right">
                                                     ${{ number_format($item['tecniquePrice'], 2, '.', ',') }}</td>
+                                                <td class="text-right">
+                                                    {{ $item['utility'] }} %</td>
                                                 <td class="text-right">
                                                     ${{ number_format($item['unit_price'], 2, '.', ',') }}</td>
                                                 <td class="text-right">
@@ -169,14 +173,21 @@
                                         </h5>
                                     </div>
                                     <div class="modal-body row">
-                                        <div class="form-group m-0 mb-1 col-md-4">
+                                        <div class="form-group m-0 mb-1 col-md-6">
                                             <label for="cantidad" class="text-dark m-0"><strong>Cantidad</strong>
                                             </label>
                                             <input type="number" name="cantidad" wire:model="cantidad"
                                                 placeholder="Cantidad de productos a cotizar"
                                                 class="form-control form-control-sm">
                                         </div>
-                                        <div class="form-group m-0 mb-1 col-md-8">
+                                        <div class="form-group m-0 mb-1 col-md-6">
+                                            <label for="margen" class="text-dark m-0"><strong>Utilidad Por
+                                                    Partida</strong> </label>
+                                            <input type="number" name="margen" wire:model="utilidad"
+                                                placeholder="Margen de Utilidad. Max: 99" max="99"
+                                                maxlength="2" class="form-control form-control-sm" max="100">
+                                        </div>
+                                        <div class="form-group m-0 mb-1 col-md-12">
                                             <label for="newTechnique" class="text-dark m-0">
                                                 <strong>Precio actual de la tecnica: </strong>
                                                 $ {{ $precioDeTecnica }}</label>
@@ -280,7 +291,8 @@
                                 </div>
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" wire:click='closeModalImage'>Cerrar</button>
+                                <button type="button" class="btn btn-secondary"
+                                    wire:click='closeModalImage'>Cerrar</button>
                             </div>
                         </div>
                     </div>
@@ -348,8 +360,7 @@
                         wire:click='editarCurrentCotizacion'>Editar
                         cotizacion</button>
                 @elseif ($productEdit)
-                    <button type="button" class="btn btn-info py-2 px-4"
-                        wire:click='editarCotizacion'>Actualizar
+                    <button type="button" class="btn btn-info py-2 px-4" wire:click='editarCotizacion'>Actualizar
                         cotizacion</button>
                 @elseif ($productNewAdd)
                     <button type="button" class="btn btn-secondary py-2 px-4"

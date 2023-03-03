@@ -20,7 +20,7 @@ class CreateQuoteProductsTable extends Migration
             $table->decimal('prices_techniques', 8, 2)->nullable();
             $table->integer('color_logos');
             $table->decimal('costo_indirecto', 8, 2);
-            $table->decimal('utilidad', 8, 2);
+            $table->decimal('utilidad', 8, 2)->nullable();
             $table->integer('dias_entrega');
             $table->integer('cantidad')->nullable();
             $table->decimal('precio_unitario', 8, 2)->nullable();

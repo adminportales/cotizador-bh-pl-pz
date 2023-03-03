@@ -186,11 +186,6 @@ class FinalizarCotizacion extends Component
         foreach (auth()->user()->currentQuote->currentQuoteDetails as $item) {
             $product = Product::find($item->product_id);
             $tecnica = PricesTechnique::find($item->prices_techniques_id);
-            $price_tecnica = $item->new_price_technique != null ?
-                $item->new_price_technique
-                : ($tecnica->tipo_precio == 'D'
-                    ? round($tecnica->precio / $item->cantidad, 2)
-                    : $tecnica->precio);
 
             $material = $tecnica->sizeMaterialTechnique->materialTechnique->material->nombre;
             $material_id = $tecnica->sizeMaterialTechnique->materialTechnique->material->id;
@@ -325,6 +320,7 @@ class FinalizarCotizacion extends Component
                     ]
                 ]
             ];
+            dd(1);
             $curl = curl_init($url);
             curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
             curl_setopt($curl, CURLOPT_POST, true);

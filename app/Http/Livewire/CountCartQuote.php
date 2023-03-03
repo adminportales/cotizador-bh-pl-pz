@@ -13,7 +13,11 @@ class CountCartQuote extends Component
 
     public function currentQuoteAdded()
     {
-        $this->total = count(auth()->user()->currentQuote->currentQuoteDetails);
+        if (auth()->user()->currentQuote) {
+            $this->total = count(auth()->user()->currentQuote->currentQuoteDetails);
+        } else {
+            $this->total;
+        }
     }
 
     public function mount()

@@ -379,7 +379,7 @@
                 <div class="modal-body">
                     @if ($showProduct)
                         <div class="row">
-                            <div class="col-md-6">
+                            <div class="col-md-8">
                                 @php
                                     $productoShow = (object) json_decode($showProduct['product']);
                                     $tecnicaShow = (object) json_decode($showProduct['technique']);
@@ -420,6 +420,7 @@
                                         <thead>
                                             <tr>
                                                 <th>Cantidad</th>
+                                                <th>Utilidad</th>
                                                 <th>Impresion</th>
                                                 <th>Unitario</th>
                                                 <th>Total</th>
@@ -429,6 +430,7 @@
                                             @foreach (json_decode($showProduct['scales_info']) as $item)
                                                 <tr>
                                                     <td>{{ $item->quantity }} pz</td>
+                                                    <td>{{ $item->utility }} %</td>
                                                     <td>$
                                                         {{ number_format($item->tecniquePrice, 2, '.', ',') }}
                                                     </td>
@@ -452,10 +454,10 @@
                                 @endif
                                 {{-- {{ dd($showProduct) }} --}}
                             </div>
-                            <div class="col-md-6">
-                                <div class="w-100">
+                            <div class="col-md-4">
+                                <div class="">
                                     <img src="{{ $productoShow->image }}" alt=""
-                                        style="max-width: 300px; width: auto;max-height: 500px; height: ;: auto;">
+                                        style="max-width: 200px; width: auto;max-height: 500px; height:auto;">
                                 </div>
                             </div>
                         </div>

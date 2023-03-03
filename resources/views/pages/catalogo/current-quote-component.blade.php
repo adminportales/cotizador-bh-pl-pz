@@ -34,9 +34,11 @@
                                                 <p class="m-0">
                                                     <strong>Indirecto:</strong>${{ number_format($quote->costo_indirecto, 2, '.', ',') }}
                                                 </p>
-                                                <p class="m-0"><strong>Utilidad:</strong>
-                                                    {{ $quote->utilidad }}%
-                                                </p>
+                                                @if (!$quote->quote_by_scales)
+                                                    <p class="m-0"><strong>Utilidad:</strong>
+                                                        {{ $quote->utilidad }}%
+                                                    </p>
+                                                @endif
                                                 @if (!$quote->quote_by_scales)
                                                     <p class="m-0"><strong>Impresion:</strong>
                                                         ${{ number_format(
@@ -65,6 +67,7 @@
                                                             <tr>
                                                                 <th>Cantidad</th>
                                                                 <th>Impresion</th>
+                                                                <th>Utilidad</th>
                                                                 <th>Unitario</th>
                                                                 <th>Total</th>
                                                             </tr>
@@ -76,6 +79,8 @@
                                                                     <td>$
                                                                         {{ number_format($item->tecniquePrice, 2, '.', ',') }}
                                                                     </td>
+                                                                    <td>
+                                                                        {{ $item->utility }} %</td>
                                                                     <td>$
                                                                         {{ number_format($item->unit_price, 2, '.', ',') }}
                                                                     </td>
@@ -239,9 +244,9 @@
             </div>
         </div>
     </div>
-    <div class="modal fade" id="editProductModal" tabindex="-1" aria-labelledby="editProductModalLabel" data-backdrop="static"
-        aria-hidden="true" wire:ignore.self>
-        <div class="modal-dialog modal-lg" >
+    <div class="modal fade" id="editProductModal" tabindex="-1" aria-labelledby="editProductModalLabel"
+        data-backdrop="static" aria-hidden="true" wire:ignore.self>
+        <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="editProductModalLabel">Editar Cotizacion</h5>
@@ -280,9 +285,11 @@
 
                         <p class="m-0"><strong>Costo
                                 Indirecto:</strong>${{ $quoteShow->costo_indirecto }}</p>
-                        <p class="m-0"><strong>Margen de Utilidad:</strong>
-                            {{ $quoteShow->utilidad }}%
-                        </p>
+                        @if (!$quoteShow->quote_by_scales)
+                            <p class="m-0"><strong>Margen de Utilidad:</strong>
+                                {{ $quoteShow->utilidad }}%
+                            </p>
+                        @endif
 
                         <p class="m-0"><strong>Colores/Logos:</strong>
                             {{ $quoteShow->color_logos }}
@@ -307,6 +314,7 @@
                                 <thead>
                                     <tr>
                                         <th>Cantidad</th>
+                                        <th>Utilidad</th>
                                         <th>Impresion</th>
                                         <th>Unitario</th>
                                         <th>Total</th>
@@ -316,6 +324,7 @@
                                     @foreach ($priceScales as $scale)
                                         <tr>
                                             <td> {{ $scale->quantity }} pz</td>
+                                            <td> {{ $scale->utility }} %</td>
                                             <td>$ {{ number_format($scale->tecniquePrice, 2, '.', ',') }} </td>
                                             <td>$ {{ number_format($scale->unit_price, 2, '.', ',') }} </td>
                                             <td>$ {{ number_format($scale->total_price, 2, '.', ',') }} </td>
