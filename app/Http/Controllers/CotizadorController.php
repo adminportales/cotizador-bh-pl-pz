@@ -22,7 +22,7 @@ class CotizadorController extends Controller
     // use WithPagination;
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware('auth')->except(['enviarCotizacionesAOdoo']);
     }
 
     public function index()
