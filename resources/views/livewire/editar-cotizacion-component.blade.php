@@ -97,7 +97,7 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    @foreach (json_decode($product['scales_info']) as $item)
+                                                    @foreach (json_decode($product->scales_info) as $item)
                                                         <tr>
                                                             <td>{{ $item->quantity }} pz</td>
                                                             <td>{{ $item->utility }} %</td>
@@ -171,18 +171,52 @@
                                         <td class="">
                                             <p>{{ $producto->name }}</p>
                                         </td>
-                                        <td class="">
-                                            <p class="text-center">${{ $newProduct['precio_unitario'] }}</p>
-                                        </td>
-                                        <td class="">
-                                            <p class="text-center"> {{ $newProduct['cantidad'] }} piezas</p>
-                                        </td>
-                                        <td>
-                                            <p class="text-center">${{ $newProduct['precio_total'] }}</p>
-                                            @php
-                                                $subtotalAdded += $newProduct['precio_total'];
-                                            @endphp
-                                        </td>
+
+                                        @if (!$newProduct['quote_by_scales'])
+                                            <td class="">
+                                                <p class="text-center">${{ $newProduct['precio_unitario'] }}</p>
+                                            </td>
+                                            <td class="">
+                                                <p class="text-center"> {{ $newProduct['cantidad'] }} piezas</p>
+                                            </td>
+                                            <td>
+                                                <p class="text-center">${{ $newProduct['precio_total'] }}</p>
+                                                @php
+                                                    $subtotalAdded += $newProduct['precio_total'];
+                                                @endphp
+                                            </td>
+                                        @else
+                                            <td colspan="3" class="text-right">
+                                                <table class="table table-sm table-bordered m-0">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Cantidad</th>
+                                                            <th>Utilidad</th>
+                                                            <th>Impresion</th>
+                                                            <th>Unitario</th>
+                                                            <th>Total</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @foreach (json_decode($newProduct['scales_info']) as $item)
+                                                            <tr>
+                                                                <td>{{ $item->quantity }} pz</td>
+                                                                <td>{{ $item->utility }} %</td>
+                                                                <td>$
+                                                                    {{ number_format($item->tecniquePrice, 2, '.', ',') }}
+                                                                </td>
+                                                                <td>$
+                                                                    {{ number_format($item->unit_price, 2, '.', ',') }}
+                                                                </td>
+                                                                <td>$
+                                                                    {{ number_format($item->total_price, 2, '.', ',') }}
+                                                                </td>
+                                                            </tr>
+                                                        @endforeach
+                                                    </tbody>
+                                                </table>
+                                            </td>
+                                        @endif
                                         <td class="text-center d-flex">
                                             <button class="btn btn-danger btn-sm"
                                                 wire:click="deleteNewProducto({{ $newProduct['idNewQuote'] }})">

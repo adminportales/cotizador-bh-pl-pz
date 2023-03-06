@@ -5,6 +5,7 @@ namespace App\Http\Livewire;
 use App\Models\Catalogo\Product;
 use App\Models\CurrentQuote;
 use App\Models\CurrentQuoteDetails;
+use Exception;
 use Livewire\Component;
 
 class CurrentQuoteComponent extends Component
@@ -33,7 +34,19 @@ class CurrentQuoteComponent extends Component
     public function render()
     {
         $this->cotizacionActual = auth()->user()->currentQuote->currentQuoteDetails;
-        $this->totalQuote = $this->cotizacionActual->sum('precio_total');
+        $this->totalQuote = 0;
+
+        foreach ($this->cotizacionActual as $productToSum) {
+            if ($productToSum->quote_by_scales) {
+                try {
+                    $this->totalQuote = $this->totalQuote + floatval(json_decode($productToSum->scales_info)[0]->total_price);
+                } catch (Exception $e) {
+                    $this->totalQuote = $this->totalQuote + 0;
+                }
+            } else {
+                $this->totalQuote = $this->totalQuote + $productToSum->precio_total;
+            }
+        }
 
         $total = $this->totalQuote;
         if (auth()->user()->currentQuote->type == 'Fijo') {

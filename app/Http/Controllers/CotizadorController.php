@@ -10,6 +10,7 @@ use App\Models\Quote;
 use App\Models\User;
 use Illuminate\Support\Facades\Storage;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Exception;
 use Illuminate\Support\Facades\Mail;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
@@ -157,7 +158,8 @@ class CotizadorController extends Controller
 
     public function enviarCotizacionesAOdoo()
     {
-        $cotizacionesAEnviar = Quote::where("pending_odoo", true)->get();
+        $cotizacionesAEnviar = Quote::where("pending_odoo", true)->orderBy('created_at', "DESC")->limit(50)->get();
+
         $erroresAlCotizar = [];
         foreach ($cotizacionesAEnviar as $cotizacion) {
             if ($cotizacion->latestQuotesUpdate) {
@@ -213,9 +215,20 @@ class CotizadorController extends Controller
                 $path =  "/storage/quotes/" . time() . $cotizacion->lead . ".pdf";
                 file_put_contents(public_path() . $path, $pdf);
                 $newPath = "";
-                $subtotal = floatval($cotizacion->latestQuotesUpdate->quoteProducts()->sum('precio_total'));
+                $subtotal = 0;
+                foreach ($cotizacion->latestQuotesUpdate->quoteProducts as $productToSum) {
+                    if ($productToSum->quote_by_scales) {
+                        try {
+                            $subtotal = $subtotal + floatval(json_decode($productToSum->scales_info)[0]->total_price);
+                        } catch (Exception $e) {
+                            $subtotal = $subtotal + 0;
+                        }
+                    } else {
+                        $subtotal = $subtotal + $productToSum->precio_total;
+                    }
+                }
                 $taxFee = round($subtotal * ($cotizacion->latestQuotesUpdate->quotesInformation->tax_fee / 100), 2);
-                $subtotal = floatval($cotizacion->latestQuotesUpdate->quoteProducts()->sum('precio_total')) + $taxFee;
+                $subtotal = $subtotal + $taxFee;
                 $discountValue = 0;
                 if ($type == 'Fijo') {
                     $discountValue = floatval($value);
@@ -273,8 +286,8 @@ class CotizadorController extends Controller
                                 $cotizacion->lead = $codeLead;
                                 $cotizacion->pending_odoo = false;
                                 $cotizacion->save();
-                                $newPath = "/storage/quotes/" . time() . $cotizacion->lead . ".pdf";
-                                rename(public_path() . $path, public_path() . $newPath);
+                                // $newPath = "/storage/quotes/" . time() . $cotizacion->lead . ".pdf";
+                                // rename(public_path() . $path, public_path() . $newPath);
                             } else {
                                 $errors = true;
                                 $message = $listElementsOpportunities[0]->message;

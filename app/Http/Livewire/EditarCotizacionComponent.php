@@ -231,7 +231,6 @@ class EditarCotizacionComponent extends Component
         if (count($this->listNewProducts) > 0) {
             foreach ($this->listNewProducts as $item) {
                 $tecnica = PricesTechnique::find($item['prices_techniques_id']);
-                $price_tecnica =  $tecnica->precio;
                 $material = $tecnica->sizeMaterialTechnique->materialTechnique->material->nombre;
                 $material_id = $tecnica->sizeMaterialTechnique->materialTechnique->material->id;
                 $tecnica_nombre = $tecnica->sizeMaterialTechnique->materialTechnique->technique->nombre;

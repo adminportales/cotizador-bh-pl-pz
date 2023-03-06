@@ -245,10 +245,20 @@ class VerCotizacionComponent extends Component
         $path = "/storage/quotes/" . time() . $this->quote->lead . ".pdf";
         file_put_contents(public_path() . $path, $pdf);
 
-
-        $subtotal = floatval($this->quote->latestQuotesUpdate->quoteProducts()->sum('precio_total'));
+        $subtotal = 0;
+        foreach ($this->quote->latestQuotesUpdate->quoteProducts as $productToSum) {
+            if ($productToSum->quote_by_scales) {
+                try {
+                    $subtotal = $subtotal + floatval(json_decode($productToSum->scales_info)[0]->total_price);
+                } catch (Exception $e) {
+                    $subtotal = $subtotal + 0;
+                }
+            } else {
+                $subtotal = $subtotal + $productToSum->precio_total;
+            }
+        }
         $taxFee = round($subtotal * ($this->quote->latestQuotesUpdate->quotesInformation->tax_fee / 100), 2);
-        $subtotal = floatval($this->quote->latestQuotesUpdate->quoteProducts()->sum('precio_total')) + $taxFee;
+        $subtotal = $subtotal + $taxFee;
         $discountValue = 0;
         if ($this->quote->latestQuotesUpdate->quoteDiscount->type == 'Fijo') {
             $discountValue = floatval($this->quote->latestQuotesUpdate->quoteDiscount->value);

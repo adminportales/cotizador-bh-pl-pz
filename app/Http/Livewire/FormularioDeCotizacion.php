@@ -36,7 +36,7 @@ class FormularioDeCotizacion extends Component
             // Calculo de Precio
             $this->colores = $this->currentQuote->color_logos;
             $this->operacion = $this->currentQuote->costo_indirecto;
-            $this->cantidad =  $this->currentQuote->cantidad;
+            $this->cantidad =  $this->currentQuote->cantidad ?: 1;
             $this->utilidad =  $this->currentQuote->utilidad;
             $this->entrega =  $this->currentQuote->dias_entrega;
             $this->newPriceTechnique =  $this->currentQuote->new_price_technique;
@@ -69,7 +69,7 @@ class FormularioDeCotizacion extends Component
 
             $this->colores = $this->productEdit['color_logos'];
             $this->operacion = $this->productEdit['costo_indirecto'];
-            $this->cantidad = $this->productEdit['cantidad'];
+            $this->cantidad = $this->productEdit['cantidad'] ?: 1;
             $this->utilidad = $this->productEdit['utilidad'];
             $this->entrega = $this->productEdit['dias_entrega'];
             $this->newPriceTechnique = $this->productEdit['prices_techniques'];
@@ -153,30 +153,33 @@ class FormularioDeCotizacion extends Component
             $this->utilidad = 99;
 
         $precioDeTecnica = 0;
-        if ((int)$this->cantidad > 0 && $preciosDisponibles && $this->sizeSeleccionado !== null) {
-            foreach ($preciosDisponibles as $precioDisponible) {
-                if ($precioDisponible->escala_final != null) {
-                    if ((int)$this->cantidad >= $precioDisponible->escala_inicial  &&  (int)$this->cantidad <= $precioDisponible->escala_final) {
-                        $this->priceTechnique = $precioDisponible;
-                        $precioDeTecnica = $precioDisponible->tipo_precio == "D" ? round($precioDisponible->precio / (int)$this->cantidad, 2) : $precioDisponible->precio;
-                    }
-                } else if ($precioDisponible->escala_final == null) {
-                    if ((int)$this->cantidad >= $precioDisponible->escala_inicial) {
-                        $this->priceTechnique = $precioDisponible;
-                        $precioDeTecnica = $precioDisponible->tipo_precio == "D" ? round($precioDisponible->precio / (int)$this->cantidad, 2) : $precioDisponible->precio;
-                    }
-                }
-            }
-        } else {
-            $precioDeTecnica = 0;
-            $this->priceTechnique = null;
-        }
+
         if (!$this->priceScales) {
             if (!is_numeric($this->cantidad))
                 $this->cantidad = null;
 
             if (!is_numeric($this->newPriceTechnique))
                 $this->newPriceTechnique = null;
+
+            if ((int)$this->cantidad > 0 && $preciosDisponibles && $this->sizeSeleccionado !== null) {
+                foreach ($preciosDisponibles as $precioDisponible) {
+                    if ($precioDisponible->escala_final != null) {
+                        if ((int)$this->cantidad >= $precioDisponible->escala_inicial  &&  (int)$this->cantidad <= $precioDisponible->escala_final) {
+                            $this->priceTechnique = $precioDisponible;
+                            $precioDeTecnica = $precioDisponible->tipo_precio == "D" ? round($precioDisponible->precio / (int)$this->cantidad, 2) : $precioDisponible->precio;
+                        }
+                    } else if ($precioDisponible->escala_final == null) {
+                        if ((int)$this->cantidad >= $precioDisponible->escala_inicial) {
+                            $this->priceTechnique = $precioDisponible;
+                            $precioDeTecnica = $precioDisponible->tipo_precio == "D" ? round($precioDisponible->precio / (int)$this->cantidad, 2) : $precioDisponible->precio;
+                        }
+                    }
+                }
+            } else {
+                $precioDeTecnica = 0;
+                $this->priceTechnique = null;
+            }
+
             $precioDeTecnicaUsado = $precioDeTecnica;
             if ($this->newPriceTechnique != null && $this->newPriceTechnique >= 0)
                 $precioDeTecnicaUsado = $this->newPriceTechnique;
@@ -216,6 +219,7 @@ class FormularioDeCotizacion extends Component
                 if ($info['tecniquePrice'] != null && $info['tecniquePrice'] >= 0)
                     $precioDeTecnicaUsado = $info['tecniquePrice'];
 
+                // dd($precioDeTecnica);
                 $nuevoPrecio = round(($this->precio + ($precioDeTecnicaUsado * $this->colores) + $this->operacion) / ((100 - $info['utility']) / 100), 2);
                 $this->priceScalesComplete[$key] = [
                     'quantity' => $info['quantity'],
@@ -224,6 +228,24 @@ class FormularioDeCotizacion extends Component
                     'unit_price' => $nuevoPrecio,
                     'total_price' => $nuevoPrecio * $info['quantity'],
                 ];
+            }
+            if ((int)$this->cantidad > 0 && $preciosDisponibles && $this->sizeSeleccionado !== null) {
+                foreach ($preciosDisponibles as $precioDisponible) {
+                    if ($precioDisponible->escala_final != null) {
+                        if ((int)$this->cantidad >= $precioDisponible->escala_inicial  &&  (int)$this->cantidad <= $precioDisponible->escala_final) {
+                            $this->priceTechnique = $precioDisponible;
+                            $precioDeTecnica = $precioDisponible->tipo_precio == "D" ? round($precioDisponible->precio / (int)$this->cantidad, 2) : $precioDisponible->precio;
+                        }
+                    } else if ($precioDisponible->escala_final == null) {
+                        if ((int)$this->cantidad >= $precioDisponible->escala_inicial) {
+                            $this->priceTechnique = $precioDisponible;
+                            $precioDeTecnica = $precioDisponible->tipo_precio == "D" ? round($precioDisponible->precio / (int)$this->cantidad, 2) : $precioDisponible->precio;
+                        }
+                    }
+                }
+            } else {
+                $precioDeTecnica = 0;
+                $this->priceTechnique = null;
             }
         }
 
@@ -561,8 +583,9 @@ class FormularioDeCotizacion extends Component
             'utility' => $this->utilidad,
             'tecniquePrice' => $this->precioTecnicaEscala ?: null,
         ]);
-        $this->cantidad = null;
+        $this->cantidad = 1;
         $this->precioTecnicaEscala = null;
+        $this->utilidad = null;
         $this->dispatchBrowserEvent('hideModalScales');
     }
 
@@ -603,8 +626,9 @@ class FormularioDeCotizacion extends Component
             'utility' => $this->utilidad,
             'tecniquePrice' => $this->precioTecnicaEscala ?: null,
         ];
-        $this->cantidad = null;
+        $this->cantidad = 1;
         $this->precioTecnicaEscala = null;
+        $this->utilidad = null;
         $this->editScale =  false;
         $this->itemEditScale = null;
         $this->dispatchBrowserEvent('hideModalScales');

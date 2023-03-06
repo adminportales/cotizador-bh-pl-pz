@@ -19,6 +19,9 @@
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    @php
+                                        $quoteByScales = false;
+                                    @endphp
                                     @foreach ($cotizacionActual as $quote)
                                         <tr>
                                             <td class="text-center">{{ $loop->iteration }}</td>
@@ -61,6 +64,9 @@
                                                 </p>
                                             </td>
                                             @if ($quote->quote_by_scales)
+                                                @php
+                                                    $quoteByScales = true;
+                                                @endphp
                                                 <td colspan="3">
                                                     <table class="table table-sm table-bordered m-0">
                                                         <thead>
@@ -170,8 +176,8 @@
             <div class="content-discount">
                 <div class="card discount">
                     <div class="card-body">
-                        <h4>Total de la cotizacion</h4>
-                        @if (!$quote->quote_by_scales)
+                        @if (!$quoteByScales)
+                            <h4>Total de la cotizacion</h4>
                             <button type="button"
                                 class="btn {{ auth()->user()->currentQuote->discount ? 'btn-warning' : 'btn-info' }} btn-block btn-sm my-1"
                                 data-toggle="modal" data-target="#discountModal">
@@ -186,12 +192,12 @@
                                 <strong class="d-flex text-primary d-block"> $
                                     {{ $discount }}</strong>
                             </div>
+                            <hr class="mt-1 mb-1">
+                            <div class="d-flex justify-content-between" style="font-size: 1.3rem;font-weight: bold;">
+                                <p class="text-dark m-0"> Total: </p>
+                                <strong class="d-flex text-primary d-block"> $ {{ $totalQuote - $discount }}</strong>
+                            </div>
                         @endif
-                        <hr class="mt-1 mb-1">
-                        <div class="d-flex justify-content-between" style="font-size: 1.3rem;font-weight: bold;">
-                            <p class="text-dark m-0"> Total: </p>
-                            <strong class="d-flex text-primary d-block"> $ {{ $totalQuote - $discount }}</strong>
-                        </div>
                         <div class="d-flex justify-content-between" style="font-size: 1.3rem;font-weight: bold;">
                             <a href="{{ route('finalizar') }}" class="btn btn-primary btn-sm mb-1 w-100">Finalizar
                                 Cotizacion</a>
