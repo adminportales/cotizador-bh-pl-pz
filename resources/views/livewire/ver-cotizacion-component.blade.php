@@ -87,7 +87,7 @@
                         <p><b>Departamento: </b>{{ $quote->latestQuotesUpdate->quotesInformation->department }}</p>
                         <p><b>El IVA se muestra: </b>{{ $quote->iva_by_item ? 'Por Producto' : 'En el total' }}</p>
                         <p>El monto total <b>{{ $quote->show_total ? 'SI' : 'NO' }}</b> se muestra</p>
-
+                        <p>Los dias son: <b>{{ $quote->type_days == 0 ? 'Habiles' : 'Naturales' }}</b></p>
                         @if ($quote->latestQuotesUpdate->quotesInformation->shelf_life)
                             <p><b>Duracion de la cotizacion:
                                 </b>{{ $quote->latestQuotesUpdate->quotesInformation->shelf_life }}</p>

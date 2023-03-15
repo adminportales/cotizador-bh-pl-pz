@@ -58,7 +58,7 @@ class Catalogo extends Component
             $utilidad = (float)(auth()->user()->settingsUser->utility > 0 ?  auth()->user()->settingsUser->utility :  $utilidad);
         }
         // Agrupar Colores similares
-        $types = Type::all();
+        $types = Type::find([1,2]);
         $price = DB::connection('mysql_catalogo')->table('products')->max('price');
         $price = round($price + $price * ($utilidad / 100), 2);
         $stock = DB::connection('mysql_catalogo')->table('products')->max('stock');

@@ -190,7 +190,7 @@ class FormularioDeCotizacion extends Component
             $this->precioTotal = $nuevoPrecio * $this->cantidad;
         } else {
             $this->priceScalesComplete = [];
-            foreach ($this->infoScales as $key => $info) {
+            foreach ($this->infoScales as $info) {
                 if ((int)$info['quantity'] > 0 && $preciosDisponibles && $this->sizeSeleccionado !== null) {
                     foreach ($preciosDisponibles as $precioDisponible) {
                         if ($precioDisponible->escala_final != null) {
@@ -221,13 +221,13 @@ class FormularioDeCotizacion extends Component
 
                 // dd($precioDeTecnica);
                 $nuevoPrecio = round(($this->precio + ($precioDeTecnicaUsado * $this->colores) + $this->operacion) / ((100 - $info['utility']) / 100), 2);
-                $this->priceScalesComplete[$key] = [
+                array_push($this->priceScalesComplete, [
                     'quantity' => $info['quantity'],
                     'tecniquePrice' => $info['tecniquePrice'] ?: $precioDeTecnica,
                     'utility' => $info['utility'],
                     'unit_price' => $nuevoPrecio,
                     'total_price' => $nuevoPrecio * $info['quantity'],
-                ];
+                ]);
             }
             if ((int)$this->cantidad > 0 && $preciosDisponibles && $this->sizeSeleccionado !== null) {
                 foreach ($preciosDisponibles as $precioDisponible) {
@@ -593,6 +593,11 @@ class FormularioDeCotizacion extends Component
     {
         try {
             unset($this->infoScales[$scale_id]);
+            $newScales = [];
+            foreach ($this->infoScales as $v) {
+                array_push($newScales, $v);
+            }
+            $this->infoScales = $newScales;
             return 1;
         } catch (Exception $e) {
             return json_encode($e->getMessage());
@@ -650,6 +655,11 @@ class FormularioDeCotizacion extends Component
         $this->priceScales = false;
     }
 
+    public function resetTecnique()
+    {
+        $this->sizeSeleccionado = null;
+        $this->tecnicaSeleccionada = null;
+    }
     public function resetSizes()
     {
         $this->sizeSeleccionado = null;

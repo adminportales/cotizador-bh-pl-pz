@@ -103,7 +103,7 @@
                                     <div class="col-md-4">
                                         <div class="form-group">
                                             <label for="">Telefono</label>
-                                            <input type="tel" class="form-control"
+                                            <input type="number" class="form-control"
                                                 placeholder="Telefono del contacto" wire:model="telefono">
                                         </div>
                                         @if ($errors->has('telefono'))
@@ -113,7 +113,7 @@
                                     <div class="col-md-4">
                                         <div class="form-group">
                                             <label for="">Celular</label>
-                                            <input type="tel" class="form-control"
+                                            <input type="number" class="form-control"
                                                 placeholder="Celular del contacto" wire:model="celular">
                                         </div>
                                         @if ($errors->has('celular'))
@@ -181,9 +181,18 @@
                                     </div>
                                     <div class="col-md-4">
                                         <div class="form-group">
+                                            <label for="">Los dias seran</label>
+                                            <select name="tipo" class="form-control" wire:model="typeDays">
+                                                <option value="0">Habiles</option>
+                                                <option value="1">Naturales</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
                                             <label for="">Vigencia de la cotizacion (Opcional)</label>
                                             <input type="number" class="form-control"
-                                                placeholder="Duracion de la vigencia en dias naturales"
+                                                placeholder="Duracion de la vigencia"
                                                 wire:model="shelfLife">
                                         </div>
                                     </div>

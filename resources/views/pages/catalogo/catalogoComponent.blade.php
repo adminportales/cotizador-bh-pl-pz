@@ -49,6 +49,12 @@
                                     <option value="{{ $provider->id }}">{{ $provider->company }}</option>
                                 @endforeach
                             </select>
+                            <select wire:model='type' name="type" id="type" class="form-control mb-2">
+                                <option value="">Seleccione Tipo...</option>
+                                @foreach ($types as $type)
+                                    <option value="{{ $type->id }}">{{ $type->type }}</option>
+                                @endforeach
+                            </select>
                             <p class="mb-0">Precio</p>
                             <div class="d-flex align-items-center mb-2">
                                 <input wire:model='precioMin' type="number" class="form-control" name="search"
@@ -105,6 +111,12 @@
                         <option value="">Seleccione Proveedor...</option>
                         @foreach ($proveedores as $provider)
                             <option value="{{ $provider->id }}">{{ $provider->company }}</option>
+                        @endforeach
+                    </select>
+                    <select wire:model='type' name="type" id="type" class="form-control mb-2">
+                        <option value="">Seleccione Tipo...</option>
+                        @foreach ($types as $type)
+                            <option value="{{ $type->id }}">{{ $type->type }}</option>
                         @endforeach
                     </select>
                     <p class="mb-0">Precio</p>

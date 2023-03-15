@@ -7,12 +7,18 @@
 </head>
 
 <body>
-    @php
-        $user = auth()->user();
-        if (auth()->user()->id !== $quote->user_id) {
+    @guest
+        @php
             $user = $quote->user;
-        }
-    @endphp
+        @endphp
+    @else
+        @php
+            $user = auth()->user();
+            if (auth()->user()->id !== $quote->user_id) {
+                $user = $quote->user;
+            }
+        @endphp
+    @endguest
     <header>
         <img src="quotesheet/pz/fondo-azul-superior.png" alt="" srcset="" class="fondo-head">
         <table class="head content">
@@ -201,7 +207,7 @@
                     </tr>
                     <tr>
                         <td colspan="12" class="title-entrega">Tiempo de Entrega: {{ $item->dias_entrega }} días
-                            naturales</td>
+                            {{ $quote->type_days == 0 ? 'hábiles' : 'naturales' }}.</td>
                     </tr>
                     <tr>
                         <td colspan="4" class="title-cantidad">Cantidad</td>
@@ -298,7 +304,7 @@
                 o
                 virtual a solicitud del cliente.</li>
             <li>Vigencia de la cotización {{ $quote->latestQuotesUpdate->quotesInformation->shelf_life ?: 5 }} días
-                naturales.</li>
+                {{ $quote->type_days == 0 ? 'hábiles' : 'naturales' }}.</li>
             <li>Producto cotizado de fabricación nacional o importación puede afinarse la fecha de entrega previo a la
                 emisión
                 de Orden de Compra.</li>

@@ -21,7 +21,7 @@ use Livewire\WithFileUploads;
 class FinalizarCotizacion extends Component
 {
     use WithFileUploads;
-    public $tipoCliente, $clienteSeleccionado = '', $isClient, $nombre, $empresa, $email, $telefono, $celular, $oportunidad, $rank = '', $departamento, $informacion, $ivaByItem, $showTotal, $logo, $taxFee, $shelfLife;
+    public $tipoCliente, $clienteSeleccionado = '', $isClient, $nombre, $empresa, $email, $telefono, $celular, $oportunidad, $rank = '', $departamento, $informacion, $ivaByItem, $typeDays, $showTotal, $logo, $taxFee, $shelfLife;
     public $urlPDFPreview;
     public $ejecutivos, $ejecutivoSeleccionado = null, $selectEjecutivo;
 
@@ -33,6 +33,7 @@ class FinalizarCotizacion extends Component
         }
         $this->shelfLife = trim($this->shelfLife) == "" ? null : $this->shelfLife;
         $this->ivaByItem = false;
+        $this->typeDays = 0;
         $this->showTotal = true;
     }
 
@@ -135,6 +136,7 @@ class FinalizarCotizacion extends Component
             'lead' => 'No Definido',
             'iva_by_item' => boolval($this->ivaByItem),
             'show_total' => boolval($this->showTotal),
+            'type_days' => $this->typeDays,
             'logo' => $pathLogo,
             'pending_odoo' => true,
             "company_id" => auth()->user()->company_session
@@ -574,6 +576,7 @@ class FinalizarCotizacion extends Component
             "logo" => $this->logo ? $this->logo->temporaryUrl() : null,
             "created_at" => now(),
             "iva_by_item" => boolval($this->ivaByItem),
+            'type_days' => $this->typeDays,
             "show_total" => boolval($this->showTotal),
             "precio_total" => $precioTotal,
             "productos_total" => $productosTotal,

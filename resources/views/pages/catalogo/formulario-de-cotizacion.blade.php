@@ -6,7 +6,7 @@
                 <div class="form-group m-0 mb-1 col-md-6">
                     <label for="tecnica" class="text-dark m-0"><strong>Material</strong> </label>
                     <select name="" id="" class="form-control form-control-sm"
-                        wire:model="materialSeleccionado" wire:change="resetSizes">
+                        wire:model="materialSeleccionado" wire:change="resetTecnique">
                         <option value="">Seleccione el material</option>
                         @foreach ($materiales as $material)
                             <option value="{{ $material->id }}">{{ $material->nombre }}</option>
@@ -17,7 +17,7 @@
                     <div class="form-group m-0 mb-1 col-md-6">
                         <label for="tecnica" class="text-dark m-0"><strong>Tecnica</strong> </label>
                         <select name="" id="" class="form-control form-control-sm"
-                            wire:model="tecnicaSeleccionada">
+                            wire:model="tecnicaSeleccionada" wire:change="resetSizes">
                             <option value="">Seleccione la tecnica</option>
                             @foreach ($techniquesAvailables as $technique)
                                 <option value="{{ $technique->id }}">{{ $technique->nombre }}

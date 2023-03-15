@@ -15,12 +15,13 @@ class EditInformationClientComponent extends Component
     use WithFileUploads;
 
     public $quoteInfo, $quote;
-    public $tipoCliente, $clienteSeleccionado = '', $nombre, $empresa, $email, $telefono, $celular, $oportunidad, $rank = '', $departamento, $informacion, $clients,  $logo,  $ivaByItem, $showTotal, $taxFee, $shelfLife;
+    public $tipoCliente, $clienteSeleccionado = '', $nombre, $empresa, $email, $telefono, $celular, $oportunidad, $rank = '', $departamento, $informacion, $clients,  $logo,  $ivaByItem, $showTotal, $typeDays, $taxFee, $shelfLife;
 
     public function mount()
     {
         $this->ivaByItem = $this->quote->iva_by_item;
-        $this->showTotal = $this->quote->showTotal;
+        $this->showTotal = $this->quote->show_total;
+        $this->typeDays = $this->quote->type_days;
         $this->nombre = $this->quoteInfo->name;
         $this->empresa = $this->quoteInfo->company;
         $this->email = $this->quoteInfo->email;
@@ -64,6 +65,7 @@ class EditInformationClientComponent extends Component
         $this->quote->update([
             'iva_by_item' => boolval($this->ivaByItem),
             'show_total' => boolval($this->showTotal),
+            'type_days' => boolval($this->typeDays),
             'logo' => $pathLogo,
         ]);
         // Guardar la Info de la cotizacion

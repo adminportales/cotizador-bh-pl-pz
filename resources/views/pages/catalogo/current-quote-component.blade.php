@@ -147,7 +147,7 @@
                                             <p class="m-0"><strong>${{ $quote->precio_total }}</strong></p>
                                         </div>
                                         <div style="font-size: 14px;">
-                                            <p class="m-0"> {{ $quote->dias_entrega }} dias naturales</p>
+                                            <p class="m-0"> {{ $quote->dias_entrega }} dias</p>
                                             <p class="m-0"> {{ $quote->cantidad }} piezas</p>
                                         </div>
                                     </div>
@@ -301,7 +301,6 @@
                             {{ $quoteShow->color_logos }}
                         </p>
                         <p class="m-0"><strong>Tiempo de entrega: </strong> {{ $quoteShow->dias_entrega }} dias
-                            habiles
                         </p>
                         <p class="m-0"><strong>Costo de
                                 Impresion:</strong>

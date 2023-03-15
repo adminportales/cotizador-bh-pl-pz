@@ -14,6 +14,7 @@ class Quote extends Model
         'lead',
         'iva_by_item',
         'show_total',
+        'type_days',
         'logo',
         "pending_odoo",
         "company_id",

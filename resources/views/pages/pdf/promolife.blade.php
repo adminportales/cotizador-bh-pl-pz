@@ -7,12 +7,18 @@
 </head>
 
 <body>
-    @php
-        $user = auth()->user();
-        if (auth()->user()->id !== $quote->user_id) {
+    @guest
+        @php
             $user = $quote->user;
-        }
-    @endphp
+        @endphp
+    @else
+        @php
+            $user = auth()->user();
+            if (auth()->user()->id !== $quote->user_id) {
+                $user = $quote->user;
+            }
+        @endphp
+    @endguest
     <header>
         {{-- <img src="quotesheet/pl/fondo-azul-superior.png" alt="" srcset="" class="fondo-head"> --}}
         <div class="fondo-head"></div>
@@ -119,6 +125,7 @@
                 .body-products td {
                     padding: 5px 0 5px 0;
                     font-size: 16px;
+                    vertical-align: middle;
                 }
 
                 .body-products td .descripcion {
@@ -173,10 +180,10 @@
                 <table style="border-collapse: collapse;width:100%;border: 1px solid #1485cc">
                     <tr class="title">
                         <td>
-                            <p class="title-text">Imagen de Referencia</p>
+                            <p class="title-text" style="margin: 3px 0 3px 0">Imagen de Referencia</p>
                         </td>
                         <td colspan="12">
-                            <p class="title-text">Descripción</p>
+                            <p class="title-text" style="margin: 3px 0 3px 0">Descripción</p>
                         </td>
                     </tr>
                     <tr>
@@ -190,33 +197,45 @@
                             @endif
                         </td>
                         <td colspan="12">
-                            <p class="descripcion">
+                            <p class="descripcion" style="line-height: 15px">
                                 {{ $item->new_description ? $item->new_description : $producto->description }}
                             </p>
                         </td>
                     </tr>
                     <tr>
-                        <td colspan="6" class="title-tecnica">Técnica de Personalización</td>
-                        <td colspan="6" class="title-tecnica">Detalle de la Personalización</td>
+                        <td colspan="6" class="title-tecnica" style="margin: 1px 0 1px 0">
+                            <p style="margin: 2px 0 2px 0">Técnica de Personalización</p>
+                        </td>
+                        <td colspan="6" class="title-tecnica" style="margin: 1px 0 1px 0">
+                            <p style="margin: 2px 0 2px 0">Detalle de la Personalización</p>
+                        </td>
                     </tr>
                     <tr>
-                        <td colspan="6" class="detalle-tecnica">
-                            {{ $tecnica->tecnica }}
+                        <td colspan="6" class="detalle-tecnica" style="margin: 3px 0 3px 0">
+                            <p>{{ $tecnica->tecnica }}</p>
                         </td>
-                        <td colspan="6" class="detalle-tecnica">
+                        <td colspan="6" class="detalle-tecnica" style="margin: 3px 0 3px 0">
                             @if ($tecnica->tecnica !== 'No Aplica')
                                 <p style="font-size: 14px"><b>Tintas: </b>{{ $item->color_logos }}</p>
                             @endif
                         </td>
                     </tr>
                     <tr>
-                        <td colspan="12" class="title-entrega">Tiempo de Entrega: {{ $item->dias_entrega }} días
-                            naturales</td>
+                        <td colspan="12" class="title-entrega">
+                            <p>Tiempo de Entrega: {{ $item->dias_entrega }} días
+                                {{ $quote->type_days == 0 ? 'hábiles' : 'naturales' }}.</p>
+                        </td>
                     </tr>
                     <tr>
-                        <td colspan="4" class="title-cantidad">Cantidad</td>
-                        <td colspan="4" class="title-cantidad">Precio Unitario</td>
-                        <td colspan="4" class="title-cantidad">Precio Total</td>
+                        <td colspan="4" class="title-cantidad" style="margin: 1px 0 1px 0">
+                            <p style="margin: 2px 0 2px 0">Cantidad </p>
+                        </td>
+                        <td colspan="4" class="title-cantidad" style="margin: 1px 0 1px 0">
+                            <p style="margin: 2px 0 2px 0">Precio Unitario </p>
+                        </td>
+                        <td colspan="4" class="title-cantidad" style="margin: 1px 0 1px 0">
+                            <p style="margin: 2px 0 2px 0">Precio Total </p>
+                        </td>
                     </tr>
                     @if ($item->quote_by_scales)
                         @foreach ($scales_info as $scale)
@@ -238,13 +257,17 @@
                         @endforeach
                     @else
                         <tr>
-                            <td colspan="4" class="detalle-cantidad">{{ $item->cantidad }} pz</td>
-                            <td colspan="4" class="detalle-cantidad">$
-                                {{ number_format($item->precio_unitario * $taxFee, 2, '.', ',') }}
+                            <td colspan="4" class="detalle-cantidad">
+                                <p>{{ $item->cantidad }} pz</p>
+                            </td>
+                            <td colspan="4" class="detalle-cantidad">
+                                <p>$
+                                    {{ number_format($item->precio_unitario * $taxFee, 2, '.', ',') }}</p>
 
                             </td>
-                            <td colspan="4" class="detalle-cantidad">$
-                                {{ number_format($item->precio_total * $taxFee, 2, '.', ',') }}
+                            <td colspan="4" class="detalle-cantidad">
+                                <p>$
+                                    {{ number_format($item->precio_total * $taxFee, 2, '.', ',') }}</p>
                                 @if ($quote->iva_by_item)
                                     <p style="font-size: 12px"><b>IVA:
                                         </b>${{ number_format($item->precio_total * $taxFee * 0.16, 2, '.', ',') }}
@@ -310,7 +333,7 @@
                 o
                 virtual a solicitud del cliente.</li>
             <li>Vigencia de la cotización {{ $quote->latestQuotesUpdate->quotesInformation->shelf_life ?: 5 }} días
-                naturales.</li>
+                {{ $quote->type_days == 0 ? 'hábiles' : 'naturales' }}.</li>
             <li>Producto cotizado de fabricación nacional o importación puede afinarse la fecha de entrega previo a la
                 emisión
                 de Orden de Compra.</li>
