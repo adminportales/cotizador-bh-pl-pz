@@ -47,40 +47,39 @@ header {
     top: 0px;
     left: 0px;
     right: 0px;
-    height: 120px;
+    height: 140px;
+    background-image: url(../bh//triangulos.png);
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center right;
 }
 
 footer {
     position: fixed;
-    background-color: black;
-    color: white;
     bottom: 0px;
     left: 0px;
     right: 0px;
-    height: 100px;
+    height: 120px;
+    background-image: url(../bh//triangulos1.png);
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center left;
 }
 
 .content {
     padding: 0px 15px;
 }
 
-.fondo-head {
-    width: 100%;
-    height: 20px;
-}
-
 .head {
     width: 100%;
-    background-color: black;
+    /* background-color: black; */
     padding: 10px 15px;
-    font-size: 45px;
+    font-size: 27px;
     line-height: 40px;
-    color: white;
+    /* color: white; */
 }
-
-.separator {
-    border-left: 3px #fff solid;
-    padding-left: 30px;
+.head td{
+    vertical-align: middle;
 }
 
 .logo {
@@ -150,8 +149,9 @@ footer {
 
 .footer {
     width: 100%;
-    font-size: 20px;
-    padding: 20px 15px 0px 15px;
+    font-size: 25px;
+    /* padding: 20px 15px 0px 15px; */
+    padding-top: 40px;
 }
 
 .pagenum::after {

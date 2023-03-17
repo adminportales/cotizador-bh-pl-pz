@@ -20,13 +20,12 @@
         @endphp
     @endguest
     <header>
-        <img src="quotesheet/bh/fondo-azul-superior.jpg" alt="" srcset="" class="fondo-head">
+        {{-- <img src="quotesheet/bh/triangulos.png" alt="" srcset="" class="fondo-head"> --}}
         <table class="head content">
             <tr>
-                <td style="width: 240px">Presupuesto </td>
-                <td class="separator">Compañia</td>
+                <td style="text-align: left; width:20%"><img src="quotesheet/bh/logo.png" class="logo"></td>
+                <td style="text-align: center; width:65%">Presupuesto | Compañia</td>
                 <td></td>
-                <td style="text-align: center"><img src="quotesheet/bh/logo.png" class="logo"></td>
             </tr>
         </table>
         <p class="company-name content">BH Trade Market S.A. de C.V.</p>
@@ -74,12 +73,12 @@
                 </td>
             </tr>
         </table>
-        <table class="content">
+        <table class="content  info-client">
             <tr>
                 <td> <img src="quotesheet/bh/icon-whatsapp.png" alt=""> </td>
-                <td> {{ $user->phone == null ? 'Sin Dato' : $user->phone }} </td>
+                <td style="vertical-align: middle"> {{ $user->phone == null ? 'Sin Dato' : $user->phone }} </td>
                 <td><img src="quotesheet/bh/icon-email.png" alt=""></td>
-                <td>{{ $user->email }}</td>
+                <td style="vertical-align: middle">{{ $user->email }}</td>
             </tr>
         </table>
         <div class="content">
