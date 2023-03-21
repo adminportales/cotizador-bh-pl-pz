@@ -31,18 +31,18 @@
         <p class="company-name content">BH Trade Market S.A. de C.V.</p>
     </header>
     <footer>
-        <table class="footer content">
+        <table class="footer content text-company">
             <tr>
-                <td colspan="3" style="text-align: center">www.trademarket.com.mx</td>
+                <td colspan="3" style="text-align: center;font-size: 19px;">www.trademarket.com.mx</td>
             </tr>
             <tr>
-                <td colspan="3" style="text-align: center; font-size: 10px;">San Andrés Atoto 155A Naucalpan de
+                <td colspan="3" style="text-align: center; font-size: 12px;">San Andrés Atoto 155A Naucalpan de
                     Juárez, Méx. C.P. 53550
                     Tel. +52(55) 5290 9100</td>
             </tr>
         </table>
         <div style="text-align: right">
-            <p class="content">Pagina <span class="pagenum"></span></p>
+            <p class="content text-page-num">Pagina <span class="pagenum"></span></p>
         </div>
     </footer>
     <div class="body-pdf">
@@ -124,7 +124,6 @@
                     text-align: center;
                     font-weight: bold;
                     color: white;
-                    background-color: rgb(20, 20, 20);
                 }
 
                 .body-products td.detalle-tecnica {
@@ -145,7 +144,6 @@
                     text-align: center;
                     font-weight: bold;
                     color: white;
-                    background-color: rgb(20, 20, 20);
                 }
 
                 .body-products td.detalle-cantidad {
@@ -153,6 +151,18 @@
                     color: black;
                     background-color: rgb(251, 251, 251);
                     vertical-align: middle;
+                }
+
+                .text-page-num {
+                    color: #263d8e;
+                }
+
+                .text-company {
+                    color: #2d6fba;
+                }
+
+                .text-background td {
+                    background-color: #0464b4;
                 }
             </style>
             @foreach ($quote->latestQuotesUpdate->quoteProducts as $item)
@@ -164,8 +174,8 @@
                         $quote_scales = true;
                     }
                 @endphp
-                <table style="border-collapse: collapse;width:100%;border: 1px solid black">
-                    <tr class="title">
+                <table style="border-collapse: collapse;width:100%;border: 1px solid #0464b4">
+                    <tr class="title text-background">
                         <td>
                             <p class="title-text">Imagen de Referencia</p>
                         </td>
@@ -175,7 +185,7 @@
                     </tr>
                     <tr>
                         <td rowspan="{{ $item->quote_by_scales ? 5 + count($scales_info) : 6 }}"
-                            style="width: 250px; text-align: center; vertical-align: middle; padding: 0; border-right: 1px solid black">
+                            style="width: 250px; text-align: center; vertical-align: middle; padding: 0; border-right: 1px solid #0464b4">
                             @if ($producto->image)
                                 <img src="{{ $producto->image }}"
                                     style="max-height: 220px;height:auto;max-width: 220px;width:auto;">
@@ -189,7 +199,7 @@
                             </p>
                         </td>
                     </tr>
-                    <tr>
+                    <tr class="text-background">
                         <td colspan="6" class="title-tecnica">Tecnica de Personalizacion</td>
                         <td colspan="6" class="title-tecnica">Detalle de la Personalizacion</td>
                     </tr>
@@ -207,7 +217,7 @@
                         <td colspan="12" class="title-entrega">Tiempo de Entrega: {{ $item->dias_entrega }} días
                             {{ $quote->type_days == 0 ? 'hábiles' : 'naturales' }}.</td>
                     </tr>
-                    <tr>
+                    <tr class="text-background">
                         <td colspan="4" class="title-cantidad">Cantidad</td>
                         <td colspan="4" class="title-cantidad">Precio Unitario</td>
                         <td colspan="4" class="title-cantidad">Precio Total</td>
