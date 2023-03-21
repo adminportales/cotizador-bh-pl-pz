@@ -272,7 +272,7 @@ class VerCotizacionComponent extends Component
             $data =  [
                 'Opportunities' => [
                     [
-                        "CodeLead" => $this->quote->lead,
+                        "CodeLead" => $this->quote->pending_odoo ? '' : $this->quote->lead,
                         'Name' => $this->quote->latestQuotesUpdate->quotesInformation->oportunity,
                         'Partner' => [
                             'Name' => $this->quote->latestQuotesUpdate->quotesInformation->company,
