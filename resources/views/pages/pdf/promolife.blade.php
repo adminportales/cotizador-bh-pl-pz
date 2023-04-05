@@ -348,7 +348,7 @@
             {{-- Modificacion en caso del user_id 52 (Ivonne Lopez) con otro gerente de la empresa PROMO LIFE --}}
             <tr>
                 <td><img src="quotesheet/bh/icon-email.png"alt="">
-                    {{ $user->id == 52 || $user->id == 62 ? 'Ricardo Zamora Rodriguez' : $user->companySession->manager }}
+                    {{ $user->id == 109 || $user->id == 52 || $user->id == 62 ? 'Ricardo Zamora Rodriguez' : $quote->company->manager }}
                     <b>GERENTE COMERCIAL</b>
                 </td>
                 <td><img src="quotesheet/bh/icon-email.png"alt="">
@@ -356,7 +356,7 @@
             </tr>
             <tr>
                 <td><img src="quotesheet/bh/icon-email.png"alt="">
-                    {{ $user->id == 52 || $user->id == 62 ? 'ricardo.zamora@promolife.com.mx' : $user->companySession->email }}
+                    {{ $user->id == 109 || $user->id == 52 || $user->id == 62 ? 'ricardo.zamora@promolife.com.mx' : $quote->company->email }}
                 </td>
                 <td><img src="quotesheet/bh/icon-email.png" alt="">
                     {{ $user->email }} </td>
@@ -364,7 +364,7 @@
             <tr>
                 <td>
                     <img src="quotesheet/bh/icon-whatsapp.png" alt="">
-                    {{ $user->id == 52 || $user->id == 62 ? '55 1963 4472' : $user->companySession->phone }}
+                    {{ $user->id == 109 || $user->id == 52 || $user->id == 62 ? '55 1963 4472' : $quote->company->phone }}
                 </td>
                 <td><img src="quotesheet/bh/icon-whatsapp.png" alt=""> {{ $user->phone }}</td>
             </tr>

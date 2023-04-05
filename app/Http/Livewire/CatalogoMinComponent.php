@@ -31,6 +31,7 @@ class CatalogoMinComponent extends Component
         $products  = CatalogoProduct::where('name', 'LIKE', $nombre)->where('visible', true)
             ->where('products.visible', '=', true)
             ->whereIn('products.type_id', [1, 2])
+            ->where('products.price', '>', 0)
             ->paginate(9);
 
         return view('livewire.catalogo-min-component', [

@@ -316,21 +316,32 @@
         <table class="content" style="width: 100%">
             <tr>
                 <td style="text-align: right"><img src="quotesheet/bh/icon-email.png"alt=""> </td>
-                <td>{{ $user->companySession->manager }} <b>GERENTE COMERCIAL</b></td>
-                <td style="text-align: right"><img src="quotesheet/bh/icon-email.png"alt=""> </td>
-                <td>{{ $user->name }} <b>KAM</b></td>
+                <td style="vertical-align: middle">{{ $user->id == 18 || $user->id == 25 ? 'Daniel Garcia' : $quote->company->manager }}
+                    <b>{{ $user->id == 18 || $user->id == 25 ? 'KAM Junior' : 'Gerente Comercial' }}</b>
+                </td>
+                @if (!($user->id == 18 || $user->id == 25))
+                    <td style="text-align: right"><img src="quotesheet/bh/icon-email.png"alt=""> </td>
+                    <td style="vertical-align: middle">{{ $user->name }} <b>KAM</b></td>
+                @endif
             </tr>
             <tr>
                 <td style="text-align: right"><img src="quotesheet/bh/icon-email.png"alt=""> </td>
-                <td style="vertical-align: middle">{{ $user->companySession->email }} </td>
-                <td style="text-align: right"><img src="quotesheet/bh/icon-email.png" alt=""> </td>
-                <td style="vertical-align: middle">{{ $user->email }}</td>
+                <td style="vertical-align: middle">
+                    {{ $user->id == 18 || $user->id == 25 ? 'ventas1promodreams@gmail.com' : $quote->company->email }}
+                </td>
+                @if (!($user->id == 18 || $user->id == 25))
+                    <td style="text-align: right"><img src="quotesheet/bh/icon-email.png" alt=""> </td>
+                    <td style="vertical-align: middle">{{ $user->email }}</td>
+                @endif
             </tr>
             <tr>
                 <td style="text-align: right"><img src="quotesheet/bh/icon-whatsapp.png" alt=""> </td>
-                <td style="vertical-align: middle"> {{ $user->companySession->phone }} </td>
-                <td style="text-align: right"> <img src="quotesheet/bh/icon-whatsapp.png" alt=""> </td>
-                <td style="vertical-align: middle"> {{ $user->phone }} </td>
+                <td style="vertical-align: middle">
+                    {{ $user->id == 18 || $user->id == 25 ? '55 6628 2051' : $quote->company->phone }} </td>
+                @if (!($user->id == 18 || $user->id == 25))
+                    <td style="text-align: right"> <img src="quotesheet/bh/icon-whatsapp.png" alt=""> </td>
+                    <td style="vertical-align: middle"> {{ $user->phone }} </td>
+                @endif
             </tr>
         </table>
     </div>

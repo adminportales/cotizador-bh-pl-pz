@@ -104,6 +104,7 @@ class Catalogo extends Component
             ->when($orderPrice !== '', function ($query, $orderPrice) {
                 $query->orderBy('products.price', $this->orderPrice);
             })
+            ->where('products.price', '>', 0)
             ->when($color !== '' && $color !== null, function ($query, $color) {
                 $newColor  = '%' . $this->color . '%';
                 $query->where('colors.color', 'LIKE', $newColor);
