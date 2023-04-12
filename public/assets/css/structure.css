@@ -675,7 +675,7 @@ code {
       width: 17px;
       margin-right: 7px;
       height: 17px;
-      color: #191e3a;
+      color: #071689;
       fill: rgba(25, 30, 58, 0.19); }
 
 .animated {
@@ -906,7 +906,7 @@ code {
       margin: 0 32px;
       width: 100%;
       border-radius: 8px;
-      background: #191e3a;
+      background: #071689;
       min-height: 51px; }
     .topbar-nav.header nav#topbar ul.menu-categories {
       display: flex;

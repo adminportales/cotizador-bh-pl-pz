@@ -59,8 +59,8 @@
 
         button {
             border-radius: 20px;
-            border: 1px solid #191E3A;
-            background-color: #191E3A;
+            border: 1px solid #071689;
+            background-color: #071689;
             color: #FFFFFF;
             font-size: 12px;
             font-weight: bold;
@@ -176,9 +176,9 @@
         }
 
         .overlay {
-            background: #191E3A;
-            background: -webkit-linear-gradient(to right, #191E3A, #1c2348);
-            background: linear-gradient(to right, #191E3A, #191E3A);
+            background: #071689;
+            background: -webkit-linear-gradient(to right, #071689, #1c2348);
+            background: linear-gradient(to right, #071689, #071689);
             background-repeat: no-repeat;
             background-size: cover;
             background-position: 0 0;
@@ -271,12 +271,9 @@
 </head>
 
 <body>
-
-    <h2>Cotizador BH - Promo Life - Promo Zale</h2>
     <div class="container" id="container">
         @yield('content')
     </div>
-
 </body>
 
 </html>

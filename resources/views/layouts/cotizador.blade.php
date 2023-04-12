@@ -38,7 +38,7 @@
         }
 
         .navbar {
-            background-color: #09343F;
+            background-color: #0B1142;
             color: white;
         }
 
@@ -51,8 +51,8 @@
         }
 
         .btn-primary {
-            background-color: #41C4E3;
-            border-color: #41C4E3;
+            background-color: #071689;
+            border-color: #071689;
         }
 
         .btn-primary:hover,

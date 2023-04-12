@@ -1644,7 +1644,7 @@ input[disabled], select[disabled], textarea[disabled], input[readonly], select[r
   .table-dark.table-hover tbody tr {
     background-color: #060818; }
   .table-dark td, .table-dark th, .table-dark thead th {
-    border-color: #191e3a !important; }
+    border-color: #071689 !important; }
   .table-dark.table-hover tbody tr:hover {
     background-color: rgba(25, 30, 58, 0.631373); }
 
