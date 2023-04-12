@@ -8,12 +8,13 @@
     <div class="container">
         <a href="/" class="navbar-brand p-0">
             <div class="text-light d-flex align-items-center">
-                @if (auth()->user()->companySession)
-                    <div class="p-1 bg-white rounded m-1">
-                        <img alt="logo" class="imagen" height="50"
-                            src="{{ asset('img') . '/' . auth()->user()->companySession->image }}">
-                    </div>
-                @endif
+                <div class="p-1 rounded m-1">
+                    <img alt="logo" class="imagen" height="50"
+                        src="{{ asset('img/logo-pilgrims.png') }}">
+                </div>
+                <div class="separator" style="margin-left: 24px;">
+
+                </div>
                 <div>
                     <h6 class="m-0 text-white font-weight-bold" style="font-family:'Myriad Pro Bold';font-weight:bold;">
                         COTIZADOR {{ auth()->user()->companySession ? auth()->user()->companySession->name : '' }}

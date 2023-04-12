@@ -13,13 +13,9 @@
 
          <div class="nav-logo align-self-center">
              <a class="navbar-brand" href="{{ url('/') }}">
-                 @if (auth()->user()->companySession)
-                     <img alt="logo" class="img-fluid" height="100"
-                         src="{{ asset('img') . '/' . auth()->user()->companySession->image }}">
-                     <span class="navbar-brand-name">COTIZADOR {{ auth()->user()->companySession->name }}</span>
-                 @else
-                     <span class="navbar-brand-name">Administrador</span>
-                 @endif
+                <img alt="logo"  style="width:40px; object-fit:contain;" 
+                    src="{{ asset('img/logo-pilgrims-white.png') }}">
+                <span class="navbar-brand-name">Administrador</span>
              </a>
          </div>
 
