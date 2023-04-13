@@ -12,45 +12,50 @@
                     </div>
                 </div>
 
-                {{ $products }}
-                @foreach ($products as $product)
-                   
-                    <div class="col-md-4 col-lg-3 col-sm-6  d-flex justify-content-center">
-                        <div class="card mb-4" style="width: 14rem;">
-                            <div class="card-body text-center shadow-sm">
-                                @php
-                                   
-                                    $priceProduct = $product->price;
-                                    if ($product->producto_promocion) {
-                                        $priceProduct = round($priceProduct - $priceProduct * ($product->descuento / 100), 2);
-                                    } else {
-                                        $priceProduct = round($priceProduct - $priceProduct * ($product->provider->discount / 100), 2);
-                                    }
-                                @endphp
-                                <div class="text-center" style="height: 140px">
-                                    <img src="{{ $product->firstImage ? $product->firstImage->image_url : '' }}"
-                                        class="card-img-top " alt="{{ $product->name }}"
-                                        style="width: 100%; max-width: 100px; max-height: 140px; width: auto">
-                                </div>
-                                <h5 class="card-title" style="text-transform: capitalize">
-                                    {{ Str::limit($product->name, 30, '...') }}</h5>
-                                <p class=" m-0 pt-1"><strong>SKU:</strong> {{ $product->sku }}</p>
-                                <div class="">
-                                    <p class=" m-0 pt-1">Stock: {{ $product->stock }}</p>
-                                    <p class=" m-0 pt-1">$
-                                        {{ round($priceProduct, 2) }}</p>
-                                </div>
-                                <br>
-                                <div>
-                                    <a href="{{ route('show.product', ['product' => $product->id]) }}"
-                                        class="btn btn-primary mb-2 btn-block">
-                                        Cotizar
-                                    </a>
+                <div class="row row-cols-2 row-cols-lg-3 g-2 g-lg-3">
+                    
+                    @foreach ($products as $product)
+                    
+                        <div class="col">
+                            <div class="card mb-4" >
+                                <div class="card-body text-center shadow-sm">
+                                    @php
+                                        
+                                        $priceProduct = $product->price;
+                                        if ($product->producto_promocion) {
+                                            $priceProduct = round($priceProduct - $priceProduct * ($product->descuento / 100), 2);
+                                        } else {
+                                            $priceProduct = round($priceProduct - $priceProduct * ($product->provider->discount / 100), 2);
+                                        }
+                                    @endphp
+                                    <div class="text-center" style="height: 140px">
+                                        <img src="{{ $product->firstImage ? $product->firstImage->image_url : '' }}"
+                                            class="card-img-top " alt="{{ $product->name }}"
+                                            style="width: 100%; max-width: 100px; max-height: 140px; width: auto">
+                                    </div>
+                                    <h5 class="card-title" style="text-transform: capitalize">
+                                        {{ Str::limit($product->name, 30, '...') }}</h5>
+                                    <p class=" m-0 pt-1"><strong>SKU:</strong> {{ $product->sku }}</p>
+                                    <div class="">
+                                        <p class=" m-0 pt-1">Stock: {{ $product->stock }}</p>
+                                        <p class=" m-0 pt-1">$
+                                            {{ round($priceProduct, 2) }}</p>
+                                    </div>
+                                    <br>
+                                    <div>
+                                        <a href="{{ route('show.product', ['product' => $product->id]) }}"
+                                            class="btn btn-primary mb-2 btn-block">
+                                            Cotizar
+                                        </a>
+                                    </div>
+
+                                    <button style="width: 100%;" class="btn btn-success"  type="button" data-bs-toggle="modal" data-bs-target="#addTecnicasModal">Editar</button>  
+
                                 </div>
                             </div>
                         </div>
-                    </div>
-                @endforeach
+                    @endforeach
+                </div>        
             </div>
         </div>
         {{ $products->links() }}
