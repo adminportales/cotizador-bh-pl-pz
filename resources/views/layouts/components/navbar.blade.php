@@ -1,6 +1,6 @@
 <style>
     .nav-link.text-white:hover {
-        color: #1FAFD3 !important;
+        color: #0B1142 !important;
     }
 </style>
 <nav class="navbar navbar-expand-md topbar mb-2 static-top shadow h-auto">

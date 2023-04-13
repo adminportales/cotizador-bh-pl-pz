@@ -41,7 +41,7 @@ class CotizadorController extends Controller
         $utilidad = (float) $utilidad->value;
         $msg = '';
         // Consultar las existencias de los productos en caso de ser de Doble Vela.
-        if ($product->provider_id == 5) {
+        /* if ($product->provider_id == 5) {
             $cliente = new \nusoap_client('http://srv-datos.dyndns.info/doblevela/service.asmx?wsdl', 'wsdl');
             $error = $cliente->getError();
             if ($error) {
@@ -69,7 +69,7 @@ class CotizadorController extends Controller
             } else {
                 $msg = "No se obtuvo informacion acerca del Stock de este producto. Es posible que los datos sean incorrectos";
             }
-        }
+        } */
         return view('pages.catalogo.product', compact('product', 'utilidad', "msg"));
     }
 
@@ -153,7 +153,8 @@ class CotizadorController extends Controller
     }
     public function listProducts()
     {
-        $products = auth()->user()->listProducts()->paginate(30);
+        $products = Product::paginate(30);
+
         return view('pages.catalogo.listProducts', compact('products'));
     }
 

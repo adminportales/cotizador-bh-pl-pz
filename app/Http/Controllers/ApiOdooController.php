@@ -19,7 +19,7 @@ class ApiOdooController extends Controller
 
     public function getUsers(Request $request)
     {
-        try {
+        /* try {
             if ($request->header('token') == 'PL489FWVJJVMEWO') {
                 $requestData = ($request->users);
                 if ($requestData) {
@@ -88,12 +88,12 @@ class ApiOdooController extends Controller
             Storage::put('/public/dataErrorUsers.txt',   json_encode($th->getMessage()));
             Mail::to('adminportales@promolife.com.mx')->send(new SendDataOdoo('adminportales@promolife.com.mx', '/storage/dataErrorClients.txt'));
             return  $th->getMessage();
-        }
+        } */
     }
 
     public function getClients(Request $request)
     {
-        try {
+       /*  try {
             if ($request->header('token') == 'PL489FWVJJVMEWO') {
                 $requestData = ($request->clients);
                 $errors = [];
@@ -164,6 +164,6 @@ class ApiOdooController extends Controller
             Storage::put('/public/dataErrorClients.txt',   json_encode($th->getMessage()));
             Mail::to('adminportales@promolife.com.mx')->send(new SendDataOdoo('adminportales@promolife.com.mx', '/storage/dataErrorClients.txt'));
             return  $th->getMessage();
-        }
+        }*/
     }
-}
+} 

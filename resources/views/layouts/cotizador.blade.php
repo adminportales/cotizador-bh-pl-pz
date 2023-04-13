@@ -58,8 +58,8 @@
         .btn-primary:hover,
         .btn-primary:active,
         .btn-primary:focus {
-            background-color: #1FAFD3 !important;
-            border-color: #1FAFD3 !important;
+            background-color: #0B1142 !important;
+            border-color: #0B1142 !important;
         }
 
         p,

@@ -88,7 +88,7 @@ class Catalogo extends Component
         $orderPrice = $this->orderPrice;
         $orderStock = $this->orderStock;
 
-        $products  = CatalogoProduct::leftjoin('product_category', 'product_category.product_id', 'products.id')
+        /* $products  = CatalogoProduct::leftjoin('product_category', 'product_category.product_id', 'products.id')
             ->leftjoin('categories', 'product_category.category_id', 'categories.id')
             ->leftjoin('colors', 'products.color_id', 'colors.id')
             ->where('products.name', 'LIKE', $nombre)
@@ -113,7 +113,10 @@ class Catalogo extends Component
                 $query->where('categories.family', 'LIKE', $newCat);
             })
             ->select('products.*')
-            ->paginate(32);
+            ->paginate(32); 
+ */
+        $products  = CatalogoProduct::paginate(32);
+     
         return view('pages.catalogo.catalogoComponent', [
             'products' => $products,
             'utilidad' => $utilidad,

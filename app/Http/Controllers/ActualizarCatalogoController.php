@@ -20,7 +20,7 @@ class ActualizarCatalogoController extends Controller
 {
     public function actualizarCatalogo()
     {
-        $client = new Client(); //GuzzleHttp\Client
+        /* $client = new Client(); //GuzzleHttp\Client
         $url = "https://dev-catalogo.promolife.lat/api/getAllProductos";
 
 
@@ -143,6 +143,6 @@ class ActualizarCatalogoController extends Controller
             //throw $th;
         }
 
-        // return $responseBody;
+ */        // return $responseBody;
     }
 }
