@@ -70,7 +70,8 @@
                                     placeholder="Stock Minimo" min="0" value="0">
                                 -
                                 <input wire:model='stockMax' type="number" class="form-control"
-                                    placeholder="Stock Maximo" value="{{ $stock }}" max="{{ $stock }}">
+                                    placeholder="Stock Maximo" value="{{ $stock }}"
+                                    max="{{ $stock }}">
                             </div>
                             <p class="mb-0">Ordenar por Stock</p>
                             <select wire:model='orderStock' name="orderStock" id="provee"
@@ -206,7 +207,7 @@
                                         <div class="d-flex justify-content-between align-items-center">
                                             <p class=" m-0 pt-1" style="font-weight: bold">$
                                                 {{ round($priceProduct / ((100 - $utilidad) / 100), 2) }}</p>
-                                            <a href="{{ route('show.product', ['product' => $row->id]) }}"
+                                            <a href="#" wire:click="cotizar({{ $row->id }})"
                                                 class="btn btn-sm btn-primary">
                                                 Cotizar
                                             </a>

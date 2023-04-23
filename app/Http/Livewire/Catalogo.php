@@ -6,6 +6,7 @@ use App\Models\Catalogo\GlobalAttribute;
 use App\Models\Catalogo\Product as CatalogoProduct;
 use App\Models\Catalogo\Provider as CatalogoProvider;
 use App\Models\Catalogo\Type;
+use Exception;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Illuminate\Pagination\Paginator;
@@ -33,6 +34,14 @@ class Catalogo extends Component
 
     public function mount()
     {
+        try {
+            $filtros = session()->get('filtros', []);
+            $this->setFiltros($filtros);
+            session()->put('filtros', []);
+        } catch (Exception $th) {
+            //throw $th;
+        }
+
         $utilidad = GlobalAttribute::find(1);
         $utilidad = (float) $utilidad->value;
 
@@ -58,7 +67,7 @@ class Catalogo extends Component
             $utilidad = (float)(auth()->user()->settingsUser->utility > 0 ?  auth()->user()->settingsUser->utility :  $utilidad);
         }
         // Agrupar Colores similares
-        $types = Type::find([1,2]);
+        $types = Type::find([1, 2]);
         $price = DB::connection('mysql_catalogo')->table('products')->max('price');
         $price = round($price + $price * ($utilidad / 100), 2);
         $stock = DB::connection('mysql_catalogo')->table('products')->max('stock');
@@ -129,6 +138,12 @@ class Catalogo extends Component
             'proveedores' => $proveedores,
         ]);
     }
+
+    public function updated()
+    {
+        $this->resetPage();
+    }
+
     public function limpiar()
     {
         $this->nombre = '';
@@ -139,5 +154,49 @@ class Catalogo extends Component
         $this->type = null;
         $this->orderPrice = '';
         $this->orderStock = '';
+        $this->precioMax = null;
+        $this->precioMin = null;
+        $this->stockMax = null;
+        $this->stockMin = null;
+    }
+
+    public function setFiltros($filtros)
+    {
+        $this->nombre = $filtros["nombre"];
+        $this->sku = $filtros["sku"];
+        $this->color = $filtros["color"];
+        $this->category = $filtros["category"];
+        $this->proveedor = $filtros["proveedor"];
+        $this->type = $filtros["type"];
+        $this->orderPrice = $filtros["orderPrice"];
+        $this->orderStock = $filtros["orderStock"];
+        $this->precioMax = $filtros["precioMax"];
+        $this->precioMin = $filtros["precioMin"];
+        $this->stockMax = $filtros["stockMax"];
+        $this->stockMin = $filtros["stockMin"];
+    }
+
+    public function getFiltros()
+    {
+        return [
+            "nombre" => $this->nombre,
+            "sku" => $this->sku,
+            "color" => $this->color,
+            "category" => $this->category,
+            "proveedor" => $this->proveedor,
+            "type" => $this->type,
+            "orderPrice" => $this->orderPrice,
+            "orderStock" => $this->orderStock,
+            "precioMax" => $this->precioMax,
+            "precioMin" => $this->precioMin,
+            "stockMax" => $this->stockMax,
+            "stockMin" => $this->stockMin,
+        ];
+    }
+
+    public function cotizar($id)
+    {
+        session()->put('filtros', $this->getFiltros());
+        redirect("catalogo/" . $id);
     }
 }
