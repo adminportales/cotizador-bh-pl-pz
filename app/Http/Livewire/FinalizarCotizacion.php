@@ -582,6 +582,7 @@ class FinalizarCotizacion extends Component
             "productos_total" => $productosTotal,
             "shelf_life" => $this->shelfLife,
             "preview" => true,
+            "company" => auth()->user()->companySession,
             'latestQuotesUpdate' => (object)[
                 "quotesInformation" => (object)[
                     "company" => $this->empresa,

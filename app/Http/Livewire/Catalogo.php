@@ -71,12 +71,12 @@ class Catalogo extends Component
         $price = DB::connection('mysql_catalogo')->table('products')->max('price');
         $price = round($price + $price * ($utilidad / 100), 2);
         $stock = DB::connection('mysql_catalogo')->table('products')->max('stock');
-        $proveedores = CatalogoProvider::where('id', "<", 15)->get();
+        $proveedores = CatalogoProvider::where('id', "<", 15)->where('id', "<>", 13)->get();
         $nombre = '%' . $this->nombre . '%';
         $sku = '%' . $this->sku . '%';
         $color = $this->color;
         $category = $this->category;
-        $type =  $this->type == "" ? null : $this->type;
+        $type =  $this->type == null ? "" : $this->type;
         $precioMax = $price;
         if ($this->precioMax != null) {
             $precioMax =  round($this->precioMax / (($utilidad / 100) + 1), 2);
@@ -93,9 +93,12 @@ class Catalogo extends Component
         if ($stockMin == null) {
             $stockMin = 0;
         }
-
         $orderPrice = $this->orderPrice;
         $orderStock = $this->orderStock;
+
+        if ($type == '2') {
+            $this->proveedor = null;
+        }
 
         $products  = CatalogoProduct::leftjoin('product_category', 'product_category.product_id', 'products.id')
             ->leftjoin('categories', 'product_category.category_id', 'categories.id')
@@ -105,7 +108,10 @@ class Catalogo extends Component
             ->where('products.sku', 'LIKE', $sku)
             ->whereBetween('products.price', [$precioMin, $precioMax])
             ->whereBetween('products.stock', [$stockMin, $stockMax])
-            ->where('products.provider_id', 'LIKE', $this->proveedor)
+            ->when($type == '1', function ($query, $proveedor) {
+                $query->where('products.provider_id', 'LIKE', $this->proveedor);
+                // $query->orderBy('products.stock', $this->orderStock);
+            })
             ->where('products.type_id', 'LIKE', $type)
             ->when($orderStock !== '', function ($query, $orderStock) {
                 $query->orderBy('products.stock', $this->orderStock);

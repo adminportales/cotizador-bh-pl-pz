@@ -158,8 +158,7 @@ class CotizadorController extends Controller
 
     public function enviarCotizacionesAOdoo()
     {
-        $cotizacionesAEnviar = Quote::where("pending_odoo", true)->orderBy('created_at', "DESC")->limit(10)->get();
-
+        $cotizacionesAEnviar = Quote::where("pending_odoo", true)->whereBetween("created_at", [now()->subWeek(), now()->subMinutes(3)])->orderBy('created_at', "DESC")->limit(10)->get();
         $erroresAlCotizar = [];
         foreach ($cotizacionesAEnviar as $cotizacion) {
             if ($cotizacion->latestQuotesUpdate) {
