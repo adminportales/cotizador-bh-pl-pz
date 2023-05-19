@@ -302,6 +302,7 @@ class EditarCotizacionComponent extends Component
                 "product" => $product->product,
                 "technique" => $product->technique,
                 "prices_techniques" => $product->prices_techniques,
+                "new_description" => $product->new_description,
                 "color_logos" => $product->color_logos,
                 "costo_indirecto" => $product->costo_indirecto,
                 "utilidad" => $product->utilidad,
@@ -309,6 +310,8 @@ class EditarCotizacionComponent extends Component
                 "cantidad" => $product->cantidad,
                 "precio_unitario" => $product->precio_unitario,
                 "precio_total" => $product->precio_total,
+                "quote_by_scales" => $product->quote_by_scales,
+                "scales_info" => $product->scales_info,
             ]);
             $this->dispatchBrowserEvent('Editardescuento');
         }
