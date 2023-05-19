@@ -17,12 +17,13 @@ class SendQuotePZ extends Mailable
      *
      * @return void
      */
-    public $vendedor, $cliente, $file;
-    public function __construct($vendedor, $cliente, $file)
+    public $vendedor, $cliente, $nameFile, $file;
+    public function __construct($vendedor, $cliente, $nameFile, $file)
     {
         $this->vendedor = $vendedor;
         $this->cliente = $cliente;
         $this->file = $file;
+        $this->nameFile = $nameFile;
     }
 
 
@@ -39,7 +40,7 @@ class SendQuotePZ extends Mailable
             ->subject('Cotizacion Promo Zale')
             ->from(auth()->user()->email, auth()->user()->name)
             ->attach(public_path() . $this->file, [
-                'as' => 'Hoja de Cotizacion.pdf',
+                'as' => $this->nameFile,
                 'mime' => 'application/pdf',
             ]);
     }
