@@ -21,7 +21,6 @@ class AddNewProductToQuote extends Component
         $utilidad = GlobalAttribute::find(1);
         $utilidad = (float) $utilidad->value;
 
-        // $products = auth()->user()->listProducts()->paginate(30);
         return view('livewire.add-new-product-to-quote', [
             'utilidad' => $utilidad,
             // 'products' => $products,

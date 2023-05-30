@@ -5,6 +5,7 @@ namespace App\Http\Livewire;
 use App\Models\Catalogo\Color;
 use App\Models\Catalogo\Product;
 use App\Models\Catalogo\Provider;
+use App\Models\UserProduct;
 use Exception;
 use Livewire\Component;
 use Livewire\WithFileUploads;
@@ -22,11 +23,10 @@ class CatalogoPersonal extends Component
 
         $keyWord = '%' . $this->keyWord . '%';
         $nameDB = (new Product())->getConnection()->getDatabaseName();
-        $products = auth()->user()
-            ->listProducts()
-            ->join($nameDB . '.products', 'products.id', 'user_products.product_id')
-            ->where('products.name', 'LIKE', $keyWord)
-            ->where('products.visible', '=', true)
+        $products = UserProduct::join($nameDB . '.products', 'products.id', 'user_products.product_id')
+            ->where('user_products.user_id', auth()->user()->id)
+            ->where($nameDB . '.products.name', 'LIKE', $keyWord)
+            ->where($nameDB . '.products.visible', true)
             ->simplePaginate(32);
         return view('livewire.catalogo-personal', ['products' => $products,]);
     }

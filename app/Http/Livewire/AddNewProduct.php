@@ -80,7 +80,7 @@ class AddNewProduct extends Component
             'type_id' => 3,
             'color_id' => $color->id,
             'provider_id' => $proveedor->id,
-            'visible' => false,
+            'visible' => true,
         ]);
         $newProduct->images()->create([
             'image_url' =>   $pathImagen
