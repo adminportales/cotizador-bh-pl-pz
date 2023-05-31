@@ -223,7 +223,7 @@ class FormularioDeCotizacion extends Component
                 $nuevoPrecio = round(($this->precio + ($precioDeTecnicaUsado * $this->colores) + $this->operacion) / ((100 - $info['utility']) / 100), 2);
                 array_push($this->priceScalesComplete, [
                     'quantity' => $info['quantity'],
-                    'tecniquePrice' => $info['tecniquePrice'] ?: $precioDeTecnica,
+                    'tecniquePrice' => (int)$info['tecniquePrice'] >= 0 ? (int)$info['tecniquePrice']  : $precioDeTecnica,
                     'utility' => $info['utility'],
                     'unit_price' => $nuevoPrecio,
                     'total_price' => $nuevoPrecio * $info['quantity'],
@@ -552,6 +552,7 @@ class FormularioDeCotizacion extends Component
         $this->precioTecnicaEscala = null;
         $this->dispatchBrowserEvent('showModalScales');
     }
+
     public function closeScale()
     {
         $this->editScale = false;
@@ -565,10 +566,12 @@ class FormularioDeCotizacion extends Component
     {
         $this->dispatchBrowserEvent('showModalImage');
     }
+
     public function closeModalImage()
     {
         $this->dispatchBrowserEvent('hideModalImage');
     }
+
     public function addScale()
     {
         $this->itemEditScale = null;
@@ -576,12 +579,14 @@ class FormularioDeCotizacion extends Component
             'cantidad' => 'required|numeric|min:1',
             'utilidad' => 'required|numeric|min:0|max:99',
         ]);
-        if (!is_numeric($this->precioTecnicaEscala))
-            $this->precioTecnicaEscala = null;
+        if ($this->precioTecnicaEscala != "0") {
+            if (!is_numeric($this->precioTecnicaEscala))
+                $this->precioTecnicaEscala = null;
+        }
         array_push($this->infoScales, [
             'quantity' => $this->cantidad,
             'utility' => $this->utilidad,
-            'tecniquePrice' => $this->precioTecnicaEscala ?: null,
+            'tecniquePrice' => $this->precioTecnicaEscala,
         ]);
         $this->cantidad = 1;
         $this->precioTecnicaEscala = null;
