@@ -10,7 +10,6 @@ use App\Models\PricesTechnique;
 use App\Models\SizeMaterialTechnique;
 use App\Models\Technique;
 use Exception;
-use Illuminate\Validation\Rule;
 use Livewire\Component;
 
 
@@ -23,6 +22,8 @@ class FormularioDeCotizacion extends Component
     public $tecnica = null, $colores = null, $operacion = null, $utilidad = null, $entrega = null, $cantidad = null, $priceTechnique, $newPriceTechnique = null, $newDescription = null, $imageSelected;
 
     public $priceScales, $infoScales = [], $priceScalesComplete = [],  $cantidadEscala, $precioTecnicaEscala, $editScale = false, $itemEditScale = null;
+
+    public $typeDays;
 
     public $materialSeleccionado;
     public $tecnicaSeleccionada;
@@ -39,6 +40,7 @@ class FormularioDeCotizacion extends Component
             $this->cantidad =  $this->currentQuote->cantidad ?: 1;
             $this->utilidad =  $this->currentQuote->utilidad;
             $this->entrega =  $this->currentQuote->dias_entrega;
+            $this->typeDays =  $this->currentQuote->type_days;
             $this->newPriceTechnique =  $this->currentQuote->new_price_technique;
             $this->newDescription =  $this->currentQuote->new_description;
             $this->imageSelected =  $this->currentQuote->images_selected;
@@ -72,6 +74,7 @@ class FormularioDeCotizacion extends Component
             $this->cantidad = $this->productEdit['cantidad'] ?: 1;
             $this->utilidad = $this->productEdit['utilidad'];
             $this->entrega = $this->productEdit['dias_entrega'];
+            $this->typeDays = $this->productEdit['type_days'];
             $this->newPriceTechnique = $this->productEdit['prices_techniques'];
             $this->newDescription =  $this->productEdit['new_description'];
 
@@ -308,7 +311,8 @@ class FormularioDeCotizacion extends Component
             'color_logos' => $this->colores,
             'costo_indirecto' => $this->operacion,
             'dias_entrega' => $this->entrega,
-            'images_selected' => $this->imageSelected
+            'images_selected' => $this->imageSelected,
+            'type_days' => $this->typeDays
         ];
 
         if (!$this->priceScales) {
@@ -332,7 +336,7 @@ class FormularioDeCotizacion extends Component
         $currentQuote->currentQuoteDetails()->create($dataQuote);
         session()->flash('message', 'Se ha agregado este producto a la cotizacion.');
         $this->emit('currentQuoteAdded');
-        $this->resetData();
+        //$this->resetData();
     }
 
     public function editarCurrentCotizacion()
@@ -371,7 +375,8 @@ class FormularioDeCotizacion extends Component
             'color_logos' => $this->colores,
             'costo_indirecto' => $this->operacion,
             'dias_entrega' => $this->entrega,
-            'images_selected' => $this->imageSelected
+            'images_selected' => $this->imageSelected,
+            'type_days' => $this->typeDays
         ];
 
         if (!$this->priceScales) {
@@ -438,6 +443,7 @@ class FormularioDeCotizacion extends Component
             'color_logos' => $this->colores,
             'costo_indirecto' => $this->operacion,
             'dias_entrega' => $this->entrega,
+            'type_days' => $this->typeDays
         ];
 
         if (!$this->priceScales) {
@@ -503,6 +509,7 @@ class FormularioDeCotizacion extends Component
             'color_logos' => $this->colores,
             'costo_indirecto' => $this->operacion,
             'dias_entrega' => $this->entrega,
+            'type_days' => $this->typeDays,
         ];
 
         if (!$this->priceScales) {

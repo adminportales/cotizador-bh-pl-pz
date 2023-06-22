@@ -26,7 +26,8 @@ class CurrentQuoteDetails extends Model
         'precio_total',
         'quote_by_scales',
         'scales_info',
-        'images_selected'
+        'images_selected',
+        'type_days'
     ];
 
     public function product()

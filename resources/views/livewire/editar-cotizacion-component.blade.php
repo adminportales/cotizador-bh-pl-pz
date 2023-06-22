@@ -477,7 +477,7 @@
                                 </p>
                                 <p class="m-0"><b>Costo Indirecto:</b> $ {{ $showProduct['costo_indirecto'] }}</p>
                                 <p class="m-0"><b>Margen de Utilidad:</b> {{ $showProduct['utilidad'] }} %</p>
-                                <p class="m-0"><b>Dias de entrega:</b> {{ $showProduct['dias_entrega'] }} </p>
+                                <p class="m-0"><b>Dias de entrega:</b> {{ $showProduct['dias_entrega'] }} dias {{ $showProduct['type_days'] == 1 ? 'habiles' : ($showProduct['type_days'] == 2 ? 'naturales' : '') }}</p>
                                 @if ($showProduct['quote_by_scales'])
                                     <table class="table table-sm table-bordered m-0">
                                         <thead>

@@ -222,6 +222,15 @@
                 <input type="number" name="dias" wire:model="entrega" placeholder="Dias de entrega estimada"
                     class="form-control form-control-sm">
             </div>
+            <div class="form-group m-0 mb-1 ">
+                <label for="dias" class="text-dark m-0"><strong>Naturales o Habiles </strong> </label>
+                <select name="" id="" class="form-control form-control-sm"
+                    wire:model="typeDays">
+                    <option value="">Seleccione el tipo de dias (opcional)</option>
+                    <option value="1">Habiles</option>
+                    <option value="2">Naturales</option>
+                </select>
+            </div>
             @if (!$priceScales)
                 <div class="form-group m-0 mb-1 ">
                     <label for="newTechnique" class="text-dark m-0"><strong>Precio actual de la tecnica por articulo:

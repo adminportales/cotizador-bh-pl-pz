@@ -61,6 +61,7 @@
                                                 </p>
                                                 <p class="m-0">
                                                     <strong>Entrega:</strong> {{ $quote->dias_entrega }} dias
+                                                    {{ $quote->type_days == 1 ? 'habiles' : ($quote->type_days == 2 ? 'naturales' : '') }}
                                                 </p>
                                             </td>
                                             @if ($quote->quote_by_scales)

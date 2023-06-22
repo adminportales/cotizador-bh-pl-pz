@@ -197,6 +197,7 @@ class EditarCotizacionComponent extends Component
                         $productQuote->costo_indirecto = $productQuoteEdit['costo_indirecto'];
                         $productQuote->utilidad = $productQuoteEdit['utilidad'];
                         $productQuote->dias_entrega = $productQuoteEdit['dias_entrega'];
+                        $productQuote->type_days = $productQuoteEdit['type_days'];
                         $productQuote->cantidad = $productQuoteEdit['cantidad'];
                         $productQuote->precio_unitario = $productQuoteEdit['precio_unitario'];
                         $productQuote->precio_total = $productQuoteEdit['precio_total'];
@@ -219,6 +220,7 @@ class EditarCotizacionComponent extends Component
                 "costo_indirecto" => $productQuote->costo_indirecto,
                 "utilidad" => $productQuote->utilidad,
                 "dias_entrega" => $productQuote->dias_entrega,
+                "type_days" => $productQuote->type_days,
                 "cantidad" => $productQuote->cantidad,
                 "precio_unitario" => $productQuote->precio_unitario,
                 "precio_total" => $productQuote->precio_total,
@@ -253,6 +255,7 @@ class EditarCotizacionComponent extends Component
                     'costo_indirecto' => $item['costo_indirecto'],
                     'utilidad' => $item['utilidad'],
                     'dias_entrega' => $item['dias_entrega'],
+                    'type_days' => $item['type_days'],
                     'cantidad' => $item['cantidad'],
                     'precio_unitario' => $item['precio_unitario'],
                     'precio_total' => $item['precio_total'],
@@ -307,6 +310,7 @@ class EditarCotizacionComponent extends Component
                 "costo_indirecto" => $product->costo_indirecto,
                 "utilidad" => $product->utilidad,
                 "dias_entrega" => $product->dias_entrega,
+                "type_days" => $product->type_days,
                 "cantidad" => $product->cantidad,
                 "precio_unitario" => $product->precio_unitario,
                 "precio_total" => $product->precio_total,

@@ -18,7 +18,7 @@
                     </div>
                     <button type="button" class="btn btn-link btn-sm dropdown-toggle" data-toggle="modal"
                         data-target="#exampleModal">
-                        Filtros
+                        Busqueda
                     </button>
                 </div>
             </div>

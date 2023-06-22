@@ -25,6 +25,7 @@ class CreateCurrentQuotesDetailsTable extends Migration
             $table->text('images_selected')->nullable();
             $table->decimal('utilidad', 8, 2)->nullable();
             $table->integer('dias_entrega');
+            $table->smallInteger('type_days')->nullable();
             $table->integer('cantidad')->nullable();
             $table->decimal('precio_unitario', 8, 2)->nullable();
             $table->decimal('precio_total', 12, 2)->nullable();

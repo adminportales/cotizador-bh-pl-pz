@@ -17,6 +17,7 @@ class QuoteProducts extends Model
         'costo_indirecto',
         'utilidad',
         'dias_entrega',
+        'type_days',
         'cantidad',
         'precio_unitario',
         'precio_total',

@@ -100,6 +100,7 @@ class EditInformationClientComponent extends Component
                 "costo_indirecto" => $product->costo_indirecto,
                 "utilidad" => $product->utilidad,
                 "dias_entrega" => $product->dias_entrega,
+                "type_days" => $product->type_days,
                 "cantidad" => $product->cantidad,
                 "precio_unitario" => $product->precio_unitario,
                 "precio_total" => $product->precio_total,

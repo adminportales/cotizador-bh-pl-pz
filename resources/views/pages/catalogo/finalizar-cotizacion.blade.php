@@ -181,7 +181,7 @@
                                     </div>
                                     <div class="col-md-4">
                                         <div class="form-group">
-                                            <label for="">Los dias seran</label>
+                                            <label for="">Los dias seran (Configuracion Global)</label>
                                             <select name="tipo" class="form-control" wire:model="typeDays">
                                                 <option value="0">Habiles</option>
                                                 <option value="1">Naturales</option>
