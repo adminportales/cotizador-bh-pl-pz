@@ -497,6 +497,7 @@ class FinalizarCotizacion extends Component
                 'costo_indirecto' => $item->costo_indirecto,
                 'utilidad' => $item->utilidad,
                 'dias_entrega' => $item->dias_entrega,
+                'type_days' => $item->type_days,
             ];
             if (!$item->quote_by_scales) {
                 $price_tecnica = $item->new_price_technique != null ?
