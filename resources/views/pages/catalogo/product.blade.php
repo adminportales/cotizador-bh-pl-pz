@@ -54,7 +54,7 @@
                                         <tbody>
                                             @foreach ($product->precios as $precio)
                                                 @php
-                                                    $priceProduct = $product->price;
+                                                    $priceProduct = $precio->price;
                                                     if ($product->producto_promocion) {
                                                         $priceProduct = round($priceProduct - $priceProduct * ($product->descuento / 100), 2);
                                                     } else {
@@ -62,7 +62,7 @@
                                                     }
                                                 @endphp
                                                 <tr>
-                                                    <td class="p-0">{{ $precio->escala }}</td>
+                                                    <td class="p-0">{{ $precio->escala_inicial }} - {{ $precio->escala_final }}</td>
                                                     <td class="p-0">$ {{ $priceProduct }}</td>
                                                 </tr>
                                             @endforeach

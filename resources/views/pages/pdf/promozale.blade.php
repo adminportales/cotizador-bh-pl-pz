@@ -207,7 +207,15 @@
                     </tr>
                     <tr>
                         <td colspan="12" class="title-entrega">Tiempo de Entrega: {{ $item->dias_entrega }} días
-                            {{ $quote->type_days == 0 ? 'hábiles' : 'naturales' }}.</td>
+                            {{ $item->type_days == null
+                                ? ($quote->type_days == 0
+                                    ? 'hábiles'
+                                    : 'naturales')
+                                : ($item->type_days == 1
+                                    ? 'hábiles'
+                                    : ($item->type_days == 2
+                                        ? 'naturales'
+                                        : '')) }}.</td>
                     </tr>
                     <tr>
                         <td colspan="4" class="title-cantidad">Cantidad</td>

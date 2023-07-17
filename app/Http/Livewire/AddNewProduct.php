@@ -15,6 +15,11 @@ class AddNewProduct extends Component
     use WithFileUploads;
 
     public $nombre, $descripcion, $precio, $stock, $color, $proveedor, $imagen;
+
+    public $inicial, $final, $costo;
+
+    public $priceScales, $infoScales = [], $priceScalesComplete = [],  $cantidadEscala, $precioTecnicaEscala, $editScale = false, $itemEditScale = null;
+
     public function render()
     {
         return view('livewire.add-new-product');
@@ -50,7 +55,7 @@ class AddNewProduct extends Component
         }
 
         $proveedor = Provider::firstOrCreate([
-            'company' => $this->proveedor
+            'company' => "Registro Personal"
         ], [
             'email' => "no-mail",
             'phone' => 000,
@@ -82,8 +87,15 @@ class AddNewProduct extends Component
             'provider_id' => $proveedor->id,
             'visible' => true,
         ]);
+
         $newProduct->images()->create([
             'image_url' =>   $pathImagen
+        ]);
+
+        $newProduct->productAttributes()->create([
+            'attribute' => 'Proveedor',
+            'slug' => 'proveedor',
+            'value' => $this->proveedor,
         ]);
 
         UserProduct::create([
@@ -97,5 +109,100 @@ class AddNewProduct extends Component
     public function limpiarImagen()
     {
         $this->imagen = null;
+    }
+
+
+    public function openScale()
+    {
+        $this->editScale = false;
+        $this->itemEditScale = null;
+        $this->cantidad = null;
+        $this->precioTecnicaEscala = null;
+        $this->dispatchBrowserEvent('showModalScales');
+    }
+
+    public function closeScale()
+    {
+        $this->editScale = false;
+        $this->itemEditScale = null;
+        $this->cantidad = null;
+        $this->precioTecnicaEscala = null;
+        $this->dispatchBrowserEvent('hideModalScales');
+    }
+
+    public function addScale()
+    {
+        $this->itemEditScale = null;
+        $this->validate([
+            'cantidad' => 'required|numeric|min:1',
+            'utilidad' => 'required|numeric|min:0|max:99',
+        ]);
+        if ($this->precioTecnicaEscala != "0") {
+            if (!is_numeric($this->precioTecnicaEscala))
+                $this->precioTecnicaEscala = null;
+        }
+        array_push($this->infoScales, [
+            'quantity' => $this->cantidad,
+            'utility' => $this->utilidad,
+            'tecniquePrice' => $this->precioTecnicaEscala,
+        ]);
+        $this->cantidad = 1;
+        $this->precioTecnicaEscala = null;
+        $this->utilidad = null;
+        $this->dispatchBrowserEvent('hideModalScales');
+    }
+
+    public function deleteScale($scale_id)
+    {
+        try {
+            unset($this->infoScales[$scale_id]);
+            $newScales = [];
+            foreach ($this->infoScales as $v) {
+                array_push($newScales, $v);
+            }
+            $this->infoScales = $newScales;
+            return 1;
+        } catch (Exception $e) {
+            return json_encode($e->getMessage());
+        }
+    }
+
+    public function openDeleteScale($scale_id)
+    {
+        $this->dispatchBrowserEvent('openConfirmDelete', ['id' => $scale_id]);
+    }
+
+    public function editScale($scale_id)
+    {
+        $this->editScale =  true;
+        $this->itemEditScale = $scale_id;
+        $this->cantidad = $this->infoScales[$scale_id]['quantity'];
+        $this->utilidad = $this->infoScales[$scale_id]['utility'];
+        $this->precioTecnicaEscala = $this->infoScales[$scale_id]['tecniquePrice'];
+        $this->dispatchBrowserEvent('showModalScales');
+    }
+
+    public function updateScale()
+    {
+        $this->validate([
+            'cantidad' => 'required|numeric|min:1',
+        ]);
+        if (!is_numeric($this->precioTecnicaEscala))
+            $this->precioTecnicaEscala = null;
+        $this->infoScales[$this->itemEditScale] = [
+            'quantity' => $this->cantidad,
+            'utility' => $this->utilidad,
+            'tecniquePrice' => $this->precioTecnicaEscala >= 0 ? $this->precioTecnicaEscala : null,
+        ];
+        $this->cantidad = 1;
+        $this->precioTecnicaEscala = null;
+        $this->utilidad = null;
+        $this->editScale =  false;
+        $this->itemEditScale = null;
+        $this->dispatchBrowserEvent('hideModalScales');
+    }
+    public function changeTypePrice()
+    {
+        $this->priceScales = !$this->priceScales;
     }
 }
