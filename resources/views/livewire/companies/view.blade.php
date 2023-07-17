@@ -67,43 +67,49 @@
                                                 data-toggle="modal" data-target="#exampleModal">
                                                 Add proveders
                                             </button>
+                                        </td>
+                                        <!-- Modal -->
+                                        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
+                                            aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="exampleModalLabel">Proveedores
+                                                        </h5>
+                                                        <strong>{{$row->name}}</strong>
+                                                        <button type="button" class="close" data-dismiss="modal"
+                                                            aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                    </div>
 
-                                            <!-- Modal -->
-                                            <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
-                                                aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                                <div class="modal-dialog" role="document">
-                                                    <div class="modal-content">
-                                                        <div class="modal-header">
-                                                            <h5 class="modal-title" id="exampleModalLabel">
-                                                                Proovedores
-                                                            </h5>
-                                                            <button type="button" class="close" data-dismiss="modal"
-                                                                aria-label="Close">
-                                                                <span aria-hidden="true">&times;</span>
-                                                            </button>
-                                                        </div>
+                                                    <form action="{{ route('SelectedProveedores') }}" method="POST">
+                                                        @csrf
                                                         <div class="modal-body">
                                                             <div class="form-check">
                                                                 @foreach ($proveders as $proveder)
                                                                     <input class="form-check-input" type="checkbox"
-                                                                        value="" id="flexCheckDefault">
-                                                                    {{ $proveder->company }}
-                                                                    <br>
+                                                                        value="{{ $proveder->id }}"
+                                                                        name="selectedProveedores[]"
+                                                                        id="proveder_{{ $proveder->id }}">
                                                                     <label class="form-check-label"
-                                                                        for="flexCheckDefault">
+                                                                        for="proveder_{{ $proveder->id }}">
+                                                                        {{ $proveder->company }}
                                                                     </label>
+                                                                    <br>
                                                                 @endforeach
                                                             </div>
                                                         </div>
                                                         <div class="modal-footer">
-                                                            <button type="submit" class="btn btn-primary"
-                                                                data-target="#form">Guardar
+                                                            <button type="submit" class="btn btn-primary">Guardar
                                                                 Respuesta</button>
                                                         </div>
-                                                    </div>
+                                                    </form>
                                                 </div>
                                             </div>
-                                        </td>
+                                        </div>
+
+
 
                                         <td width="90">
                                             <div class="btn-group">

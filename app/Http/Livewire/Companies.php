@@ -3,10 +3,12 @@
 namespace App\Http\Livewire;
 
 use App\Models\Catalogo\Provider;
+use App\Models\CompaniePro;
 use Livewire\Component;
 use Livewire\WithPagination;
 use App\Models\Company;
-use Illuminate\Support\Facades\Request;
+use Illuminate\Http\Request;
+
 
 class Companies extends Component
 {
@@ -14,9 +16,10 @@ class Companies extends Component
 
     protected $paginationTheme = 'bootstrap';
     public $selected_id, $keyWord, $name, $image, $manager, $email, $phone;
+    public $selectedProveedores = [];
     public $updateMode = false;
 
-    public function render()
+    public function render(Request $request)
     {
 
         $keyWord = '%' . $this->keyWord . '%';
@@ -27,15 +30,46 @@ class Companies extends Component
             ->orWhere('email', 'LIKE', $keyWord)
             ->orWhere('phone', 'LIKE', $keyWord)
             ->paginate(10);
+
+
         $proveders = Provider::all();
 
         return view('livewire.companies.view', [
-            'companies' => $companies, 'proveders' => $proveders
+            'companies' => $companies, 'proveders' => $proveders,
+
         ]);
     }
-    public function guardarRespuesta(Request $request)
+    public function saveSelectedProveedores(Request $request)
     {
 
+        $selectedProveedores = $request->input('selectedProveedores');
+        $company_id = $request->input('company_id');
+
+        $keyWord = '%' . $this->keyWord . '%';
+        $companies = Company::latest()
+            ->orWhere('name', 'LIKE', $keyWord)
+            ->orWhere('image', 'LIKE', $keyWord)
+            ->orWhere('manager', 'LIKE', $keyWord)
+            ->orWhere('email', 'LIKE', $keyWord)
+            ->orWhere('phone', 'LIKE', $keyWord)
+            ->paginate(10);
+
+
+            foreach ($selectedProveedores as $provederId) {
+                foreach ($companies as $company) {
+                $companyPro = new CompaniePro();
+                $companyPro->companie_id = $company->id;
+                $companyPro->provider_id = $provederId;
+                $companyPro->save();
+            }
+        }
+        // Redireccionar o realizar otras acciones necesarias
+
+        // Por ejemplo, redireccionar a la página de lista de empresas
+        return $selectedProveedores;
+        // Por ejemplo, puedes imprimirlos
+
+        //dd($selectedProveedores);
     }
     public function cancel()
     {

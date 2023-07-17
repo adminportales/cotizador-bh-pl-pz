@@ -25,8 +25,8 @@ class Provider extends Model
     {
         return $this->hasMany('App\Models\Catalogo\Product', 'provider_id', 'id');
     }
-    /* public function whatCompany()
+    public function whatCompany()
     {
-        return $this->belongsToMany(Company::class, 'company_provider', 'providers_id ', 'companies_id');
-    } */
+        return $this->belongsToMany(Company::class, 'company_provider', 'provider_id ', 'companie_id');
+    }
 }

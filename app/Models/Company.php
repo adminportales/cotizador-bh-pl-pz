@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Http\Livewire\Companies;
 use App\Models\Catalogo\Provider;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -23,8 +24,8 @@ class Company extends Model
     {
         return $this->hasMany('App\Models\User', 'company_id', 'id');
     }
-   /*  public function whatProvider()
+    public function whatProvider()
     {
-        return $this->belongsToMany(Provider::class, 'company_provider', 'companies_id', 'providers_id');
-    } */
+        return $this->belongsToMany(Companies::class, 'company_provider', 'companie_id', 'provider_id');
+    }
 }
