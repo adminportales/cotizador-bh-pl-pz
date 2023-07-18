@@ -47,7 +47,6 @@ Route::middleware(['auth'])->group(function () {
         Route::view('users', 'livewire.users.index')->middleware('auth');
         Route::view('clients', 'livewire.clients.index')->middleware('auth');
         Route::view('companies', 'livewire.companies.index')->middleware('auth');
-        Route::post('selected-proveedores', [Companies::class, 'saveSelectedProveedores'])->name('SelectedProveedores');
 
     });
 });

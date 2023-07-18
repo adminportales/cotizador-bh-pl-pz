@@ -17,6 +17,7 @@ class Companies extends Component
     protected $paginationTheme = 'bootstrap';
     public $selected_id, $keyWord, $name, $image, $manager, $email, $phone;
     public $selectedProveedores = [];
+    public $company = [];
     public $updateMode = false;
 
     public function render(Request $request)
@@ -32,18 +33,17 @@ class Companies extends Component
             ->paginate(10);
 
 
-        $proveders = Provider::all();
+        $proveders = Provider::limit(15)->get();
 
         return view('livewire.companies.view', [
             'companies' => $companies, 'proveders' => $proveders,
 
         ]);
     }
-    public function saveSelectedProveedores(Request $request)
+    public function saveSelectedProveedores()
     {
 
-        $selectedProveedores = $request->input('selectedProveedores');
-        $company_id = $request->input('company_id');
+
 
         $keyWord = '%' . $this->keyWord . '%';
         $companies = Company::latest()
@@ -54,19 +54,18 @@ class Companies extends Component
             ->orWhere('phone', 'LIKE', $keyWord)
             ->paginate(10);
 
-
-            foreach ($selectedProveedores as $provederId) {
-                foreach ($companies as $company) {
-                $companyPro = new CompaniePro();
-                $companyPro->companie_id = $company->id;
-                $companyPro->provider_id = $provederId;
-                $companyPro->save();
-            }
+        foreach ($this->selectedProveedores as $provederId) {
+            //dd($provederId);
+            $companyPro = new CompaniePro();
+            $companyPro->companie_id = '';
+            $companyPro->provider_id = $provederId;
+            $companyPro->save();
         }
+        dd($companyPro);
         // Redireccionar o realizar otras acciones necesarias
 
         // Por ejemplo, redireccionar a la página de lista de empresas
-        return $selectedProveedores;
+        return $this->selectedProveedores;
         // Por ejemplo, puedes imprimirlos
 
         //dd($selectedProveedores);
