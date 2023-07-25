@@ -2,12 +2,14 @@
 
 namespace App\Models\Catalogo;
 
+use App\Models\CompaniePro;
+use App\Models\Company;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Provider extends Model
 {
-	use HasFactory;
+    use HasFactory;
 
     public $timestamps = true;
 
@@ -15,7 +17,7 @@ class Provider extends Model
 
     protected $connection = 'mysql_catalogo';
 
-    protected $fillable = ['company','email','phone','contact','discount'];
+    protected $fillable = ['company', 'email', 'phone', 'contact', 'discount'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
@@ -24,5 +26,8 @@ class Provider extends Model
     {
         return $this->hasMany('App\Models\Catalogo\Product', 'provider_id', 'id');
     }
-
+    public function companies()
+    {
+        return $this->belongsToMany('App\Models\Company', 'companies_providers', 'provider_id', 'company_id');
+    }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire;
 
+use App\Models\Catalogo\Provider;
 use App\Models\Company;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -16,7 +17,7 @@ class Users extends Component
     use WithPagination;
 
     protected $paginationTheme = 'bootstrap';
-    public $selected_id, $keyWord, $name, $email, $company_id, $companies, $keySearch, $allUsers, $user,
+    public $selected_id, $keyWord, $name, $email, $company_id, $companies, $keySearch, $allUsers, $user, $proveder,
         // $id_odoo,
         $password;
     public $updateMode = false;
@@ -24,6 +25,7 @@ class Users extends Component
     public function render()
     {
         $this->companies = Company::all();
+        //dd($this->companies);
         $keyWord = '%' . $this->keyWord . '%';
         $this->allUsers = User::where('visible', 1)->get();
         return view('livewire.users.view', [

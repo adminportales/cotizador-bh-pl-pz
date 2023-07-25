@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\CotizadorController;
+use App\Http\Livewire\Companies;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -46,6 +47,7 @@ Route::middleware(['auth'])->group(function () {
         Route::view('users', 'livewire.users.index')->middleware('auth');
         Route::view('clients', 'livewire.clients.index')->middleware('auth');
         Route::view('companies', 'livewire.companies.index')->middleware('auth');
+
     });
 });
 
