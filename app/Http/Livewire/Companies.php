@@ -17,8 +17,10 @@ class Companies extends Component
     protected $paginationTheme = 'bootstrap';
     public $selected_id, $keyWord, $name, $image, $manager, $email, $phone;
     public $selectedProveedores = [];
-    public $company = [];
+    public $companySelected = [];
+    public $companyId;
     public $updateMode = false;
+    public $companySelectedIds = [];
 
     public function render(Request $request)
     {
@@ -33,43 +35,48 @@ class Companies extends Component
             ->paginate(10);
 
 
+
         $proveders = Provider::limit(15)->get();
+        $companiesPro = [];
+
+        foreach ($companies as $company) {
+            // Get the selected providers for the current company and store them in the array using the company ID as the key.
+            $companiesPro[$company->id] = CompaniePro::where('companie_id', $company->id)->pluck('provider_id')->toArray();
+        }
 
         return view('livewire.companies.view', [
-            'companies' => $companies, 'proveders' => $proveders,
-
+            'companies' => $companies,
+            'proveders' => $proveders,
+            'companiesPro' => $companiesPro
         ]);
     }
-    public function saveSelectedProveedores()
+    public function setCompanyId($companyId)
     {
 
-
-
-        $keyWord = '%' . $this->keyWord . '%';
-        $companies = Company::latest()
-            ->orWhere('name', 'LIKE', $keyWord)
-            ->orWhere('image', 'LIKE', $keyWord)
-            ->orWhere('manager', 'LIKE', $keyWord)
-            ->orWhere('email', 'LIKE', $keyWord)
-            ->orWhere('phone', 'LIKE', $keyWord)
-            ->paginate(10);
-
-        foreach ($this->selectedProveedores as $provederId) {
-            //dd($provederId);
-            $companyPro = new CompaniePro();
-            $companyPro->companie_id = '';
-            $companyPro->provider_id = $provederId;
-            $companyPro->save();
-        }
-        dd($companyPro);
-        // Redireccionar o realizar otras acciones necesarias
-
-        // Por ejemplo, redireccionar a la página de lista de empresas
-        return $this->selectedProveedores;
-        // Por ejemplo, puedes imprimirlos
-
-        //dd($selectedProveedores);
+        $this->companyId = $companyId;
     }
+    public function saveSelectedProveedores($selectedProveedores)
+    {
+        $companiePro = CompaniePro::where('companie_id', $this->companyId)
+            ->where('provider_id', $selectedProveedores)
+            ->first();
+
+        if ($companiePro) {
+            $companiePro->delete();
+            session()->flash('message', 'Proveedor eliminado correctamente.');
+        } else {
+            $companiePro = new CompaniePro();
+            $companiePro->companie_id = $this->companyId;
+            $companiePro->provider_id = $selectedProveedores;
+            $companiePro->save();
+            session()->flash('message', 'Proveedor asociado correctamente.');
+        }
+    }
+    public function isProviderSelected($providerId)
+    {
+        return $this->providerIds->contains($providerId);
+    }
+
     public function cancel()
     {
         $this->resetInput();

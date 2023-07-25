@@ -62,10 +62,13 @@
 
                                         <td width="80">
                                             <button type="button" class="btn btn-info btn-sm dropdown-toggle"
-                                                data-toggle="modal" data-target="#exampleModal{{ $row->id }}">
+                                                data-toggle="modal" data-target="#exampleModal{{ $row->id }}"
+                                                wire:click="setCompanyId({{ $row->id }})">
                                                 Add proveders
                                             </button>
                                         </td>
+
+
                                         <!-- Modal -->
                                         <div wire:ignore.self class="modal fade" id="exampleModal{{ $row->id }}"
                                             tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
@@ -85,27 +88,23 @@
 
                                                     <div class="modal-body">
                                                         <div class="form-check">
-                                                            @foreach ($proveders as $proveder)
+                                                            @foreach ($proveders as $provider)
                                                                 <input class="form-check-input" type="checkbox"
-                                                                    value="{{ $proveder->id }}"
-                                                                    name="selectedProveedores[]"
-                                                                    wire:model="selectedProveedores"
-                                                                    id="proveder_{{ $proveder->id }}">
-                                                                <label class="form-check-label"
+                                                                    wire:click="saveSelectedProveedores({{ $provider->id }})"
+                                                                    @foreach ($companiesPro as $companyPro)
 
-                                                                    for="proveder_{{ $proveder->id }}">
-                                                                    {{ $proveder->company }}
+                                                                    @if (in_array($provider->id, $companiesPro[$row->id] ?? [])) checked @endif @endforeach>
+
+
+                                                                <label class="form-check-label">
+                                                                    {{ $provider->company }}
                                                                 </label>
                                                                 <br>
                                                             @endforeach
+
                                                         </div>
                                                     </div>
-                                                    <div class="modal-footer">
-                                                        <button type="button" class="btn btn-primary"
-                                                            wire:click="saveSelectedProveedores({{ $row->id }})">Guardar
-                                                            Respuesta</button>
 
-                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -139,4 +138,5 @@
             </div>
         </div>
     </div>
+
 </div>

@@ -2,6 +2,7 @@
 
 namespace App\Models\Catalogo;
 
+use App\Models\CompaniePro;
 use App\Models\Company;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -25,8 +26,8 @@ class Provider extends Model
     {
         return $this->hasMany('App\Models\Catalogo\Product', 'provider_id', 'id');
     }
-    public function whatCompany()
+    public function companies()
     {
-        return $this->belongsToMany(Company::class, 'company_provider', 'provider_id ', 'companie_id');
+        return $this->belongsToMany('App\Models\Company', 'companies_providers', 'provider_id', 'company_id');
     }
 }

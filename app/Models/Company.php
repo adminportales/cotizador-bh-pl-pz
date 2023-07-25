@@ -9,13 +9,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class Company extends Model
 {
-	use HasFactory;
+    use HasFactory;
 
     public $timestamps = true;
 
     protected $table = 'companies';
 
-    protected $fillable = ['name','image','manager','email','phone'];
+    protected $fillable = ['name', 'image', 'manager', 'email', 'phone'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
@@ -24,8 +24,8 @@ class Company extends Model
     {
         return $this->hasMany('App\Models\User', 'company_id', 'id');
     }
-    public function whatProvider()
+    public function provider()
     {
-        return $this->belongsToMany(Companies::class, 'company_provider', 'companie_id', 'provider_id');
+        return $this->belongsTo('App\Models\CompaniePro', 'companie_id', 'id');
     }
 }
