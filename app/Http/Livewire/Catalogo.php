@@ -20,6 +20,8 @@ class Catalogo extends Component
 
     public $nombre, $sku, $proveedor, $color, $category, $type, $precioMax, $precioMin, $stockMax, $stockMin, $orderStock = '', $orderPrice = '';
 
+    public $proveedores;
+
     public function __construct()
     {
         $utilidad = GlobalAttribute::find(1);
@@ -34,6 +36,7 @@ class Catalogo extends Component
 
     public function mount()
     {
+        $this->proveedores = auth()->user()->companySession->providers;
         try {
             $filtros = session()->get('filtros', []);
             $this->setFiltros($filtros);
@@ -71,7 +74,6 @@ class Catalogo extends Component
         $price = DB::connection('mysql_catalogo')->table('products')->max('price');
         $price = round($price + $price * ($utilidad / 100), 2);
         $stock = DB::connection('mysql_catalogo')->table('products')->max('stock');
-        $proveedores = CatalogoProvider::where('id', "<", 15)->where('id', "<>", 13)->get();
         $nombre = '%' . $this->nombre . '%';
         $sku = '%' . $this->sku . '%';
         $color = $this->color;
@@ -99,7 +101,8 @@ class Catalogo extends Component
         if ($type == '2') {
             $this->proveedor = null;
         }
-
+        if (trim($this->proveedor) == "")
+            $this->proveedor = null;
         $products  = CatalogoProduct::leftjoin('product_category', 'product_category.product_id', 'products.id')
             ->leftjoin('categories', 'product_category.category_id', 'categories.id')
             ->leftjoin('colors', 'products.color_id', 'colors.id')
@@ -110,6 +113,10 @@ class Catalogo extends Component
             ->whereBetween('products.stock', [$stockMin, $stockMax])
             ->when($type == '1', function ($query, $proveedor) {
                 $query->where('products.provider_id', 'LIKE', $this->proveedor);
+                // $query->orderBy('products.stock', $this->orderStock);
+            })
+            ->when($this->proveedor == null, function ($query) {
+                $query->whereIn('products.provider_id', $this->proveedores->pluck('id'));
                 // $query->orderBy('products.stock', $this->orderStock);
             })
             ->where('products.type_id', 'LIKE', $type)
@@ -129,7 +136,9 @@ class Catalogo extends Component
                 $query->where('categories.family', 'LIKE', $newCat);
             })
             ->select('products.*')
-            ->paginate(32);
+            ->paginate(16);
+        // Dispacher
+        $this->dispatchBrowserEvent('scroll-to-top');
         return view('pages.catalogo.catalogoComponent', [
             'products' => $products,
             'utilidad' => $utilidad,
@@ -141,7 +150,7 @@ class Catalogo extends Component
             'stockMax' => $stockMax,
             'stockMin' => $stockMin,
             'orderStock' => $orderStock,
-            'proveedores' => $proveedores,
+            // 'proveedores' => $proveedores,
         ]);
     }
 
@@ -204,5 +213,12 @@ class Catalogo extends Component
     {
         session()->put('filtros', $this->getFiltros());
         redirect("catalogo/" . $id);
+    }
+
+    // showPreview
+    public function showPreview($id)
+    {
+        $product = CatalogoProduct::find($id);
+        $this->dispatchBrowserEvent('showPreview', ['images' => $product->images]);
     }
 }

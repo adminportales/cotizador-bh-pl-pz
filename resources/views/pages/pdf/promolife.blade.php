@@ -41,7 +41,6 @@
                 class="pagenum"></span> </p>
         <table
             style="magin-bottom: 0mm; position: absolute; bottom: 27mm; z-index: 10; width: 100%;background-color: rebeccapurple">
-            {{-- {{ dd(1) }} --}}
             <tr style="background-color: rebeccapurple">
                 <td style="background-color: rebeccapurple">
                     <div class="url"style="font-size: 15px; color:#fff ;">
@@ -356,25 +355,45 @@
         <table class="content responsable" style="width: 105%">
             {{-- Modificacion en caso del user_id 52 (Ivonne Lopez) con otro gerente de la empresa PROMO LIFE --}}
             <tr>
-                <td><img src="quotesheet/bh/icon-email.png"alt="">
-                    {{ $user->id == 109 || $user->id == 52 || $user->id == 62 ? 'Ricardo Zamora Rodriguez' : $quote->company->manager }}
-                    <b>GERENTE COMERCIAL</b>
-                </td>
+                @if ($user->id == 126)
+                    <td><img src="quotesheet/bh/icon-email.png"alt="">
+                        Michelle Luna
+                        <b>GERENTE COMERCIAL</b>
+                    </td>
+                @else
+                    <td><img src="quotesheet/bh/icon-email.png"alt="">
+                        {{ $user->id == 109 || $user->id == 52 || $user->id == 62 ? 'Ricardo Zamora Rodriguez' : $quote->company->manager }}
+                        <b>GERENTE COMERCIAL</b>
+                    </td>
+                @endif
                 <td><img src="quotesheet/bh/icon-email.png"alt="">
                     {{ $user->name }} <b>KAM</b></td>
             </tr>
             <tr>
-                <td><img src="quotesheet/bh/icon-email.png"alt="">
-                    {{ $user->id == 109 || $user->id == 52 || $user->id == 62 ? 'ricardo.zamora@promolife.com.mx' : $quote->company->email }}
-                </td>
+                @if ($user->id == 126)
+                    <td><img src="quotesheet/bh/icon-email.png"alt="">
+                        michelle@promolife.com.mx
+                    </td>
+                @else
+                    <td><img src="quotesheet/bh/icon-email.png"alt="">
+                        {{ $user->id == 109 || $user->id == 52 || $user->id == 62 ? 'ricardo.zamora@promolife.com.mx' : $quote->company->email }}
+                    </td>
+                @endif
                 <td><img src="quotesheet/bh/icon-email.png" alt="">
                     {{ $user->email }} </td>
             </tr>
             <tr>
-                <td>
-                    <img src="quotesheet/bh/icon-whatsapp.png" alt="">
-                    {{ $user->id == 109 || $user->id == 52 || $user->id == 62 ? '55 1963 4472' : $quote->company->phone }}
-                </td>
+                @if ($user->id == 126)
+                    <td>
+                        <img src="quotesheet/bh/icon-whatsapp.png" alt="">
+                        5518055717
+                    </td>
+                @else
+                    <td>
+                        <img src="quotesheet/bh/icon-whatsapp.png" alt="">
+                        {{ $user->id == 109 || $user->id == 52 || $user->id == 62 ? '55 1963 4472' : $quote->company->phone }}
+                    </td>
+                @endif
                 <td><img src="quotesheet/bh/icon-whatsapp.png" alt=""> {{ $user->phone }}</td>
             </tr>
         </table>

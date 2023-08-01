@@ -41,11 +41,63 @@
                         <span class="text-danger">{{ $errors->first('precio') }}</span>
                     @endif
                 @else
+                    @if (count($infoScales) > 0)
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-sm">
+                                <thead>
+                                    <tr>
+                                        <th>Escala Inicial</th>
+                                        <th>Escala Final</th>
+                                        <th>Escala Costo</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($infoScales as $key => $scale)
+                                        <tr>
+                                            <td>{{ $scale['initial'] }}</td>
+                                            <td>{{ $scale['final'] }}</td>
+                                            <td>$ {{ $scale['cost'] }}</td>
+                                            <td>
+                                                <div class="btn-group">
+                                                    <button type="button" class="btn btn-warning btn-sm"
+                                                        wire:click='editScale({{ $key }})'>
+                                                        <div style="width: 1rem">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6"
+                                                                fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                                                                stroke-width="2">
+                                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                                    d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                                                            </svg>
+                                                        </div>
+                                                    </button>
+                                                    <button type="button" class="btn btn-danger btn-sm"
+                                                        onclick='deleteEscala({{ $key }})'>
+                                                        <div style="width: 1rem">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6"
+                                                                fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                                                                stroke-width="2">
+                                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                                            </svg>
+                                                        </div>
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    @endif
                     <div class="text-center">
                         <button type="button" class="btn btn-light shadow-none " wire:click='openScale'>
                             Agregar una nueva escala
                         </button>
                     </div>
+                    @if ($errors->has('infoScales'))
+                        <span class="text-danger">{{ $errors->first('infoScales') }}</span>
+                    @endif
                 @endif
             </div>
 
@@ -113,9 +165,20 @@
                                 <input type="number" name="margen" wire:model="costo" placeholder="Costo"
                                     class="form-control form-control-sm">
                             </div>
+                            <div class="d-flex col-12 flex-column">
+
+                                {{-- Errores de validacion --}}
+                                @if ($errors->has('inicial'))
+                                    <span class="text-danger">{{ $errors->first('inicial') }}</span>
+                                @endif
+                                @if ($errors->has('costo'))
+                                    <span class="text-danger">{{ $errors->first('costo') }}</span>
+                                @endif
+                            </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-info btn-sm" wire:click='closeScale'>Cerrar</button>
+                            <button type="button" class="btn btn-info btn-sm"
+                                wire:click='closeScale'>Cerrar</button>
                             @if ($editScale)
                                 <button type="button" class="btn btn-warning btn-sm"
                                     wire:click='updateScale'>Editar</button>
@@ -208,11 +271,37 @@
         window.addEventListener('showModalScales', event => {
             $('#addScaleModal').modal('show')
         })
-        window.addEventListener('showModalImage', event => {
-            $('#modalImage').modal('show')
-        })
-        window.addEventListener('hideModalImage', event => {
-            $('#modalImage').modal('hide')
-        })
+
+        function deleteEscala(id) {
+            Swal.fire({
+                title: 'Esta seguro?',
+                text: "Desea eliminar esta escala",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Si!',
+                cancelButtonText: 'Cancelar!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    let respuesta = @this.deleteScale(id)
+                    Swal.fire('Por Favor Espere');
+                    respuesta
+                        .then((response) => {
+                            console.log(response);
+                            if (response == 1) {
+                                Swal.fire(
+                                    'Se ha elimiado esta escala correctamente',
+                                    '',
+                                    'success'
+                                )
+                            }
+                        }, function() {
+                            // one or more failed
+                            Swal.fire('¡Error al elimiar el producto!', '', 'error')
+                        });
+                }
+            })
+        }
     </script>
 </div>

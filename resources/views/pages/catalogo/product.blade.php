@@ -62,7 +62,8 @@
                                                     }
                                                 @endphp
                                                 <tr>
-                                                    <td class="p-0">{{ $precio->escala_inicial }} - {{ $precio->escala_final }}</td>
+                                                    <td class="p-0">{{ $precio->escala_inicial }} -
+                                                        {{ $precio->escala_final }}</td>
                                                     <td class="p-0">$ {{ $priceProduct }}</td>
                                                 </tr>
                                             @endforeach
@@ -99,6 +100,9 @@
             </div>
             <div class="col-md-7">
                 <div class="card card-component-1">
+                    @if (!$disponiblidad)
+                        <div class="alert alert-danger">No puedes cotizar este producto porque no pertenece a tus proveedores</div>
+                    @endif
                     @if ($msg)
                         <div class="alert alert-danger">{{ $msg }}</div>
                     @endif
@@ -125,8 +129,10 @@
                             </div>
                         </div>
                         <p>{{ $product->description }}</p>
-                        <h6><strong>Informacion de la cotizacion</strong></h6>
-                        @livewire('formulario-de-cotizacion', ['product' => $product])
+                        @if ($disponiblidad)
+                            <h6><strong>Informacion de la cotizacion</strong></h6>
+                            @livewire('formulario-de-cotizacion', ['product' => $product])
+                        @endif
                     </div>
                 </div>
             </div>

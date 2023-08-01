@@ -18,6 +18,10 @@ class CatalogoPersonal extends Component
 
     public $nombre, $descripcion, $precio, $stock, $color, $proveedor, $imagen, $product_id, $keyWord;
     public $productEdit = false;
+
+    public $inicial, $final, $costo;
+    public $priceScales, $infoScales = [], $editScale = false, $itemEditScale = null;
+
     public function render()
     {
 
@@ -39,10 +43,23 @@ class CatalogoPersonal extends Component
         $this->precio = $product->price;
         $this->stock = $product->stock;
         $this->color = $product->color->color;
-        $this->proveedor = $product->provider->company;
+        $this->proveedor = count($product->productAttributes) > 0
+            ?  $product->productAttributes()->where('slug', 'proveedor')->first()->value
+            : $product->provider->company;
         $this->imagen = $product->firstImage->url;
         $this->product_id = $product->id;
         $this->productEdit = true;
+        $this->priceScales = !$product->precio_unico;
+        if ($this->priceScales) {
+            $this->infoScales = [];
+            foreach ($product->precios as $value) {
+                array_push($this->infoScales, [
+                    'initial' => $value->escala_inicial,
+                    'final' => $value->escala_final,
+                    'cost' => $value->price,
+                ]);
+            }
+        }
         $this->dispatchBrowserEvent('showModalEditar');
     }
 
@@ -51,11 +68,19 @@ class CatalogoPersonal extends Component
         $this->validate([
             'nombre' => 'required|max:100',
             'descripcion' => 'required',
-            'precio' => 'required',
             'stock' => 'required',
             'color' => 'required',
             'proveedor' => 'required',
         ]);
+        if ($this->priceScales) {
+            $this->validate([
+                "infoScales" => "required|array|min:1",
+            ]);
+        } else {
+            $this->validate([
+                "precio" => "required|numeric|min:0",
+            ]);
+        }
 
         $pathImagen = null;
         if ($this->imagen != null) {
@@ -77,27 +102,54 @@ class CatalogoPersonal extends Component
         }
 
         $proveedor = Provider::firstOrCreate([
-            'company' => $this->proveedor
+            'company' => "Registro Personal"
         ], [
             'email' => "no-mail",
             'phone' => 000,
             'contact' => "False",
             'discount' => 0
         ]);
+
         $product = Product::find($product_id);
-        $product->update([
+        $dataProduct = [
             'name' => $this->nombre,
-            'price' =>   $this->precio,
             'description' =>  $this->descripcion,
             'stock' => $this->stock,
             'color_id' => $color->id,
             'provider_id' => $proveedor->id,
-        ]);
+        ];
+
+        if ($this->priceScales) {
+            $dataProduct['precio_unico'] = false;
+            $dataProduct['price'] = $this->infoScales[0]['cost'];
+        } else {
+            $dataProduct['precio_unico'] = true;
+            $dataProduct['price'] = $this->precio;
+        }
+
+        $product->update($dataProduct);
         if ($this->imagen != null) {
             $product->images()->delete();
             $product->images()->create([
                 'image_url' =>   $pathImagen
             ]);
+        }
+        $product->productAttributes()->delete();
+        $product->productAttributes()->create([
+            'attribute' => 'Proveedor',
+            'slug' => 'proveedor',
+            'value' => $this->proveedor,
+        ]);
+
+        if ($this->priceScales) {
+            $product->precios()->delete();
+            foreach ($this->infoScales as $value) {
+                $product->precios()->create([
+                    'price' => $value['cost'],
+                    'escala_inicial' => $value['initial'],
+                    'escala_final' => $value['final'],
+                ]);
+            }
         }
 
         $this->dispatchBrowserEvent('hideModalEditar');
@@ -116,5 +168,94 @@ class CatalogoPersonal extends Component
         } catch (Exception $e) {
             return json_encode($e->getMessage());
         }
+    }
+
+    public function openScale()
+    {
+        $this->editScale = false;
+        $this->itemEditScale = null;
+        $this->dispatchBrowserEvent('showModalScales');
+    }
+
+    public function closeScale()
+    {
+        $this->editScale = false;
+        $this->itemEditScale = null;
+        $this->dispatchBrowserEvent('hideModalScales');
+    }
+
+    public function addScale()
+    {
+        $this->itemEditScale = null;
+        // Final tiene que estar vacio o ser mayor que inicial
+        if ($this->final != null && $this->final <= $this->inicial) {
+            $this->dispatchBrowserEvent('showError', ['message' => 'El valor final debe ser mayor que el inicial']);
+            return;
+        }
+        $this->validate([
+            'inicial' => 'required|numeric|min:1',
+            'costo' => 'required|numeric|min:0',
+        ]);
+        array_push($this->infoScales, [
+            'initial' => $this->inicial,
+            'final' => $this->final,
+            'cost' => $this->costo,
+        ]);
+        $this->inicial = null;
+        $this->final = null;
+        $this->costo = null;
+        $this->dispatchBrowserEvent('hideModalScales');
+    }
+
+    public function deleteScale($scale_id)
+    {
+        try {
+            unset($this->infoScales[$scale_id]);
+            $newScales = [];
+            foreach ($this->infoScales as $v) {
+                array_push($newScales, $v);
+            }
+            $this->infoScales = $newScales;
+            return 1;
+        } catch (Exception $e) {
+            return json_encode($e->getMessage());
+        }
+    }
+
+    public function editScale($scale_id)
+    {
+        $this->editScale =  true;
+        $this->itemEditScale = $scale_id;
+        $this->inicial = $this->infoScales[$scale_id]['initial'];
+        $this->final = $this->infoScales[$scale_id]['final'];
+        $this->costo = $this->infoScales[$scale_id]['cost'];
+        $this->dispatchBrowserEvent('showModalScales');
+    }
+
+    public function updateScale()
+    {
+        if ($this->final != null && $this->final <= $this->inicial) {
+            $this->dispatchBrowserEvent('showError', ['message' => 'El valor final debe ser mayor que el inicial']);
+            return;
+        }
+        $this->validate([
+            'inicial' => 'required|numeric|min:1',
+            'costo' => 'required|numeric|min:0',
+        ]);
+        $this->infoScales[$this->itemEditScale] =  [
+            'initial' => $this->inicial,
+            'final' => $this->final,
+            'cost' => $this->costo,
+        ];
+        $this->inicial = null;
+        $this->final = null;
+        $this->costo = null;
+        $this->editScale =  false;
+        $this->itemEditScale = null;
+        $this->dispatchBrowserEvent('hideModalScales');
+    }
+    public function changeTypePrice()
+    {
+        $this->priceScales = !$this->priceScales;
     }
 }

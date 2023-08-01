@@ -26,6 +26,13 @@ class Company extends Model
     }
     public function provider()
     {
-        return $this->belongsTo('App\Models\CompaniePro', 'companie_id', 'id');
+        return $this->hasMany(CompaniePro::class, 'companie_id', 'id');
+    }
+
+    public function providers()
+    {
+        // Obtener nombre de la base de datos
+        $nameDB = (new Company())->getConnection()->getDatabaseName();
+        return $this->belongsToMany(Provider::class, $nameDB . '.companies_providers', 'companie_id', 'provider_id')->orderBy('provider_id', 'asc');
     }
 }

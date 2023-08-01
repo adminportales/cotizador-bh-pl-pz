@@ -82,6 +82,19 @@ class FinalizarCotizacion extends Component
             $this->dispatchBrowserEvent('isntCompany');
             return;
         }
+        // Revisar que la cotizacion tenga productos
+        if (count(auth()->user()->currentQuote->currentQuoteDetails) < 1) {
+            dd("No hay productos en la cotizacion");
+        }
+
+        // Revisar que los productos si sean de mis proveedores
+        foreach (auth()->user()->currentQuote->currentQuoteDetails as $item) {
+            $product = Product::find($item->product_id);
+            if (!in_array($product->provider_id, auth()->user()->company_session->providers)) {
+                dd("El producto " . $product->name . " no es de tu proveedor");
+            }
+        }
+
         $this->validate([
             'tipoCliente' => 'required',
         ]);

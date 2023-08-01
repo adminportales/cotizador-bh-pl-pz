@@ -15,7 +15,7 @@ class Price extends Model
 
     protected $connection = 'mysql_catalogo';
 
-    protected $fillable = ['product_id','price','escala'];
+    protected $fillable = ['product_id','price','escala_inicial', 'escala_final'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasOne

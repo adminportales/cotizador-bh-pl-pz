@@ -466,10 +466,14 @@
                                 </p>
                                 @if (property_exists($productoShow, 'provider'))
                                     @if ($productoShow->provider->company == 'Registro Personal')
-                                        <p class="m-0"><b>Proveedor: </b> {{ $productoShow->productAttributes[0] }}
+                                        <p class="m-0"><b>Proveedor: </b>
+                                            {{ $dataProduct->productAttributes->where('slug', 'proveedor')->first()
+                                                ? $dataProduct->productAttributes->where('slug', 'proveedor')->first()->value
+                                                : '' }}
                                         </p>
+                                    @else
+                                        <p class="m-0"><b>Proveedor: </b>{{ $dataProduct->provider->company }} </p>
                                     @endif
-                                    <p class="m-0"><b>Proveedor: </b>{{ $productoShow->provider->company }} </p>
                                 @endif
                                 <br>
                                 <p class="m-0">Informacion de la Tecnica: </p>
