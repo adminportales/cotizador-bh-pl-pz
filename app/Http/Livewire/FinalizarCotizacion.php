@@ -83,14 +83,14 @@ class FinalizarCotizacion extends Component
             return;
         }
         // Revisar que la cotizacion tenga productos
-        if (count(auth()->user()->currentQuote->currentQuoteDetails) < 1) {
+        if (auth()->user()->currentQuote == null) {
             dd("No hay productos en la cotizacion");
         }
 
         // Revisar que los productos si sean de mis proveedores
         foreach (auth()->user()->currentQuote->currentQuoteDetails as $item) {
             $product = Product::find($item->product_id);
-            if (!in_array($product->provider_id, auth()->user()->company_session->providers)) {
+            if (!in_array($product->provider_id, (auth()->user()->companySession->providers->pluck('id'))->toArray())) {
                 dd("El producto " . $product->name . " no es de tu proveedor");
             }
         }

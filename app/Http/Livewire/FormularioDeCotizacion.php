@@ -349,7 +349,7 @@ class FormularioDeCotizacion extends Component
         $currentQuote->currentQuoteDetails()->create($dataQuote);
         session()->flash('message', 'Se ha agregado este producto a la cotizacion.');
         $this->emit('currentQuoteAdded');
-        //$this->resetData();
+        $this->resetData();
     }
 
     public function editarCurrentCotizacion()
