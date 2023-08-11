@@ -22,6 +22,9 @@ class QuoteInformation extends Model
         'information',
         'tax_fee',
         'shelf_life',
+        'show_tax',
+        'currency',
+        'currency_type',
     ];
 
     public function quotesProducts()

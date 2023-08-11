@@ -1,6 +1,6 @@
 <div class="container">
-    <div class="row">
-        <div class="col-md-12">
+    <div class="row justify-content-center">
+        <div class="col-md-11">
             <div class="card">
                 @if (auth()->user()->currentQuote)
                     <div class="card-body">
@@ -192,8 +192,7 @@
                                         <div class="form-group">
                                             <label for="">Vigencia de la cotizacion (Opcional)</label>
                                             <input type="number" class="form-control"
-                                                placeholder="Duracion de la vigencia"
-                                                wire:model="shelfLife">
+                                                placeholder="Duracion de la vigencia" wire:model="shelfLife">
                                         </div>
                                     </div>
                                     <div class="col-md-4">
@@ -202,6 +201,30 @@
                                             <input type="number" class="form-control"
                                                 placeholder="Tax Fee (Valor Maximo 99)" wire:model="taxFee"
                                                 max="99">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label for="">En la cotizacion se mostrara:</label>
+                                            <select name="tipo" class="form-control" wire:model="show_tax">
+                                                <option value="1">Etiqueta del cliente (Si cuenta con una)</option>
+                                                <option value="0">Razon Social del cliente</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label for="">Tipo de Moneda:</label>
+                                            <select name="tipo" class="form-control" wire:model="currency_type">
+                                                <option value="MXN">MXN</option>
+                                                <option value="USD">USD</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label for="">Tipo de Cambio Actual</label>
+                                            <p>$1 USD => ${{ $currency }} MXN</p>
                                         </div>
                                     </div>
                                     <div class="col-md-12">

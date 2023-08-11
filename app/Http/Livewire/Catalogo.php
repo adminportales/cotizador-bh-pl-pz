@@ -138,7 +138,6 @@ class Catalogo extends Component
             ->select('products.*')
             ->paginate(16);
         // Dispacher
-        $this->dispatchBrowserEvent('scroll-to-top');
         return view('pages.catalogo.catalogoComponent', [
             'products' => $products,
             'utilidad' => $utilidad,
@@ -157,6 +156,11 @@ class Catalogo extends Component
     public function updated()
     {
         $this->resetPage();
+    }
+
+    public function hydrate()
+    {
+        $this->dispatchBrowserEvent('scroll-to-top');
     }
 
     public function limpiar()

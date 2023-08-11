@@ -90,7 +90,7 @@ class AddNewProduct extends Component
 
         $pathImagen = null;
         if ($this->imagen != null) {
-            $name = time() . $this->nombre . '.' .  $this->imagen->getClientOriginalExtension();
+            $name = time() . str_replace("%", " ", str_replace("/", " ", str_replace(",", " ", $this->nombre))) . '.' .  $this->imagen->getClientOriginalExtension();
             $pathImagen = url('') . '/storage/media/' . $name;
             $this->imagen->storeAs('public/media', $name);
             // Guardar La cotizacion
