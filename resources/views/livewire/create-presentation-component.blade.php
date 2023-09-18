@@ -1,4 +1,45 @@
 <div>
+    {{-- Input para la portada --}}
+    <div>
+        <div class="form-group">
+            <label for="portada">Portada</label>
+            <input type="file" class="form-control-file" id="portada" wire:model="portada">
+            @error('portada')
+                <span class="text-danger">{{ $message }}</span>
+            @enderror
+        </div>
+    </div>
+    {{-- INput para agregar un logo --}}
+    <div>
+        <div class="form-group">
+            <label for="logo">Logo</label>
+            <input type="file" class="form-control-file" id="logo" wire:model="logo">
+            @error('logo')
+                <span class="text-danger">{{ $message }}</span>
+            @enderror
+        </div>
+    </div>
+    {{-- Input para el encabezado --}}
+    <div>
+        <div class="form-group">
+            <label for="encabezado">Encabezado</label>
+            <input type="file" class="form-control-file" id="encabezado" wire:model="encabezado">
+            @error('encabezado')
+                <span class="text-danger">{{ $message }}</span>
+            @enderror
+        </div>
+    </div>
+    {{-- input para el pie de pagina --}}
+    <div>
+        <div class="form-group">
+            <label for="pie_pagina">Pie de Pagina</label>
+            <input type="file" class="form-control-file" id="pie_pagina" wire:model="pie_pagina">
+            @error('pie_pagina')
+                <span class="text-danger">{{ $message }}</span>
+            @enderror
+        </div>
+    </div>
+
     @php
         $subtotalAdded = 0;
         $subtotalSubstract = 0;
@@ -40,51 +81,6 @@
                                 <td class="">
                                     <p>{{ Str::limit($producto->name, 25, '...') }}</p>
                                 </td>
-                                @if (!$product->quote_by_scales)
-                                    <td class="">
-                                        <p class="text-center">
-                                            ${{ number_format($product->precio_unitario, 2, '.', ',') }}</p>
-                                    </td>
-                                    <td class="">
-                                        <p class="text-center"> {{ $product->cantidad }} piezas</p>
-                                    </td>
-                                    <td>
-                                        <p class="text-center">
-                                            ${{ number_format($product->precio_total, 2, '.', ',') }}
-                                        </p>
-                                    </td>
-                                @else
-                                    <td colspan="3" class="text-right">
-                                        <table class="table table-sm table-bordered m-0">
-                                            <thead>
-                                                <tr>
-                                                    <th>Cantidad</th>
-                                                    <th>Utilidad</th>
-                                                    <th>Impresion</th>
-                                                    <th>Unitario</th>
-                                                    <th>Total</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                @foreach (json_decode($product->scales_info) as $item)
-                                                    <tr>
-                                                        <td>{{ $item->quantity }} pz</td>
-                                                        <td>{{ $item->utility }} %</td>
-                                                        <td>$
-                                                            {{ number_format($item->tecniquePrice, 2, '.', ',') }}
-                                                        </td>
-                                                        <td>$
-                                                            {{ number_format($item->unit_price, 2, '.', ',') }}
-                                                        </td>
-                                                        <td>$
-                                                            {{ number_format($item->total_price, 2, '.', ',') }}
-                                                        </td>
-                                                    </tr>
-                                                @endforeach
-                                            </tbody>
-                                        </table>
-                                    </td>
-                                @endif
                                 <td class="text-center d-flex">
                                     <button class="btn btn-info btn-sm" wire:click="verDetalles({{ $auxProduct }})">
                                         <div style="width: 1rem">
@@ -109,4 +105,42 @@
     @else
         <p>No hay Productos Cotizados</p>
     @endif
+    <button class="btn btn-primary btn-sm btn-block mb-1" onclick="preview()">Previsualizar Cotizacion</button>
+    <div wire:ignore.self class="modal fade" id="modalPreview" tabindex="-1" aria-labelledby="modalPreviewLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalPreviewLabel">Vista Previa de la Cotizacion</h5>
+                    <button type="button" class="close" onclick="cerrarPreview()">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div wire:loading.flex wire:target="previewPresentation" class="justify-content-center">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="sr-only">Loading...</span>
+                        </div>
+                    </div>
+                    @if ($urlPDFPreview)
+                        <iframe src="{{ $urlPDFPreview }}" style="width:100%; height:700px;" frameborder="0"></iframe>
+                    @endif
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="cerrarPreview()">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        function preview() {
+            $('#modalPreview').modal('show')
+            @this.previewPresentation()
+        }
+
+        function cerrarPreview() {
+            $('#modalPreview').modal('hide')
+            @this.urlPDFPreview = null;
+        }
+    </script>
 </div>

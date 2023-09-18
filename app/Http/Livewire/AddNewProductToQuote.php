@@ -106,8 +106,6 @@ class AddNewProductToQuote extends Component
 
         $this->thereProduct = true;
         $this->producto = $newProduct;
-
-        // return redirect()->action([CotizadorController::class, 'verProducto'], ['product' => $newProduct->id]);
     }
 
     public function limpiarImagen()
