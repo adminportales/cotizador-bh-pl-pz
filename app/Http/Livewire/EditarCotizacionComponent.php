@@ -29,6 +29,9 @@ class EditarCotizacionComponent extends Component
     // Informacion a mostrar
     public $showProduct, $dataProduct;
 
+    // Tabs
+    public $visibleTab = "productos";
+
     public function mount()
     {
         $discount = $this->quote->latestQuotesUpdate->quoteDiscount;
@@ -324,5 +327,10 @@ class EditarCotizacionComponent extends Component
         $this->discountStatus = $quoteDiscount->discount;
         $this->dispatchBrowserEvent('hideModalDiscount');
         session()->flash('message', 'Por favor espere...');
+    }
+
+    public function mostrarTab($tab)
+    {
+        $this->visibleTab = $tab;
     }
 }

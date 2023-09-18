@@ -30,6 +30,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/previsualizar-cotizacion', [CotizadorController::class, 'previsualizar'])->name('previsualizar');
     Route::get('/ver-cotizacion-pdf/{quote}', [CotizadorController::class, 'previsualizar'])->name('previsualizar.cotizacion');
     Route::get('/changeCompany/{company}', [CotizadorController::class, 'changeCompany'])->name('changeCompany.cotizador');
+    Route::get('/changeCurrency/{currency}', [CotizadorController::class, 'changeCurrencyType'])->name('changeCurrency.cotizador');
     Route::get('/addProduct/create', [CotizadorController::class, 'addProductCreate'])->name('addProduct.cotizador');
     Route::post('/addProduct/store', [CotizadorController::class, 'addProductStore'])->name('storeproduct.cotizador');
     Route::get('/list-products', [CotizadorController::class, 'listProducts'])->name('listProducts.cotizador');

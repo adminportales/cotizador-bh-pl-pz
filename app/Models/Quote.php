@@ -17,6 +17,9 @@ class Quote extends Model
         'type_days',
         'logo',
         "pending_odoo",
+        'currency_type',
+        'currency',
+        'show_tax',
         "company_id",
     ];
 

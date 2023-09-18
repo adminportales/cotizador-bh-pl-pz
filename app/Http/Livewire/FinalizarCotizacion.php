@@ -41,17 +41,21 @@ class FinalizarCotizacion extends Component
         $this->showTotal = true;
         $this->show_tax = true;
         $this->currency_type = 'MXN';
-        // Consumir api para el tipo de cambio con curl
-        $curl = curl_init('https://www.banxico.org.mx/SieAPIRest/service/v1/series/SF43787/datos/oportuno');
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($curl, CURLOPT_HTTPHEADER, [
-            'Content-Type: application/json',
-            'Bmx-Token: ' . 'd01cf1306eced862bc6eece145a3599bb1a62e5276009872139970849a93cf17',
-        ]);
-        $response = curl_exec($curl);
-        // Convertir la respuesta de string a json
-        $response = json_decode($response, true);
-        $this->currency = number_format($response['bmx']['series'][0]['datos'][0]['dato'], 2, '.', '');
+        try {
+            // Consumir api para el tipo de cambio con curl
+            $curl = curl_init('https://www.banxico.org.mx/SieAPIRest/service/v1/series/SF43787/datos/oportuno');
+            curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($curl, CURLOPT_HTTPHEADER, [
+                'Content-Type: application/json',
+                'Bmx-Token: ' . 'd01cf1306eced862bc6eece145a3599bb1a62e5276009872139970849a93cf17',
+            ]);
+            $response = curl_exec($curl);
+            // Convertir la respuesta de string a json
+            $response = json_decode($response, true);
+            $this->currency = number_format($response['bmx']['series'][0]['datos'][0]['dato'], 2, '.', '');
+        } catch (Exception $e) {
+            $this->currency = 0;
+        }
     }
 
     public function render()
@@ -169,6 +173,9 @@ class FinalizarCotizacion extends Component
             'type_days' => $this->typeDays,
             'logo' => $pathLogo,
             'pending_odoo' => true,
+            'currency_type' => $this->currency_type,
+            'currency' => $this->currency,
+            'show_tax' => $this->show_tax,
             "company_id" => auth()->user()->company_session
         ]);
 
