@@ -3,7 +3,7 @@
     <div>
         <div class="form-group">
             <label for="portada">Portada</label>
-            <input type="file" class="form-control-file" id="portada" wire:model="portada">
+            <input type="file" class="form-control-file" id="portada" wire:model="portada" accept="image/*">
             @error('portada')
                 <span class="text-danger">{{ $message }}</span>
             @enderror
@@ -13,7 +13,7 @@
     <div>
         <div class="form-group">
             <label for="logo">Logo</label>
-            <input type="file" class="form-control-file" id="logo" wire:model="logo">
+            <input type="file" class="form-control-file" id="logo" wire:model="logo" accept="image/*">
             @error('logo')
                 <span class="text-danger">{{ $message }}</span>
             @enderror
@@ -23,7 +23,7 @@
     <div>
         <div class="form-group">
             <label for="encabezado">Encabezado</label>
-            <input type="file" class="form-control-file" id="encabezado" wire:model="encabezado">
+            <input type="file" class="form-control-file" id="encabezado" wire:model="encabezado" accept="image/*">
             @error('encabezado')
                 <span class="text-danger">{{ $message }}</span>
             @enderror
@@ -33,7 +33,7 @@
     <div>
         <div class="form-group">
             <label for="pie_pagina">Pie de Pagina</label>
-            <input type="file" class="form-control-file" id="pie_pagina" wire:model="pie_pagina">
+            <input type="file" class="form-control-file" id="pie_pagina" wire:model="pie_pagina" accept="image/*">
             @error('pie_pagina')
                 <span class="text-danger">{{ $message }}</span>
             @enderror

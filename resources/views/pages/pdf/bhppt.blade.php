@@ -20,6 +20,12 @@
             footer: page-footer;
         }
 
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            padding-top: 100px;
+            padding-bottom: 70px;
+        }
+
         .portada {
             width: 100%;
             height: 100vh;
@@ -41,12 +47,12 @@
 
         .footer {
             width: auto;
-            height: 50px;
+            height: 70px;
         }
 
         .content-footer {
             width: 100vh;
-            height: 50px;
+            height: 70px;
             overflow: hidden;
             object-fit: contain;
         }
@@ -54,10 +60,6 @@
         .encabezado {
             width: auto;
             height: 80px;
-        }
-        .products{
-            margin-top: 80px;
-            margin-bottom: 50px;
         }
 
         #page-header,
@@ -80,13 +82,22 @@
             /* Puedes ajustar la fuente y otros estilos según tus preferencias */
         }
 
+        #page-header {
+            margin-top: -90px;
+        }
+
         #page-footer {
-            height: 50px;
+            height: 70px;
         }
 
         #page-footer {
             top: auto;
             bottom: 10;
+        }
+
+        #first-page-header{
+            margin-top: -100px;
+            margin-bottom: -70px;
         }
 
         .logo {
@@ -136,26 +147,52 @@
         </div>
     </div>
     <div class="products">
+        @php
+            $left = 0;
+
+        @endphp
         @foreach ($quote->latestQuotesUpdate->quoteProducts as $item)
-            @php
-                $producto = json_decode($item->product);
-                $tecnica = json_decode($item->technique);
-                $scales_info = json_decode($item->scales_info);
-                if ($item->quote_by_scales) {
-                    $quote_scales = true;
-                }
-            @endphp
+            <table style=" width: 100%;">
+                @php
+                    $producto = json_decode($item->product);
+                    $tecnica = json_decode($item->technique);
+                    $scales_info = json_decode($item->scales_info);
+                    if ($item->quote_by_scales) {
+                        $quote_scales = true;
+                    }
+                    $tdColocado = false;
+                @endphp
 
-            @if ($producto->image)
-                <img src="{{ $producto->image }}" style="max-height: 220px;height:auto;max-width: 220px;width:auto;">
-            @else
-                <img src="img/default.jpg" width="180">
-            @endif
-            <p class="descripcion">
-                {{ $item->new_description ? $item->new_description : $producto->description }}
-            </p>
-
-            <div style="height: 20px;"></div>
+                <tr>
+                    @if ($left == 0 && $tdColocado == false)
+                        <td style="width: 30%"></td>
+                        @php
+                            $left = 1;
+                            $tdColocado = true;
+                        @endphp
+                    @endif
+                    <td style="width: 280px;">
+                        @if ($producto->image)
+                            <img src="{{ $producto->image }}"
+                                style="max-height: 280px;height:auto;max-width: 280px;width:auto;">
+                        @else
+                            <img src="img/default.jpg" width="180">
+                        @endif
+                    </td>
+                    <td style="">
+                        <p class="descripcion" style="font-size: 20px;">
+                            {{ $item->new_description ? $item->new_description : $producto->description }}
+                        </p>
+                    </td>
+                    @if ($left == 1 && $tdColocado == false)
+                        <td style="width: 30%"></td>
+                        @php
+                            $left = 0;
+                            $tdColocado = true;
+                        @endphp
+                    @endif
+                </tr>
+            </table>
         @endforeach
     </div>
 </body>
