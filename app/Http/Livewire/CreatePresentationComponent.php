@@ -12,7 +12,18 @@ class CreatePresentationComponent extends Component
 
     public $quote;
 
-    public $portada, $logo, $encabezado, $pie_pagina;
+    public $portada;
+    public $contraportada;
+    public $fondo;
+    public $logo;
+    public $encabezado;
+    public $pie_pagina;
+
+    public $color_primario;
+    public $color_secundario;
+    public $productos_por_pagina;
+    public $mostrar_formato_de_tabla;
+    public $generar_contraportada;
 
     public $urlPDFPreview;
 
@@ -26,7 +37,7 @@ class CreatePresentationComponent extends Component
         $imagePortadaName = "";
         if ($this->portada) {
             // Renombrar la imagen
-            $imagePortadaName = time() . '.' . $this->portada->getClientOriginalName() . "." . $this->portada->getClientOriginalExtension();
+            $imagePortadaName = time() . '_' . $this->portada->getClientOriginalName();
             // Subir la imagen
             $this->portada->storeAs('public/ppt/' . $this->quote->id, $imagePortadaName);
         }
@@ -34,7 +45,7 @@ class CreatePresentationComponent extends Component
         $imageEncabezadoName = "";
         if ($this->encabezado) {
             // Renombrar la imagen
-            $imageEncabezadoName = time() . '.' . $this->encabezado->getClientOriginalName() . "." . $this->encabezado->getClientOriginalExtension();
+            $imageEncabezadoName = time() . '_' . $this->encabezado->getClientOriginalName();
             // Subir la imagen
             $this->encabezado->storeAs('public/ppt/' . $this->quote->id, $imageEncabezadoName);
         }
@@ -42,7 +53,7 @@ class CreatePresentationComponent extends Component
         $imagePiePaginaName = "";
         if ($this->pie_pagina) {
             // Renombrar la imagen
-            $imagePiePaginaName = time() . '.' . $this->pie_pagina->getClientOriginalName() . "." . $this->pie_pagina->getClientOriginalExtension();
+            $imagePiePaginaName = time() . '_' . $this->pie_pagina->getClientOriginalName();
             // Subir la imagen
             $this->pie_pagina->storeAs('public/ppt/' . $this->quote->id, $imagePiePaginaName);
         }
@@ -50,23 +61,23 @@ class CreatePresentationComponent extends Component
         $imageLogoName = "";
         if ($this->logo) {
             // Renombrar la imagen
-            $imageLogoName = time() . '.' . $this->logo->getClientOriginalName() . '.' . $this->logo->getClientOriginalExtension();
+            $imageLogoName = time() . '_' . $this->logo->getClientOriginalName();
             // Subir la imagen
             $this->logo->storeAs('public/ppt/' . $this->quote->id, $imageLogoName);
         }
 
         $dataInformation = [
-            'portada' => $imagePortadaName,
-            'logo' => $imageLogoName,
-            'encabezado' => $imageEncabezadoName,
-            'pie_pagina' => $imagePiePaginaName,
+            'portada' =>  asset('storage/ppt/' . $this->quote->id) . '/' . $imagePortadaName,
+            'logo' => asset('storage/ppt/' . $this->quote->id) . '/' . $imageLogoName,
+            'encabezado' => $imageEncabezadoName != '' ? asset('storage/ppt/' . $this->quote->id) . '/' . $imageEncabezadoName : '',
+            'pie_pagina' => $imagePiePaginaName != '' ?  asset('storage/ppt/' . $this->quote->id) . '/' . $imagePiePaginaName : '',
         ];
-        // $dataInformation = [
-        //     'portada' => 'https://images.adsttc.com/media/images/5c6d/be46/284d/d1af/7400/0c89/large_jpg/portada_landscape_.jpg?1550695990',
-        //     'logo' => "https://store-images.s-microsoft.com/image/apps.10546.13571498826857201.6603a5e2-631f-4f29-9b08-f96589723808.dc893fe0-ecbc-4846-9ac6-b13886604095",
-        //     'encabezado' => "https://images.indianexpress.com/2023/03/spotify-featured-express-photo1.jpg",
-        //     'pie_pagina' => "https://wearecolorblind.com/wp-content/uploads/2018/11/spotify-controls-simulated-all.jpg",
-        // ];
+        $dataInformation = [
+            'portada' => 'https://images.adsttc.com/media/images/5c6d/be46/284d/d1af/7400/0c89/large_jpg/portada_landscape_.jpg?1550695990',
+            'logo' => "https://store-images.s-microsoft.com/image/apps.10546.13571498826857201.6603a5e2-631f-4f29-9b08-f96589723808.dc893fe0-ecbc-4846-9ac6-b13886604095",
+            'encabezado' => "https://images.indianexpress.com/2023/03/spotify-featured-express-photo1.jpg",
+            'pie_pagina' => "https://wearecolorblind.com/wp-content/uploads/2018/11/spotify-controls-simulated-all.jpg",
+        ];
 
         switch ($this->quote->company->name) {
             case 'PROMO LIFE':

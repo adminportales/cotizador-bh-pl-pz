@@ -95,7 +95,7 @@
             bottom: 10;
         }
 
-        #first-page-header{
+        #first-page-header {
             margin-top: -100px;
             margin-bottom: -70px;
         }
@@ -130,7 +130,9 @@
                 </td>
                 <td style="width: 60%; text-align: center">
                     <div class="content-encabezado">
-                        <img src="{{ $data['encabezado'] }}" class="encabezado" alt="">
+                        @if ($data['encabezado'] != '')
+                            <img src="{{ $data['encabezado'] }}" class="encabezado" alt="">
+                        @endif
                     </div>
                 </td>
                 <td style="width: 20%; text-align: right">
@@ -143,7 +145,9 @@
     </div>
     <div id="page-footer">
         <div class="content-footer">
-            <img src="{{ $data['pie_pagina'] }}" class="footer" alt="">
+            @if ($data['pie_pagina'] != '')
+                <img src="{{ $data['pie_pagina'] }}" class="footer" alt="">
+            @endif
         </div>
     </div>
     <div class="products">
@@ -183,6 +187,41 @@
                         <p class="descripcion" style="font-size: 20px;">
                             {{ $item->new_description ? $item->new_description : $producto->description }}
                         </p>
+                        <p><strong>Tecnica de Personalizacion: </strong>{{ $tecnica->tecnica }}</p>
+                        <p><b>Tintas: </b>
+                            @if ($tecnica->tecnica !== 'No Aplica')
+                                {{ $item->color_logos }}
+                            @else
+                                No Aplica
+                            @endif
+                        </p>
+                        <p> <strong>Tiempo de Entrega: </strong> {{ $item->dias_entrega }} días
+                            {{ $item->type_days == null
+                                ? ($quote->type_days == 0
+                                    ? 'hábiles'
+                                    : 'naturales')
+                                : ($item->type_days == 1
+                                    ? 'hábiles'
+                                    : ($item->type_days == 2
+                                        ? 'naturales'
+                                        : '')) }}.
+                        </p>
+                        @if (!$item->quote_by_scales)
+                            @php
+                                $precioUnitario = $item->precio_unitario;
+                                $precioTotal = $item->precio_total;
+                                $totalIva = $item->precio_total * 0.16;
+                                $precioUnitario = $quote->currency_type == 'USD' ? $precioUnitario / $quote->currency : $precioUnitario;
+                                $precioTotal = $quote->currency_type == 'USD' ? $precioTotal / $quote->currency : $precioTotal;
+                                $totalIva = $quote->currency_type == 'USD' ? $totalIva / $quote->currency : $totalIva;
+                            @endphp
+                            <p>
+                                <strong>Cantidad: </strong> {{ $item->cantidad }} pz
+                            </p>
+                            <p>
+                                <strong>Precio: </strong> $ {{ number_format($precioUnitario, 4, '.', ',') }}
+                            </p>
+                        @endif
                     </td>
                     @if ($left == 1 && $tdColocado == false)
                         <td style="width: 30%"></td>
