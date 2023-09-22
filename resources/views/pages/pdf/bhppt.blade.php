@@ -9,17 +9,20 @@
             margin-right: 0cm;
             margin-top: 0cm;
             margin-bottom: 0cm;
+
+            background-image: url('https://img.freepik.com/vector-premium/fondo-material-moderno_643365-269.jpg');
+            background-repeat: no-repeat;
+            background-size: cover;
         }
 
-        @page :first {
+        /* @page :first {
             header: first-page-header;
         }
 
         @page {
             header: page-header;
             footer: page-footer;
-        }
-
+        } */
         body {
             font-family: Arial, Helvetica, sans-serif;
             padding-top: 100px;
