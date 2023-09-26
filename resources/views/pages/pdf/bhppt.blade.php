@@ -10,19 +10,28 @@
             margin-top: 0cm;
             margin-bottom: 0cm;
 
-            background-image: url('https://img.freepik.com/vector-premium/fondo-material-moderno_643365-269.jpg');
+            /*background-image: url('https://img.freepik.com/vector-premium/fondo-material-moderno_643365-269.jpg');
             background-repeat: no-repeat;
-            background-size: cover;
+            background-size: cover; */
         }
 
-        /* @page :first {
+        @page :first {
             header: first-page-header;
+        }
+
+        @page :last {
+
+            #page-header,
+            #page-footer {
+                display: none;
+            }
         }
 
         @page {
             header: page-header;
             footer: page-footer;
-        } */
+        }
+
         body {
             font-family: Arial, Helvetica, sans-serif;
             padding-top: 100px;
@@ -38,7 +47,7 @@
             width: 100vh;
             height: 100vh;
             overflow: hidden;
-            object-fit: contain;
+            object-fit: cover;
         }
 
         .content-encabezado {
@@ -115,6 +124,34 @@
         .table-header td {
             padding: 10px;
         }
+
+        .products {
+            padding: 0 7cm;
+        }
+
+        @if ($data['productos_por_pagina'] == 1)
+            .products {
+                padding: 0 7cm;
+            }
+        @else
+            .products {
+                padding: 0 2cm;
+            }
+        @endif
+
+        strong {
+            color: {{ $data['color_primario'] }};
+        }
+
+        .products p {
+            margin: 0;
+        }
+
+        .products .descripcion {
+            font-size: 20px;
+            font-weight: bold;
+            padding: 20px 0;
+        }
     </style>
 </head>
 
@@ -153,45 +190,100 @@
             @endif
         </div>
     </div>
-    <div class="products">
-        @php
-            $left = 0;
-
-        @endphp
-        @foreach ($quote->latestQuotesUpdate->quoteProducts as $item)
-            <table style=" width: 100%;">
+    @if ($data['productos_por_pagina'] == 1)
+        <div class="products">
+            @foreach ($quote->latestQuotesUpdate->quoteProducts as $item)
+                <table style=" width: 100%; height: 16cm;">
+                    @php
+                        $producto = json_decode($item->product);
+                        $tecnica = json_decode($item->technique);
+                        $scales_info = json_decode($item->scales_info);
+                        if ($item->quote_by_scales) {
+                            $quote_scales = true;
+                        }
+                    @endphp
+                    <tr style="vertical-align: middle; text-align:center">
+                        <td style="vertical-align: middle; height: 16cm; text-align:center">
+                            @if ($producto->image)
+                                <img src="{{ $producto->image }}"
+                                    style="max-height: 520px;height:auto;max-width: 520px;width:auto;">
+                            @else
+                                <img src="img/default.jpg" width="180">
+                            @endif
+                            <p class="descripcion" style="font-size: 20px;">
+                                {{ $item->new_description ? $item->new_description : $producto->description }}
+                            </p>
+                            <p><strong>Tecnica de Personalizacion: </strong>{{ $tecnica->tecnica }}</p>
+                            <p><strong>Tintas: </strong>
+                                @if ($tecnica->tecnica !== 'No Aplica')
+                                    {{ $item->color_logos }}
+                                @else
+                                    No Aplica
+                                @endif
+                            </p>
+                            <p> <strong>Tiempo de Entrega: </strong> {{ $item->dias_entrega }} días
+                                {{ $item->type_days == null
+                                    ? ($quote->type_days == 0
+                                        ? 'hábiles'
+                                        : 'naturales')
+                                    : ($item->type_days == 1
+                                        ? 'hábiles'
+                                        : ($item->type_days == 2
+                                            ? 'naturales'
+                                            : '')) }}.
+                            </p>
+                            @if (!$item->quote_by_scales)
+                                @php
+                                    $precioUnitario = $item->precio_unitario;
+                                    $precioTotal = $item->precio_total;
+                                    $totalIva = $item->precio_total * 0.16;
+                                    $precioUnitario = $quote->currency_type == 'USD' ? $precioUnitario / $quote->currency : $precioUnitario;
+                                    $precioTotal = $quote->currency_type == 'USD' ? $precioTotal / $quote->currency : $precioTotal;
+                                    $totalIva = $quote->currency_type == 'USD' ? $totalIva / $quote->currency : $totalIva;
+                                @endphp
+                                <p>
+                                    <strong>Cantidad: </strong> {{ $item->cantidad }} pz
+                                </p>
+                                <p>
+                                    <strong>Precio: </strong> $ {{ number_format($precioUnitario, 4, '.', ',') }}
+                                </p>
+                            @endif
+                        </td>
+                    </tr>
+                </table>
+            @endforeach
+        </div>
+    @else
+        <div class="products">
+            <table style="">
                 @php
-                    $producto = json_decode($item->product);
-                    $tecnica = json_decode($item->technique);
-                    $scales_info = json_decode($item->scales_info);
-                    if ($item->quote_by_scales) {
-                        $quote_scales = true;
-                    }
-                    $tdColocado = false;
+                    $contador = 0;
                 @endphp
-
-                <tr>
-                    @if ($left == 0 && $tdColocado == false)
-                        <td style="width: 30%"></td>
-                        @php
-                            $left = 1;
-                            $tdColocado = true;
-                        @endphp
+                @foreach ($quote->latestQuotesUpdate->quoteProducts as $item)
+                    @php
+                        $producto = json_decode($item->product);
+                        $tecnica = json_decode($item->technique);
+                        $scales_info = json_decode($item->scales_info);
+                        if ($item->quote_by_scales) {
+                            $quote_scales = true;
+                        }
+                        $contador++;
+                    @endphp
+                    @if ($contador == 0)
+                        <tr style="vertical-align: middle; text-align:center;">
                     @endif
-                    <td style="width: 280px;">
+                    <td style="vertical-align: middle; height: 16cm; text-align:center">
                         @if ($producto->image)
                             <img src="{{ $producto->image }}"
-                                style="max-height: 280px;height:auto;max-width: 280px;width:auto;">
+                                style="max-height: 520px;height:auto;max-width: 520px;width:auto;">
                         @else
                             <img src="img/default.jpg" width="180">
                         @endif
-                    </td>
-                    <td style="">
                         <p class="descripcion" style="font-size: 20px;">
                             {{ $item->new_description ? $item->new_description : $producto->description }}
                         </p>
                         <p><strong>Tecnica de Personalizacion: </strong>{{ $tecnica->tecnica }}</p>
-                        <p><b>Tintas: </b>
+                        <p><strong>Tintas: </strong>
                             @if ($tecnica->tecnica !== 'No Aplica')
                                 {{ $item->color_logos }}
                             @else
@@ -226,16 +318,18 @@
                             </p>
                         @endif
                     </td>
-                    @if ($left == 1 && $tdColocado == false)
-                        <td style="width: 30%"></td>
-                        @php
-                            $left = 0;
-                            $tdColocado = true;
-                        @endphp
+                    @if ($contador == 0)
+                        </tr>
                     @endif
-                </tr>
+                    @php
+                        if ($contador == 2) {
+                            $contador = 0;
+                        }
+                    @endphp
+                @endforeach
             </table>
-        @endforeach
+        </div>
+    @endif
     </div>
 </body>
 

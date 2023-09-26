@@ -5,6 +5,9 @@ namespace App\Http\Livewire;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Livewire\Component;
 use Livewire\WithFileUploads;
+use iio\libmergepdf\Merger;
+use iio\libmergepdf\Pages;
+
 
 class CreatePresentationComponent extends Component
 {
@@ -21,7 +24,7 @@ class CreatePresentationComponent extends Component
 
     public $color_primario;
     public $color_secundario;
-    public $productos_por_pagina;
+    public $productos_por_pagina = 1;
     public $mostrar_formato_de_tabla;
     public $generar_contraportada;
 
@@ -74,13 +77,13 @@ class CreatePresentationComponent extends Component
             $this->contraportada->storeAs('public/ppt/' . $this->quote->id, $contraportada);
         }
 
-        $fondo = "";
+        /* $fondo = "";
         if ($this->fondo) {
             // Renombrar la imagen
             $fondo = time() . '_' . $this->fondo->getClientOriginalName();
             // Subir la imagen
             $this->fondo->storeAs('public/ppt/' . $this->quote->id, $fondo);
-        }
+        } */
 
 
         $dataInformation = [
@@ -89,7 +92,7 @@ class CreatePresentationComponent extends Component
             'encabezado' => $imageEncabezadoName != '' ? asset('storage/ppt/' . $this->quote->id) . '/' . $imageEncabezadoName : '',
             'pie_pagina' => $imagePiePaginaName != '' ?  asset('storage/ppt/' . $this->quote->id) . '/' . $imagePiePaginaName : '',
             'contraportada' => $contraportada != '' ?  asset('storage/ppt/' . $this->quote->id) . '/' . $contraportada : '',
-            'fondo' => $fondo != '' ?  asset('storage/ppt/' . $this->quote->id) . '/' . $fondo : '',
+            // 'fondo' => $fondo != '' ?  asset('storage/ppt/' . $this->quote->id) . '/' . $fondo : '',
 
             'color_primario' => $this->color_primario,
             'color_secundario' => $this->color_secundario,
@@ -103,7 +106,7 @@ class CreatePresentationComponent extends Component
             'encabezado' => "https://images.indianexpress.com/2023/03/spotify-featured-express-photo1.jpg",
             'pie_pagina' => "https://wearecolorblind.com/wp-content/uploads/2018/11/spotify-controls-simulated-all.jpg",
             'contraportada' => $contraportada != '' ?  asset('storage/ppt/' . $this->quote->id) . '/' . $contraportada : '',
-            'fondo' => 'url(https://img.freepik.com/vector-premium/fondo-material-moderno_643365-269.jpg)',
+            // 'fondo' => 'url(https://img.freepik.com/vector-premium/fondo-material-moderno_643365-269.jpg)',
 
             'color_primario' => $this->color_primario,
             'color_secundario' => $this->color_secundario,
@@ -119,8 +122,8 @@ class CreatePresentationComponent extends Component
                 break;
             case 'BH TRADEMARKET':
                 # code...
-                // $pdf = PDF::loadView('pages.pdf.bhppt', ['data' => $dataInformation, 'quote' => $this->quote]);
-                $pdf = PDF::loadView('pages.pdf.promolifeppt', ['data' => $dataInformation, 'quote' => $this->quote]);
+                $pdf = PDF::loadView('pages.pdf.bhppt', ['data' => $dataInformation, 'quote' => $this->quote]);
+                // $pdf = PDF::loadView('pages.pdf.promolifeppt', ['data' => $dataInformation, 'quote' => $this->quote]);
                 break;
             case 'PROMO ZALE':
                 # code...
@@ -135,6 +138,26 @@ class CreatePresentationComponent extends Component
         $pdf = $pdf->stream("Preview " . $this->quote->id . ".pdf");
         $path =  "/storage/quotes/tmp/" . time() . "Preview " . $this->quote->id  . ".pdf";
         file_put_contents(public_path() . $path, $pdf);
-        $this->urlPDFPreview = url('') . $path;
+
+
+        $pdf2 = PDF::loadView('pages.pdf.lastpage', ['data' => $dataInformation, 'quote' => $this->quote]);
+        $pdf2->setPaper('Letter', 'landscape');
+        $pdf2 = $pdf2->stream("Preview " . $this->quote->id . "2.pdf");
+        $path1 =  "/storage/quotes/tmp/" . time() . "Preview " . $this->quote->id  . "2.pdf";
+        file_put_contents(public_path() . $path1, $pdf2);
+
+        $dataMerge = [
+            public_path() . $path
+        ];
+        if ($contraportada != '') {
+            array_push($dataMerge, public_path() . $path1);
+        }
+        $merger = new Merger();
+        $merger->addIterator($dataMerge);
+        $createdPdf = $merger->merge();
+        $pathPdf = "/storage/quotes/tmp/" . time() . "Preview " . $this->quote->id  . "3.pdf";
+        file_put_contents(public_path() . $pathPdf, $createdPdf);
+
+        $this->urlPDFPreview = url('') . $pathPdf;
     }
 }
