@@ -10,7 +10,7 @@
             margin-top: 0cm;
             margin-bottom: 0cm;
 
-            /*background-image: url('https://img.freepik.com/vector-premium/fondo-material-moderno_643365-269.jpg');
+            /* background-image: url('https://img.freepik.com/vector-premium/fondo-material-moderno_643365-269.jpg');
             background-repeat: no-repeat;
             background-size: cover; */
         }
