@@ -1,6 +1,6 @@
 <div class="container cq">
     <div class="content-all d-flex flex-column justify-content-between">
-        @if (count($cotizacionActual) > 0)
+        @if (count($listaProductos) > 0)
             <div class="content-products">
                 <div class="">
                     <div class="card d-none d-md-block p-2">
@@ -22,7 +22,7 @@
                                     @php
                                         $quoteByScales = false;
                                     @endphp
-                                    @foreach ($cotizacionActual as $quote)
+                                    @foreach ($listaProductos as $quote)
                                         <tr>
                                             <td class="text-center">{{ $loop->iteration }}</td>
                                             <td><img src="{{ $quote->images_selected ?: ($quote->product->firstImage ? $quote->product->firstImage->image_url : asset('img/default.jpg')) }}"
@@ -43,7 +43,7 @@
                                                     </p>
                                                 @endif
                                                 @if (!$quote->quote_by_scales)
-                                                    <p class="m-0"><strong>Impresion:</strong>
+                                                    <p class="m-0"><strong>Impresion Por Tinta:</strong>
                                                         ${{ number_format(
                                                             $quote->new_price_technique
                                                                 ? $quote->new_price_technique
@@ -73,7 +73,7 @@
                                                         <thead>
                                                             <tr>
                                                                 <th>Cantidad</th>
-                                                                <th>Impresion</th>
+                                                                <th>Impresion Por tinta</th>
                                                                 <th>Utilidad</th>
                                                                 <th>Unitario</th>
                                                                 <th>Total</th>
@@ -135,7 +135,7 @@
                         </div>
                     </div>
                     <div class="d-md-none">
-                        @foreach ($cotizacionActual as $quote)
+                        @foreach ($listaProductos as $quote)
                             <div class="shadow-sm pl-2 pr-2 mb-2">
                                 <div class="d-flex">
                                     <div class="w-25">
@@ -180,9 +180,9 @@
                         @if (!$quoteByScales)
                             <h4>Total de la cotizacion</h4>
                             <button type="button"
-                                class="btn {{ auth()->user()->currentQuote->discount ? 'btn-warning' : 'btn-info' }} btn-block btn-sm my-1"
+                                class="btn {{ $cotizacion->discount ? 'btn-warning' : 'btn-info' }} btn-block btn-sm my-1"
                                 data-toggle="modal" data-target="#discountModal">
-                                {{ auth()->user()->currentQuote->discount ? 'Editar Descuento' : 'Agregar Descuento' }}
+                                {{ $cotizacion->discount ? 'Editar Descuento' : 'Agregar Descuento' }}
                             </button>
                             <div class="d-flex justify-content-between">
                                 <p class="text-dark m-0"> Subtotal: </p>
@@ -224,7 +224,7 @@
                 <div class="modal-body">
                     <div class="form-group">
                         <label for="">Tipo de Descuento</label>
-                        {{ auth()->user()->currentQuote->type }}
+                        {{ $cotizacion->type }}
                         <select class="form-control" wire:model.lazy="type">
                             <option value="">Seleccione...</option>
                             <option value="Fijo">Valor Fijo</option>
@@ -239,7 +239,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Salir</button>
-                    @if (auth()->user()->currentQuote->discount)
+                    @if ($cotizacion->discount)
                         <button type="button" class="btn btn-warning" wire:click="addDiscount">Editar</button>
                         <button type="button" class="btn btn-danger"
                             wire:click="eliminarDescuento">Eliminar</button>
@@ -304,7 +304,7 @@
                         <p class="m-0"><strong>Tiempo de entrega: </strong> {{ $quoteShow->dias_entrega }} dias
                         </p>
                         <p class="m-0"><strong>Costo de
-                                Impresion:</strong>
+                                Impresion por tinta:</strong>
                             ${{ $quoteShow->new_price_technique
                                 ? $quoteShow->new_price_technique
                                 : ($quoteShow->priceTechnique->tipo_precio == 'D'

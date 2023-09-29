@@ -14,6 +14,7 @@ class CurrentQuote extends Model
         'discount',
         'type',
         'value',
+        'active',
     ];
 
     public function currentQuoteDetails()

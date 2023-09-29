@@ -106,7 +106,11 @@ class Catalogo extends Component
         $products  = CatalogoProduct::leftjoin('product_category', 'product_category.product_id', 'products.id')
             ->leftjoin('categories', 'product_category.category_id', 'categories.id')
             ->leftjoin('colors', 'products.color_id', 'colors.id')
-            ->where('products.name', 'LIKE', $nombre)
+            // Buscar por nombre o descripcion
+            ->where(function ($query) use ($nombre) {
+                $query->where('products.name', 'LIKE', $nombre)
+                    ->orWhere('products.description', 'LIKE', $nombre);
+            })
             ->where('products.visible', '=', true)
             ->where('products.sku', 'LIKE', $sku)
             ->whereBetween('products.price', [$precioMin, $precioMax])
@@ -135,6 +139,8 @@ class Catalogo extends Component
                 $newCat  = '%' . $this->category . '%';
                 $query->where('categories.family', 'LIKE', $newCat);
             })
+            // Order by case
+            ->orderByRaw("CASE WHEN products.name LIKE '$nombre%' THEN 1 WHEN products.description LIKE '$nombre%' then 2 ELSE 3 END")
             ->select('products.*')
             ->paginate(16);
         // Dispacher

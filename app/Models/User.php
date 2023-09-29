@@ -54,9 +54,9 @@ class User extends Authenticatable
         return $this->belongsTo(Company::class, 'company_session');
     }
 
-    public function currentQuote()
+    public function currentQuotes()
     {
-        return $this->hasOne(CurrentQuote::class);
+        return $this->hasMany(CurrentQuote::class);
     }
     public function quotes()
     {

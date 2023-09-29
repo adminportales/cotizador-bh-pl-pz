@@ -84,12 +84,7 @@ class ImportTechniques extends Component
         }
         // Eliminar los datos anteriores
         try {
-            DB::table('prices_techniques')->delete();
-            DB::table('size_material_technique')->delete();
-            DB::table('material_technique')->delete();
-            DB::table('materials')->delete();
-            DB::table('sizes')->delete();
-            DB::table('techniques')->delete();
+            DB::table('materials')->where('active', 1)->update(['active' => 0]);
         } catch (Exception $th) {
             session()->flash('error', $th->getMessage());
         }
@@ -99,7 +94,7 @@ class ImportTechniques extends Component
             try {
                 // Comenzar registrando la tecnica y el materia
                 $slugMaterial = mb_strtolower(str_replace(' ', '-', $dataInfo['material']));
-                $material = Material::where("slug", $slugMaterial)->first();
+                $material = Material::where("slug", $slugMaterial)->where('active', 1)->first();
                 if (!$material) {
                     $material = Material::create([
                         'nombre' => $dataInfo['material'],
@@ -155,7 +150,5 @@ class ImportTechniques extends Component
             }
         }
         session()->flash('message', "Actualizacion realizada correctamente");
-
-        $this->columns = $columns;
     }
 }

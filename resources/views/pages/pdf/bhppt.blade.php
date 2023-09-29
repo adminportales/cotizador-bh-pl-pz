@@ -9,10 +9,6 @@
             margin-right: 0cm;
             margin-top: 0cm;
             margin-bottom: 0cm;
-
-            /* background-image: url('https://img.freepik.com/vector-premium/fondo-material-moderno_643365-269.jpg');
-            background-repeat: no-repeat;
-            background-size: cover; */
         }
 
         @page :first {
@@ -129,7 +125,7 @@
             padding: 0 7cm;
         }
 
-        @if ($data['productos_por_pagina'] == 1)
+        /* @if ($data['productos_por_pagina'] == 1)
             .products {
                 padding: 0 7cm;
             }
@@ -141,7 +137,7 @@
 
         strong {
             color: {{ $data['color_primario'] }};
-        }
+        } */
 
         .products p {
             margin: 0;
@@ -193,7 +189,7 @@
     @if ($data['productos_por_pagina'] == 1)
         <div class="products">
             @foreach ($quote->latestQuotesUpdate->quoteProducts as $item)
-                <table style=" width: 100%; height: 16cm;">
+                <table style=" width: 100%; height: 5cm;">
                     @php
                         $producto = json_decode($item->product);
                         $tecnica = json_decode($item->technique);
@@ -201,6 +197,7 @@
                         if ($item->quote_by_scales) {
                             $quote_scales = true;
                         }
+                        dd(1);
                     @endphp
                     <tr style="vertical-align: middle; text-align:center">
                         <td style="vertical-align: middle; height: 16cm; text-align:center">
@@ -267,12 +264,11 @@
                         if ($item->quote_by_scales) {
                             $quote_scales = true;
                         }
-                        $contador++;
                     @endphp
                     @if ($contador == 0)
                         <tr style="vertical-align: middle; text-align:center;">
                     @endif
-                    <td style="vertical-align: middle; height: 16cm; text-align:center">
+                    <td style="vertical-align: middle; height: 16cm; text-align:center; width: 50%">
                         @if ($producto->image)
                             <img src="{{ $producto->image }}"
                                 style="max-height: 520px;height:auto;max-width: 520px;width:auto;">
@@ -318,10 +314,11 @@
                             </p>
                         @endif
                     </td>
-                    @if ($contador == 0)
+                    @if ($contador == 1)
                         </tr>
                     @endif
                     @php
+                        $contador++;
                         if ($contador == 2) {
                             $contador = 0;
                         }
@@ -330,7 +327,6 @@
             </table>
         </div>
     @endif
-    </div>
 </body>
 
 </html>

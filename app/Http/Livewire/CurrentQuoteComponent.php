@@ -10,7 +10,7 @@ use Livewire\Component;
 
 class CurrentQuoteComponent extends Component
 {
-    public $cotizacionActual, $totalQuote;
+    public $listaProductos, $totalQuote;
     public $discountMount = 0;
 
     public $value, $type;
@@ -20,9 +20,10 @@ class CurrentQuoteComponent extends Component
 
     public function mount()
     {
-        $this->cotizacionActual = auth()->user()->currentQuote->currentQuoteDetails;
-        $this->totalQuote = $this->cotizacionActual->sum('precio_total');
-        if (auth()->user()->currentQuote->discount) {
+        $cotizacion = auth()->user()->currentQuotes->where('active', 1)->first() ?? auth()->user()->currentQuotes->first();
+        $this->listaProductos = $cotizacion->currentQuoteDetails;
+        $this->totalQuote = $this->listaProductos->sum('precio_total');
+        if ($cotizacion->discount) {
             $this->value = auth()->user()->currentQuote->value;
             $this->type = auth()->user()->currentQuote->type;
         } else {
@@ -33,10 +34,11 @@ class CurrentQuoteComponent extends Component
 
     public function render()
     {
-        $this->cotizacionActual = auth()->user()->currentQuote->currentQuoteDetails;
+        $cotizacion = auth()->user()->currentQuotes->where('active', 1)->first() ?? auth()->user()->currentQuotes->first();
+        $this->listaProductos = $cotizacion->currentQuoteDetails;
         $this->totalQuote = 0;
 
-        foreach ($this->cotizacionActual as $productToSum) {
+        foreach ($this->listaProductos as $productToSum) {
             if ($productToSum->quote_by_scales) {
                 try {
                     $this->totalQuote = $this->totalQuote + floatval(json_decode($productToSum->scales_info)[0]->total_price);
@@ -49,14 +51,14 @@ class CurrentQuoteComponent extends Component
         }
 
         $total = $this->totalQuote;
-        if (auth()->user()->currentQuote->type == 'Fijo') {
-            $this->discountMount = auth()->user()->currentQuote->value;
+        if ($cotizacion->type == 'Fijo') {
+            $this->discountMount = $cotizacion->value;
         } else {
-            $this->discountMount = round((($this->totalQuote / 100) * auth()->user()->currentQuote->value), 2);
+            $this->discountMount = round((($this->totalQuote / 100) * $cotizacion->value), 2);
         }
         $discount = $this->discountMount;
 
-        return view('pages.catalogo.current-quote-component', ['total' => $total, 'discount' => $discount]);
+        return view('pages.catalogo.current-quote-component', ['total' => $total, 'discount' => $discount, 'cotizacion' => $cotizacion]);
     }
 
     public function edit($quote_id)
@@ -117,7 +119,7 @@ class CurrentQuoteComponent extends Component
     }
     public function resetData()
     {
-        $this->cotizacionActual = auth()->user()->currentQuote->currentQuoteDetails;
+        $this->listaProductos = auth()->user()->currentQuote->currentQuoteDetails;
         $this->quoteEdit = null;
         $this->quoteShow = null;
     }

@@ -6,9 +6,10 @@
 <nav class="navbar navbar-expand-md topbar mb-2 static-top shadow h-auto d-none d-md-block">
     <div class="container">
         <a href="/" class="navbar-brand p-0">
-            <div class="text-light d-flex align-items-center">
+            <div class="text-light d-flex align-items-center"
+                style="gap: 20px">
                 @if (auth()->user()->companySession)
-                    <div class="p-1 bg-white rounded m-1">
+                    <div class="p-1 {{ auth()->user()->companySession->name != 'PROMO LIFE' ? 'bg-white' : '' }} rounded m-1">
                         <img alt="logo" class="imagen" height="50"
                             src="{{ asset('img') . '/' . auth()->user()->companySession->image }}">
                     </div>

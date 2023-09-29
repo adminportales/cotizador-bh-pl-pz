@@ -91,11 +91,10 @@ class CotizadorController extends Controller
     {
         $cotizacionActual = [];
         $total = 0;
-        if (auth()->user()->currentQuote) {
-            $cotizacionActual = auth()->user()->currentQuote->currentQuoteDetails;
-            $total = $cotizacionActual->sum('precio_total');
+        if (auth()->user()->currentQuotes) {
+            $cotizacionActual = auth()->user()->currentQuotes->where('active', true)->first();
         }
-        return view('pages.catalogo.cotizacion-actual', compact('cotizacionActual', 'total'));
+        return view('pages.catalogo.cotizacion-actual', compact('cotizacionActual'));
     }
 
     public function cotizaciones()

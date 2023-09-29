@@ -108,7 +108,7 @@ class FormularioDeCotizacion extends Component
         // Obtener precios de las tecnicas
 
         // Obtengo Materiales
-        $materiales = Material::all();
+        $materiales = Material::where('active', true)->get();
 
         // Obtengo las tenicas disponibles de acuerdo al material seleccionado
         $techniquesAvailables = [];

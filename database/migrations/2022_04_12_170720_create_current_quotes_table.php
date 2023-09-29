@@ -20,6 +20,7 @@ class CreateCurrentQuotesTable extends Migration
             $table->boolean('discount')->default(false);
             $table->string('type')->nullable();
             $table->decimal('value', 10, 2)->nullable();
+            $table->boolean('active')->default(false);
             $table->timestamps();
         });
     }

@@ -102,7 +102,7 @@
                                                         <tr>
                                                             <th>Cantidad</th>
                                                             <th>Utilidad</th>
-                                                            <th>Impresion</th>
+                                                            <th>Impresion por tinta</th>
                                                             <th>Unitario</th>
                                                             <th>Total</th>
                                                         </tr>
@@ -205,7 +205,7 @@
                                                             <tr>
                                                                 <th>Cantidad</th>
                                                                 <th>Utilidad</th>
-                                                                <th>Impresion</th>
+                                                                <th>Impresion por tinta</th>
                                                                 <th>Unitario</th>
                                                                 <th>Total</th>
                                                             </tr>
@@ -512,7 +512,7 @@
                                             <tr>
                                                 <th>Cantidad</th>
                                                 <th>Utilidad</th>
-                                                <th>Impresion</th>
+                                                <th>Impresion por tinta</th>
                                                 <th>Unitario</th>
                                                 <th>Total</th>
                                             </tr>

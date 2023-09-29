@@ -13,7 +13,7 @@ class Material extends Model
 
     protected $table = 'materials';
 
-    protected $fillable = ['nombre', 'extras', 'slug'];
+    protected $fillable = ['nombre', 'extras', 'slug', 'active'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
