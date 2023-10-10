@@ -13,8 +13,8 @@ class CountCartQuote extends Component
 
     public function currentQuoteAdded()
     {
-        if (auth()->user()->currentQuote) {
-            $this->total = count(auth()->user()->currentQuote->currentQuoteDetails);
+        if (count(auth()->user()->currentQuotes) > 0) {
+            $this->total = count(auth()->user()->currentQuoteActive->currentQuoteDetails);
         } else {
             $this->total;
         }
@@ -22,8 +22,8 @@ class CountCartQuote extends Component
 
     public function mount()
     {
-        if (auth()->user()->currentQuote) {
-            $this->total = count(auth()->user()->currentQuote->currentQuoteDetails);
+        if (count(auth()->user()->currentQuotes) > 0) {
+            $this->total = count(auth()->user()->currentQuoteActive->currentQuoteDetails);
         }
     }
     public function render()

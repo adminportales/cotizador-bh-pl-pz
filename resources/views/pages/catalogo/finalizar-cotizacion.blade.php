@@ -2,7 +2,7 @@
     <div class="row justify-content-center">
         <div class="col-md-11">
             <div class="card">
-                @if (auth()->user()->currentQuote)
+                @if (auth()->user()->currentQuoteActive)
                     <div class="card-body">
                         <h3>Finalizar la cotizacion</h3>
                         <br>
@@ -298,7 +298,7 @@
                                         @php
                                             $scales = false;
                                         @endphp
-                                        @foreach (auth()->user()->currentQuote->currentQuoteDetails as $quote)
+                                        @foreach (auth()->user()->currentQuoteActive->currentQuoteDetails as $quote)
                                             <tr>
                                                 <td class="pr-5" style="vertical-align: middle">
                                                     <p class="m-0">{{ $quote->product->name }}</p>
@@ -347,14 +347,12 @@
                                         @endforeach
                                         @if (!$scales)
                                             @php
-                                                $subtotal = auth()
-                                                    ->user()
-                                                    ->currentQuote->currentQuoteDetails->sum('precio_total');
+                                                $subtotal = auth()->user()->currentQuoteActive->currentQuoteDetails->sum('precio_total');
                                                 $discount = 0;
-                                                if (auth()->user()->currentQuote->type == 'Fijo') {
-                                                    $discount = auth()->user()->currentQuote->value;
+                                                if (auth()->user()->currentQuoteActive->type == 'Fijo') {
+                                                    $discount = auth()->user()->currentQuoteActive->value;
                                                 } else {
-                                                    $discount = round(($subtotal / 100) * auth()->user()->currentQuote->value, 2);
+                                                    $discount = round(($subtotal / 100) * auth()->user()->currentQuoteActive->value, 2);
                                                 }
                                             @endphp
                                             <tr>

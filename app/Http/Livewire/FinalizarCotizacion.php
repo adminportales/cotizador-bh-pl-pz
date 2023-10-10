@@ -102,12 +102,12 @@ class FinalizarCotizacion extends Component
             return;
         }
         // Revisar que la cotizacion tenga productos
-        if (auth()->user()->currentQuote == null) {
+        if (auth()->user()->currentQuoteActive == null) {
             dd("No hay productos en la cotizacion");
         }
 
         // Revisar que los productos si sean de mis proveedores
-        foreach (auth()->user()->currentQuote->currentQuoteDetails as $item) {
+        foreach (auth()->user()->currentQuoteActive->currentQuoteDetails as $item) {
             $product = Product::find($item->product_id);
             if (!in_array($product->provider_id, (auth()->user()->companySession->providers->pluck('id'))->toArray())) {
                 dd("El producto " . $product->name . " no es de tu proveedor");
@@ -198,10 +198,10 @@ class FinalizarCotizacion extends Component
         $type = 'Fijo';
         $value = 0;
         $discount = false;
-        if (auth()->user()->currentQuote->discount) {
+        if (auth()->user()->currentQuoteActive->discount) {
             $discount = true;
-            $type = auth()->user()->currentQuote->type;
-            $value = auth()->user()->currentQuote->value;
+            $type = auth()->user()->currentQuoteActive->type;
+            $value = auth()->user()->currentQuoteActive->value;
         }
 
         $dataDiscount = [
@@ -222,7 +222,7 @@ class FinalizarCotizacion extends Component
         // Ligar Productos al update
 
         // Guardar los productos de la cotizacion
-        foreach (auth()->user()->currentQuote->currentQuoteDetails as $item) {
+        foreach (auth()->user()->currentQuoteActive->currentQuoteDetails as $item) {
             $product = Product::find($item->product_id);
             $tecnica = PricesTechnique::find($item->prices_techniques_id);
 
@@ -447,13 +447,13 @@ class FinalizarCotizacion extends Component
                     break;
             }
             unlink(public_path() . $newPath);
-            auth()->user()->currentQuote->currentQuoteDetails()->delete();
-            auth()->user()->currentQuote()->delete();
+            auth()->user()->currentQuoteActive->currentQuoteDetails()->delete();
+            auth()->user()->currentQuoteActive()->delete();
         } catch (Exception $exception) {
             $messageMail = $exception->getMessage();
             $errorsMail = true;
-            auth()->user()->currentQuote->currentQuoteDetails()->delete();
-            auth()->user()->currentQuote()->delete();
+            auth()->user()->currentQuoteActive->currentQuoteDetails()->delete();
+            auth()->user()->currentQuoteActive()->delete();
             unlink(public_path() . $newPath);
         }
         if ($errors || $errorsMail) {
@@ -494,14 +494,14 @@ class FinalizarCotizacion extends Component
         $type = 'Fijo';
         $value = 0;
         $discount = false;
-        if (auth()->user()->currentQuote->discount) {
+        if (auth()->user()->currentQuoteActive->discount) {
             $discount = true;
-            $type = auth()->user()->currentQuote->type;
-            $value = auth()->user()->currentQuote->value;
+            $type = auth()->user()->currentQuoteActive->type;
+            $value = auth()->user()->currentQuoteActive->value;
         }
         $products = [];
 
-        foreach (auth()->user()->currentQuote->currentQuoteDetails as $item) {
+        foreach (auth()->user()->currentQuoteActive->currentQuoteDetails as $item) {
             $product = Product::find($item->product_id);
             $tecnica = PricesTechnique::find($item->prices_techniques_id);
 

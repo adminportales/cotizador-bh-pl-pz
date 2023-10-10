@@ -42,7 +42,6 @@
                         </div>
                     </li>
                 @endif
-
                 <li>
                     <div class="dropdown text-center">
                         <button class="btn dropdown-toggle" type="button" id="dropdownCurrencyButton"

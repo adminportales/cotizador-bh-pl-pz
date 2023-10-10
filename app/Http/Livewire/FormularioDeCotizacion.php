@@ -298,18 +298,24 @@ class FormularioDeCotizacion extends Component
     {
         $this->validarFormulario();
 
-        $currentQuote = auth()->user()->currentQuote;
+        $currentQuoteActive = auth()->user()->currentQuoteActive;
+        $currentQuotes = auth()->user()->currentQuotes;
 
-        if ($currentQuote === null) {
-            $currentQuote = auth()->user()->currentQuote()->create([
-                'discount' => false
-            ]);
+        if ($currentQuoteActive === null) {
+            if (count($currentQuotes) <= 0) {
+                $currentQuoteActive = auth()->user()->currentQuotes()->create([
+                    'discount' => false,
+                    'active' => true
+                ]);
+            } else {
+                dd('Tienes varias cotizaciones pero no tienes ninguna por defecto, ve a tus cotizaciones y selecciona a donde quieres cotizar');
+            }
         } else {
-            if (auth()->user()->currentQuote && $this->priceScales == true) {
-                auth()->user()->currentQuote->discount = false;
-                auth()->user()->currentQuote->type = null;
-                auth()->user()->currentQuote->value = null;
-                auth()->user()->currentQuote->save();
+            if (auth()->user()->currentQuoteActive && $this->priceScales == true) {
+                auth()->user()->currentQuoteActive->discount = false;
+                auth()->user()->currentQuoteActive->type = null;
+                auth()->user()->currentQuoteActive->value = null;
+                auth()->user()->currentQuoteActive->save();
             }
         }
         if (!is_numeric($this->newPriceTechnique))
@@ -345,8 +351,7 @@ class FormularioDeCotizacion extends Component
             $dataQuote['quote_by_scales'] = true;
             $dataQuote['scales_info'] = json_encode($this->priceScalesComplete);
         }
-
-        $currentQuote->currentQuoteDetails()->create($dataQuote);
+        $currentQuoteActive->currentQuoteDetails()->create($dataQuote);
         session()->flash('message', 'Se ha agregado este producto a la cotizacion.');
         $this->emit('currentQuoteAdded');
         $this->resetData();
@@ -654,7 +659,8 @@ class FormularioDeCotizacion extends Component
             ]);
             $preciosDisponibles = [];
             if ($this->sizeSeleccionado !== null && $this->sizeSeleccionado !== "") {
-                $preciosDisponibles = SizeMaterialTechnique::where('material_technique_id', $this->tecnicaSeleccionada)->where('size_id', (int)$this->sizeSeleccionado)->first()->pricesTechniques;
+                $materialTechnique = MaterialTechnique::where('technique_id', (int)$this->tecnicaSeleccionada)->where('material_id', (int)$this->materialSeleccionado)->first();
+                $preciosDisponibles = SizeMaterialTechnique::where('material_technique_id', $materialTechnique->id)->where('size_id', (int)$this->sizeSeleccionado)->first()->pricesTechniques;
             }
             $this->priceTechnique = $preciosDisponibles[0];
             $this->cantidad = 0;

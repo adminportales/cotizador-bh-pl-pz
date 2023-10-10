@@ -58,6 +58,10 @@ class User extends Authenticatable
     {
         return $this->hasMany(CurrentQuote::class);
     }
+    public function currentQuoteActive()
+    {
+        return $this->hasOne(CurrentQuote::class)->where('current_quotes.active', 1);
+    }
     public function quotes()
     {
         return $this->hasMany(Quote::class);
