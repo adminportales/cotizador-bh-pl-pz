@@ -11,18 +11,6 @@
             margin-bottom: 0cm;
         }
 
-        @page :first {
-            header: first-page-header;
-        }
-
-        @page :last {
-
-            #page-header,
-            #page-footer {
-                display: none;
-            }
-        }
-
         @page {
             header: page-header;
             footer: page-footer;
@@ -32,18 +20,6 @@
             font-family: Arial, Helvetica, sans-serif;
             padding-top: 100px;
             padding-bottom: 70px;
-        }
-
-        .portada {
-            width: 100%;
-            height: 100vh;
-        }
-
-        .content-portada {
-            width: 100vh;
-            height: 100vh;
-            overflow: hidden;
-            object-fit: cover;
         }
 
         .content-encabezado {
@@ -103,11 +79,6 @@
             bottom: 10;
         }
 
-        #first-page-header {
-            margin-top: -100px;
-            margin-bottom: -70px;
-        }
-
         .logo {
             width: 207px;
             height: 84px;
@@ -126,9 +97,9 @@
         }
 
         /* @if ($data['productos_por_pagina'] == 1)
-            .products {
-                padding: 0 7cm;
-            }
+        .products {
+            padding: 0 7cm;
+        }
         @else
             .products {
                 padding: 0 2cm;
@@ -137,9 +108,9 @@
 
         strong {
             color: {{ $data['color_primario'] }};
-        } */
+        }
 
-        .products p {
+        */ .products p {
             margin: 0;
         }
 
@@ -152,12 +123,6 @@
 </head>
 
 <body>
-    <div id="first-page-header">
-        <div class="content-portada">
-            <img src="{{ $data['portada'] }}" class="portada" alt="">
-        </div>
-    </div>
-    <div style="page-break-before: always;"></div>
     <div id="page-header">
         <table class="table-header">
             <tr>
@@ -189,7 +154,7 @@
     @if ($data['productos_por_pagina'] == 1)
         <div class="products">
             @foreach ($quote->latestQuotesUpdate->quoteProducts as $item)
-                <table style=" width: 100%; height: 5cm;">
+                <table style="height: 5cm;">
                     @php
                         $producto = json_decode($item->product);
                         $tecnica = json_decode($item->technique);
@@ -197,13 +162,12 @@
                         if ($item->quote_by_scales) {
                             $quote_scales = true;
                         }
-                        dd(1);
                     @endphp
                     <tr style="vertical-align: middle; text-align:center">
                         <td style="vertical-align: middle; height: 16cm; text-align:center">
                             @if ($producto->image)
                                 <img src="{{ $producto->image }}"
-                                    style="max-height: 520px;height:auto;max-width: 520px;width:auto;">
+                                    style="max-height: 320px;height:auto;max-width: 520px;width:auto;">
                             @else
                                 <img src="img/default.jpg" width="180">
                             @endif

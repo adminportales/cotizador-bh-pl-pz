@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire;
 
+use App\Models\Client;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Livewire\Component;
 use Livewire\WithFileUploads;
@@ -100,13 +101,15 @@ class CreatePresentationComponent extends Component
             'mostrar_formato_de_tabla' => $this->mostrar_formato_de_tabla,
             'generar_contraportada' => $this->generar_contraportada,
         ];
-        $contraportada = "https://img.freepik.com/vector-premium/fondo-material-moderno_643365-269.jpg";
+
         $dataInformation = [
-            'portada' => 'https://images.adsttc.com/media/images/5c6d/be46/284d/d1af/7400/0c89/large_jpg/portada_landscape_.jpg?1550695990',
+            'portada' => 'https://png.pngtree.com/png-slide/20220812/ourmid/0-pngtree-ancient-brown-simple-and-elegant-pattern-ppt-cover-google-slides-and-powerpoint-template-background_8735.jpg',
+            // 'portada' => '',
             'logo' => "https://store-images.s-microsoft.com/image/apps.10546.13571498826857201.6603a5e2-631f-4f29-9b08-f96589723808.dc893fe0-ecbc-4846-9ac6-b13886604095",
             'encabezado' => "https://images.indianexpress.com/2023/03/spotify-featured-express-photo1.jpg",
             'pie_pagina' => "https://wearecolorblind.com/wp-content/uploads/2018/11/spotify-controls-simulated-all.jpg",
-            'contraportada' => "https://img.freepik.com/vector-premium/fondo-material-moderno_643365-269.jpg",
+            // 'contraportada' => "https://img.freepik.com/vector-premium/fondo-material-moderno_643365-269.jpg",
+            'contraportada' => "",
             // 'fondo' => 'url(https://img.freepik.com/vector-premium/fondo-material-moderno_643365-269.jpg)',
 
             'color_primario' => $this->color_primario,
@@ -116,43 +119,59 @@ class CreatePresentationComponent extends Component
             'generar_contraportada' => $this->generar_contraportada,
         ];
 
+        $empresa = Client::where("name", $this->quote->latestQuotesUpdate->quotesInformation->company)->first();
+        $nombreComercial = null;
+        if ($empresa) {
+            $nombreComercial = $empresa->firstTradename;
+        }
+
+        $dataToPPT = [
+            'data' => $dataInformation,
+            'quote' => $this->quote,
+            'nombreComercial' => $nombreComercial
+        ];
+
+        $pdfCuerpo = '';
+        $pdfContraportada = '';
         switch ($this->quote->company->name) {
             case 'PROMO LIFE':
                 # code...
-                $pdf = PDF::loadView('pages.pdf.promolifeppt', ['data' => $dataInformation, 'quote' => $this->quote]);
+                $pdfCuerpo = PDF::loadView('pages.pdf.promolifeppt', $dataToPPT);
                 break;
             case 'BH TRADEMARKET':
                 # code...
-                $pdf = PDF::loadView('pages.pdf.bhppt', ['data' => $dataInformation, 'quote' => $this->quote]);
-                // $pdf = PDF::loadView('pages.pdf.promolifeppt', ['data' => $dataInformation, 'quote' => $this->quote]);
+                $pdfCuerpo = PDF::loadView('pages.pdf.pptbh.body', $dataToPPT);
+                $pdfPortada = PDF::loadView('pages.pdf.pptbh.firstpage', $dataToPPT);
+                $pdfContraportada = PDF::loadView('pages.pdf.pptbh.lastpage', $dataToPPT);
                 break;
             case 'PROMO ZALE':
-                # code...
-                $pdf = PDF::loadView('pages.pdf.promozaleppt', ['data' => $dataInformation, 'quote' => $this->quote]);
+                $pdfCuerpo = PDF::loadView('pages.pdf.promozaleppt', $dataToPPT);
                 break;
             default:
                 # code...
                 break;
         }
 
-        $pdf->setPaper('Letter', 'landscape');
-        $pdf = $pdf->stream("Preview " . $this->quote->id . ".pdf");
-        $path =  "/storage/quotes/tmp/" . time() . "Preview " . $this->quote->id  . ".pdf";
-        file_put_contents(public_path() . $path, $pdf);
+        $pdfCuerpo->setPaper('Letter', 'landscape');
+        $pdfCuerpo = $pdfCuerpo->stream("Preview " . $this->quote->id . ".pdf");
+        $pathCuerpo =  "/storage/quotes/tmp/" . time() . "Preview " . $this->quote->id  . ".pdf";
+        file_put_contents(public_path() . $pathCuerpo, $pdfCuerpo);
 
+        $pdfPortada->setPaper('Letter', 'landscape');
+        $pdfPortada = $pdfPortada->stream("Preview " . $this->quote->id . "2.pdf");
+        $pathPortada =  "/storage/quotes/tmp/" . time() . "Preview " . $this->quote->id  . "2.pdf";
+        file_put_contents(public_path() . $pathPortada, $pdfPortada);
 
-        $pdf2 = PDF::loadView('pages.pdf.lastpage', ['data' => $dataInformation, 'quote' => $this->quote]);
-        $pdf2->setPaper('Letter', 'landscape');
-        $pdf2 = $pdf2->stream("Preview " . $this->quote->id . "2.pdf");
-        $path1 =  "/storage/quotes/tmp/" . time() . "Preview " . $this->quote->id  . "2.pdf";
-        file_put_contents(public_path() . $path1, $pdf2);
+        $pdfContraportada->setPaper('Letter', 'landscape');
+        $pdfContraportada = $pdfContraportada->stream("Preview " . $this->quote->id . "2.pdf");
+        $pathContraportada =  "/storage/quotes/tmp/" . time() . "Preview " . $this->quote->id  . "3.pdf";
+        file_put_contents(public_path() . $pathContraportada, $pdfContraportada);
 
         $dataMerge = [
-            public_path() . $path
+            public_path() . $pathPortada,
+            public_path() . $pathCuerpo,
+            public_path() . $pathContraportada
         ];
-        if ($contraportada != '') {
-            array_push($dataMerge, public_path() . $path1);
-        }
         $merger = new Merger();
         $merger->addIterator($dataMerge);
         $createdPdf = $merger->merge();
