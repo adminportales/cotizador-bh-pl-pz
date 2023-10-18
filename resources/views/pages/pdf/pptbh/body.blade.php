@@ -105,12 +105,11 @@
                 padding: 0 2cm;
             }
         @endif
-
-        strong {
+        */ strong {
             color: {{ $data['color_primario'] }};
         }
 
-        */ .products p {
+        .products p {
             margin: 0;
         }
 
@@ -118,6 +117,11 @@
             font-size: 20px;
             font-weight: bold;
             padding: 20px 0;
+        }
+
+
+        .text-background td {
+            background-color: {{ $data['color_primario'] }};
         }
     </style>
 </head>
@@ -151,8 +155,12 @@
             @endif
         </div>
     </div>
-    @if ($data['productos_por_pagina'] == 1)
-        <div class="products">
+    @php
+        $taxFee = 1 + ((int) $quote->latestQuotesUpdate->quotesInformation->tax_fee) / 100;
+        $quote_scales = false;
+    @endphp
+    <div class="products">
+        @if ($data['productos_por_pagina'] == 1)
             @foreach ($quote->latestQuotesUpdate->quoteProducts as $item)
                 <table style="height: 5cm;">
                     @php
@@ -193,29 +201,68 @@
                                             ? 'naturales'
                                             : '')) }}.
                             </p>
-                            @if (!$item->quote_by_scales)
-                                @php
-                                    $precioUnitario = $item->precio_unitario;
-                                    $precioTotal = $item->precio_total;
-                                    $totalIva = $item->precio_total * 0.16;
-                                    $precioUnitario = $quote->currency_type == 'USD' ? $precioUnitario / $quote->currency : $precioUnitario;
-                                    $precioTotal = $quote->currency_type == 'USD' ? $precioTotal / $quote->currency : $precioTotal;
-                                    $totalIva = $quote->currency_type == 'USD' ? $totalIva / $quote->currency : $totalIva;
-                                @endphp
-                                <p>
-                                    <strong>Cantidad: </strong> {{ $item->cantidad }} pz
-                                </p>
-                                <p>
-                                    <strong>Precio: </strong> $ {{ number_format($precioUnitario, 4, '.', ',') }}
-                                </p>
-                            @endif
+                            <table>
+                                <tr class="text-background">
+                                    <td colspan="4" class="title-cantidad">Cantidad</td>
+                                    <td colspan="4" class="title-cantidad">Precio Unitario</td>
+                                    <td colspan="4" class="title-cantidad">Precio Total</td>
+                                </tr>
+                                @if ($item->quote_by_scales)
+                                    @foreach ($scales_info as $scale)
+                                        @php
+                                            $precioUnitario = $scale->unit_price * $taxFee;
+                                            $precioTotal = $scale->total_price * $taxFee;
+                                            $totalIva = $scale->total_price * $taxFee * 0.16;
+                                            $precioUnitario = $quote->currency_type == 'USD' ? $precioUnitario / $quote->currency : $precioUnitario;
+                                            $precioTotal = $quote->currency_type == 'USD' ? $precioTotal / $quote->currency : $precioTotal;
+                                            $totalIva = $quote->currency_type == 'USD' ? $totalIva / $quote->currency : $totalIva;
+                                        @endphp
+                                        <tr>
+                                            <td colspan="4" class="detalle-cantidad">{{ $scale->quantity }} pz</td>
+                                            <td colspan="4" class="detalle-cantidad">$
+                                                {{ number_format($precioUnitario, 4, '.', ',') }}
+                                            </td>
+                                            <td colspan="4" class="detalle-cantidad">$
+                                                {{ number_format($precioTotal, 4, '.', ',') }}
+                                                @if ($quote->iva_by_item)
+                                                    <p style="font-size: 12px"><b>IVA:
+                                                        </b>${{ number_format($totalIva, 4, '.', ',') }}
+                                                    </p>
+                                                @endif
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                @else
+                                    @php
+                                        $precioUnitario = $item->precio_unitario * $taxFee;
+                                        $precioTotal = $item->precio_total * $taxFee;
+                                        $totalIva = $item->precio_total * $taxFee * 0.16;
+                                        $precioUnitario = $quote->currency_type == 'USD' ? $precioUnitario / $quote->currency : $precioUnitario;
+                                        $precioTotal = $quote->currency_type == 'USD' ? $precioTotal / $quote->currency : $precioTotal;
+                                        $totalIva = $quote->currency_type == 'USD' ? $totalIva / $quote->currency : $totalIva;
+                                    @endphp
+                                    <tr>
+                                        <td colspan="4" class="detalle-cantidad">{{ $item->cantidad }} pz</td>
+                                        <td colspan="4" class="detalle-cantidad">$
+                                            {{ number_format($precioUnitario, 4, '.', ',') }}
+
+                                        </td>
+                                        <td colspan="4" class="detalle-cantidad">$
+                                            {{ number_format($precioTotal, 4, '.', ',') }}
+                                            @if ($quote->iva_by_item)
+                                                <p style="font-size: 12px"><b>IVA:
+                                                    </b>${{ number_format($totalIva, 4, '.', ',') }}
+                                                </p>
+                                            @endif
+                                        </td>
+                                    </tr>
+                                @endif
+                            </table>
                         </td>
                     </tr>
                 </table>
             @endforeach
-        </div>
-    @else
-        <div class="products">
+        @else
             <table style="">
                 @php
                     $contador = 0;
@@ -289,8 +336,40 @@
                     @endphp
                 @endforeach
             </table>
-        </div>
-    @endif
+        @endif
+
+        @if (!$quote_scales)
+            @if ($quote->show_total)
+                <div>
+                    @php
+                        $subtotal = (isset($quote->preview) ? $quote->precio_total : $quote->latestQuotesUpdate->quoteProducts->sum('precio_total')) * $taxFee;
+                        $discount = 0;
+                        if ($quote->latestQuotesUpdate->quoteDiscount->type == 'Fijo') {
+                            $discount = $quote->latestQuotesUpdate->quoteDiscount->value;
+                        } else {
+                            $discount = round(($subtotal / 100) * $quote->latestQuotesUpdate->quoteDiscount->value, 2);
+                        }
+                        $iva = round($subtotal * 0.16, 2);
+
+                        $subtotal = $quote->currency_type == 'USD' ? $subtotal / $quote->currency : $subtotal;
+                        $discount = $quote->currency_type == 'USD' ? $discount / $quote->currency : $discount;
+                        $iva = $quote->currency_type == 'USD' ? $iva / $quote->currency : $iva;
+                    @endphp
+                    <div style="width: 100%; text-align: right">
+                        <p><b>Subtotal: </b> $ {{ number_format($subtotal, 2, '.', ',') }}</p>
+                        @if ($discount > 0)
+                            <p><b>Descuento: </b>$ {{ number_format($discount, 2, '.', ',') }}</p>
+                        @endif
+                        @if (!$quote->iva_by_item)
+                            <p><b>IVA: </b> $ {{ number_format($iva, 2, '.', ',') }}</p>
+                        @endif
+                        <br>
+                        <p><b>Total: </b>$ {{ number_format($subtotal - $discount + $iva, 2, '.', ',') }}</p>
+                    </div>
+                </div>
+            @endif
+        @endif
+    </div>
 </body>
 
 </html>

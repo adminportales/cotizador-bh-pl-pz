@@ -55,6 +55,11 @@
             text-align: center;
         }
 
+        .client .name-customer{
+            font-size: 25px;
+            font-weight: bold;
+        }
+
         .fecha {
             margin-top: 20px;
             font-size: 28px;
@@ -93,6 +98,14 @@
                         {{ $quote->latestQuotesUpdate->quotesInformation->company }}
                     @endif
                 </p>
+                <p class="name-customer">
+                    {{ $quote->latestQuotesUpdate->quotesInformation->name }}
+                </p>
+                @if ($quote->latestQuotesUpdate->quotesInformation->department)
+                    <p class="name-customer">
+                        {{ $quote->latestQuotesUpdate->quotesInformation->department }}
+                    </p>
+                @endif
             </div>
             <div class="fecha">
                 <p>Fecha Cotización: {{ $quote->created_at->format('d/m/Y') }}</p>

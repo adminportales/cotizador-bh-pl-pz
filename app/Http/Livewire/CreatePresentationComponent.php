@@ -7,8 +7,6 @@ use Barryvdh\DomPDF\Facade\Pdf;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use iio\libmergepdf\Merger;
-use iio\libmergepdf\Pages;
-
 
 class CreatePresentationComponent extends Component
 {
@@ -103,8 +101,8 @@ class CreatePresentationComponent extends Component
         ];
 
         $dataInformation = [
-            'portada' => 'https://png.pngtree.com/png-slide/20220812/ourmid/0-pngtree-ancient-brown-simple-and-elegant-pattern-ppt-cover-google-slides-and-powerpoint-template-background_8735.jpg',
-            // 'portada' => '',
+            // 'portada' => 'https://png.pngtree.com/png-slide/20220812/ourmid/0-pngtree-ancient-brown-simple-and-elegant-pattern-ppt-cover-google-slides-and-powerpoint-template-background_8735.jpg',
+            'portada' => '',
             'logo' => "https://store-images.s-microsoft.com/image/apps.10546.13571498826857201.6603a5e2-631f-4f29-9b08-f96589723808.dc893fe0-ecbc-4846-9ac6-b13886604095",
             'encabezado' => "https://images.indianexpress.com/2023/03/spotify-featured-express-photo1.jpg",
             'pie_pagina' => "https://wearecolorblind.com/wp-content/uploads/2018/11/spotify-controls-simulated-all.jpg",
@@ -135,11 +133,9 @@ class CreatePresentationComponent extends Component
         $pdfContraportada = '';
         switch ($this->quote->company->name) {
             case 'PROMO LIFE':
-                # code...
                 $pdfCuerpo = PDF::loadView('pages.pdf.promolifeppt', $dataToPPT);
                 break;
             case 'BH TRADEMARKET':
-                # code...
                 $pdfCuerpo = PDF::loadView('pages.pdf.pptbh.body', $dataToPPT);
                 $pdfPortada = PDF::loadView('pages.pdf.pptbh.firstpage', $dataToPPT);
                 $pdfContraportada = PDF::loadView('pages.pdf.pptbh.lastpage', $dataToPPT);
@@ -148,7 +144,6 @@ class CreatePresentationComponent extends Component
                 $pdfCuerpo = PDF::loadView('pages.pdf.promozaleppt', $dataToPPT);
                 break;
             default:
-                # code...
                 break;
         }
 

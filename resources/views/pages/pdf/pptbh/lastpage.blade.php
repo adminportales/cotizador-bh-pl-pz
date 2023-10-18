@@ -35,7 +35,8 @@
             font-size: 30px;
             font-weight: bold;
         }
-        .info-seller{
+
+        .info-seller {
             width: 100%;
             margin-top: 20px;
             font-size: 20px;
@@ -70,10 +71,38 @@
                 <td colspan="2">{{ $user->name }}</td>
             </tr>
             <tr>
-                <td style="vertical-align: middle"> <img src="quotesheet/bh/icon-whatsapp.png" alt=""> {{ $user->phone == null ? 'Sin Dato' : $user->phone }} </td>
-                <td style="vertical-align: middle"><img src="quotesheet/bh/icon-email.png" alt=""> {{ $user->email }}</td>
+                <td style="vertical-align: middle"> <img src="quotesheet/bh/icon-whatsapp.png" alt="">
+                    {{ $user->phone == null ? 'Sin Dato' : $user->phone }} </td>
+                <td style="vertical-align: middle"><img src="quotesheet/bh/icon-email.png" alt="">
+                    {{ $user->email }}</td>
             </tr>
         </table>
+        <div class="content condiciones">
+            <p> Condiciones:</p>
+            <ul>
+                <li>Condiciones de pago acordadas con el vendedor</li>
+                <li>Precios unitarios mostrados antes de IVA</li>
+                <li>Precios mostrados en
+                    {{ $quote->currency_type == 'USD' ? 'dolares (USD)' : 'pesos mexicanos (MXP)' }}.</li>
+                <li>El importe cotizado corresponde a la cantidad de piezas y número de tintas arriba mencionadas, si se
+                    modifica
+                    el número de piezas el precio cambiaría.</li>
+                <li>El tiempo de entrega empieza a correr una vez recibida la Orden de Compra y autorizada la muestra
+                    física
+                    o
+                    virtual a solicitud del cliente.</li>
+                <li>Vigencia de la cotización {{ $quote->latestQuotesUpdate->quotesInformation->shelf_life ?: 30 }} días
+                    {{ $quote->type_days == 0 ? 'hábiles' : 'naturales' }}.</li>
+                <li>Producto cotizado de fabricación nacional o importación puede afinarse la fecha de entrega previo a
+                    la
+                    emisión
+                    de Orden de Compra.</li>
+                <li>Producto cotizado disponible en stock a la fecha de esta cotización puede modificarse al paso de los
+                    días
+                    sin
+                    previo aviso. Solo se bloquea el inventario al recibir Orden de Compra</li>
+            </ul>
+        </div>
         <table class="footer">
             <tr>
                 <td colspan="3" style="text-align: center;font-size: 27px;">www.trademarket.com.mx</td>
@@ -82,8 +111,8 @@
                 <td colspan="3" style="text-align: center; font-size: 16px;">San Andrés Atoto 155A Naucalpan de
                     Juárez, Méx. C.P. 53550
                     Tel. +52(55) 5290 9100</td>
-            </tr>
-        </table>
+                </tr>
+            </table>
     @endif
 </body>
 
