@@ -27,7 +27,38 @@
         }
 
         .body {
-            padding: 2cm 2cm 2cm 2cm;
+            height: 17cm;
+            margin: 2cm 2cm 2cm 2cm;
+            margin-top: -19.5cm;
+            /* background-color: red; */
+        }
+
+        .body-back {
+            height: 100vh;
+            background-image: url(quotesheet/bh/ppt/fondoPPTbh.jpeg);
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-position: center left;
+            /* background-color: rgb(119, 194, 255); */
+        }
+
+        .content {
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.62);
+        }
+
+        .table-content {
+            width: 100%;
+            height: 100%;
+            /* background-color: royalblue; */
+        }
+
+        .table-content td {
+            /* vertical-align: top; */
+            /* background-color: red; */
+            width: 100%;
+            height: 100%;
+            vertical-align: middle;
         }
 
         /* Logos */
@@ -55,7 +86,7 @@
             text-align: center;
         }
 
-        .client .name-customer{
+        .client .name-customer {
             font-size: 25px;
             font-weight: bold;
         }
@@ -81,34 +112,42 @@
         </div>
     @else
         {{-- Esta portada va el logo, nombre del vendedor y cliente --}}
+        <div class="body-back">
+        </div>
         <div class="body">
-            <div class="logos">
-                <img src="quotesheet/bh/logo.png" class="logo">
-                {{-- <img src="quotesheet/bh/logo.png" class="logo"> --}}
-            </div>
-            <div class="client">
-                <p>
-                    @if ($nombreComercial)
-                        @if ($quote->show_tax)
-                            {{ $nombreComercial->name }}
-                        @else
-                            {{ $quote->latestQuotesUpdate->quotesInformation->company }}
-                        @endif
-                    @else
-                        {{ $quote->latestQuotesUpdate->quotesInformation->company }}
-                    @endif
-                </p>
-                <p class="name-customer">
-                    {{ $quote->latestQuotesUpdate->quotesInformation->name }}
-                </p>
-                @if ($quote->latestQuotesUpdate->quotesInformation->department)
-                    <p class="name-customer">
-                        {{ $quote->latestQuotesUpdate->quotesInformation->department }}
-                    </p>
-                @endif
-            </div>
-            <div class="fecha">
-                <p>Fecha Cotización: {{ $quote->created_at->format('d/m/Y') }}</p>
+            <div class="content">
+                <table class="table-content">
+                    <td>
+                        <div class="logos">
+                            <img src="quotesheet/bh/logo.png" class="logo">
+                            {{-- <img src="quotesheet/bh/logo.png" class="logo"> --}}
+                        </div>
+                        <div class="client">
+                            <p>
+                                @if ($nombreComercial)
+                                    @if ($quote->show_tax)
+                                        {{ $nombreComercial->name }}
+                                    @else
+                                        {{ $quote->latestQuotesUpdate->quotesInformation->company }}
+                                    @endif
+                                @else
+                                    {{ $quote->latestQuotesUpdate->quotesInformation->company }}
+                                @endif
+                            </p>
+                            <p class="name-customer">
+                                {{ $quote->latestQuotesUpdate->quotesInformation->name }}
+                            </p>
+                            @if ($quote->latestQuotesUpdate->quotesInformation->department)
+                                <p class="name-customer">
+                                    {{ $quote->latestQuotesUpdate->quotesInformation->department }}
+                                </p>
+                            @endif
+                        </div>
+                        <div class="fecha">
+                            <p>Fecha Cotización: {{ $quote->created_at->format('d/m/Y') }}</p>
+                        </div>
+                    </td>
+                </table>
             </div>
         </div>
     @endif

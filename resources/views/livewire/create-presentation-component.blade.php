@@ -20,41 +20,20 @@
                 @enderror
             </div>
         </div>
-        {{--         <div class="col-6">
+        <div class="col-6">
             <div class="form-group">
                 <label for="fondo">Fondo</label>
-                <input type="file" class="form-control-file" id="portada" wire:model="fondo"
-                    accept="image/*">
+                <input type="file" class="form-control-file" id="portada" wire:model="fondo" accept="image/*">
                 @error('fondo')
                     <span class="text-danger">{{ $message }}</span>
                 @enderror
             </div>
-        </div> --}}
+        </div>
         <div class="col-6">
             <div class="form-group">
                 <label for="logo">Logo</label>
                 <input type="file" class="form-control-file" id="logo" wire:model="logo" accept="image/*">
                 @error('logo')
-                    <span class="text-danger">{{ $message }}</span>
-                @enderror
-            </div>
-        </div>
-        <div class="col-6">
-            <div class="form-group">
-                <label for="encabezado">Encabezado</label>
-                <input type="file" class="form-control-file" id="encabezado" wire:model="encabezado"
-                    accept="image/*">
-                @error('encabezado')
-                    <span class="text-danger">{{ $message }}</span>
-                @enderror
-            </div>
-        </div>
-        <div class="col-6">
-            <div class="form-group">
-                <label for="pie_pagina">Pie de Pagina</label>
-                <input type="file" class="form-control-file" id="pie_pagina" wire:model="pie_pagina"
-                    accept="image/*">
-                @error('pie_pagina')
                     <span class="text-danger">{{ $message }}</span>
                 @enderror
             </div>
@@ -104,7 +83,7 @@
                 @enderror
             </div>
         </div> --}}
-        {{--<div class="col-4">
+        {{-- <div class="col-4">
             <div class="form-group">
                 <label for="generar_contraportada">Generar Contra Portada</label>
                 <select name="" id="" wire:model="generar_contraportada" class="form-control">
@@ -161,9 +140,8 @@
                                 <td class="text-center d-flex">
                                     <button class="btn btn-info btn-sm" wire:click="verDetalles({{ $auxProduct }})">
                                         <div style="width: 1rem">
-                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none"
-                                                viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
-                                                class="w-6 h-6">
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                                stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                                                 <path stroke-linecap="round" stroke-linejoin="round"
                                                     d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
                                                 <path stroke-linecap="round" stroke-linejoin="round"

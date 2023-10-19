@@ -22,6 +22,7 @@
             padding-bottom: 70px;
         }
 
+
         .content-encabezado {
             width: 100vh;
             height: 80px;
@@ -127,32 +128,36 @@
 </head>
 
 <body>
-    <div id="page-header">
-        <table class="table-header">
-            <tr>
-                <td style="width: 20%; text-align: left">
-                    <img src="quotesheet/bh/logo.png" class="logo">
-                </td>
-                <td style="width: 60%; text-align: center">
-                    <div class="content-encabezado">
-                        @if ($data['encabezado'] != '')
-                            <img src="{{ $data['encabezado'] }}" class="encabezado" alt="">
-                        @endif
-                    </div>
-                </td>
-                <td style="width: 20%; text-align: right">
-                    <div class="content-encabezado">
-                        <img src="{{ $data['logo'] }}" class="encabezado" alt="">
-                    </div>
-                </td>
-            </tr>
-        </table>
-    </div>
+    @if ($data['fondo'] != '')
+        <style>
+            body {
+                height: 100vh;
+                background-image: url('quotesheet/bh/ppt/Diapositiva2.PNG');
+                background-repeat: no-repeat;
+                background-size: 100% 100%;
+            }
+        </style>
+    @endif
+    @if ($data['fondo'] == '')
+        <div id="page-header">
+            <table class="table-header">
+                <tr>
+                    <td style="width: 20%; text-align: left">
+                        <img src="quotesheet/bh/logo.png" class="logo">
+                    </td>
+                    <td style="width: 60%; text-align: center">
+                    </td>
+                    <td style="width: 20%; text-align: right">
+                        <div class="content-encabezado">
+                            <img src="{{ $data['logo'] }}" class="encabezado" alt="">
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    @endif
     <div id="page-footer">
         <div class="content-footer">
-            @if ($data['pie_pagina'] != '')
-                <img src="{{ $data['pie_pagina'] }}" class="footer" alt="">
-            @endif
         </div>
     </div>
     @php

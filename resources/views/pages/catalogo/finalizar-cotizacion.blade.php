@@ -212,7 +212,7 @@
                                             </select>
                                         </div>
                                     </div>
-                                    <div class="col-md-4">
+                                    {{-- <div class="col-md-4">
                                         <div class="form-group">
                                             <label for="">Tipo de Moneda:</label>
                                             <select name="tipo" class="form-control" wire:model="currency_type">
@@ -226,7 +226,7 @@
                                             <label for="">Tipo de Cambio Actual</label>
                                             <p>$1 USD => ${{ $currency }} MXN</p>
                                         </div>
-                                    </div>
+                                    </div> --}}
                                     <div class="col-md-12">
                                         <div class="form-group">
                                             <label for="">Informacion Adicional (Opcional)</label>

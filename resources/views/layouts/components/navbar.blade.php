@@ -6,10 +6,10 @@
 <nav class="navbar navbar-expand-md topbar mb-2 static-top shadow h-auto d-none d-md-block">
     <div class="container">
         <a href="/" class="navbar-brand p-0">
-            <div class="text-light d-flex align-items-center"
-                style="gap: 20px">
+            <div class="text-light d-flex align-items-center" style="gap: 20px">
                 @if (auth()->user()->companySession)
-                    <div class="p-1 {{ auth()->user()->companySession->name != 'PROMO LIFE' ? 'bg-white' : '' }} rounded m-1">
+                    <div
+                        class="p-1 {{ auth()->user()->companySession->name != 'PROMO LIFE' ? 'bg-white' : '' }} rounded m-1">
                         <img alt="logo" class="imagen" height="50"
                             src="{{ asset('img') . '/' . auth()->user()->companySession->image }}">
                     </div>
@@ -42,7 +42,7 @@
                         </div>
                     </li>
                 @endif
-                <li>
+                {{-- <li>
                     <div class="dropdown text-center">
                         <button class="btn dropdown-toggle" type="button" id="dropdownCurrencyButton"
                             style="background-color: transparent; color:white" data-toggle="dropdown"
@@ -56,7 +56,7 @@
                                 href="{{ route('changeCurrency.cotizador', ['currency' => 'USD']) }}">USD</a>
                         </div>
                     </div>
-                </li>
+                </li> --}}
             </ul>
             <!-- Topbar Navbar -->
             <ul class="navbar-nav ml-auto">
@@ -137,7 +137,7 @@
             </div>
         </div>
     @endif
-    <div class="dropdown text-center">
+    {{--     <div class="dropdown text-center">
         <button class="btn dropdown-toggle" type="button" id="dropdownCurrencyButton"
             style="background-color: transparent; color:white" data-toggle="dropdown" aria-haspopup="true"
             aria-expanded="false">
@@ -147,7 +147,7 @@
             <a class="dropdown-item {{ session()->get('currency_type') == 'USD' ? 'disabled' : '' }}"
                 href="{{ route('changeCurrency.cotizador', ['currency' => 'USD']) }}"></a>
         </div>
-    </div>
+    </div> --}}
     <div class="container">
         <li class="nav-item d-flex align-items-center">
             <a class="nav-link text-white" aria-current="page" href="{{ route('catalogo') }}" data-toggle="tooltip"
