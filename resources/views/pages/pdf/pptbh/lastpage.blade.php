@@ -102,7 +102,11 @@
                         </div>
                         <table class="info-seller">
                             <tr>
-                                <td colspan="2">{{ $user->name }}</td>
+                                <td colspan="2">
+                                    <p style="font-size:20px;  font-weight: bold">
+                                    {{ $user->name }}
+                                    </p>
+                                </td>
                             </tr>
                             <tr>
                                 <td style="vertical-align: middle"> <img src="quotesheet/bh/icon-whatsapp.png"

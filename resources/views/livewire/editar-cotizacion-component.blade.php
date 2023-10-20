@@ -1,15 +1,5 @@
 <div>
     <div class="card-body">
-        <ul class="nav nav-tabs mb-2">
-            <li class="nav-item" style="cursor: pointer">
-                <a class="nav-link active" id="btnProducts"
-                    onclick="mostrarTab(1)">Productos Cotizados</a>
-            </li>
-            <li class="nav-item" style="cursor: pointer">
-                <a class="nav-link" id="btnPresentation"
-                    onclick="mostrarTab(2)">Crea tu presentacion</a>
-            </li>
-        </ul>
         <div class="p-3" id="tabProducts">
             <div class="d-flex justify-content-between">
                 <h5 class="card-title">Productos Cotizados</h5>
@@ -399,9 +389,6 @@
                 <p>No hay Productos Cotizados</p>
             @endif
         </div>
-        <div class="p-3 d-none" id="tabPresentation">
-            @livewire('create-presentation-component', ['quote' => $quote])
-        </div>
     </div>
 
     <!-- Modal -->
@@ -580,33 +567,5 @@
         window.addEventListener('Editardescuento', event => {
             Swal.fire('Descuento modificado')
         })
-
-        document.addEventListener('DOMContentLoaded', function() {
-            let btnPresentation = document.getElementById('btnPresentation')
-            let tabPresentation = document.getElementById('tabPresentation')
-            let btnProducts = document.getElementById('btnProducts')
-            let tabProducts = document.getElementById('tabProducts')
-        })
-        function mostrarTab(tab) {
-            if (tab == 1) {
-                btnPresentation.classList.remove('active')
-                btnProducts.classList.add('active')
-
-                tabPresentation.classList.remove('d-block')
-                tabPresentation.classList.add('d-none')
-
-                tabProducts.classList.add('d-block')
-                tabProducts.classList.remove('d-none')
-            } else {
-                btnProducts.classList.remove('active')
-                btnPresentation.classList.add('active')
-
-                tabProducts.classList.remove('d-block')
-                tabProducts.classList.add('d-none')
-
-                tabPresentation.classList.add('d-block')
-                tabPresentation.classList.remove('d-none')
-            }
-        }
     </script>
 </div>
