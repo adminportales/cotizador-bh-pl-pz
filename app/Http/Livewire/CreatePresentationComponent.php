@@ -15,7 +15,7 @@ class CreatePresentationComponent extends Component
     public $quote;
 
     public $portada;
-    public $contraportada;
+    public $contraportada, $tieneContraportada;
     public $fondo;
     public $logo;
 
@@ -117,7 +117,9 @@ class CreatePresentationComponent extends Component
             case 'BH TRADEMARKET':
                 $pdfCuerpo = PDF::loadView('pages.pdf.pptbh.body', $dataToPPT);
                 $pdfPortada = PDF::loadView('pages.pdf.pptbh.firstpage', $dataToPPT);
-                $pdfContraportada = PDF::loadView('pages.pdf.pptbh.lastpage', $dataToPPT);
+                if ($this->tieneContraportada) {
+                    $pdfContraportada = PDF::loadView('pages.pdf.pptbh.lastpage', $dataToPPT);
+                }
                 break;
             case 'PROMO ZALE':
                 $pdfCuerpo = PDF::loadView('pages.pdf.promozaleppt', $dataToPPT);
@@ -136,16 +138,20 @@ class CreatePresentationComponent extends Component
         $pathPortada =  "/storage/quotes/tmp/" . time() . "Preview " . $this->quote->id  . "2.pdf";
         file_put_contents(public_path() . $pathPortada, $pdfPortada);
 
-        $pdfContraportada->setPaper('Letter', 'landscape');
-        $pdfContraportada = $pdfContraportada->stream("Preview " . $this->quote->id . "2.pdf");
-        $pathContraportada =  "/storage/quotes/tmp/" . time() . "Preview " . $this->quote->id  . "3.pdf";
-        file_put_contents(public_path() . $pathContraportada, $pdfContraportada);
-
+        if ($this->tieneContraportada) {
+            $pdfContraportada->setPaper('Letter', 'landscape');
+            $pdfContraportada = $pdfContraportada->stream("Preview " . $this->quote->id . "2.pdf");
+            $pathContraportada =  "/storage/quotes/tmp/" . time() . "Preview " . $this->quote->id  . "3.pdf";
+            file_put_contents(public_path() . $pathContraportada, $pdfContraportada);
+        }
         $dataMerge = [
             public_path() . $pathPortada,
-            public_path() . $pathCuerpo,
-            public_path() . $pathContraportada
+            public_path() . $pathCuerpo
+
         ];
+        if ($this->tieneContraportada) {
+            array_push($dataMerge, public_path() . $pathContraportada);
+        }
         $merger = new Merger();
         $merger->addIterator($dataMerge);
         $createdPdf = $merger->merge();

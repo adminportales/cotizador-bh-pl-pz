@@ -10,12 +10,22 @@
                     <span class="text-danger">{{ $message }}</span>
                 @enderror
             </div>
+            {{-- Check para mostrar o no la contraportada --}}
             <div class="form-group">
-                <div class="custom-file">
-                    <input type="file" class="custom-file-input" id="contraportadaFile" wire:model="contraportada"
-                        accept="image/*">
-                    <label class="custom-file-label" for="contraportadaFile">Seleccionar Contraportada</label>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" {{ $tieneContraportada ? 'checked' : '' }}
+                        wire:model="tieneContraportada">
+                    <label class="form-check-label" style="font-weight: bold;" for="defaultCheck1">
+                        ¿Deseas una contraportada?
+                    </label>
                 </div>
+                @if ($tieneContraportada)
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input" id="contraportadaFile"
+                            wire:model="contraportada" accept="image/*">
+                        <label class="custom-file-label" for="contraportadaFile">Seleccionar Contraportada</label>
+                    </div>
+                @endif
                 @error('contraportada')
                     <span class="text-danger">{{ $message }}</span>
                 @enderror
@@ -53,7 +63,7 @@
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
                     </div> --}}
-            <div class="form-group">
+            {{-- <div class="form-group">
                 <label for="productos_por_pagina">Productos Por Pagina</label>
                 <select name="" id="" wire:model="productos_por_pagina" class="form-control">
                     <option value="1">1</option>
@@ -62,7 +72,7 @@
                 @error('productos_por_pagina')
                     <span class="text-danger">{{ $message }}</span>
                 @enderror
-            </div>
+            </div> --}}
 
             {{-- @php
                 $subtotalAdded = 0;
