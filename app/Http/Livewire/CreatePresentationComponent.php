@@ -80,20 +80,21 @@ class CreatePresentationComponent extends Component
             'generar_contraportada' => $this->generar_contraportada,
         ];
 
-        $dataInformation = [
-            // 'portada' => 'https://png.pngtree.com/png-slide/20220812/ourmid/0-pngtree-ancient-brown-simple-and-elegant-pattern-ppt-cover-google-slides-and-powerpoint-template-background_8735.jpg',
-            'portada' => '',
-            'logo' => "https://store-images.s-microsoft.com/image/apps.10546.13571498826857201.6603a5e2-631f-4f29-9b08-f96589723808.dc893fe0-ecbc-4846-9ac6-b13886604095",
-            // 'contraportada' => "https://img.freepik.com/vector-premium/fondo-material-moderno_643365-269.jpg",
-            'contraportada' => "",
-            // 'fondo' => 'url(https://img.freepik.com/vector-premium/fondo-material-moderno_643365-269.jpg)',
-            'fondo' => '',
-            'color_primario' => $this->color_primario,
-            'color_secundario' => $this->color_secundario,
-            'productos_por_pagina' => $this->productos_por_pagina,
-            'mostrar_formato_de_tabla' => $this->mostrar_formato_de_tabla,
-            'generar_contraportada' => $this->generar_contraportada,
-        ];
+        // $dataInformation = [
+        //     // 'portada' => 'https://png.pngtree.com/png-slide/20220812/ourmid/0-pngtree-ancient-brown-simple-and-elegant-pattern-ppt-cover-google-slides-and-powerpoint-template-background_8735.jpg',
+        //     'portada' => '',
+        //     // 'logo' => "https://store-images.s-microsoft.com/image/apps.10546.13571498826857201.6603a5e2-631f-4f29-9b08-f96589723808.dc893fe0-ecbc-4846-9ac6-b13886604095",
+        //     'logo' => '',
+        //     // 'contraportada' => "https://img.freepik.com/vector-premium/fondo-material-moderno_643365-269.jpg",
+        //     'contraportada' => "",
+        //     // 'fondo' => 'https://img.freepik.com/vector-premium/fondo-material-moderno_643365-269.jpg',
+        //     'fondo' => '',
+        //     'color_primario' => $this->color_primario,
+        //     'color_secundario' => $this->color_secundario,
+        //     'productos_por_pagina' => $this->productos_por_pagina,
+        //     'mostrar_formato_de_tabla' => $this->mostrar_formato_de_tabla,
+        //     'generar_contraportada' => $this->generar_contraportada,
+        // ];
 
         $empresa = Client::where("name", $this->quote->latestQuotesUpdate->quotesInformation->company)->first();
         $nombreComercial = null;

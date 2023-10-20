@@ -94,7 +94,7 @@
         }
 
         .products {
-            padding: 0 7cm;
+            padding: 0 3cm;
         }
 
         /* @if ($data['productos_por_pagina'] == 1)
@@ -132,7 +132,7 @@
         <style>
             body {
                 height: 100vh;
-                background-image: url('quotesheet/bh/ppt/Diapositiva2.PNG');
+                background-image: url({{ $data['fondo'] }});
                 background-repeat: no-repeat;
                 background-size: 100% 100%;
             }
@@ -167,7 +167,7 @@
     <div class="products">
         @if ($data['productos_por_pagina'] == 1)
             @foreach ($quote->latestQuotesUpdate->quoteProducts as $item)
-                <table style="height: 5cm;">
+                <table style="width: 100%">
                     @php
                         $producto = json_decode($item->product);
                         $tecnica = json_decode($item->technique);
@@ -176,95 +176,123 @@
                             $quote_scales = true;
                         }
                     @endphp
-                    <tr style="vertical-align: middle; text-align:center">
-                        <td style="vertical-align: middle; height: 16cm; text-align:center">
-                            @if ($producto->image)
-                                <img src="{{ $producto->image }}"
-                                    style="max-height: 320px;height:auto;max-width: 520px;width:auto;">
-                            @else
-                                <img src="img/default.jpg" width="180">
-                            @endif
-                            <p class="descripcion" style="font-size: 20px;">
-                                {{ $item->new_description ? $item->new_description : $producto->description }}
-                            </p>
-                            <p><strong>Tecnica de Personalizacion: </strong>{{ $tecnica->tecnica }}</p>
-                            <p><strong>Tintas: </strong>
-                                @if ($tecnica->tecnica !== 'No Aplica')
-                                    {{ $item->color_logos }}
+                    <td style="vertical-align: middle; height: 16cm;">
+                        <p style="margin: 0; font-size: 31px; font-weight: bold;">{{ $producto->name }}</p>
+                        <table>
+                            <td style="width:37%; vertical-align: middle">
+                                @if ($producto->image)
+                                    <img src="{{ $producto->image }}"
+                                        style="max-height: 320px;height:auto;max-width: 100%;width:auto;">
                                 @else
-                                    No Aplica
+                                    <img src="img/default.jpg" width="180">
                                 @endif
-                            </p>
-                            <p> <strong>Tiempo de Entrega: </strong> {{ $item->dias_entrega }} días
-                                {{ $item->type_days == null
-                                    ? ($quote->type_days == 0
-                                        ? 'hábiles'
-                                        : 'naturales')
-                                    : ($item->type_days == 1
-                                        ? 'hábiles'
-                                        : ($item->type_days == 2
-                                            ? 'naturales'
-                                            : '')) }}.
-                            </p>
-                            <table>
-                                <tr class="text-background">
-                                    <td colspan="4" class="title-cantidad">Cantidad</td>
-                                    <td colspan="4" class="title-cantidad">Precio Unitario</td>
-                                    <td colspan="4" class="title-cantidad">Precio Total</td>
-                                </tr>
-                                @if ($item->quote_by_scales)
-                                    @foreach ($scales_info as $scale)
+                            </td>
+                            <td style="width: 5%; vertical-align: middle"></td>
+                            <td style="width:58%; vertical-align: middle">
+                                <p class="descripcion" style="font-size: 22px; text-align: justify">
+                                    {{ Str::ucfirst($item->new_description ? $item->new_description : $producto->description) }}
+                                </p>
+                                <p style="font-size: 21px;"><strong>Tecnica de Personalizacion:
+                                    </strong>{{ $tecnica->tecnica }}</p>
+                                <p style="font-size: 21px;"><strong>Tintas: </strong>
+                                    @if ($tecnica->tecnica !== 'No Aplica')
+                                        {{ $item->color_logos }}
+                                    @else
+                                        No Aplica
+                                    @endif
+                                </p>
+                                <p style="font-size: 21px;"> <strong>Tiempo de Entrega: </strong>
+                                    {{ $item->dias_entrega }} días
+                                    {{ $item->type_days == null
+                                        ? ($quote->type_days == 0
+                                            ? 'hábiles'
+                                            : 'naturales')
+                                        : ($item->type_days == 1
+                                            ? 'hábiles'
+                                            : ($item->type_days == 2
+                                                ? 'naturales'
+                                                : '')) }}.
+                                </p>
+                                <style>
+                                    .precio {
+                                        margin-top: 10px;
+                                    }
+
+                                    .precio td.title-cantidad {
+                                        text-align: center;
+                                        font-weight: bold;
+                                    }
+
+                                    .precio td.detalle-cantidad {
+                                        text-align: center;
+                                        color: black;
+                                        background-color: rgb(251, 251, 251);
+                                        vertical-align: middle;
+                                    }
+                                </style>
+                                <table class="precio" style="font-size: 21px; width: 100%">
+                                    <tr class="text-background">
+                                        <td colspan="4" class="title-cantidad">Cantidad</td>
+                                        <td colspan="4" class="title-cantidad">Precio Unitario</td>
+                                        <td colspan="4" class="title-cantidad">Precio Total</td>
+                                    </tr>
+                                    @if ($item->quote_by_scales)
+                                        @foreach ($scales_info as $scale)
+                                            @php
+                                                $precioUnitario = $scale->unit_price * $taxFee;
+                                                $precioTotal = $scale->total_price * $taxFee;
+                                                $totalIva = $scale->total_price * $taxFee * 0.16;
+                                                $precioUnitario = $quote->currency_type == 'USD' ? $precioUnitario / $quote->currency : $precioUnitario;
+                                                $precioTotal = $quote->currency_type == 'USD' ? $precioTotal / $quote->currency : $precioTotal;
+                                                $totalIva = $quote->currency_type == 'USD' ? $totalIva / $quote->currency : $totalIva;
+                                            @endphp
+                                            <tr>
+                                                <td colspan="4" class="detalle-cantidad">{{ $scale->quantity }} pz
+                                                </td>
+                                                <td colspan="4" class="detalle-cantidad">$
+                                                    {{ number_format($precioUnitario, 2, '.', ',') }}
+
+                                                </td>
+                                                <td colspan="4" class="detalle-cantidad">$
+                                                    {{ number_format($precioTotal, 2, '.', ',') }}
+                                                    @if ($quote->iva_by_item)
+                                                        <p style="font-size: 12px"><b>IVA:
+                                                            </b>${{ number_format($totalIva, 2, '.', ',') }}
+                                                        </p>
+                                                    @endif
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    @else
                                         @php
-                                            $precioUnitario = $scale->unit_price * $taxFee;
-                                            $precioTotal = $scale->total_price * $taxFee;
-                                            $totalIva = $scale->total_price * $taxFee * 0.16;
+                                            $precioUnitario = $item->precio_unitario * $taxFee;
+                                            $precioTotal = $item->precio_total * $taxFee;
+                                            $totalIva = $item->precio_total * $taxFee * 0.16;
                                             $precioUnitario = $quote->currency_type == 'USD' ? $precioUnitario / $quote->currency : $precioUnitario;
                                             $precioTotal = $quote->currency_type == 'USD' ? $precioTotal / $quote->currency : $precioTotal;
                                             $totalIva = $quote->currency_type == 'USD' ? $totalIva / $quote->currency : $totalIva;
                                         @endphp
                                         <tr>
-                                            <td colspan="4" class="detalle-cantidad">{{ $scale->quantity }} pz</td>
+                                            <td colspan="4" class="detalle-cantidad">{{ $item->cantidad }} pz</td>
                                             <td colspan="4" class="detalle-cantidad">$
-                                                {{ number_format($precioUnitario, 4, '.', ',') }}
+                                                {{ number_format($precioUnitario, 2, '.', ',') }}
+
                                             </td>
                                             <td colspan="4" class="detalle-cantidad">$
-                                                {{ number_format($precioTotal, 4, '.', ',') }}
+                                                {{ number_format($precioTotal, 2, '.', ',') }}
                                                 @if ($quote->iva_by_item)
                                                     <p style="font-size: 12px"><b>IVA:
-                                                        </b>${{ number_format($totalIva, 4, '.', ',') }}
+                                                        </b>${{ number_format($totalIva, 2, '.', ',') }}
                                                     </p>
                                                 @endif
                                             </td>
                                         </tr>
-                                    @endforeach
-                                @else
-                                    @php
-                                        $precioUnitario = $item->precio_unitario * $taxFee;
-                                        $precioTotal = $item->precio_total * $taxFee;
-                                        $totalIva = $item->precio_total * $taxFee * 0.16;
-                                        $precioUnitario = $quote->currency_type == 'USD' ? $precioUnitario / $quote->currency : $precioUnitario;
-                                        $precioTotal = $quote->currency_type == 'USD' ? $precioTotal / $quote->currency : $precioTotal;
-                                        $totalIva = $quote->currency_type == 'USD' ? $totalIva / $quote->currency : $totalIva;
-                                    @endphp
-                                    <tr>
-                                        <td colspan="4" class="detalle-cantidad">{{ $item->cantidad }} pz</td>
-                                        <td colspan="4" class="detalle-cantidad">$
-                                            {{ number_format($precioUnitario, 4, '.', ',') }}
+                                    @endif
+                                </table>
+                            </td>
+                        </table>
 
-                                        </td>
-                                        <td colspan="4" class="detalle-cantidad">$
-                                            {{ number_format($precioTotal, 4, '.', ',') }}
-                                            @if ($quote->iva_by_item)
-                                                <p style="font-size: 12px"><b>IVA:
-                                                    </b>${{ number_format($totalIva, 4, '.', ',') }}
-                                                </p>
-                                            @endif
-                                        </td>
-                                    </tr>
-                                @endif
-                            </table>
-                        </td>
-                    </tr>
+                    </td>
                 </table>
             @endforeach
         @else
