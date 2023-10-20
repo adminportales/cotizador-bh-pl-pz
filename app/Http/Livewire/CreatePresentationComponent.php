@@ -112,7 +112,11 @@ class CreatePresentationComponent extends Component
         $pdfContraportada = '';
         switch ($this->quote->company->name) {
             case 'PROMO LIFE':
-                $pdfCuerpo = PDF::loadView('pages.pdf.promolifeppt', $dataToPPT);
+                $pdfCuerpo = PDF::loadView('pages.pdf.pptpl.body', $dataToPPT);
+                $pdfPortada = PDF::loadView('pages.pdf.pptpl.firstpage', $dataToPPT);
+                if ($this->tieneContraportada) {
+                    $pdfContraportada = PDF::loadView('pages.pdf.pptpl.lastpage', $dataToPPT);
+                }
                 break;
             case 'BH TRADEMARKET':
                 $pdfCuerpo = PDF::loadView('pages.pdf.pptbh.body', $dataToPPT);
@@ -122,7 +126,11 @@ class CreatePresentationComponent extends Component
                 }
                 break;
             case 'PROMO ZALE':
-                $pdfCuerpo = PDF::loadView('pages.pdf.promozaleppt', $dataToPPT);
+                $pdfCuerpo = PDF::loadView('pages.pdf.pptpz.body', $dataToPPT);
+                $pdfPortada = PDF::loadView('pages.pdf.pptpz.firstpage', $dataToPPT);
+                if ($this->tieneContraportada) {
+                    $pdfContraportada = PDF::loadView('pages.pdf.pptpz.lastpage', $dataToPPT);
+                }
                 break;
             default:
                 break;
