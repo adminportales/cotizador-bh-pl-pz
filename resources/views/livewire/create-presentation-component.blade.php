@@ -48,13 +48,13 @@
                     <span class="text-danger">{{ $message }}</span>
                 @enderror
             </div>
-            <div class="form-group">
+            {{-- <div class="form-group">
                 <label for="color_primario">Color Primario</label>
                 <input type="color" class="form-control form-control-sm" id="color_primario"
                     wire:model="color_primario">
                 @error('color_primario')
                     <span class="text-danger">{{ $message }}</span>
-                @enderror
+                @enderror --}}
             </div>
             {{-- <div class="form-group">
                         <label for="color_secundario">Color Secundario</label>
