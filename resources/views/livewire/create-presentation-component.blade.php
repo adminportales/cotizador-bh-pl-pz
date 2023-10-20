@@ -142,15 +142,15 @@
                 <p>No hay Productos Cotizados</p>
             @endif --}}
             <button class="btn btn-info btn-sm btn-block mb-1" onclick="preview()">Previsualizar Presentacion</button>
-            <button class="btn btn-success btn-sm btn-block mb-1">Guardar Presentacion</button>
+            {{-- <button class="btn btn-success btn-sm btn-block mb-1">Guardar Presentacion</button> --}}
         </div>
         <div class="col-md-8">
             {{-- Spinnner loading --}}
-            {{-- <div wire:loading wire:target="previewPresentation" class="w-100 d-flex justify-content-center">
-                <div class="spinner-border text-info" role="status">
+            <div wire:loading.flex wire:target="previewPresentation" class="justify-content-center">
+                <div class="spinner-border text-primary" role="status">
                     <span class="sr-only">Loading...</span>
                 </div>
-            </div> --}}
+            </div>
             @if ($urlPDFPreview)
                 <iframe src="{{ $urlPDFPreview }}" style="width:100%; height:600px;" frameborder="0"></iframe>
             @endif
