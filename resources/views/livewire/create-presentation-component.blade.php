@@ -142,7 +142,7 @@
                 <p>No hay Productos Cotizados</p>
             @endif --}}
             <button class="btn btn-info btn-sm btn-block mb-1" onclick="preview()">Previsualizar Presentacion</button>
-            <button class="btn btn-success btn-sm btn-block mb-1">Cuardar Presentacion</button>
+            <button class="btn btn-success btn-sm btn-block mb-1">Guardar Presentacion</button>
         </div>
         <div class="col-md-8">
             {{-- Spinnner loading --}}
