@@ -54,8 +54,8 @@
                     wire:model="color_primario">
                 @error('color_primario')
                     <span class="text-danger">{{ $message }}</span>
-                @enderror --}}
-            </div>
+                @enderror
+            </div> --}}
             {{-- <div class="form-group">
                         <label for="color_secundario">Color Secundario</label>
                         <input type="color" class="form-control" id="color_secundario" wire:model="color_secundario">
