@@ -143,7 +143,7 @@
             <table class="table-header">
                 <tr>
                     <td style="width: 20%; text-align: left">
-                        <img src="quotesheet/bh/logo.png" class="logo">
+                        <img src="quotesheet/pl/logo.png" class="logo">
                     </td>
                     <td style="width: 60%; text-align: center">
                     </td>

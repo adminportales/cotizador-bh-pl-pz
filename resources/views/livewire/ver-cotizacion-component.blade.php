@@ -140,6 +140,31 @@
                                 <a class="btn btn-success w-100" target="_blank"
                                     href="{{ route('previsualizar.cotizacion', ['quote' => $quote]) }}">Ver PDF</a>
                             </div>
+                            <div class="col-md-4 mb-2">
+                                <div class="d-flex justify-content-center">
+                                    <button class="btn btn-info w-100" data-toggle="modal"
+                                    data-target="#createPPTModal">Crear Presentacion</button>
+                                </div>
+
+                                <!-- Modal -->
+                                <div wire:ignore.self class="modal fade" id="createPPTModal" tabindex="-1" data-backdrop="static"
+                                    aria-labelledby="createPPTModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog modal-xl">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="createPPTModalLabel">Crea tu presentacion</h5>
+                                                <button type="button" class="close" data-dismiss="modal"
+                                                    aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                @livewire('create-presentation-component', ['quote' => $quote])
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                             @if ($quote->company_id == auth()->user()->company_session)
                                 <div class="col-md-4 mb-2">
                                     <div class="d-flex justify-content-center">
@@ -162,31 +187,6 @@
                                         </div>
                                         <button class="btn btn-danger w-100" wire:click="enviarOdoo">Enviar a
                                             ODOO</button>
-                                    </div>
-                                </div>
-                                <div class="col-md-4 mb-2">
-                                    <div class="d-flex justify-content-center">
-                                        <button class="btn btn-info w-100" data-toggle="modal"
-                                        data-target="#createPPTModal">Crear Presentacion</button>
-                                    </div>
-
-                                    <!-- Modal -->
-                                    <div wire:ignore.self class="modal fade" id="createPPTModal" tabindex="-1" data-backdrop="static"
-                                        aria-labelledby="createPPTModalLabel" aria-hidden="true">
-                                        <div class="modal-dialog modal-xl">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h5 class="modal-title" id="createPPTModalLabel">Crea tu presentacion</h5>
-                                                    <button type="button" class="close" data-dismiss="modal"
-                                                        aria-label="Close">
-                                                        <span aria-hidden="true">&times;</span>
-                                                    </button>
-                                                </div>
-                                                <div class="modal-body">
-                                                    @livewire('create-presentation-component', ['quote' => $quote])
-                                                </div>
-                                            </div>
-                                        </div>
                                     </div>
                                 </div>
                             @endif

@@ -35,7 +35,7 @@
 
         .body-back {
             height: 100vh;
-            background-image: url(quotesheet/bh/ppt/fondoPPTbh.jpeg);
+            background-image: url(quotesheet/pz/ppt/fondoportada.jpg);
             background-repeat: no-repeat;
             background-size: cover;
             background-position: center left;
@@ -119,7 +119,7 @@
                 <table class="table-content">
                     <td>
                         <div class="logos">
-                            <img src="quotesheet/bh/logo.png" class="logo">
+                            <img src="quotesheet/pz/logo.jpg" class="logo">
                             {{-- <img src="quotesheet/bh/logo.png" class="logo"> --}}
                         </div>
                         <div class="client">

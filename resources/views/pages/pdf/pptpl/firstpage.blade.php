@@ -119,7 +119,7 @@
                 <table class="table-content">
                     <td>
                         <div class="logos">
-                            <img src="quotesheet/bh/logo.png" class="logo">
+                            <img src="quotesheet/pl/logo.png" class="logo">
                             {{-- <img src="quotesheet/bh/logo.png" class="logo"> --}}
                         </div>
                         <div class="client">
