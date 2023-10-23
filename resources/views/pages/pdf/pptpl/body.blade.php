@@ -226,7 +226,7 @@
                                     .precio td.detalle-cantidad {
                                         text-align: center;
                                         color: black;
-                                        background-color: rgb(251, 251, 251);
+                                        background-color: rgb(255, 255, 255);
                                         vertical-align: middle;
                                     }
                                 </style>

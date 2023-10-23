@@ -104,7 +104,7 @@
                             <tr>
                                 <td colspan="2">
                                     <p style="font-size:20px;  font-weight: bold">
-                                    {{ $user->name }}
+                                        {{ $user->name }}
                                     </p>
                                 </td>
                             </tr>
@@ -130,16 +130,14 @@
                                     modifica
                                     el número de piezas el precio cambiaría.</li>
                                 <li>El tiempo de entrega empieza a correr una vez recibida la Orden de Compra y
-                                    autorizada la muestra
-                                    física
+                                    autorizada la muestra física
                                     o
                                     virtual a solicitud del cliente.</li>
                                 <li>Vigencia de la cotización
-                                    {{ $quote->latestQuotesUpdate->quotesInformation->shelf_life ?: 30 }} días
+                                    {{ $quote->latestQuotesUpdate->quotesInformation->shelf_life ?: 5 }} días
                                     {{ $quote->type_days == 0 ? 'hábiles' : 'naturales' }}.</li>
                                 <li>Producto cotizado de fabricación nacional o importación puede afinarse la fecha de
-                                    entrega previo a
-                                    la
+                                    entrega previo a la
                                     emisión
                                     de Orden de Compra.</li>
                                 <li>Producto cotizado disponible en stock a la fecha de esta cotización puede
@@ -150,14 +148,16 @@
                             </ul>
                         </div>
 
-                        <div>
-                            <p colspan="3" style="text-align: center;font-size: 27px;margin-bottom: 0">www.trademarket.com.mx
+                        {{-- <div>
+                            <p colspan="3" style="text-align: center;font-size: 27px;margin-bottom: 0">
+                                www.trademarket.com.mx
                             </p>
-                            <p colspan="3" style="text-align: center; font-size: 16px;  margin-bottom: 0">San Andrés Atoto 155A
+                            <p colspan="3" style="text-align: center; font-size: 16px;  margin-bottom: 0">San Andrés
+                                Atoto 155A
                                 Naucalpan de
                                 Juárez, Méx. C.P. 53550
                                 Tel. +52(55) 5290 9100</p>
-                        </div>
+                        </div> --}}
                 </table>
             </div>
         </div>

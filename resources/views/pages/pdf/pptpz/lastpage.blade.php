@@ -122,42 +122,31 @@
                             <ul>
                                 <li>Condiciones de pago acordadas con el vendedor</li>
                                 <li>Precios unitarios mostrados antes de IVA</li>
-                                <li>Precios mostrados en
-                                    {{ $quote->currency_type == 'USD' ? 'dolares (USD)' : 'pesos mexicanos (MXP)' }}.
-                                </li>
-                                <li>El importe cotizado corresponde a la cantidad de piezas y número de tintas arriba
-                                    mencionadas, si se
+                                <li>Precios mostrados en {{ $quote->currency_type == 'USD' ? 'dolares (USD)' : 'pesos mexicanos (MXP)' }}.</li>
+                                <li>El importe cotizado corresponde a la cantidad de piezas y número de tintas arriba mencionadas, si se
                                     modifica
                                     el número de piezas el precio cambiaría.</li>
-                                <li>El tiempo de entrega empieza a correr una vez recibida la Orden de Compra y
-                                    autorizada la muestra
-                                    física
+                                <li>El tiempo de entrega empieza a correr una vez recibida la Orden de Compra y autorizada la muestra física
                                     o
                                     virtual a solicitud del cliente.</li>
-                                <li>Vigencia de la cotización
-                                    {{ $quote->latestQuotesUpdate->quotesInformation->shelf_life ?: 30 }} días
+                                <li>Vigencia de la cotización {{ $quote->latestQuotesUpdate->quotesInformation->shelf_life ?: 5 }} días
                                     {{ $quote->type_days == 0 ? 'hábiles' : 'naturales' }}.</li>
-                                <li>Producto cotizado de fabricación nacional o importación puede afinarse la fecha de
-                                    entrega previo a
-                                    la
+                                <li>Producto cotizado de fabricación nacional o importación puede afinarse la fecha de entrega previo a la
                                     emisión
                                     de Orden de Compra.</li>
-                                <li>Producto cotizado disponible en stock a la fecha de esta cotización puede
-                                    modificarse al paso de los
-                                    días
-                                    sin
-                                    previo aviso. Solo se bloquea el inventario al recibir Orden de Compra</li>
+                                <li>Producto cotizado disponible en stock a la fecha de esta cotización puede modificarse al paso de los
+                                    días sin previo aviso. Solo se bloquea el inventario al recibir Orden de Compra</li>
                             </ul>
                         </div>
 
-                        <div>
+                        {{-- <div>
                             <p colspan="3" style="text-align: center;font-size: 27px;margin-bottom: 0">www.trademarket.com.mx
                             </p>
                             <p colspan="3" style="text-align: center; font-size: 16px;  margin-bottom: 0">San Andrés Atoto 155A
                                 Naucalpan de
                                 Juárez, Méx. C.P. 53550
                                 Tel. +52(55) 5290 9100</p>
-                        </div>
+                        </div> --}}
                 </table>
             </div>
         </div>

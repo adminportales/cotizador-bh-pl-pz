@@ -177,7 +177,7 @@
                         }
                     @endphp
                     <td style="vertical-align: middle; height: 16cm;">
-                        <p style="margin: 0; font-size: 31px; font-weight: bold;">{{ $producto->name }}</p>
+                        <p style="margin: 0; font-size: 31px; font-weight: bold;">{{ Str::ucfirst($producto->name) }}</p>
                         <table>
                             <td style="width:37%; vertical-align: middle">
                                 @if ($producto->image)
@@ -226,7 +226,7 @@
                                     .precio td.detalle-cantidad {
                                         text-align: center;
                                         color: black;
-                                        background-color: rgb(251, 251, 251);
+                                        background-color: rgb(255, 255, 255);
                                         vertical-align: middle;
                                     }
                                 </style>

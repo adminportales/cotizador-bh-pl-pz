@@ -35,7 +35,7 @@
 
         .body-back {
             height: 100vh;
-            background-image: url(quotesheet/bh/ppt/fondoPPTbh.jpeg);
+            background-image: url(quotesheet/pl/ppt/fondoportada.jpg);
             background-repeat: no-repeat;
             background-size: cover;
             background-position: center left;
