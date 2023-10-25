@@ -1,6 +1,6 @@
-<div class="container ">
-    <div class="row">
-        <div class="col-md-3 d-md-none d-block mb-2">
+<div class="">
+    <div class="grid grid-cols-12 gap-3">
+        <div class="md:hidden block mb-2">
             <div class="d-flex justify-content-between shadow-sm align-items-center p-1">
                 <p class="m-0">+ {{ $products->total() }} resultados</p>
                 <div>
@@ -22,7 +22,6 @@
                     </button>
                 </div>
             </div>
-            <!-- Modal -->
             <div wire:ignore.self class="modal fade" id="exampleModal" tabindex="-1"
                 aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
@@ -96,25 +95,27 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-3 d-none d-md-block">
-            <div class="card component-card_1 m-0 w-100">
+        <div class="col-span-3 hidden md:block">
+            <div class="w-full border-2 border-gray-200 py-4 px-5 rounded-lg">
                 <div class="card-body">
                     <p>Filtros de busqueda</p>
-                    <input wire:model='nombre' type="text" class="form-control mb-2" name="search"
-                        id="search" placeholder="Nombre">
-                    <input wire:model='sku' type="text" class="form-control mb-2" name="search" id="search"
+                    <p>Buscar por</p>
+                    <input wire:model='nombre' type="text"
+                        class="block w-full p-3 mb-2 text-gray-900 border border-gray-300 rounded-md bg-gray-50 sm:text-xs focus:ring-blue-500 focus:border-blue-500 "
+                        name="search" id="search" placeholder="Nombre">
+                    <input wire:model='sku' type="text" class="block w-full p-3 mb-2 text-gray-900 border border-gray-300 rounded-md bg-gray-50 sm:text-xs focus:ring-blue-500 focus:border-blue-500" name="search" id="search"
                         placeholder="SKU">
-                    <input wire:model='color' type="text" class="form-control mb-2" name="color"
+                    <input wire:model='color' type="text" class="block w-full p-3 mb-2 text-gray-900 border border-gray-300 rounded-md bg-gray-50 sm:text-xs focus:ring-blue-500 focus:border-blue-500" name="color"
                         id="color" placeholder="Ingrese el color">
-                    <input wire:model='category' type="text" class="form-control mb-2" name="category"
+                    <input wire:model='category' type="text" class="block w-full p-3 mb-2 text-gray-900 border border-gray-300 rounded-md bg-gray-50 sm:text-xs focus:ring-blue-500 focus:border-blue-500" name="category"
                         id="category" placeholder="Ingrese la familia">
-                    <select wire:model='proveedor' name="proveedores" id="provee" class="form-control mb-2">
+                    <select wire:model='proveedor' name="proveedores" id="provee" class="block w-full p-3 mb-2 text-gray-900 border border-gray-300 rounded-md bg-gray-50 sm:text-xs focus:ring-blue-500 focus:border-blue-500">
                         <option value="">Seleccione Proveedor...</option>
                         @foreach ($proveedores as $provider)
                             <option value="{{ $provider->id }}">{{ $provider->company }}</option>
                         @endforeach
                     </select>
-                    <select wire:model='type' name="type" id="type" class="form-control mb-2">
+                    <select wire:model='type' name="type" id="type" class="block w-full p-3 mb-2 text-gray-900 border border-gray-300 rounded-md bg-gray-50 sm:text-xs focus:ring-blue-500 focus:border-blue-500">
                         <option value="">Seleccione Tipo...</option>
                         @foreach ($types as $type)
                             <option value="{{ $type->id }}">{{ $type->type }}</option>
@@ -138,13 +139,13 @@
                             value="{{ $stock }}" max="{{ $stock }}">
                     </div>
                     <p class="mb-0">Ordenar por Stock</p>
-                    <select wire:model='orderStock' name="orderStock" id="provee" class="form-control mb-2">
+                    <select wire:model='orderStock' name="orderStock" id="provee" class="block w-full p-3 mb-2 text-gray-900 border border-gray-300 rounded-md bg-gray-50 sm:text-xs focus:ring-blue-500 focus:border-blue-500">
                         <option value="">Ninguno</option>
                         <option value="ASC">De menor a mayor</option>
                         <option value="DESC">De mayor a menor</option>
                     </select>
                     <p class="mb-0">Ordenar por Precio</p>
-                    <select wire:model='orderPrice' name="orderPrice" id="provee" class="form-control mb-2">
+                    <select wire:model='orderPrice' name="orderPrice" id="provee" class="block w-full p-3 mb-2 text-gray-900 border border-gray-300 rounded-md bg-gray-50 sm:text-xs focus:ring-blue-500 focus:border-blue-500">
                         <option value="">Ninguno</option>
                         <option value="ASC">De menor a mayor</option>
                         <option value="DESC">De mayor a menor</option>
@@ -153,31 +154,36 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-9">
-            <div class="px-4 py-3 mb-1 shadow-sm d-none d-md-block">
-                <div class="d-md-flex justify-content-between align-items-center">
-                    <p class="m-0">¿Vas a cotizar un producto que no esta en el catalogo?</p>
-                    <div>
-                        <a href="{{ route('addProduct.cotizador') }}" class="btn btn-sm btn-info">Agregar Nuevo
+        <div class="col-span-12 md:col-span-9">
+            <div class="w-full border-2 border-gray-200 py-4 px-5 rounded-lg md:block hidden mb-3">
+                <div class="flex justify-between items-center">
+                    <p class="m-0 text-lg font-semibold grow">¿Vas a cotizar un producto que no esta en el catalogo?
+                    </p>
+                    <div class="text-center flex lg:flex-row md:flex-col">
+                        <a href="{{ route('addProduct.cotizador') }}"
+                            class="inline-block text-white bg-green-500 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-xl text-sm px-5 py-2.5 text-center mr-2 mb-2 ">Agregar
+                            Nuevo
                             Producto</a>
-                        <a href="{{ route('listProducts.cotizador') }}" class="btn btn-sm btn-info">Ver Mis
+                        <a href="{{ route('listProducts.cotizador') }}"
+                            class="inline-block text-white bg-blue-600 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-xl text-sm px-5 py-2.5 text-center mr-2 mb-2 ">Ver
+                            Mis
                             Productos</a>
                     </div>
                 </div>
             </div>
-            <div class="position-relative">
+            <div class="relative border-2 border-gray-200 py-4 px-5 rounded-lg w-full">
                 @php
                     $counter = $products->perPage() * $products->currentPage() - $products->perPage() + 1;
                 @endphp
                 @if (count($products) <= 0)
-                    <div class="d-flex flex-wrap justify-content-center align-items-center flex-column">
+                    <div class="flex flex-wrap justify-center items-center flex-col">
                         <p>No hay resultados de busqueda en la pagina actual</p>
                         @if (count($products->items()) == 0 && $products->currentPage() > 1)
                             <p>Click en la paginacion para ver mas resultados</p>
                         @endif
                     </div>
                 @endif
-                <div class="position-absolute w-100 d-flex justify-content-center" style="top: 40%;z-index: 100;">
+                <div class="absolute w-full flex justify-center" style="top: 40%;z-index: 100;">
                     <div wire:loading.flex>
                         <div class="sk-chase">
                             <div class="sk-chase-dot"></div>
@@ -189,11 +195,11 @@
                         </div>
                     </div>
                 </div>
-                <div class="row " wire:loading.class="opacity-70">
+                <div class="grid grid-cols-12 gap-2 mb-3" wire:loading.class="opacity-70">
                     @foreach ($products as $row)
-                        <div class="col-md-4 col-lg-3 col-sm-6  d-flex justify-content-center">
-                            <div class="card product-info">
-                                <div class="card-body text-center shadow-sm p-2">
+                        <div class="sm:col-span-6 lg:col-span-3 md:col-span-4 col-span-12 flex justify-center">
+                            <div class="border-2 border-gray-200 py-2 px-3 rounded-xl w-full h-full">
+                                <div class="text-center shadow-sm p-2 h-full">
                                     @php
                                         $priceProduct = $row->price;
                                         if ($row->producto_promocion) {
@@ -203,29 +209,29 @@
                                         }
                                     @endphp
 
-                                    <div class="d-flex flex-row flex-sm-column">
-                                        <div class="text-center" style="height: 150px;" {{-- wire:click='showPreview({{ $row->id }})' --}}>
+                                    <div class="flex flex-row sm:flex-col justify-between h-full">
+                                        <div class="flex justify-center" style="height: 150px;">
                                             <img src="{{ $row->firstImage ? $row->firstImage->image_url : '' }}"
-                                                class="card-img-top " alt="{{ $row->name }}"
+                                                alt="{{ $row->name }}" class="text-center"
                                                 style="width: auto; max-width: 150px; max-height: 150px; height: auto">
                                         </div>
-                                        <div class="info-products">
-                                            <h5 class="card-title m-0" style="text-transform: capitalize">
+                                        <div class="info-products flex-grow">
+                                            <h5 class="text-lg font-medium m-0" style="text-transform: capitalize">
                                                 {{ Str::limit($row->name, 22, '...') }}</h5>
-                                            <p class=" m-0 pt-1" style="font-size: 16px"><strong>SKU:</strong>
-                                                {{ $row->sku }}</p>
-                                            <div class="d-flex justify-content-between align-items-center">
+                                            <p class="m-0 pt-0" style="font-size: 16px">SKU: {{ $row->sku }}</p>
+                                            <div class="flex justify-between items-center mb-2">
                                                 <div class="text-left">
-                                                    <p class=" m-0" style="font-weight: bold">$
+                                                    <p class=" m-0">$
                                                         {{ round($priceProduct / ((100 - $utilidad) / 100), 2) }}</p>
-                                                    <p class="m-0" style="font-size: 16px">Disponible: <span
-                                                            style="font-weight: bold">{{ $row->stock }}</span></p>
+                                                    <p class="m-0" style="font-size: 16px">Disponible:
+                                                        <span class="font-bold">{{ $row->stock }}</span>
+                                                    </p>
                                                 </div>
-                                                <a href="#" wire:click="cotizar({{ $row->id }})"
-                                                    class="btn btn-sm btn-primary">
-                                                    Cotizar
-                                                </a>
                                             </div>
+                                            <a href="#" wire:click="cotizar({{ $row->id }})"
+                                                class="block text-white bg-blue-500 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-xl text-sm px-5 py-2.5 text-center">
+                                                Cotizar
+                                            </a>
                                         </div>
                                     </div>
                                 </div>
@@ -233,32 +239,60 @@
                         </div>
                     @endforeach
                 </div>
-                <div class="d-flex d-sm-none justify-content-center">
-                    {{ $products->onEachSide(0)->links() }}
+                <div class="flex md:hidden justify-center">
+                    <div>
+                        {{ $products->onEachSide(0)->links() }}
+                    </div>
                 </div>
-                <div class="d-none d-sm-flex justify-content-center">
-                    {{ $products->onEachSide(3)->links() }}
+                <div class="hidden md:flex justify-center">
+                    <div>
+                        {{ $products->onEachSide(3)->links() }}
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="modal fade" id="previewModal" tabindex="-1" aria-labelledby="previewModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="previewModalLabel">Modal title</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
+    <!-- Modal toggle -->
+    <button data-modal-target="staticModal" data-modal-toggle="staticModal"
+        class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+        type="button">
+        Toggle modal
+    </button>
+
+    <!-- Main modal -->
+    <div id="staticModal" data-modal-backdrop="static" tabindex="-1" aria-hidden="true"
+        class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
+        <div class="relative w-full max-w-2xl max-h-full">
+            <!-- Modal content -->
+            <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+                <!-- Modal header -->
+                <div class="flex items-start justify-between p-4 border-b rounded-t dark:border-gray-600">
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
+                        Static modal
+                    </h3>
+                    <button type="button"
+                        class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ml-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
+                        data-modal-hide="staticModal">
+                        <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                            viewBox="0 0 14 14">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+                        </svg>
+                        <span class="sr-only">Close modal</span>
                     </button>
                 </div>
-                <div class="modal-body">
-                    ...
+                <!-- Modal body -->
+                <div class="p-6 space-y-6">
+
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
+                <!-- Modal footer -->
+                <div class="flex items-center p-6 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600">
+                    <button data-modal-hide="staticModal" type="button"
+                        class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">I
+                        accept</button>
+                    <button data-modal-hide="staticModal" type="button"
+                        class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">Decline</button>
                 </div>
             </div>
         </div>

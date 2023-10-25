@@ -30,7 +30,7 @@ class CotizadorController extends Controller
 
     public function catalogo()
     {
-        return view('pages.catalogo.catalogo');
+        return view('paginas.catalogo.catalogo');
     }
 
     public function verProducto(Product $product)

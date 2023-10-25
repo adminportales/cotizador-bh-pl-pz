@@ -16,7 +16,7 @@ class Catalogo extends Component
 {
     use WithPagination;
 
-    protected $paginationTheme = 'bootstrap';
+    // protected $paginationTheme = 'bootstrap';
 
     public $nombre, $sku, $proveedor, $color, $category, $type, $precioMax, $precioMin, $stockMax, $stockMin, $orderStock = '', $orderPrice = '';
 
@@ -144,7 +144,7 @@ class Catalogo extends Component
             ->select('products.*')
             ->paginate(16);
         // Dispacher
-        return view('pages.catalogo.catalogoComponent', [
+        return view('paginas.catalogo.catalogoComponent', [
             'products' => $products,
             'utilidad' => $utilidad,
             'types' => $types,

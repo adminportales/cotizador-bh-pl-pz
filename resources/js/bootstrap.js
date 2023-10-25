@@ -1,5 +1,5 @@
 window._ = require('lodash');
-
+import 'flowbite';
 try {
     //require('bootstrap');
 } catch (e) {}
