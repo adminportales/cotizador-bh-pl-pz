@@ -35,7 +35,7 @@
         }
     @endphp
     <div id="app">
-        @include('components.navbar')
+        @include('components.cotizador.navbar')
         <div class="max-w-screen-xl mx-auto p-4">
             @yield('content')
         </div>

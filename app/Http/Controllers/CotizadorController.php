@@ -84,7 +84,7 @@ class CotizadorController extends Controller
         } catch (Exception $e) {
             $msg = "No se obtuvo informacion acerca del Stock de este producto. Es posible que los datos sean incorrectos. Error: " . $e->getMessage();
         }
-        return view('pages.catalogo.product', compact('product', 'utilidad', "msg", "disponiblidad"));
+        return view('paginas.producto.product', compact('product', 'utilidad', "msg", "disponiblidad"));
     }
 
     public function cotizacion()

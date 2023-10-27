@@ -285,7 +285,7 @@ class FormularioDeCotizacion extends Component
             }
         }
 
-        return view('pages.catalogo.formulario-de-cotizacion', [
+        return view('components.cotizador.formulario-de-cotizacion', [
             'materiales' => $materiales,
             'techniquesAvailables' => $techniquesAvailables,
             'sizesAvailables' => $sizesAvailables,

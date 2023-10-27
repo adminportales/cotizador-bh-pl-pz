@@ -28,6 +28,6 @@ class CountCartQuote extends Component
     }
     public function render()
     {
-        return view('components.count-cart-quote');
+        return view('components.cotizador.count-cart-quote');
     }
 }
