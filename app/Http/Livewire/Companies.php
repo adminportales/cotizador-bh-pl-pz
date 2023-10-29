@@ -44,7 +44,7 @@ class Companies extends Component
             $companiesPro[$company->id] = CompaniePro::where('companie_id', $company->id)->pluck('provider_id')->toArray();
         }
 
-        return view('livewire.companies.view', [
+        return view('admin.companies.view', [
             'companies' => $companies,
             'proveders' => $proveders,
             'companiesPro' => $companiesPro

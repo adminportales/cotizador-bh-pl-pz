@@ -20,7 +20,7 @@ class Techniques extends Component
     {
         $keyWord = '%' . $this->keyWord . '%';
 
-        return view('livewire.techniques.view', [
+        return view('admin.personalizacion.material_y_tecnica.techniques.view', [
             'techniques' => Technique::latest()
                 ->orWhere('nombre', 'LIKE', $keyWord)
                 ->paginate(10),

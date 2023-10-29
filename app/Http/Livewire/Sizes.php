@@ -19,7 +19,7 @@ class Sizes extends Component
     public function render()
     {
         $keyWord = '%' . $this->keyWord . '%';
-        return view('livewire.sizes.view', [
+        return view('admin.personalizacion.sizes.sizes.view', [
             'sizes' => Size::latest()
                 ->orWhere('nombre', 'LIKE', $keyWord)
                 ->paginate(10),

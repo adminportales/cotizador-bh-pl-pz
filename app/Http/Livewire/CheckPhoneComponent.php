@@ -10,7 +10,7 @@ class CheckPhoneComponent extends Component
     public $phone;
     public function render()
     {
-        return view('livewire.check-phone-component');
+        return view('components.cotizador.check-phone-component');
     }
 
     public function changePhone()

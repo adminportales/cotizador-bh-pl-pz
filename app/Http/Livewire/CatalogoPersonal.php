@@ -32,7 +32,7 @@ class CatalogoPersonal extends Component
             ->where($nameDB . '.products.name', 'LIKE', $keyWord)
             ->where($nameDB . '.products.visible', true)
             ->simplePaginate(32);
-        return view('livewire.catalogo-personal', ['products' => $products,]);
+        return view('cotizador.mis_productos.catalogo-personal', ['products' => $products,]);
     }
 
     public function editProduct($product_id)

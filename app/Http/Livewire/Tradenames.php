@@ -17,22 +17,22 @@ class Tradenames extends Component
     public function render()
     {
 		$keyWord = '%'.$this->keyWord .'%';
-        return view('livewire.tradenames.view', [
+        return view('admin.tradenames.view', [
             'tradenames' => Tradename::latest()
 						->orWhere('client_id', 'LIKE', $keyWord)
 						->orWhere('name', 'LIKE', $keyWord)
 						->paginate(10),
         ]);
     }
-	
+
     public function cancel()
     {
         $this->resetInput();
         $this->updateMode = false;
     }
-	
+
     private function resetInput()
-    {		
+    {
 		$this->client_id = null;
 		$this->name = null;
     }
@@ -44,11 +44,11 @@ class Tradenames extends Component
 		'name' => 'required',
         ]);
 
-        Tradename::create([ 
+        Tradename::create([
 			'client_id' => $this-> client_id,
 			'name' => $this-> name
         ]);
-        
+
         $this->resetInput();
 		$this->emit('closeModal');
 		session()->flash('message', 'Tradename Successfully created.');
@@ -58,10 +58,10 @@ class Tradenames extends Component
     {
         $record = Tradename::findOrFail($id);
 
-        $this->selected_id = $id; 
+        $this->selected_id = $id;
 		$this->client_id = $record-> client_id;
 		$this->name = $record-> name;
-		
+
         $this->updateMode = true;
     }
 
@@ -74,7 +74,7 @@ class Tradenames extends Component
 
         if ($this->selected_id) {
 			$record = Tradename::find($this->selected_id);
-            $record->update([ 
+            $record->update([
 			'client_id' => $this-> client_id,
 			'name' => $this-> name
             ]);

@@ -19,7 +19,7 @@ class PricesTechniques extends Component
     public function render()
     {
 		$keyWord = '%'.$this->keyWord .'%';
-        return view('livewire.prices.view', [
+        return view('admin.personalizacion.prices.view', [
             'sizeMaterialTechniques' => SizeMaterialTechnique::paginate(20),
         ]);
     }

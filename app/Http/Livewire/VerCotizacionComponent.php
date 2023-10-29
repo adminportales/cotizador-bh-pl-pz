@@ -35,7 +35,7 @@ class VerCotizacionComponent extends Component
         if ($empresa) {
             $nombreComercial = $empresa->firstTradename;
         }
-        return view('livewire.ver-cotizacion-component', ['nombreComercial' => $nombreComercial]);
+        return view('cotizador.ver_cotizacion.ver-cotizacion-component', ['nombreComercial' => $nombreComercial]);
     }
 
     public function enviar()
@@ -52,22 +52,22 @@ class VerCotizacionComponent extends Component
         switch ($this->quote->company->name) {
             case 'PROMO LIFE':
                 # code...
-                $pdf = \PDF::loadView('pages.pdf.promolife', ['quote' => $this->quote, 'nombreComercial' => $nombreComercial]);
+                $pdf = \PDF::loadView('pdf.promolife', ['quote' => $this->quote, 'nombreComercial' => $nombreComercial]);
                 break;
             case 'BH TRADEMARKET':
                 # code...
-                $pdf = \PDF::loadView('pages.pdf.bh', ['quote' => $this->quote, 'nombreComercial' => $nombreComercial]);
+                $pdf = \PDF::loadView('pdf.bh', ['quote' => $this->quote, 'nombreComercial' => $nombreComercial]);
                 break;
             case 'PROMO ZALE':
                 # code...
-                $pdf = \PDF::loadView('pages.pdf.promozale', ['quote' => $this->quote, 'nombreComercial' => $nombreComercial]);
+                $pdf = \PDF::loadView('pdf.promozale', ['quote' => $this->quote, 'nombreComercial' => $nombreComercial]);
                 break;
 
             default:
                 # code...
                 break;
         }
-        // $pdf = PDF::loadView('pages.pdf.promolife', ['quote' => $this->quote]);
+        // $pdf = PDF::loadView('pdf.promolife', ['quote' => $this->quote]);
         $pdf->setPaper('Letter', 'portrait');
         $pdf = $pdf->stream($this->quote->lead . ".pdf");
         $path =  "/storage/quotes/" . time() . $this->quote->lead . ".pdf";
@@ -173,15 +173,15 @@ class VerCotizacionComponent extends Component
         switch ($this->quote->company->name) {
             case 'PROMO LIFE':
                 $keyOdoo = 'cd78567e59e016e964cdcc1bd99367c6';
-                $pdf = PDF::loadView('pages.pdf.promolife', ['quote' => $this->quote, 'nombreComercial' => $nombreComercial]);
+                $pdf = PDF::loadView('pdf.promolife', ['quote' => $this->quote, 'nombreComercial' => $nombreComercial]);
                 break;
             case 'BH TRADEMARKET':
                 $keyOdoo = 'e877f47a2a844ded99004e444c5a9797';
-                $pdf = PDF::loadView('pages.pdf.bh', ['quote' => $this->quote, 'nombreComercial' => $nombreComercial]);
+                $pdf = PDF::loadView('pdf.bh', ['quote' => $this->quote, 'nombreComercial' => $nombreComercial]);
                 break;
             case 'PROMO ZALE':
                 $keyOdoo = '0e31683a8597606123ff4fcfab772ed7';
-                $pdf = PDF::loadView('pages.pdf.promozale', ['quote' => $this->quote, 'nombreComercial' => $nombreComercial]);
+                $pdf = PDF::loadView('pdf.promozale', ['quote' => $this->quote, 'nombreComercial' => $nombreComercial]);
                 break;
 
             default:

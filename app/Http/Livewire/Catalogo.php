@@ -144,7 +144,7 @@ class Catalogo extends Component
             ->select('products.*')
             ->paginate(16);
         // Dispacher
-        return view('paginas.catalogo.catalogoComponent', [
+        return view('cotizador.catalogo.catalogoComponent', [
             'products' => $products,
             'utilidad' => $utilidad,
             'types' => $types,

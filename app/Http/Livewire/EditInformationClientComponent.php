@@ -39,7 +39,7 @@ class EditInformationClientComponent extends Component
     {
         if ($this->taxFee > 99)
             $this->taxFee = 99;
-        return view('livewire.edit-information-client-component');
+        return view('cotizador.ver_cotizacion.edit-information-client-component');
     }
 
     public function guardarCotizacion()

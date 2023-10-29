@@ -17,7 +17,7 @@ class Clients extends Component
     public function render()
     {
 		$keyWord = '%'.$this->keyWord .'%';
-        return view('livewire.clients.view', [
+        return view('admin.clients.view', [
             'clients' => Client::latest()
 						->orWhere('user_id', 'LIKE', $keyWord)
 						->orWhere('client_odoo_id', 'LIKE', $keyWord)

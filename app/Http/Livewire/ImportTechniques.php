@@ -27,7 +27,7 @@ class ImportTechniques extends Component
 
     public function render()
     {
-        return view('livewire.import-techniques.import-techniques');
+        return view('admin.personalizacion.import-techniques.import-techniques');
     }
 
     public function save()

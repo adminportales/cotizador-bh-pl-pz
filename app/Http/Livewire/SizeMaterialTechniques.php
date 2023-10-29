@@ -21,7 +21,7 @@ class SizeMaterialTechniques extends Component
     public function render()
     {
         $keyWord = '%' . $this->keyWord . '%';
-        return view('livewire.size-material-techniques.view', [
+        return view('admin.personalizacion.sizes.size-material-techniques.view', [
             'sizeMaterialTechniques' => MaterialTechnique::orderby('material_id', 'asc')->paginate(10),
             'sizes' => Size::all(),
             'materialsTechniques' => MaterialTechnique::all()

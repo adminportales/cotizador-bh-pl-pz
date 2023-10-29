@@ -29,7 +29,7 @@ class CreatePresentationComponent extends Component
 
     public function render()
     {
-        return view('livewire.create-presentation-component');
+        return view('cotizador.ver_cotizacion.create-presentation-component');
     }
 
     public function previewPresentation()
@@ -112,24 +112,24 @@ class CreatePresentationComponent extends Component
         $pdfContraportada = '';
         switch ($this->quote->company->name) {
             case 'PROMO LIFE':
-                $pdfCuerpo = PDF::loadView('pages.pdf.pptpl.body', $dataToPPT);
-                $pdfPortada = PDF::loadView('pages.pdf.pptpl.firstpage', $dataToPPT);
+                $pdfCuerpo = PDF::loadView('pdf.pptpl.body', $dataToPPT);
+                $pdfPortada = PDF::loadView('pdf.pptpl.firstpage', $dataToPPT);
                 if ($this->tieneContraportada) {
-                    $pdfContraportada = PDF::loadView('pages.pdf.pptpl.lastpage', $dataToPPT);
+                    $pdfContraportada = PDF::loadView('pdf.pptpl.lastpage', $dataToPPT);
                 }
                 break;
             case 'BH TRADEMARKET':
-                $pdfCuerpo = PDF::loadView('pages.pdf.pptbh.body', $dataToPPT);
-                $pdfPortada = PDF::loadView('pages.pdf.pptbh.firstpage', $dataToPPT);
+                $pdfCuerpo = PDF::loadView('pdf.pptbh.body', $dataToPPT);
+                $pdfPortada = PDF::loadView('pdf.pptbh.firstpage', $dataToPPT);
                 if ($this->tieneContraportada) {
-                    $pdfContraportada = PDF::loadView('pages.pdf.pptbh.lastpage', $dataToPPT);
+                    $pdfContraportada = PDF::loadView('pdf.pptbh.lastpage', $dataToPPT);
                 }
                 break;
             case 'PROMO ZALE':
-                $pdfCuerpo = PDF::loadView('pages.pdf.pptpz.body', $dataToPPT);
-                $pdfPortada = PDF::loadView('pages.pdf.pptpz.firstpage', $dataToPPT);
+                $pdfCuerpo = PDF::loadView('pdf.pptpz.body', $dataToPPT);
+                $pdfPortada = PDF::loadView('pdf.pptpz.firstpage', $dataToPPT);
                 if ($this->tieneContraportada) {
-                    $pdfContraportada = PDF::loadView('pages.pdf.pptpz.lastpage', $dataToPPT);
+                    $pdfContraportada = PDF::loadView('pdf.pptpz.lastpage', $dataToPPT);
                 }
                 break;
             default:

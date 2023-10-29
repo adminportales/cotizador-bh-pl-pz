@@ -29,6 +29,6 @@ class AllQuotesComponent extends Component
             ->groupBy('quotes.id')
             ->orderBy('quote_information.created_at', 'DESC')
             ->simplePaginate(30);
-        return view('livewire.all-quotes-component', ['quotes' => $quotes]);
+        return view('admin.cotizaciones.all-quotes-component', ['quotes' => $quotes]);
     }
 }

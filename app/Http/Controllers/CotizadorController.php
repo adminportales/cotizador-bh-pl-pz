@@ -23,14 +23,9 @@ class CotizadorController extends Controller
         $this->middleware('auth')->except(['enviarCotizacionesAOdoo']);
     }
 
-    public function index()
-    {
-        return view('home');
-    }
-
     public function catalogo()
     {
-        return view('paginas.catalogo.catalogo');
+        return view('cotizador.catalogo.catalogo');
     }
 
     public function verProducto(Product $product)
@@ -84,7 +79,7 @@ class CotizadorController extends Controller
         } catch (Exception $e) {
             $msg = "No se obtuvo informacion acerca del Stock de este producto. Es posible que los datos sean incorrectos. Error: " . $e->getMessage();
         }
-        return view('paginas.producto.product', compact('product', 'utilidad', "msg", "disponiblidad"));
+        return view('cotizador.producto.product', compact('product', 'utilidad', "msg", "disponiblidad"));
     }
 
     public function cotizacion()
@@ -94,7 +89,7 @@ class CotizadorController extends Controller
         if (auth()->user()->currentQuotes) {
             $cotizacionActual = auth()->user()->currentQuotes->where('active', true)->first();
         }
-        return view('pages.catalogo.cotizacion-actual', compact('cotizacionActual'));
+        return view('cotizador.cotizacion_actual.cotizacion-actual', compact('cotizacionActual'));
     }
 
     public function cotizaciones()
@@ -103,12 +98,12 @@ class CotizadorController extends Controller
     }
     public function verCotizacion(Quote $quote)
     {
-        return view('pages.catalogo.ver-cotizacion', compact('quote'));
+        return view('cotizador.ver_cotizacion.ver-cotizacion', compact('quote'));
     }
 
     public function finalizar()
     {
-        return view('pages.catalogo.finalizar');
+        return view('cotizador.finalizar_cotizacion.finalizar');
     }
     public function previsualizar(Quote $quote)
     {
@@ -123,15 +118,15 @@ class CotizadorController extends Controller
         switch ($company) {
             case 'PROMO LIFE':
                 # code...
-                $pdf = \PDF::loadView('pages.pdf.promolife', ['quote' => $quote, 'nombreComercial' => $nombreComercial]);
+                $pdf = \PDF::loadView('pdf.promolife', ['quote' => $quote, 'nombreComercial' => $nombreComercial]);
                 break;
             case 'BH TRADEMARKET':
                 # code...
-                $pdf = \PDF::loadView('pages.pdf.bh', ['quote' => $quote, 'nombreComercial' => $nombreComercial]);
+                $pdf = \PDF::loadView('pdf.bh', ['quote' => $quote, 'nombreComercial' => $nombreComercial]);
                 break;
             case 'PROMO ZALE':
                 # code...
-                $pdf = \PDF::loadView('pages.pdf.promozale', ['quote' => $quote, 'nombreComercial' => $nombreComercial]);
+                $pdf = \PDF::loadView('pdf.promozale', ['quote' => $quote, 'nombreComercial' => $nombreComercial]);
                 break;
 
             default:
@@ -145,11 +140,11 @@ class CotizadorController extends Controller
 
     public function all()
     {
-        return view('pages.catalogo.cotizaciones-all');
+        return view('admin.cotizaciones.cotizaciones-all');
     }
     public function dashboard()
     {
-        return view('pages.catalogo.dashboard');
+        return view('admin.dashboard.dashboard');
     }
 
     public function changeCompany($company)
@@ -192,11 +187,11 @@ class CotizadorController extends Controller
 
     public function addProductCreate()
     {
-        return view('pages.catalogo.addProduct');
+        return view('cotizador.mis_productos.addProduct');
     }
     public function listProducts()
     {
-        return view('pages.catalogo.listProducts');
+        return view('cotizador.mis_productos.listProducts');
     }
 
     public function enviarCotizacionesAOdoo()
@@ -236,17 +231,17 @@ class CotizadorController extends Controller
                     case 'PROMO LIFE':
                         # code...
                         $keyOdoo = 'cd78567e59e016e964cdcc1bd99367c6';
-                        $pdf = PDF::loadView('pages.pdf.promolife', ['quote' => $cotizacion, 'nombreComercial' => $nombreComercial]);
+                        $pdf = PDF::loadView('pdf.promolife', ['quote' => $cotizacion, 'nombreComercial' => $nombreComercial]);
                         break;
                     case 'BH TRADEMARKET':
                         # code...
                         $keyOdoo = 'e877f47a2a844ded99004e444c5a9797';
-                        $pdf = PDF::loadView('pages.pdf.bh', ['quote' => $cotizacion, 'nombreComercial' => $nombreComercial]);
+                        $pdf = PDF::loadView('pdf.bh', ['quote' => $cotizacion, 'nombreComercial' => $nombreComercial]);
                         break;
                     case 'PROMO ZALE':
                         # code...
                         $keyOdoo = '0e31683a8597606123ff4fcfab772ed7';
-                        $pdf = PDF::loadView('pages.pdf.promozale', ['quote' => $cotizacion, 'nombreComercial' => $nombreComercial]);
+                        $pdf = PDF::loadView('pdf.promozale', ['quote' => $cotizacion, 'nombreComercial' => $nombreComercial]);
                         break;
                     default:
                         # code...

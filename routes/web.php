@@ -39,15 +39,15 @@ Route::middleware(['auth'])->group(function () {
     //Route Hooks - Do not delete//
     Route::prefix('admin')->middleware(['role:admin'])->group(function () {
         Route::get('/', [CotizadorController::class, 'dashboard'])->name('dashboard');
-        Route::view('tradenames', 'livewire.tradenames.index')->middleware('auth');
         Route::get('/all-cotizaciones', [CotizadorController::class, 'all'])->name('all.cotizacion');
-        Route::view('importTechniques', 'livewire.import-techniques.index')->middleware('auth');
-        Route::view('materials', 'livewire.materials.index')->middleware('auth');
-        Route::view('sizes', 'livewire.sizes.index')->middleware('auth');
-        Route::view('prices', 'livewire.prices.index')->middleware('auth');
-        Route::view('users', 'livewire.users.index')->middleware('auth');
-        Route::view('clients', 'livewire.clients.index')->middleware('auth');
-        Route::view('companies', 'livewire.companies.index')->middleware('auth');
+        Route::view('importTechniques', 'admin.personalizacion.import-techniques.index')->middleware('auth');
+        Route::view('materials', 'admin.personalizacion.material_y_tecnica.materials.index')->middleware('auth');
+        Route::view('sizes', 'admin.personalizacion.sizes.sizes.index')->middleware('auth');
+        Route::view('prices', 'admin.personalizacion.prices.index')->middleware('auth');
+        Route::view('users', 'admin.users.index')->middleware('auth');
+        Route::view('clients', 'admin.clients.index')->middleware('auth');
+        Route::view('companies', 'admin.companies.index')->middleware('auth');
+        Route::view('tradenames', 'admin.tradenames.index')->middleware('auth');
 
     });
 });

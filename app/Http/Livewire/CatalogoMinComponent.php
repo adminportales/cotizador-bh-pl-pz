@@ -34,7 +34,7 @@ class CatalogoMinComponent extends Component
             ->where('products.price', '>', 0)
             ->paginate(9);
 
-        return view('livewire.catalogo-min-component', [
+        return view('cotizador.ver_cotizacion.catalogo-min-component', [
             'products' => $products,
             'utilidad' => $utilidad,
         ]);

@@ -20,7 +20,7 @@ class Materials extends Component
     {
         $keyWord = '%' . $this->keyWord . '%';
         $techniques = Technique::all();
-        return view('livewire.materials.view', [
+        return view('admin.personalizacion.material_y_tecnica.materials.view', [
             'materials' => Material::latest()
                 ->orWhere('nombre', 'LIKE', $keyWord)
                 ->orWhere('extras', 'LIKE', $keyWord)

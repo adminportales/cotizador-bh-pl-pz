@@ -45,7 +45,7 @@ class EditarCotizacionComponent extends Component
     public function render()
     {
         $quote = Quote::find($this->quote->id);
-        return view('livewire.editar-cotizacion-component', ['quote' => $quote]);
+        return view('cotizador.ver_cotizacion.editar-cotizacion-component', ['quote' => $quote]);
     }
 
     public function verDetalles($product)

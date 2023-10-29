@@ -63,7 +63,7 @@ class CurrentQuoteComponent extends Component
         $total = $this->totalQuote;
         $discount = $this->discountMount;
 
-        return view('pages.catalogo.current-quote-component', ['total' => $total, 'discount' => $discount, 'cotizacion' => $this->cotizacionActual]);
+        return view('cotizador.cotizacion_actual.current-quote-component', ['total' => $total, 'discount' => $discount, 'cotizacion' => $this->cotizacionActual]);
     }
 
     public function edit($quote_id)

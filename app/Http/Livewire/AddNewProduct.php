@@ -40,7 +40,7 @@ class AddNewProduct extends Component
                 array_push($errors, $error);
             }
         }
-        return view('livewire.add-new-product');
+        return view('cotizador.mis_productos.add-new-product');
     }
 
     public function guardar()

@@ -28,7 +28,7 @@ class Users extends Component
         //dd($this->companies);
         $keyWord = '%' . $this->keyWord . '%';
         $this->allUsers = User::where('visible', 1)->get();
-        return view('livewire.users.view', [
+        return view('admin.users.view', [
             'users' => User::latest()
                 ->orWhere('name', 'LIKE', $keyWord)
                 ->orWhere('email', 'LIKE', $keyWord)

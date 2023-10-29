@@ -127,6 +127,6 @@ class DashboardComponent extends Component
             'dataUserMountTickets' => $this->dataUserMountTickets
         ]);
 
-        return view('livewire.dashboard-component');
+        return view('admin.dashboard.dashboard-component');
     }
 }

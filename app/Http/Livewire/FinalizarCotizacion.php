@@ -82,7 +82,7 @@ class FinalizarCotizacion extends Component
 
         if ($this->taxFee > 99)
             $this->taxFee = 99;
-        return view('pages.catalogo.finalizar-cotizacion', compact('userClients'));
+        return view('cotizador.finalizar_cotizacion.finalizar-cotizacion', compact('userClients'));
     }
 
     public function limpiarLogo()
@@ -293,17 +293,17 @@ class FinalizarCotizacion extends Component
             case 'PROMO LIFE':
                 # code...
                 $keyOdoo = 'cd78567e59e016e964cdcc1bd99367c6';
-                $pdf = PDF::loadView('pages.pdf.promolife', ['quote' => $quote, 'nombreComercial' => $nombreComercial]);
+                $pdf = PDF::loadView('pdf.promolife', ['quote' => $quote, 'nombreComercial' => $nombreComercial]);
                 break;
             case 'BH TRADEMARKET':
                 # code...
                 $keyOdoo = 'e877f47a2a844ded99004e444c5a9797';
-                $pdf = PDF::loadView('pages.pdf.bh', ['quote' => $quote, 'nombreComercial' => $nombreComercial]);
+                $pdf = PDF::loadView('pdf.bh', ['quote' => $quote, 'nombreComercial' => $nombreComercial]);
                 break;
             case 'PROMO ZALE':
                 # code...
                 $keyOdoo = '0e31683a8597606123ff4fcfab772ed7';
-                $pdf = PDF::loadView('pages.pdf.promozale', ['quote' => $quote, 'nombreComercial' => $nombreComercial]);
+                $pdf = PDF::loadView('pdf.promozale', ['quote' => $quote, 'nombreComercial' => $nombreComercial]);
                 break;
             default:
                 # code...
@@ -607,15 +607,15 @@ class FinalizarCotizacion extends Component
         switch (auth()->user()->companySession->name) {
             case 'PROMO LIFE':
                 # code...
-                $pdf = PDF::loadView('pages.pdf.promolife', ['quote' => $quote, 'nombreComercial' => $nombreComercial]);
+                $pdf = PDF::loadView('pdf.promolife', ['quote' => $quote, 'nombreComercial' => $nombreComercial]);
                 break;
             case 'BH TRADEMARKET':
                 # code...
-                $pdf = PDF::loadView('pages.pdf.bh', ['quote' => $quote, 'nombreComercial' => $nombreComercial]);
+                $pdf = PDF::loadView('pdf.bh', ['quote' => $quote, 'nombreComercial' => $nombreComercial]);
                 break;
             case 'PROMO ZALE':
                 # code...
-                $pdf = PDF::loadView('pages.pdf.promozale', ['quote' => $quote, 'nombreComercial' => $nombreComercial]);
+                $pdf = PDF::loadView('pdf.promozale', ['quote' => $quote, 'nombreComercial' => $nombreComercial]);
                 break;
             default:
                 # code...

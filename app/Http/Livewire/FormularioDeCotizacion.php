@@ -504,9 +504,10 @@ class FormularioDeCotizacion extends Component
         $this->imageSelected = null;
     }
 
-    public function changeTypePrice()
+    public function changeTypePrice($isIscale)
     {
-        $this->priceScales = !$this->priceScales;
+
+        $this->priceScales = $isIscale;
     }
 
     public function openScale()

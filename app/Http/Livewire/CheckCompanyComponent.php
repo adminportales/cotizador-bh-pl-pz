@@ -9,7 +9,7 @@ class CheckCompanyComponent extends Component
     public $company;
     public function render()
     {
-        return view('livewire.check-company-component');
+        return view('components.cotizador.check-company-component');
     }
 
     public function changeCompany()
