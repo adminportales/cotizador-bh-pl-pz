@@ -1,8 +1,7 @@
 <?php
 
-namespace App\Http\Livewire;
+namespace App\Http\Livewire\Admin;
 
-use App\Models\MaterialTechnique;
 use Livewire\Component;
 use Livewire\WithPagination;
 use App\Models\PricesTechnique;

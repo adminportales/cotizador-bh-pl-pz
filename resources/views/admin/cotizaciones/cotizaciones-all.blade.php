@@ -3,6 +3,6 @@
 @section('title', 'Mis Cotizaciones')
 @section('content')
     <div class="container-fluid">
-        @livewire('all-quotes-component')
+        @livewire('admin.all-quotes-component')
     </div>
 @endsection

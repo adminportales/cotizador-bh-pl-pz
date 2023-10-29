@@ -40,9 +40,10 @@
             @yield('content')
         </div>
         @if (!auth()->user()->phone)
-            @livewire('check-phone-component')
-        @elseif(!auth()->user()->companySession)
-            @livewire('check-company-component')
+            @livewire('components.check-phone-component')
+        @endif
+        @if (!auth()->user()->companySession)
+            @livewire('components.check-company-component')
         @endif
     </div>
     @livewireScripts

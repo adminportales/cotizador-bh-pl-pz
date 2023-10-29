@@ -1,4 +1,4 @@
 @extends('layouts.cotizador')
 @section('content')
-    @livewire('catalogo-personal')
+    @livewire('cotizador.catalogo-personal')
 @endsection()

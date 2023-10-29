@@ -1,8 +1,7 @@
 <?php
 
-namespace App\Http\Livewire;
+namespace App\Http\Livewire\Admin;
 
-use App\Models\Catalogo\Provider;
 use App\Models\Company;
 use Livewire\Component;
 use Livewire\WithPagination;

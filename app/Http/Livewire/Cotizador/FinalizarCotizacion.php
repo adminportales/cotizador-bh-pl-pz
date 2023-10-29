@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Livewire;
+namespace App\Http\Livewire\Cotizador;
 
 use App\Models\Catalogo\Product;
 use App\Models\PricesTechnique;

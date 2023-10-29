@@ -255,7 +255,7 @@
                                                 </button>
                                             </div>
                                             <br>
-                                            @livewire('add-new-product-to-quote')
+                                            @livewire('cotizador.add-new-product-to-quote')
                                         </td>
                                     </tr>
                                 @endif
@@ -286,7 +286,6 @@
                         <br>
                     @endif
                     {{-- INICIO DE LA PARTE DE LOS DESCUENTOS --}}
-                    {{-- @livewire('edit-quote-discount-component', ['quote' => $quote]) --}}
                     @if (!$quoteScales)
                         @php
                             $subtotal = $sumPrecioTotal - $subtotalSubstract;
@@ -403,7 +402,7 @@
                     </button>
                 </div>
                 <div class="modal-body" style="max-height: 80vh; overflow: auto;">
-                    @livewire('catalogo-min-component')
+                    @livewire('cotizador.catalogo-min-component')
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
@@ -424,7 +423,7 @@
                 </div>
                 <div class="modal-body" style="max-height: 80vh; overflow: auto;">
                     @if ($puedeEditar && $productEdit)
-                        @livewire('formulario-de-cotizacion', ['productEdit' => $productEdit], key($productEdit['id']))
+                        @livewire('components.formulario-de-cotizacion', ['productEdit' => $productEdit], key($productEdit['id']))
                     @endif
                 </div>
                 <div class="modal-footer">

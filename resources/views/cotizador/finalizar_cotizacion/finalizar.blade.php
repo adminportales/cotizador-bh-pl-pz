@@ -1,4 +1,4 @@
 @extends('layouts.cotizador')
 @section('content')
-    @livewire('finalizar-cotizacion')
+    @livewire('cotizador.finalizar-cotizacion')
 @endsection()

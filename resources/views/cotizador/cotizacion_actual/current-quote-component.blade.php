@@ -331,7 +331,7 @@
                         </div>
                         <div class="modal-body" style="max-height: 80vh; overflow: auto;">
                             @if ($quoteEdit)
-                                @livewire('formulario-de-cotizacion', ['currentQuote' => $quoteEdit], key($quoteEdit->id))
+                                @livewire('components.formulario-de-cotizacion', ['currentQuote' => $quoteEdit], key($quoteEdit->id))
                             @endif
                         </div>
                     </div>

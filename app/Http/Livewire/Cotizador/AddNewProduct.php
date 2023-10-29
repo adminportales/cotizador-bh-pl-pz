@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Livewire;
+namespace App\Http\Livewire\Cotizador;
 
+use App\Http\Controllers\CotizadorController;
 use App\Models\Catalogo\Color;
 use App\Models\Catalogo\Product;
 use App\Models\Catalogo\Provider;
@@ -9,61 +10,40 @@ use App\Models\UserProduct;
 use Exception;
 use Livewire\Component;
 use Livewire\WithFileUploads;
-use Livewire\WithPagination;
 
-class CatalogoPersonal extends Component
+class AddNewProduct extends Component
 {
-    use WithPagination;
     use WithFileUploads;
 
-    public $nombre, $descripcion, $precio, $stock, $color, $proveedor, $imagen, $product_id, $keyWord;
-    public $productEdit = false;
+    public $nombre, $descripcion, $precio, $stock, $color, $proveedor, $imagen;
 
     public $inicial, $final, $costo;
+
     public $priceScales, $infoScales = [], $editScale = false, $itemEditScale = null;
 
     public function render()
     {
-
-        $keyWord = '%' . $this->keyWord . '%';
-        $nameDB = (new Product())->getConnection()->getDatabaseName();
-        $products = UserProduct::join($nameDB . '.products', 'products.id', 'user_products.product_id')
-            ->where('user_products.user_id', auth()->user()->id)
-            ->where($nameDB . '.products.name', 'LIKE', $keyWord)
-            ->where($nameDB . '.products.visible', true)
-            ->simplePaginate(32);
-        return view('cotizador.mis_productos.catalogo-personal', ['products' => $products,]);
-    }
-
-    public function editProduct($product_id)
-    {
-        $product = Product::find($product_id);
-        $this->nombre = $product->name;
-        $this->descripcion = $product->description;
-        $this->precio = $product->price;
-        $this->stock = $product->stock;
-        $this->color = $product->color->color;
-        $this->proveedor = count($product->productAttributes) > 0
-            ?  $product->productAttributes()->where('slug', 'proveedor')->first()->value
-            : $product->provider->company;
-        $this->imagen = $product->firstImage->url;
-        $this->product_id = $product->id;
-        $this->productEdit = true;
-        $this->priceScales = !$product->precio_unico;
-        if ($this->priceScales) {
-            $this->infoScales = [];
-            foreach ($product->precios as $value) {
-                array_push($this->infoScales, [
-                    'initial' => $value->escala_inicial,
-                    'final' => $value->escala_final,
-                    'cost' => $value->price,
-                ]);
+        for ($i = 0; $i < count($this->infoScales); $i++) {
+            for ($j = 0; $j <  count($this->infoScales); $j++) {
+                if ($this->infoScales[$i]['initial'] < $this->infoScales[$j]['initial']) {
+                    $aux = $this->infoScales[$i];
+                    $this->infoScales[$i] = $this->infoScales[$j];
+                    $this->infoScales[$j] = $aux;
+                }
             }
         }
-        $this->dispatchBrowserEvent('showModalEditar');
+        $errors = [];
+        // Revisar si las escalas son correctas
+        for ($i = 0; $i < count($this->infoScales) - 1; $i++) {
+            if ($this->infoScales[$i]['final'] + 1 != $this->infoScales[$i + 1]['initial']) {
+                $error = "Las escalas no son correctas: " . $this->infoScales[$i]['final'] . " != " . $this->infoScales[$i + 1]['initial'];
+                array_push($errors, $error);
+            }
+        }
+        return view('cotizador.mis_productos.add-new-product');
     }
 
-    public function guardar($product_id)
+    public function guardar()
     {
         $this->validate([
             'nombre' => 'required|max:100',
@@ -71,6 +51,7 @@ class CatalogoPersonal extends Component
             'stock' => 'required',
             'color' => 'required',
             'proveedor' => 'required',
+            'imagen' => 'required|image|max:1536',
         ]);
         if ($this->priceScales) {
             $this->validate([
@@ -81,17 +62,14 @@ class CatalogoPersonal extends Component
                 "precio" => "required|numeric|min:0",
             ]);
         }
-
-        $pathImagen = null;
-        if ($this->imagen != null) {
-            $this->validate([
-                'imagen' => 'required|image|max:512',
-            ]);
-            $name = time() . $this->nombre . '.' .  $this->imagen->getClientOriginalExtension();
-            $pathImagen = url('') . '/storage/media/' . $name;
-            $this->imagen->storeAs('public/media', $name);
+        $maxSKU = Product::max('internal_sku');
+        $idSku = null;
+        if (!$maxSKU) {
+            $idSku = 1;
+        } else {
+            $idSku = (int) explode('-', $maxSKU)[1];
+            $idSku++;
         }
-
         $color = null;
         $slug = mb_strtolower(str_replace(' ', '-', $this->color));
         $color = Color::where("slug", $slug)->first();
@@ -110,13 +88,27 @@ class CatalogoPersonal extends Component
             'discount' => 0
         ]);
 
-        $product = Product::find($product_id);
+        $pathImagen = null;
+        if ($this->imagen != null) {
+            $name = time() . str_replace("%", " ", str_replace("/", " ", str_replace(",", " ", $this->nombre))) . '.' .  $this->imagen->getClientOriginalExtension();
+            $pathImagen = url('') . '/storage/media/' . $name;
+            $this->imagen->storeAs('public/media', $name);
+            // Guardar La cotizacion
+        }
+
         $dataProduct = [
+            'internal_sku' => "PROM-" . str_pad($idSku, 7, "0", STR_PAD_LEFT),
+            'sku' => 0000,
             'name' => $this->nombre,
             'description' =>  $this->descripcion,
             'stock' => $this->stock,
+            'producto_promocion' => false,
+            'descuento' => 0,
+            'producto_nuevo' =>  false,
+            'type_id' => 3,
             'color_id' => $color->id,
             'provider_id' => $proveedor->id,
+            'visible' => true,
         ];
 
         if ($this->priceScales) {
@@ -127,24 +119,21 @@ class CatalogoPersonal extends Component
             $dataProduct['price'] = $this->precio;
         }
 
-        $product->update($dataProduct);
-        if ($this->imagen != null) {
-            $product->images()->delete();
-            $product->images()->create([
-                'image_url' =>   $pathImagen
-            ]);
-        }
-        $product->productAttributes()->delete();
-        $product->productAttributes()->create([
+        $newProduct = Product::create($dataProduct);
+
+        $newProduct->images()->create([
+            'image_url' =>   $pathImagen
+        ]);
+
+        $newProduct->productAttributes()->create([
             'attribute' => 'Proveedor',
             'slug' => 'proveedor',
             'value' => $this->proveedor,
         ]);
 
         if ($this->priceScales) {
-            $product->precios()->delete();
             foreach ($this->infoScales as $value) {
-                $product->precios()->create([
+                $newProduct->precios()->create([
                     'price' => $value['cost'],
                     'escala_inicial' => $value['initial'],
                     'escala_final' => $value['final'],
@@ -152,22 +141,12 @@ class CatalogoPersonal extends Component
             }
         }
 
-        $this->dispatchBrowserEvent('hideModalEditar');
-        session()->flash('message', 'Actualizacion completa');
-        $this->productEdit = false;
-        // return redirect()->action([CotizadorController::class, 'verProducto'], ['product' => $newProduct->id]);
-    }
+        UserProduct::create([
+            'user_id' => auth()->user()->id,
+            'product_id' => $newProduct->id,
+        ]);
 
-    public function deleteProduct($product_id)
-    {
-        try {
-            $product = Product::find($product_id);
-            $product->visible = 0;
-            $product->save();
-            return 1;
-        } catch (Exception $e) {
-            return json_encode($e->getMessage());
-        }
+        return redirect()->action([CotizadorController::class, 'verProducto'], ['product' => $newProduct->id]);
     }
 
     public function openScale()

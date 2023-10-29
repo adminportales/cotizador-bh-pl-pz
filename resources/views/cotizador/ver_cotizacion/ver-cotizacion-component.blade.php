@@ -121,7 +121,7 @@
                                         </button>
                                     </div>
                                     <div class="modal-body">
-                                        @livewire('edit-information-client-component', ['quoteInfo' => $quote->latestQuotesUpdate->quotesInformation, 'quote' => $quote])
+                                        @livewire('cotizador.edit-information-client-component', ['quoteInfo' => $quote->latestQuotesUpdate->quotesInformation, 'quote' => $quote])
                                     </div>
                                 </div>
                             </div>
@@ -132,7 +132,7 @@
         </div>
         <div class="col-md-8">
             <div class="card w-100 h-100">
-                @livewire('editar-cotizacion-component', ['quote' => $quote], key($quote->id))
+                @livewire('cotizador.editar-cotizacion-component', ['quote' => $quote], key($quote->id))
                 @if ($quote->latestQuotesUpdate)
                     <div class="card-body">
                         <div class="row">
@@ -159,7 +159,7 @@
                                                 </button>
                                             </div>
                                             <div class="modal-body">
-                                                @livewire('create-presentation-component', ['quote' => $quote])
+                                                @livewire('cotizador.create-presentation-component', ['quote' => $quote])
                                             </div>
                                         </div>
                                     </div>

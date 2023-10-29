@@ -2,6 +2,6 @@
 
 @section('content')
     <div class="container">
-        @livewire('ver-cotizacion-component', ['quote' => $quote])
+        @livewire('cotizador.ver-cotizacion-component', ['quote' => $quote])
     </div>
 @endsection

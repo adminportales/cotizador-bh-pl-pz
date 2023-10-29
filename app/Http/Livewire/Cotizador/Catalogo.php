@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Livewire;
+namespace App\Http\Livewire\Cotizador;
 
 use App\Models\Catalogo\GlobalAttribute;
 use App\Models\Catalogo\Product as CatalogoProduct;
@@ -36,7 +36,7 @@ class Catalogo extends Component
 
     public function mount()
     {
-        $this->proveedores = auth()->user()->companySession->providers;
+        $this->proveedores = auth()->user()->companySession == null ? [] :  auth()->user()->companySession->providers;
         try {
             $filtros = session()->get('filtros', []);
             $this->setFiltros($filtros);
@@ -120,7 +120,7 @@ class Catalogo extends Component
                 // $query->orderBy('products.stock', $this->orderStock);
             })
             ->when($this->proveedor == null, function ($query) {
-                $query->whereIn('products.provider_id', $this->proveedores->pluck('id'));
+                $query->whereIn('products.provider_id', count($this->proveedores) ? $this->proveedores->pluck('id') : []);
                 // $query->orderBy('products.stock', $this->orderStock);
             })
             ->where('products.type_id', 'LIKE', $type)

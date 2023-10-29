@@ -1,11 +1,10 @@
 <?php
 
-namespace App\Http\Livewire;
+namespace App\Http\Livewire\Admin;
 
 use Livewire\Component;
 use Livewire\WithPagination;
 use App\Models\MaterialTechnique;
-use Exception;
 
 class MaterialTechniques extends Component
 {
@@ -18,7 +17,7 @@ class MaterialTechniques extends Component
     public function render()
     {
         $keyWord = '%' . $this->keyWord . '%';
-        return view('livewire.material-techniques.view', [
+        return view('admin.personalizacion.sizes.size-material-techniques.view', [
             'materialTechniques' => MaterialTechnique::orWhere('technique_id', 'LIKE', $keyWord)
                 ->orWhere('material_id', 'LIKE', $keyWord)
                 ->paginate(10),

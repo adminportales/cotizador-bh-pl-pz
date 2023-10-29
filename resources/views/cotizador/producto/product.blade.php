@@ -130,7 +130,7 @@
                 <p>{{ $product->description }}</p>
             </div>
             @if ($disponiblidad)
-                @livewire('formulario-de-cotizacion', ['product' => $product])
+                @livewire('components.formulario-de-cotizacion', ['product' => $product])
             @endif
         </div>
     </div>

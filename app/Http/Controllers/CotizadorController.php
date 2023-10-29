@@ -94,7 +94,7 @@ class CotizadorController extends Controller
 
     public function cotizaciones()
     {
-        return view('pages.catalogo.cotizaciones');
+        return view('cotizador.mis_cotizaciones.cotizaciones');
     }
     public function verCotizacion(Quote $quote)
     {

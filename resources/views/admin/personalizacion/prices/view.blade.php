@@ -23,7 +23,6 @@
                 </div>
 
                 <div class="card-body">
-                    {{-- @include('livewire.prices.create') --}}
                     @include('admin.personalizacion.prices.update')
                     <div class="table-responsive">
                         <table class="table table-bordered table-sm">

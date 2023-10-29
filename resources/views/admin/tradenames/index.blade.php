@@ -3,8 +3,8 @@
 <div class="container-fluid">
     <div class="row justify-content-center">
         <div class="col-md-12">
-            @livewire('tradenames')
-        </div>     
-    </div>   
+            @livewire('admin.tradenames')
+        </div>
+    </div>
 </div>
 @endsection

@@ -3,7 +3,7 @@
     <div class="container-fluid">
         <div class="row justify-content-center">
             <div class="col-md-12">
-                @livewire('import-techniques')
+                @livewire('admin.import-techniques')
             </div>
         </div>
     </div>

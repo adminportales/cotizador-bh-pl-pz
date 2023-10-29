@@ -40,7 +40,7 @@
                     </a>
                 </li>
                 <li>
-                    @livewire('count-cart-quote')
+                    @livewire('components.count-cart-quote')
                 </li>
                 <li>
                     <a href="{{ route('cotizaciones') }}"

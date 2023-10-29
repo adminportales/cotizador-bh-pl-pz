@@ -1,14 +1,11 @@
 <?php
 
-namespace App\Http\Livewire;
+namespace App\Http\Livewire\Admin;
 
-use App\Models\Material;
 use App\Models\MaterialTechnique;
 use App\Models\Size;
 use Livewire\Component;
 use Livewire\WithPagination;
-use App\Models\SizeMaterialTechnique;
-use App\Models\Technique;
 
 class SizeMaterialTechniques extends Component
 {

@@ -2,7 +2,7 @@
 @section('content')
     <div class="container-fluid">
         <div class="card">
-            @livewire('dashboard-component')
+            @livewire('admin.dashboard-component')
         </div>
     </div>
 @endsection

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Livewire;
+namespace App\Http\Livewire\Cotizador;
 
 use App\Models\Catalogo\Color;
 use App\Models\Catalogo\GlobalAttribute;
@@ -21,7 +21,7 @@ class AddNewProductToQuote extends Component
         $utilidad = GlobalAttribute::find(1);
         $utilidad = (float) $utilidad->value;
 
-        return view('livewire.add-new-product-to-quote', [
+        return view('cotizador.ver_cotizacion.add-new-product-to-quote', [
             'utilidad' => $utilidad,
             // 'products' => $products,
         ]);

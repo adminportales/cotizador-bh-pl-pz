@@ -11,7 +11,7 @@
         <div class="row px-3">
             <div class="card w-100">
                 <div class="card-body">
-                    @livewire('list-quotes-component')
+                    @livewire('cotizador.list-quotes-component')
                 </div>
             </div>
         </div>
