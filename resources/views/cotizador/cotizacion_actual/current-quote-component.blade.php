@@ -1,241 +1,234 @@
 <div>
-    <div class="container py-2">
-        <div class="d-flex justify-content-between">
-            <h3>Mis Cotizaciones</h3>
-        </div>
+    <div class="">
+        <p class="mb-2 text-xl">Mis Cotizaciones</p>
         @if (count($allQuotes) > 0)
-            <ul class="nav nav-tabs" id="myTab" role="tablist">
-                @foreach ($allQuotes as $item)
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link {{ $item->active ? 'active' : '' }}"
-                            id="{{ $item->name ?: 'current-quote' }}-tab" data-toggle="tab"
-                            data-target="#{{ $item->name ?: 'current-quote' }}" type="button" role="tab"
-                            aria-controls="{{ $item->name ?: 'current-quote' }}" aria-selected="true"
-                            wire:click="selectQuoteActive({{ $item->id }})">{{ $item->name ?: 'Cotizacion Actual' }}</button>
-                    </li>
-                @endforeach
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link" id="add-tab" data-toggle="modal" data-target="#addQuoteModal"
-                        type="button" role="modal" aria-controls="add" aria-selected="false">
-                        <div class="" style="width: 1.5rem">
+            <div class="text-sm font-medium text-center text-gray-500 border-b border-gray-200">
+                <ul class="flex">
+                    @foreach ($allQuotes as $item)
+                        <li class="hover:border-b-2 rounded-t-lg cursor-pointer text-center flex items-center {{ $item->active ? 'bg-gray-50 active border-gray-300 border-b-2 ' : '' }}"
+                            wire:click='selectQuoteActive({{ $item->id }})'>
+                            <a class="inline-block py-2 px-4 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300"
+                                aria-current="page">{{ $item->name ?: 'Cotizacion Actual' }}</a>
+                            @if ($item->active)
+                                <div class="flex">
+                                    <button>
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
+                                            viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                                        </svg>
+                                    </button>
+                                    <button>
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
+                                            viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                        </svg>
+                                    </button>
+                                </div>
+                            @endif
+                        </li>
+                    @endforeach
+                    <li class="hover:border-b-2 rounded-t-lg cursor-pointer text-center flex items-center"
+                        data-modal-target="modal-add-quote" data-modal-toggle="modal-add-quote">
+                        <a class="inline-block p-4 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300"
+                            aria-current="page">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                 stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                                 <path stroke-linecap="round" stroke-linejoin="round"
                                     d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
                             </svg>
-                        </div>
-                    </button>
-                </li>
-            </ul>
+                        </a>
+                    </li>
+                </ul>
+            </div>
         @endif
-        <div wire:ignore.self class="modal fade" id="addQuoteModal" tabindex="-1" aria-labelledby="addQuoteModalLabel"
-            aria-hidden="true">
-            <div class="modal-dialog modal-lg">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="addQuoteModalLabel">Agregar nueva cotizacion</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
+
+        <div wire:ignore.self id="modal-add-quote" data-modal-backdrop="static" tabindex="-1" aria-hidden="true"
+            class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
+            <div class="relative w-full max-w-2xl max-h-full">
+                <!-- Modal content -->
+                <div class="relative bg-white rounded-lg shadow">
+                    <!-- Modal header -->
+                    <div class="flex items-start justify-between p-4 border-b rounded-t">
+                        <h3 class="text-xl font-semibold text-gray-900 ">
+                            Agregar nueva cotizacion
+                        </h3>
                     </div>
-                    <div class="modal-body">
-                        <p>Esta funcion es util cuando quieres crear una nueva cotizacion para un cliente nuevo o
-                            para el mismo cliente, pero no quieres perder el progreso de tu cotizacion actual</p>
-                        <div class="form-group">
-                            <label for="">Nombre de la cotizacion</label>
-                            <input class="form-control" type="text" placeholder="Ej. Bolsas Coca Cola"
-                                wire:model="nameQuote">
+                    <!-- Modal body -->
+                    <div class="p-6 space-y-6">
+                        <div class="grid grid-cols-2 gap-2 text-left">
+                            <p class="col-span-2">Esta funcion es util cuando quieres crear una nueva cotizacion para un
+                                cliente nuevo o
+                                para el mismo cliente, pero no quieres perder el progreso de tu cotizacion actual</p>
+                            <div class="col-span-2">
+                                <label for="" class="text-sm font-semibold">Nombre de la cotizacion</label>
+                                <input
+                                    class="block w-full p-3 mb-2 text-gray-900 border border-gray-300 rounded-md bg-white sm:text-xs focus:ring-blue-500 focus:border-blue-500 "
+                                    type="text" placeholder="Ej. Bolsas Coca Cola" wire:model="nameQuote">
+                            </div>
                         </div>
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                        <button type="button" class="btn btn-primary" wire:click="addQuote">Guardar</button>
+                    <!-- Modal footer -->
+                    <div class="flex items-center p-6 space-x-2 border-t border-gray-200 rounded-b ">
+                        <button type="button" class="btn btn-primary btn-sm" wire:click="addQuote">Agregar</button>
+                        <button data-modal-hide="modal-add-quote" type="button"
+                            class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 ">Decline</button>
                     </div>
                 </div>
             </div>
         </div>
     </div>
     @if (auth()->user()->currentQuoteActive)
-        <div class="container cq">
-            <div class="content-all d-flex flex-column justify-content-between">
+        <div class="px-2 mt-3">
+            <div class="content-all flex flex-col justify-between">
                 @if (count($listaProductos) > 0)
-                    <div class="content-products">
-                        <div class="">
-                            <div class="card d-none d-md-block p-2">
-                                <div class="table-responsive">
-                                    <table class="table table-hover">
-                                        <thead>
-                                            <tr>
-                                                <th class="text-center">#</th>
-                                                <th>Imagen</th>
-                                                <th>Nombre</th>
-                                                <th>Informacion</th>
-                                                <th>Cantidad</th>
-                                                <th>Unidad</th>
-                                                <th>Total</th>
-                                                <th class="px-0 mx-0"></th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            @php
-                                                $quoteByScales = false;
-                                            @endphp
-                                            @foreach ($listaProductos as $quote)
-                                                <tr>
-                                                    <td class="text-center">{{ $loop->iteration }}</td>
-                                                    <td><img src="{{ $quote->images_selected ?: ($quote->product->firstImage ? $quote->product->firstImage->image_url : asset('img/default.jpg')) }}"
-                                                            alt="" width="80"></td>
-                                                    <td>
-                                                        <div class="d-flex flex-column">
-                                                            <p class="m-0">{{ $quote->product->name }}</p>
-                                                            <p class="m-0"> {{ $quote->product->internal_sku }}</p>
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <p class="m-0">
-                                                            <strong>Indirecto:</strong>${{ number_format($quote->costo_indirecto, 2, '.', ',') }}
-                                                        </p>
-                                                        @if (!$quote->quote_by_scales)
-                                                            <p class="m-0"><strong>Utilidad:</strong>
-                                                                {{ $quote->utilidad }}%
-                                                            </p>
-                                                        @endif
-                                                        @if (!$quote->quote_by_scales)
-                                                            <p class="m-0"><strong>Impresion Por Tinta:</strong>
-                                                                ${{ number_format(
-                                                                    $quote->new_price_technique
-                                                                        ? $quote->new_price_technique
-                                                                        : ($quote->priceTechnique->tipo_precio == 'D'
-                                                                            ? round($quote->priceTechnique->precio / $quote->cantidad, 2)
-                                                                            : $quote->priceTechnique->precio),
-                                                                    2,
-                                                                    '.',
-                                                                    ',',
-                                                                ) }}
-                                                            </p>
-                                                        @endif
-                                                        <p class="m-0"><strong>Colores/Logos:</strong>
-                                                            {{ $quote->color_logos }}
-                                                        </p>
-                                                        <p class="m-0">
-                                                            <strong>Entrega:</strong> {{ $quote->dias_entrega }} dias
-                                                            {{ $quote->type_days == 1 ? 'habiles' : ($quote->type_days == 2 ? 'naturales' : '') }}
-                                                        </p>
-                                                    </td>
-                                                    @if ($quote->quote_by_scales)
-                                                        @php
-                                                            $quoteByScales = true;
-                                                        @endphp
-                                                        <td colspan="3">
-                                                            <table class="table table-sm table-bordered m-0">
-                                                                <thead>
-                                                                    <tr>
-                                                                        <th>Cantidad</th>
-                                                                        <th>Impresion Por tinta</th>
-                                                                        <th>Utilidad</th>
-                                                                        <th>Unitario</th>
-                                                                        <th>Total</th>
-                                                                    </tr>
-                                                                </thead>
-                                                                <tbody>
-                                                                    @foreach (json_decode($quote->scales_info) as $item)
-                                                                        <tr>
-                                                                            <td>{{ $item->quantity }} pz</td>
-                                                                            <td>$
-                                                                                {{ number_format($item->tecniquePrice, 2, '.', ',') }}
-                                                                            </td>
-                                                                            <td>
-                                                                                {{ $item->utility }} %</td>
-                                                                            <td>$
-                                                                                {{ number_format($item->unit_price, 2, '.', ',') }}
-                                                                            </td>
-                                                                            <td>$
-                                                                                {{ number_format($item->total_price, 2, '.', ',') }}
-                                                                            </td>
-                                                                        </tr>
-                                                                    @endforeach
-                                                                </tbody>
-                                                            </table>
-                                                        </td>
-                                                    @else
-                                                        <td> {{ $quote->cantidad }} pz</td>
-                                                        <td>${{ $quote->precio_unitario }}</td>
-                                                        <td>${{ $quote->precio_total }}</td>
-                                                    @endif
-                                                    <td class="px-0 mx-0">
-                                                        <button type="button" class="btn btn-warning btn-sm"
-                                                            wire:click="edit({{ $quote->id }})">
-                                                            <div style="width: 1rem">
-                                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6"
-                                                                    fill="none" viewBox="0 0 24 24"
-                                                                    stroke="currentColor" stroke-width="2">
-                                                                    <path stroke-linecap="round"
-                                                                        stroke-linejoin="round"
-                                                                        d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                                                                </svg>
-                                                            </div>
-                                                        </button>
-                                                        <button type="button" class="btn btn-danger btn-sm"
-                                                            onclick='eliminar({{ $quote->id }})'>
-                                                            <div style="width: 1rem">
-                                                                <svg xmlns="http://www.w3.org/2000/svg"
-                                                                    class="h-6 w-6" fill="none"
-                                                                    viewBox="0 0 24 24" stroke="currentColor"
-                                                                    stroke-width="2">
-                                                                    <path stroke-linecap="round"
-                                                                        stroke-linejoin="round"
-                                                                        d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                                                                </svg>
-                                                            </div>
-                                                        </button>
-                                                    </td>
-                                                </tr>
-                                            @endforeach
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                            <div class="d-md-none">
-                                @foreach ($listaProductos as $quote)
-                                    <div class="shadow-sm pl-2 pr-2 mb-2">
-                                        <div class="d-flex">
-                                            <div class="w-25">
-                                                <img src="{{ $quote->images_selected ?: ($quote->product->firstImage ? $quote->product->firstImage->image_url : asset('img/default.jpg')) }}"
-                                                    alt="" width="80">
-                                            </div>
-                                            <div class="w-75">
-                                                <div class="d-flex justify-content-between">
-                                                    <p class="m-0"><strong>{{ $quote->product->name }}</strong></p>
-                                                    <p class="m-0"><strong>${{ $quote->precio_total }}</strong></p>
-                                                </div>
-                                                <div style="font-size: 14px;">
-                                                    <p class="m-0"> {{ $quote->dias_entrega }} dias</p>
-                                                    <p class="m-0"> {{ $quote->cantidad }} piezas</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <hr class="mt-1 mb-1">
-                                        <div class="d-flex justify-content-between">
-                                            <div>
-                                                <button class="btn btn-link btn-sm"
-                                                    wire:click='show({{ $quote->id }})'>Ver
-                                                    detalles</button>
-                                            </div>
-                                            <div>
-                                                <button type="button" class="btn btn-link btn-sm"
-                                                    wire:click="edit({{ $quote->id }})">
-                                                    Editar
-                                                </button>
-                                                <button class="btn btn-link btn-sm"
-                                                    onclick='eliminar({{ $quote->id }})'>Eliminar</button>
-                                            </div>
-                                        </div>
 
-                                    </div>
+                    <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+                        <table class="w-full text-sm text-left text-gray-500">
+                            <thead class="text-xs text-gray-700 uppercase bg-gray-50">
+                                <tr>
+                                    <th scope="col" class="px-6 py-3">
+                                        Imagen
+                                    </th>
+                                    <th scope="col" class="px-6 py-3">
+                                        Nombre
+                                    </th>
+                                    <th scope="col" class="px-6 py-3">
+                                        Informacion
+                                    </th>
+                                    <th scope="col" class="px-6 py-3">
+                                        Cantidad
+                                    </th>
+                                    <th scope="col" class="px-6 py-3">
+                                        Unidad
+                                    </th>
+                                    <th scope="col" class="px-6 py-3">
+                                        Total
+                                    </th>
+                                    <th scope="col" class="px-6 py-3">
+                                        ...
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @php
+                                    $quoteByScales = false;
+                                @endphp
+                                @foreach ($listaProductos as $quote)
+                                    <tr class="bg-white border-b hover:bg-gray-50">
+                                        <th scope="row" class="px-6 py-4 font-medium text-gray-900 text-center">
+                                            <img src="{{ $quote->images_selected ?: ($quote->product->firstImage ? $quote->product->firstImage->image_url : asset('img/default.jpg')) }}"
+                                                alt="" width="80">
+                                        </th>
+                                        <td class="px-6 py-4">
+                                            <div class="flex flex-col">
+                                                <p>{{ $quote->product->name }}</p>
+                                                <p> {{ $quote->product->internal_sku }}</p>
+                                            </div>
+                                        </td>
+                                        <td class="px-6 py-4">
+                                            <p>
+                                                <strong>Indirecto:</strong>${{ number_format($quote->costo_indirecto, 2, '.', ',') }}
+                                            </p>
+                                            @if (!$quote->quote_by_scales)
+                                                <p><strong>Utilidad:</strong>
+                                                    {{ $quote->utilidad }}%
+                                                </p>
+                                            @endif
+                                            @if (!$quote->quote_by_scales)
+                                                <p><strong>Impresion Por Tinta:</strong>
+                                                    ${{ number_format(
+                                                        $quote->new_price_technique
+                                                            ? $quote->new_price_technique
+                                                            : ($quote->priceTechnique->tipo_precio == 'D'
+                                                                ? round($quote->priceTechnique->precio / $quote->cantidad, 2)
+                                                                : $quote->priceTechnique->precio),
+                                                        2,
+                                                        '.',
+                                                        ',',
+                                                    ) }}
+                                                </p>
+                                            @endif
+                                            <p><strong>Colores/Logos:</strong>
+                                                {{ $quote->color_logos }}
+                                            </p>
+                                            <p>
+                                                <strong>Entrega:</strong> {{ $quote->dias_entrega }} dias
+                                                {{ $quote->type_days == 1 ? 'habiles' : ($quote->type_days == 2 ? 'naturales' : '') }}
+                                            </p>
+                                        </td>
+                                        @if ($quote->quote_by_scales)
+                                            @php
+                                                $quoteByScales = true;
+                                            @endphp
+                                            <td colspan="3">
+                                                <table class="table table-sm table-bordered m-0">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Cantidad</th>
+                                                            <th>Impresion Por tinta</th>
+                                                            <th>Utilidad</th>
+                                                            <th>Unitario</th>
+                                                            <th>Total</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @foreach (json_decode($quote->scales_info) as $item)
+                                                            <tr>
+                                                                <td>{{ $item->quantity }} pz</td>
+                                                                <td>$
+                                                                    {{ number_format($item->tecniquePrice, 2, '.', ',') }}
+                                                                </td>
+                                                                <td>
+                                                                    {{ $item->utility }} %</td>
+                                                                <td>$
+                                                                    {{ number_format($item->unit_price, 2, '.', ',') }}
+                                                                </td>
+                                                                <td>$
+                                                                    {{ number_format($item->total_price, 2, '.', ',') }}
+                                                                </td>
+                                                            </tr>
+                                                        @endforeach
+                                                    </tbody>
+                                                </table>
+                                            </td>
+                                        @else
+                                            <td> {{ $quote->cantidad }} pz</td>
+                                            <td>$ {{ $quote->precio_unitario }}</td>
+                                            <td>$ {{ $quote->precio_total }}</td>
+                                        @endif
+                                        <td class="px-6 py-4">
+                                            <button type="button" class="btn btn-warning btn-sm"
+                                                wire:click="edit({{ $quote->id }})">
+                                                <div style="width: 1rem">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6"
+                                                        fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                                                        stroke-width="2">
+                                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                                            d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                                                    </svg>
+                                                </div>
+                                            </button>
+                                            <button type="button" class="btn btn-danger btn-sm"
+                                                onclick='eliminar({{ $quote->id }})'>
+                                                <div style="width: 1rem">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6"
+                                                        fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                                                        stroke-width="2">
+                                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                                            d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                                    </svg>
+                                                </div>
+                                            </button>
+                                        </td>
+                                    </tr>
                                 @endforeach
-                            </div>
-                        </div>
+                            </tbody>
+                        </table>
                     </div>
+
+
                     <div class="content-discount">
                         <div class="card discount">
                             <div class="card-body">
@@ -474,11 +467,11 @@
                 }
             </style>
             <script>
-                document.addEventListener('DOMContentLoaded', () => {
-                    var height = document.querySelector('.navbar.d-block.d-md-none.mb-2').offsetHeight;
-                    document.querySelector('#app').style.height = `calc(100% - ${height}px)`
-                    console.log(height);
-                })
+                /* document.addEventListener('DOMContentLoaded', () => {
+                                                                                                                                                                                var height = document.querySelector('.navbar.d-block.d-md-none.mb-2').offsetHeight;
+                                                                                                                                                                                document.querySelector('#app').style.height = `calc(100% - ${height}px)`
+                                                                                                                                                                                console.log(height);
+                                                                                                                                                                            }) */
 
                 /* $(document).ready(function() {
                     // $('#div2').height(height);
@@ -527,7 +520,11 @@
     @endif
     <script>
         window.addEventListener('hideModalAddQuote', event => {
-            $(`#addQuoteModal`).modal('hide');
+            const modalAddQuote = new Modal(document.getElementById('modal-add-quote'), {
+                backdrop: 'static'
+            });
+            modalAddQuote.hide();
+            document.querySelector("body > div[modal-backdrop]")?.remove()
         })
     </script>
 </div>

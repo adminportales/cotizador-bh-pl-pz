@@ -1,23 +1,23 @@
-<div class="container">
+<div class="">
     <div class="row justify-content-center">
         <div class="col-md-11">
             <div class="card">
                 @if (auth()->user()->currentQuoteActive)
                     <div class="card-body">
-                        <h3>Finalizar la cotizacion</h3>
-                        <br>
+                        <p class="mb-2 text-xl">Finalizar la cotizacion</p>
                         <form action="" method="post">
-                            <fieldset class="form-group border p-2">
+                            <fieldset class="border p-2">
                                 <legend class="w-auto px-2">
                                     <h5>Informacion Obligatoria</h5>
                                 </legend>
-                                <div class="row">
+                                <div class="grid grid-cols-3 gap-3">
                                     @if (count(auth()->user()->managments) > 1)
-                                        <div class="col-md-4">
+                                        <div class="col-span-3 md:col-span-1">
                                             <div class="form-group">
                                                 <label for="">Ejecutivos Disponibles</label>
-                                                <select name="tipo" class="form-control" wire:model="selectEjecutivo"
-                                                    wire:change="selectManagment">
+                                                <select name="tipo"
+                                                    class="block w-full p-3 mb-2 text-gray-900 border border-gray-300 rounded-md bg-white sm:text-xs focus:ring-blue-500 focus:border-blue-500 "
+                                                    wire:model="selectEjecutivo" wire:change="selectManagment">
                                                     <option value="">Seleccionar ejecutivos</option>
                                                     @foreach (auth()->user()->managments as $managment)
                                                         <option value="{{ $managment->id }}">{{ $managment->name }}
@@ -27,11 +27,12 @@
                                             </div>
                                         </div>
                                     @endif
-                                    <div class="col-md-4">
+                                    <div class="col-span-3 md:col-span-1">
                                         <div class="form-group">
                                             <label for="">Opciones de Cliente</label>
-                                            <select name="tipo" class="form-control" wire:model="tipoCliente"
-                                                wire:change="cargarDatosCliente">
+                                            <select name="tipo"
+                                                class="block w-full p-3 mb-2 text-gray-900 border border-gray-300 rounded-md bg-white sm:text-xs focus:ring-blue-500 focus:border-blue-500 "
+                                                wire:model="tipoCliente" wire:change="cargarDatosCliente">
                                                 <option value="">Como vas a registrar el cliente</option>
                                                 <option value="buscar">Seleccionar uno de mis clientes</option>
                                                 <option value="crear">Crear un nuevo prospecto</option>
@@ -42,10 +43,11 @@
                                         @endif
                                     </div>
                                     @if ($tipoCliente == 'buscar')
-                                        <div class="col-md-4">
+                                        <div class="col-span-3 md:col-span-1">
                                             <div class="form-group">
                                                 <label for="">Buscar Cliente</label>
-                                                <select name="tipo" class="form-control"
+                                                <select name="tipo"
+                                                    class="block w-full p-3 mb-2 text-gray-900 border border-gray-300 rounded-md bg-white sm:text-xs focus:ring-blue-500 focus:border-blue-500 "
                                                     wire:model="clienteSeleccionado" wire:change="cargarDatosCliente">
                                                     <option value="">Seleccionar Cliente</option>
                                                     @foreach ($userClients as $client)
@@ -66,10 +68,11 @@
                                             @endif
                                         </div>
                                     @elseif($tipoCliente == 'crear')
-                                        <div class="col-md-4">
+                                        <div class="col-span-3 md:col-span-1">
                                             <div class="form-group">
                                                 <label for="">Nombre de la empresa</label>
-                                                <input type="text" class="form-control"
+                                                <input type="text"
+                                                    class="block w-full p-3 mb-2 text-gray-900 border border-gray-300 rounded-md bg-white sm:text-xs focus:ring-blue-500 focus:border-blue-500 "
                                                     placeholder="Nombre de la empresa" wire:model="empresa">
                                             </div>
                                             @if ($errors->has('empresa'))
@@ -77,11 +80,12 @@
                                             @endif
                                         </div>
                                     @endif
-                                    <div class="col-md-4">
+                                    <div class="col-span-3 md:col-span-1">
                                         <div class="form-group">
                                             <label for="">Nombre del Contacto</label>
-                                            <input type="text" class="form-control" placeholder="Nombre"
-                                                wire:model="nombre">
+                                            <input type="text"
+                                                class="block w-full p-3 mb-2 text-gray-900 border border-gray-300 rounded-md bg-white sm:text-xs focus:ring-blue-500 focus:border-blue-500 "
+                                                placeholder="Nombre" wire:model="nombre">
                                         </div>
                                         @if ($errors->has('nombre'))
                                             <span class="text-danger">{{ $errors->first('nombre') }}</span>
@@ -90,50 +94,56 @@
                                     @if ($tipoCliente == '')
                                         <div class="w-100"></div>
                                     @endif
-                                    <div class="col-md-4">
+                                    <div class="col-span-3 md:col-span-1">
                                         <div class="form-group">
                                             <label for="">Email</label>
-                                            <input type="email" class="form-control"
+                                            <input type="email"
+                                                class="block w-full p-3 mb-2 text-gray-900 border border-gray-300 rounded-md bg-white sm:text-xs focus:ring-blue-500 focus:border-blue-500 "
                                                 placeholder="Correo electronico del contacto" wire:model="email">
                                         </div>
                                         @if ($errors->has('email'))
                                             <span class="text-danger">{{ $errors->first('email') }}</span>
                                         @endif
                                     </div>
-                                    <div class="col-md-4">
+                                    <div class="col-span-3 md:col-span-1">
                                         <div class="form-group">
                                             <label for="">Telefono</label>
-                                            <input type="number" class="form-control"
+                                            <input type="number"
+                                                class="block w-full p-3 mb-2 text-gray-900 border border-gray-300 rounded-md bg-white sm:text-xs focus:ring-blue-500 focus:border-blue-500 "
                                                 placeholder="Telefono del contacto" wire:model="telefono">
                                         </div>
                                         @if ($errors->has('telefono'))
                                             <span class="text-danger">{{ $errors->first('telefono') }}</span>
                                         @endif
                                     </div>
-                                    <div class="col-md-4">
+                                    <div class="col-span-3 md:col-span-1">
                                         <div class="form-group">
                                             <label for="">Celular</label>
-                                            <input type="number" class="form-control"
+                                            <input type="number"
+                                                class="block w-full p-3 mb-2 text-gray-900 border border-gray-300 rounded-md bg-white sm:text-xs focus:ring-blue-500 focus:border-blue-500 "
                                                 placeholder="Celular del contacto" wire:model="celular">
                                         </div>
                                         @if ($errors->has('celular'))
                                             <span class="text-danger">{{ $errors->first('celular') }}</span>
                                         @endif
                                     </div>
-                                    <div class="col-md-4">
+                                    <div class="col-span-3 md:col-span-1">
                                         <div class="form-group">
                                             <label for="">Oportunidad</label>
-                                            <input type="text" class="form-control" placeholder="Oportunidad"
-                                                wire:model="oportunidad">
+                                            <input type="text"
+                                                class="block w-full p-3 mb-2 text-gray-900 border border-gray-300 rounded-md bg-white sm:text-xs focus:ring-blue-500 focus:border-blue-500 "
+                                                placeholder="Oportunidad" wire:model="oportunidad">
                                         </div>
                                         @if ($errors->has('oportunidad'))
                                             <span class="text-danger">{{ $errors->first('oportunidad') }}</span>
                                         @endif
                                     </div>
-                                    <div class="col-md-4">
+                                    <div class="col-span-3 md:col-span-1">
                                         <div class="form-group">
                                             <label for="">Probabilidad de Venta</label>
-                                            <select name="tipo" class="form-control" wire:model="rank">
+                                            <select name="tipo"
+                                                class="block w-full p-3 mb-2 text-gray-900 border border-gray-300 rounded-md bg-white sm:text-xs focus:ring-blue-500 focus:border-blue-500 "
+                                                wire:model="rank">
                                                 <option value="">Seleccione la Probabilidad de Venta</option>
                                                 <option value="1">Medio</option>
                                                 <option value="2">Alto</option>
@@ -150,94 +160,107 @@
                                 <legend class="w-auto px-2">
                                     <h5>Informacion Opcional</h5>
                                 </legend>
-                                <div class="row">
-                                    <div class="col-md-4">
+                                <div class="grid grid-cols-3 gap-3">
+                                    <div class="col-span-3 md:col-span-1">
                                         <div class="form-group">
                                             <label for="">Departamento (opcional)</label>
-                                            <input type="text" class="form-control" placeholder="Departamento"
-                                                wire:model="departamento">
+                                            <input type="text"
+                                                class="block w-full p-3 mb-2 text-gray-900 border border-gray-300 rounded-md bg-white sm:text-xs focus:ring-blue-500 focus:border-blue-500 "
+                                                placeholder="Departamento" wire:model="departamento">
                                         </div>
                                         @if ($errors->has('departamento'))
                                             <span class="text-danger">{{ $errors->first('departamento') }}</span>
                                         @endif
                                     </div>
-                                    <div class="col-md-4">
+                                    <div class="col-span-3 md:col-span-1">
                                         <div class="form-group">
                                             <label for="">Como mostrar el IVA</label>
-                                            <select name="tipo" class="form-control" wire:model="ivaByItem">
+                                            <select name="tipo"
+                                                class="block w-full p-3 mb-2 text-gray-900 border border-gray-300 rounded-md bg-white sm:text-xs focus:ring-blue-500 focus:border-blue-500 "
+                                                wire:model="ivaByItem">
                                                 <option value="0">Mostrar el IVA en el monto total</option>
                                                 <option value="1">Mostrar el IVA por partida</option>
                                             </select>
                                         </div>
                                     </div>
-                                    <div class="col-md-4">
+                                    <div class="col-span-3 md:col-span-1">
                                         <div class="form-group">
                                             <label for="">El monto total es</label>
-                                            <select name="tipo" class="form-control" wire:model="showTotal">
+                                            <select name="tipo"
+                                                class="block w-full p-3 mb-2 text-gray-900 border border-gray-300 rounded-md bg-white sm:text-xs focus:ring-blue-500 focus:border-blue-500 "
+                                                wire:model="showTotal">
                                                 <option value="1">Visible</option>
                                                 <option value="0">No visible</option>
                                             </select>
                                         </div>
                                     </div>
-                                    <div class="col-md-4">
+                                    <div class="col-span-3 md:col-span-1">
                                         <div class="form-group">
                                             <label for="">Los dias seran (Configuracion Global)</label>
-                                            <select name="tipo" class="form-control" wire:model="typeDays">
+                                            <select name="tipo"
+                                                class="block w-full p-3 mb-2 text-gray-900 border border-gray-300 rounded-md bg-white sm:text-xs focus:ring-blue-500 focus:border-blue-500 "
+                                                wire:model="typeDays">
                                                 <option value="0">Habiles</option>
                                                 <option value="1">Naturales</option>
                                             </select>
                                         </div>
                                     </div>
-                                    <div class="col-md-4">
+                                    <div class="col-span-3 md:col-span-1">
                                         <div class="form-group">
                                             <label for="">Vigencia de la cotizacion (Opcional)</label>
-                                            <input type="number" class="form-control"
+                                            <input type="number"
+                                                class="block w-full p-3 mb-2 text-gray-900 border border-gray-300 rounded-md bg-white sm:text-xs focus:ring-blue-500 focus:border-blue-500 "
                                                 placeholder="Duracion de la vigencia" wire:model="shelfLife">
                                         </div>
                                     </div>
-                                    <div class="col-md-4">
+                                    <div class="col-span-3 md:col-span-1">
                                         <div class="form-group">
                                             <label for="">Tax Fee (Opcional)</label>
-                                            <input type="number" class="form-control"
+                                            <input type="number"
+                                                class="block w-full p-3 mb-2 text-gray-900 border border-gray-300 rounded-md bg-white sm:text-xs focus:ring-blue-500 focus:border-blue-500 "
                                                 placeholder="Tax Fee (Valor Maximo 99)" wire:model="taxFee"
                                                 max="99">
                                         </div>
                                     </div>
-                                    <div class="col-md-4">
+                                    <div class="col-span-3 md:col-span-1">
                                         <div class="form-group">
                                             <label for="">En la cotizacion se mostrara:</label>
-                                            <select name="tipo" class="form-control" wire:model="show_tax">
-                                                <option value="1">Etiqueta del cliente (Si cuenta con una)</option>
+                                            <select name="tipo"
+                                                class="block w-full p-3 mb-2 text-gray-900 border border-gray-300 rounded-md bg-white sm:text-xs focus:ring-blue-500 focus:border-blue-500 "
+                                                wire:model="show_tax">
+                                                <option value="1">Etiqueta del cliente (Si cuenta con una)
+                                                </option>
                                                 <option value="0">Razon Social del cliente</option>
                                             </select>
                                         </div>
                                     </div>
-                                    {{-- <div class="col-md-4">
+                                    {{-- <div class="col-span-3 md:col-span-1">
                                         <div class="form-group">
                                             <label for="">Tipo de Moneda:</label>
-                                            <select name="tipo" class="form-control" wire:model="currency_type">
+                                            <select name="tipo" class="block w-full p-3 mb-2 text-gray-900 border border-gray-300 rounded-md bg-white sm:text-xs focus:ring-blue-500 focus:border-blue-500 " wire:model="currency_type">
                                                 <option value="MXN">MXN</option>
                                                 <option value="USD">USD</option>
                                             </select>
                                         </div>
                                     </div>
-                                    <div class="col-md-4">
+                                    <div class="col-span-3 md:col-span-1">
                                         <div class="form-group">
                                             <label for="">Tipo de Cambio Actual</label>
                                             <p>$1 USD => ${{ $currency }} MXN</p>
                                         </div>
                                     </div> --}}
-                                    <div class="col-md-12">
+                                    <div class="col-span-3">
                                         <div class="form-group">
                                             <label for="">Informacion Adicional (Opcional)</label>
-                                            <textarea name="" id="" cols="30" rows="2" class="form-control"
+                                            <textarea name="" id="" cols="30" rows="2"
+                                                class="block w-full p-3 mb-2 text-gray-900 border border-gray-300 rounded-md bg-white sm:text-xs focus:ring-blue-500 focus:border-blue-500 "
                                                 wire:model="informacion"></textarea>
                                         </div>
                                         @if ($errors->has('informacion'))
                                             <span class="text-danger">{{ $errors->first('informacion') }}</span>
                                         @endif
                                     </div>
-                                    <div class="col-md-4">
+                                    <div class="col-span-3 md:col-span-1">
                                         <div class="form-group">
                                             <label for="">Logo del Cliente</label>
                                             <div class="form-group" x-data="{ isUploading: false, progress: 5 }"
@@ -245,8 +268,9 @@
                                                 x-on:livewire-upload-finish="isUploading = false"
                                                 x-on:livewire-upload-error="isUploading = false"
                                                 x-on:livewire-upload-progress="progress = $event.detail.progress">
-                                                <input type="file" class="form-control" wire:model="logo"
-                                                    accept="image/*">
+                                                <input type="file"
+                                                    class="block w-full p-3 mb-2 text-gray-900 border border-gray-300 rounded-md bg-white sm:text-xs focus:ring-blue-500 focus:border-blue-500 "
+                                                    wire:model="logo" accept="image/*">
                                                 <div x-show="isUploading" class="progress">
                                                     <div class="progress-bar" role="progressbar"
                                                         x-bind:style="`width: ${progress}%`" aria-valuenow="25"
@@ -267,7 +291,7 @@
                                             <span class="text-danger">{{ $errors->first('departamento') }}</span>
                                         @endif
                                     </div>
-                                    <div class="col-md-4">
+                                    <div class="col-span-3 md:col-span-1">
                                         <div class="form-group">
                                             @if ($logo)
                                                 <div class="text-center">
@@ -347,7 +371,9 @@
                                         @endforeach
                                         @if (!$scales)
                                             @php
-                                                $subtotal = auth()->user()->currentQuoteActive->currentQuoteDetails->sum('precio_total');
+                                                $subtotal = auth()
+                                                    ->user()
+                                                    ->currentQuoteActive->currentQuoteDetails->sum('precio_total');
                                                 $discount = 0;
                                                 if (auth()->user()->currentQuoteActive->type == 'Fijo') {
                                                     $discount = auth()->user()->currentQuoteActive->value;
@@ -426,12 +452,12 @@
         })
 
         function preview() {
-            $('#modalPreview').modal('show')
+            //$('#modalPreview').modal('show')
             @this.previewQuote()
         }
 
         function cerrarPreview() {
-            $('#modalPreview').modal('hide')
+            //$('#modalPreview').modal('hide')
             @this.urlPDFPreview = null;
         }
 

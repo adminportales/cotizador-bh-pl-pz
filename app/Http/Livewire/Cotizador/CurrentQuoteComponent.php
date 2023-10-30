@@ -2,7 +2,6 @@
 
 namespace App\Http\Livewire\Cotizador;
 
-use App\Models\CurrentQuote;
 use App\Models\CurrentQuoteDetails;
 use Exception;
 use Livewire\Component;
@@ -136,6 +135,12 @@ class CurrentQuoteComponent extends Component
             'discount' => false,
             'name' => $this->nameQuote
         ]);
+        foreach (auth()->user()->currentQuotes as $i) {
+            $i->active = 0;
+            $i->save();
+        }
+        $currentQuote->active = 1;
+        $currentQuote->save();
         $this->nameQuote = '';
         $this->dispatchBrowserEvent('hideModalAddQuote');
         $this->allQuotes = auth()->user()->currentQuotes;
