@@ -18,6 +18,7 @@
                                                 d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                                         </svg>
                                     </button>
+
                                     <button>
                                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
                                             viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -31,6 +32,8 @@
                     @endforeach
                     <li class="hover:border-b-2 rounded-t-lg cursor-pointer text-center flex items-center"
                         data-modal-target="modal-add-quote" data-modal-toggle="modal-add-quote">
+
+
                         <a class="inline-block p-4 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300"
                             aria-current="page">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
@@ -199,9 +202,12 @@
                                             <td>$ {{ $quote->precio_total }}</td>
                                         @endif
                                         <td class="px-6 py-4">
-                                            <button type="button" class="btn btn-warning btn-sm"
+                                            <button type="button" class="btn btn-warning btn-sm" id="openModalButton"
                                                 wire:click="edit({{ $quote->id }})">
-                                                <div style="width: 1rem">
+                                                <div
+                                                    style="width:
+                                                1rem">
+
                                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6"
                                                         fill="none" viewBox="0 0 24 24" stroke="currentColor"
                                                         stroke-width="2">
@@ -210,6 +216,7 @@
                                                     </svg>
                                                 </div>
                                             </button>
+
                                             <button type="button" class="btn btn-danger btn-sm"
                                                 onclick='eliminar({{ $quote->id }})'>
                                                 <div style="width: 1rem">
@@ -222,47 +229,230 @@
                                                 </div>
                                             </button>
                                         </td>
+
+
                                     </tr>
                                 @endforeach
                             </tbody>
                         </table>
-                    </div>
 
-
-                    <div class="content-discount">
-                        <div class="card discount">
-                            <div class="card-body">
-                                @if (!$quoteByScales)
-                                    <h4>Total de la cotizacion</h4>
-                                    <button type="button"
-                                        class="btn {{ $cotizacion->discount ? 'btn-warning' : 'btn-info' }} btn-block btn-sm my-1"
-                                        data-toggle="modal" data-target="#discountModal">
-                                        {{ $cotizacion->discount ? 'Editar Descuento' : 'Agregar Descuento' }}
+                        <!-- Modal -->
+                        <div id="myModal" class="fixed inset-0 flex items-center justify-center z-50 hidden">
+                            <div class="modal-overlay absolute w-full h-full bg-gray-900 opacity-50"></div>
+                            <div
+                                class="modal-container bg-white w-11/12 md:max-w-md mx-auto rounded shadow-lg z-50 overflow-y-auto">
+                                <!-- Contenido del modal -->
+                                <div class="modal-content py-4 text-left px-6">
+                                    <!-- Título del modal -->
+                                    <h5 class="modal-title" id="editProductModalLabel">Editar Cotizacion</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
                                     </button>
-                                    <div class="d-flex justify-content-between">
-                                        <p class="text-dark m-0"> Subtotal: </p>
-                                        <strong class="d-flex text-primary d-block"> $ {{ $totalQuote }}</strong>
+                                    <!-- Contenido del modal -->
+                                    <div class="modal-body" style="max-height: 80vh; overflow: auto;">
+                                        @if ($quoteEdit)
+                                            @livewire('components.formulario-de-cotizacion', ['currentQuote' => $quoteEdit], key($quoteEdit->id))
+                                        @endif
                                     </div>
-                                    <div class="d-flex justify-content-between">
-                                        <p class="text-dark m-0"> Descuento: </p>
-                                        <strong class="d-flex text-primary d-block"> $
-                                            {{ $discount }}</strong>
+                                    <h5 class="modal-title" id="showProductModalLabel">Detalles de la Cotizacion</h5>
+
+                                    <div class="modal-body text-center">
+                                        @if ($quoteShow)
+                                            <div>
+                                                <p class="m-0 px-2">{{ $quoteShow->product->name }}</p>
+                                            </div>
+                                            <div>
+                                                <img src="{{ $quoteShow->images_selected ?: ($quoteShow->product->firstImage ? $quoteShow->product->firstImage->image_url : asset('img/default.jpg')) }}"
+                                                    alt="" width="120">
+                                            </div>
+                                            <p> {{ $quoteShow->product->internal_sku }}</p>
+
+                                            <p class="m-0"><strong>Costo
+                                                    Indirecto:</strong>${{ $quoteShow->costo_indirecto }}</p>
+                                            @if (!$quoteShow->quote_by_scales)
+                                                <p class="m-0"><strong>Margen de Utilidad:</strong>
+                                                    {{ $quoteShow->utilidad }}%
+                                                </p>
+                                            @endif
+
+                                            <p class="m-0"><strong>Colores/Logos:</strong>
+                                                {{ $quoteShow->color_logos }}
+                                            </p>
+                                            <p class="m-0"><strong>Tiempo de entrega: </strong>
+                                                {{ $quoteShow->dias_entrega }}
+                                                dias
+                                            </p>
+                                            <p class="m-0"><strong>Costo de
+                                                    Impresion por tinta:</strong>
+                                                ${{ $quoteShow->new_price_technique
+                                                    ? $quoteShow->new_price_technique
+                                                    : ($quoteShow->priceTechnique->tipo_precio == 'D'
+                                                        ? round($quoteShow->priceTechnique->precio / $quoteShow->cantidad, 2)
+                                                        : $quoteShow->priceTechnique->precio) }}
+                                            </p>
+                                            @if ($quoteShow->quote_by_scales)
+                                                @php
+                                                    $priceScales = json_decode($quoteShow->scales_info);
+                                                @endphp
+                                                <br>
+                                                <table class="table table-sm table-responsive-sm w-100">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Cantidad</th>
+                                                            <th>Utilidad</th>
+                                                            <th>Impresion</th>
+                                                            <th>Unitario</th>
+                                                            <th>Total</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @foreach ($priceScales as $scale)
+                                                            <tr>
+                                                                <td> {{ $scale->quantity }} pz</td>
+                                                                <td> {{ $scale->utility }} %</td>
+                                                                <td>$
+                                                                    {{ number_format($scale->tecniquePrice, 2, '.', ',') }}
+                                                                </td>
+                                                                <td>$
+                                                                    {{ number_format($scale->unit_price, 2, '.', ',') }}
+                                                                </td>
+                                                                <td>$
+                                                                    {{ number_format($scale->total_price, 2, '.', ',') }}
+                                                                </td>
+                                                            </tr>
+                                                        @endforeach
+                                                    </tbody>
+                                                </table>
+                                            @else
+                                                <p class="m-0"><strong>Cantidad: </strong>
+                                                    {{ $quoteShow->cantidad }} piezas
+                                                </p>
+                                                <p class="m-0"><strong>Precio Unitario:
+                                                    </strong>${{ $quoteShow->precio_unitario }}
+                                                </p>
+                                                <p class="m-0"><strong>Precio
+                                                        Total:</strong>${{ $quoteShow->precio_total }}
+                                                </p>
+                                            @endif
+                                        @endif
                                     </div>
-                                    <hr class="mt-1 mb-1">
-                                    <div class="d-flex justify-content-between"
-                                        style="font-size: 1.3rem;font-weight: bold;">
-                                        <p class="text-dark m-0"> Total: </p>
-                                        <strong class="d-flex text-primary d-block"> $
-                                            {{ $totalQuote - $discount }}</strong>
-                                    </div>
-                                @endif
-                                <div class="d-flex justify-content-between"
-                                    style="font-size: 1.3rem;font-weight: bold;">
-                                    <a href="{{ route('finalizar') }}"
-                                        class="btn btn-primary btn-sm mb-1 w-100">Finalizar
-                                        Cotizacion</a>
+                                </div>
+                                <!-- Botón para cerrar el modal -->
+                                <div class="modal-footer py-4 px-6">
+                                    <button id="closeModal" class="modal-close-btn">Cerrar</button>
                                 </div>
                             </div>
+                        </div>
+
+
+                    </div>
+
+                    {{--  --}}
+
+                    {{--  --}}
+
+
+                    <div class="content-normal bg-white shadow-lg rounded-lg  w-4/4 lg:w-2/3  p-4 m-2 lg:flex-auto">
+                        @if (!$quoteByScales)
+                            <p class="text-black text-center text-lg">Total de la cotizacion</p>
+                            <button
+                                class="bg-gray-200 hover:bg-gray-200 text-black font-bold py-2 px-4 rounded w-full  {{ $cotizacion->discount }}"
+                                data-modal-target="default-modal" data-modal-toggle="default-modal">
+                                Agregar Descuento
+                            </button>
+                            <div wire:ignore.self id="default-modal" data-modal-backdrop="static" tabindex="-1"
+                                aria-hidden="true"
+                                class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
+                                <div class="relative w-full max-w-2xl max-h-full">
+                                    <!-- Modal content -->
+                                    <div class="relative  bg-gray-50 rounded-lg shadow dark:bg-gray-700">
+                                        <!-- Modal header -->
+                                        <div
+                                            class="flex items-start justify-between p-4 border-b rounded-t dark:border-gray-600">
+                                            <h3 class="text-xl font-semibold   text-black">
+                                                Agrega tu descuento
+                                            </h3>
+                                            <button type="button"
+                                                class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ml-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
+                                                data-modal-hide="default-modal">
+                                                <svg class="w-3 h-3" aria-hidden="true"
+                                                    xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                    viewBox="0 0 14 14">
+                                                    <path stroke="currentColor" stroke-linecap="round"
+                                                        stroke-linejoin="round" stroke-width="2"
+                                                        d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+                                                </svg>
+                                                <span class="sr-only">Close modal</span>
+                                            </button>
+                                        </div>
+                                        <!-- Modal body -->
+                                        <div class="p-3">
+                                            <label for="countries"
+                                                class=" mb-2 text-sm font-medium text-gray-900 dark:text-white">Tipo de
+                                                Descuento</label>
+                                            <select id="countries"
+                                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                                <option selected>Tipo de Descuento</option>
+                                                {{ $cotizacion->type }}
+                                                <option value="Seleccione">Seleccione</option>
+                                                <option value="valorfijo">Valor Fijo</option>
+                                                <option value="porcentaje">Porcentaje</option>
+                                            </select>
+                                            <label for="">Cantidad</label>
+                                            <input
+                                                class="w-full py-1 text-center rounded-lg ring-2 ring-stone-950 ring-inset "
+                                                type="number" name="cantidad">
+
+
+
+                                            <button type="button"
+                                                class="bg-gray-200 text-gray-700 hover:bg-gray-300 px-4 py-2 rounded-md"
+                                                data-dismiss="modal">Salir</button>
+                                            @if ($cotizacion->discount)
+                                                <button type="button"
+                                                    class="bg-yellow-500 text-white hover:bg-yellow-600 px-4 py-2 rounded-md"
+                                                    wire:click="addDiscount">Editar</button>
+                                                <button type="button"
+                                                    class="bg-red-500 text-white hover:bg-red-600 px-4 py-2 rounded-md"
+                                                    wire:click="eliminarDescuento">Eliminar</button>
+                                            @else
+                                                <button type="button"
+                                                    class="bg-blue-500 text-white px-4 py-2 rounded-md m-2"
+                                                    wire:click="addDiscount">Guardar</button>
+                                            @endif
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {{--    <button type="button"
+                                class="btn {{ $cotizacion->discount ? 'btn-warning' : 'btn-info' }} btn-block btn-sm my-1"
+                                data-toggle="modal" data-target="#discountModal">
+                                {{ $cotizacion->discount ? 'Editar Descuento' : 'Agregar Descuentokkk' }}
+                            </button> --}}
+                            <div class="content-between">
+                                <div class="flex justify-between">
+                                    <span class="text-black"> Subtotal:</span>
+                                    <span class="text-black"> $ {{ $totalQuote }}</span>
+
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-black"> Descuento: </span>
+                                    <span class="text-black text-right"> $
+                                        {{ $discount }}</span>
+
+                                </div>
+                                <hr>
+                                <div class="flex justify-between">
+                                    <span class="text-black">Total:</span>
+                                    <span class="text-black text-right">$ {{ $totalQuote - $discount }}</span>
+                                </div>
+                            </div>
+                        @endif
+                        <div class="justify-items-center bg-gray-200 text-center p-2 font-bold">
+                            <a href="{{ route('finalizar') }}" class="">Finalizar
+                                Cotizacion</a>
                         </div>
                     </div>
                 @else
@@ -281,34 +471,18 @@
                             </button>
                         </div>
                         <div class="modal-body">
-                            <div class="form-group">
-                                <label for="">Tipo de Descuento</label>
-                                {{ $cotizacion->type }}
-                                <select class="form-control" wire:model.lazy="type">
-                                    <option value="">Seleccione...</option>
-                                    <option value="Fijo">Valor Fijo</option>
-                                    <option value="Porcentaje">Porcentaje</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="">Cantidad</label>
-                                <input type="number" class="form-control" placeholder="ej: 50, 2000"
-                                    wire:model.lazy="value">
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Salir</button>
-                            @if ($cotizacion->discount)
-                                <button type="button" class="btn btn-warning"
-                                    wire:click="addDiscount">Editar</button>
-                                <button type="button" class="btn btn-danger"
-                                    wire:click="eliminarDescuento">Eliminar</button>
-                            @else
-                                <button type="button" class="btn btn-primary"
-                                    wire:click="addDiscount">Guardar</button>
-                            @endif
+
+                            <label for="">Tipo de Descuento</label>
+                            {{ $cotizacion->type }}
+                            <select class="form-control" wire:model.lazy="type">
+                                <option value="">Seleccione...</option>
+                                <option value="Fijo">Valor Fijo</option>
+                                <option value="Porcentaje">Porcentaje</option>
+                            </select>
+
 
                         </div>
+
                     </div>
                 </div>
             </div>
@@ -468,10 +642,10 @@
             </style>
             <script>
                 /* document.addEventListener('DOMContentLoaded', () => {
-                                                                                                                                                                                var height = document.querySelector('.navbar.d-block.d-md-none.mb-2').offsetHeight;
-                                                                                                                                                                                document.querySelector('#app').style.height = `calc(100% - ${height}px)`
-                                                                                                                                                                                console.log(height);
-                                                                                                                                                                            }) */
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            var height = document.querySelector('.navbar.d-block.d-md-none.mb-2').offsetHeight;
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            document.querySelector('#app').style.height = `calc(100% - ${height}px)`
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            console.log(height);
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        }) */
 
                 /* $(document).ready(function() {
                     // $('#div2').height(height);
@@ -527,4 +701,22 @@
             document.querySelector("body > div[modal-backdrop]")?.remove()
         })
     </script>
+    <script>
+        // Función para abrir el modal
+        function openModal() {
+            document.getElementById("myModal").classList.remove("hidden");
+        }
+
+        // Función para cerrar el modal
+        function closeModal() {
+            document.getElementById("myModal").classList.add("hidden");
+        }
+
+        // Asigna la función openModal al botón "openModalButton"
+        document.getElementById("openModalButton").addEventListener("click", openModal);
+
+        // Asigna la función closeModal al botón "closeModal"
+        document.getElementById("closeModal").addEventListener("click", closeModal);
+    </script>
+
 </div>

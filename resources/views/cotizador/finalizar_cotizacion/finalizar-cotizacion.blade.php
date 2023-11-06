@@ -306,48 +306,61 @@
                             </fieldset>
                         </form>
                         <br>
-                        <h3>Tu cotizacion</h3>
-                        <div class="d-flex justify-content-between flex-column flex-sm-row">
-                            <div>
-                                <table class="table table-sm table-responsive-sm table-bordered">
+                        <p class="text-xl">Tu cotizacion</p>
+                        <div class="justify-between border w-1/2">
+                            <div class="w-1/2">
+                                <table class="min-w-full border-2">
                                     <thead>
                                         <tr>
-                                            <th>Producto</th>
-                                            <th>Subtotal</th>
-                                            <th>Piezas</th>
-                                            <th>Total</th>
+                                            <th class="px-6 py-3  text-left border-2 border-black">Producto
+                                            </th>
+                                            <th class="px-6 py-3  text-left border-2 border-black">Subtotal</th>
+                                            <th class="px-6 py-3  text-left border-2 border-black">Piezas</th>
+                                            <th class="px-6 py-3  text-left border-2 border-black">Total</th>
                                         </tr>
                                     </thead>
                                     <tbody>
+
                                         @php
                                             $scales = false;
                                         @endphp
+
                                         @foreach (auth()->user()->currentQuoteActive->currentQuoteDetails as $quote)
                                             <tr>
-                                                <td class="pr-5" style="vertical-align: middle">
+                                                <td class="px-6 py-3  text-left border-2 border-black">
                                                     <p class="m-0">{{ $quote->product->name }}</p>
+                                                    <p> </p>
                                                 </td>
                                                 @if ($quote->quote_by_scales)
                                                     @php
                                                         $scales = true;
                                                         $priceScales = json_decode($quote->scales_info);
                                                     @endphp
-                                                    <td colspan="3">
-                                                        <table class="table-sm table">
+                                                    <td class="px-6 py-3  text-left border-2 border-black">
+                                                        <table class="min-w-full border-2">
                                                             <thead></thead>
                                                             <tbody>
                                                                 @foreach ($priceScales as $it)
                                                                     <tr>
-                                                                        <td class="">
-                                                                            <p class="m-0">$ {{ $it->unit_price }}
+                                                                        <td
+                                                                            class="px-6 py-3  text-left border-2 border-black">
+
+                                                                            $ {{ $it->unit_price }}
+
+
+                                                                        </td>
+                                                                        <td
+                                                                            class="px-6 py-3  text-left border-2 border-black">
+                                                                            <p
+                                                                                class="px-6 py-3  text-left border-2 border-black">
+                                                                                {{ $it->quantity }} pz
                                                                             </p>
                                                                         </td>
-                                                                        <td class="">
-                                                                            <p class="m-0"> {{ $it->quantity }} pz
-                                                                            </p>
-                                                                        </td>
-                                                                        <td>
-                                                                            <p class="m-0">$ {{ $it->total_price }}
+                                                                        <td
+                                                                            class="px-6 py-3  text-left border-2 border-black">
+                                                                            <p
+                                                                                class="px-6 py-3  text-left border-2 border-black">
+                                                                                $ {{ $it->total_price }}
                                                                             </p>
                                                                         </td>
                                                                     </tr>
@@ -357,14 +370,14 @@
                                                         {{--  --}}
                                                     </td>
                                                 @else
-                                                    <td class="">
-                                                        <p class="m-0">$ {{ $quote->precio_unitario }}</p>
+                                                    <td class="px-6 py-3  text-left border-2 border-black">
+                                                        <p class="">$ {{ $quote->precio_unitario }}</p>
                                                     </td>
-                                                    <td class="">
-                                                        <p class="m-0"> {{ $quote->cantidad }} pz</p>
+                                                    <td class="px-6 py-3  text-left border-2 border-black">
+                                                        <p class=""> {{ $quote->cantidad }} pz</p>
                                                     </td>
-                                                    <td>
-                                                        <p class="m-0">$ {{ $quote->precio_total }}</p>
+                                                    <td class="px-6 py-3  text-left border-2 border-black">
+                                                        <p class="">$ {{ $quote->precio_total }}</p>
                                                     </td>
                                                 @endif
                                             </tr>
@@ -382,16 +395,27 @@
                                                 }
                                             @endphp
                                             <tr>
-                                                <th colspan="3">Subtotal</th>
-                                                <th>$ {{ $subtotal }}</th>
+                                                <th class="px-6 py-3  text-left border-2 border-black">Subtotal</th>
+                                                <th class="px-6 py-3  text-left border-2 border-black" colspan="3">
+                                                    $
+                                                    {{ $subtotal }}</th>
+
+                                                {{--   <th class="px-6 py-3  text-left border-2 border-black justify-between">
+                                                    Subtotal
+                                                    <p class="text-right">$ {{ $subtotal }}</p>
+                                                </th> --}}
                                             </tr>
                                             <tr>
-                                                <th colspan="3">Descuento</th>
-                                                <th>$ {{ $discount }}</th>
+                                                <th class="px-6 py-3  text-left border-2 border-black">Descuento</th>
+                                                <th class="px-6 py-3  text-left border-2 border-black" colspan="3">
+                                                    $
+                                                    {{ $discount }}</th>
                                             </tr>
                                             <tr>
-                                                <th colspan="3">Total</th>
-                                                <th>$ {{ $subtotal - $discount }}</th>
+                                                <th class="px-6 py-3  text-left border-2 border-black">Total</th>
+                                                <th class="px-6 py-3  text-left border-2 border-black" colspan="3">
+                                                    $
+                                                    {{ $subtotal - $discount }}</th>
                                             </tr>
                                         @endif
                                     </tbody>
