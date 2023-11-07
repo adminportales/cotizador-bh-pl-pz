@@ -202,12 +202,13 @@
                                             <td>$ {{ $quote->precio_total }}</td>
                                         @endif
                                         <td class="px-6 py-4">
-                                            <button type="button" class="btn btn-warning btn-sm" id="openModalButton"
+                                            <button type="button" class="btn btn-warning btn-sm"
+                                                data-modal-target="editarCotizacion"
+                                                data-modal-toggle="editarCotizacion"
                                                 wire:click="edit({{ $quote->id }})">
                                                 <div
                                                     style="width:
                                                 1rem">
-
                                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6"
                                                         fill="none" viewBox="0 0 24 24" stroke="currentColor"
                                                         stroke-width="2">
@@ -237,112 +238,6 @@
                         </table>
 
                         <!-- Modal -->
-                        <div id="myModal" class="fixed inset-0 flex items-center justify-center z-50 hidden">
-                            <div class="modal-overlay absolute w-full h-full bg-gray-900 opacity-50"></div>
-                            <div
-                                class="modal-container bg-white w-11/12 md:max-w-md mx-auto rounded shadow-lg z-50 overflow-y-auto">
-                                <!-- Contenido del modal -->
-                                <div class="modal-content py-4 text-left px-6">
-                                    <!-- Título del modal -->
-                                    <h5 class="modal-title" id="editProductModalLabel">Editar Cotizacion</h5>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                    <!-- Contenido del modal -->
-                                    <div class="modal-body" style="max-height: 80vh; overflow: auto;">
-                                        @if ($quoteEdit)
-                                            @livewire('components.formulario-de-cotizacion', ['currentQuote' => $quoteEdit], key($quoteEdit->id))
-                                        @endif
-                                    </div>
-                                    <h5 class="modal-title" id="showProductModalLabel">Detalles de la Cotizacion</h5>
-
-                                    <div class="modal-body text-center">
-                                        @if ($quoteShow)
-                                            <div>
-                                                <p class="m-0 px-2">{{ $quoteShow->product->name }}</p>
-                                            </div>
-                                            <div>
-                                                <img src="{{ $quoteShow->images_selected ?: ($quoteShow->product->firstImage ? $quoteShow->product->firstImage->image_url : asset('img/default.jpg')) }}"
-                                                    alt="" width="120">
-                                            </div>
-                                            <p> {{ $quoteShow->product->internal_sku }}</p>
-
-                                            <p class="m-0"><strong>Costo
-                                                    Indirecto:</strong>${{ $quoteShow->costo_indirecto }}</p>
-                                            @if (!$quoteShow->quote_by_scales)
-                                                <p class="m-0"><strong>Margen de Utilidad:</strong>
-                                                    {{ $quoteShow->utilidad }}%
-                                                </p>
-                                            @endif
-
-                                            <p class="m-0"><strong>Colores/Logos:</strong>
-                                                {{ $quoteShow->color_logos }}
-                                            </p>
-                                            <p class="m-0"><strong>Tiempo de entrega: </strong>
-                                                {{ $quoteShow->dias_entrega }}
-                                                dias
-                                            </p>
-                                            <p class="m-0"><strong>Costo de
-                                                    Impresion por tinta:</strong>
-                                                ${{ $quoteShow->new_price_technique
-                                                    ? $quoteShow->new_price_technique
-                                                    : ($quoteShow->priceTechnique->tipo_precio == 'D'
-                                                        ? round($quoteShow->priceTechnique->precio / $quoteShow->cantidad, 2)
-                                                        : $quoteShow->priceTechnique->precio) }}
-                                            </p>
-                                            @if ($quoteShow->quote_by_scales)
-                                                @php
-                                                    $priceScales = json_decode($quoteShow->scales_info);
-                                                @endphp
-                                                <br>
-                                                <table class="table table-sm table-responsive-sm w-100">
-                                                    <thead>
-                                                        <tr>
-                                                            <th>Cantidad</th>
-                                                            <th>Utilidad</th>
-                                                            <th>Impresion</th>
-                                                            <th>Unitario</th>
-                                                            <th>Total</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        @foreach ($priceScales as $scale)
-                                                            <tr>
-                                                                <td> {{ $scale->quantity }} pz</td>
-                                                                <td> {{ $scale->utility }} %</td>
-                                                                <td>$
-                                                                    {{ number_format($scale->tecniquePrice, 2, '.', ',') }}
-                                                                </td>
-                                                                <td>$
-                                                                    {{ number_format($scale->unit_price, 2, '.', ',') }}
-                                                                </td>
-                                                                <td>$
-                                                                    {{ number_format($scale->total_price, 2, '.', ',') }}
-                                                                </td>
-                                                            </tr>
-                                                        @endforeach
-                                                    </tbody>
-                                                </table>
-                                            @else
-                                                <p class="m-0"><strong>Cantidad: </strong>
-                                                    {{ $quoteShow->cantidad }} piezas
-                                                </p>
-                                                <p class="m-0"><strong>Precio Unitario:
-                                                    </strong>${{ $quoteShow->precio_unitario }}
-                                                </p>
-                                                <p class="m-0"><strong>Precio
-                                                        Total:</strong>${{ $quoteShow->precio_total }}
-                                                </p>
-                                            @endif
-                                        @endif
-                                    </div>
-                                </div>
-                                <!-- Botón para cerrar el modal -->
-                                <div class="modal-footer py-4 px-6">
-                                    <button id="closeModal" class="modal-close-btn">Cerrar</button>
-                                </div>
-                            </div>
-                        </div>
 
 
                     </div>
@@ -425,12 +320,6 @@
                                     </div>
                                 </div>
                             </div>
-
-                            {{--    <button type="button"
-                                class="btn {{ $cotizacion->discount ? 'btn-warning' : 'btn-info' }} btn-block btn-sm my-1"
-                                data-toggle="modal" data-target="#discountModal">
-                                {{ $cotizacion->discount ? 'Editar Descuento' : 'Agregar Descuentokkk' }}
-                            </button> --}}
                             <div class="content-between">
                                 <div class="flex justify-between">
                                     <span class="text-black"> Subtotal:</span>
@@ -460,12 +349,12 @@
                 @endif
             </div>
             <!-- Modal -->
-            <div class="modal fade" id="discountModal" tabindex="-1" aria-labelledby="discountModalLabel"
+            {{--   <div class="modal fade" id="discountModal" tabindex="-1" aria-labelledby="discountModalLabel"
                 aria-hidden="true" wire:ignore.self>
                 <div class="modal-dialog modal-sm">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="discountModalLabel">Agregar Descuento</h5>
+                            <h5 class="modal-title" id="discountModalLabel">Agregar Descuento11111</h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
@@ -587,136 +476,258 @@
                         </div>
                     </div>
                 </div>
+            </div> --}}
+
+
+            <div wire:ignore.self id="editarCotizacion" data-modal-backdrop="static" tabindex="-1"
+                aria-hidden="true"
+                class="justify-center fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
+                <div class="relative w-full max-w-2xl max-h-full">
+                    <!-- Modal content -->
+                    <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+                        <!-- Modal header -->
+                        <div class="flex items-start justify-between p-4 border-b rounded-t dark:border-gray-600">
+                            <h3 class="text-xl font-semibold text-gray-900 dark:text-white" id="editarCotizacion">
+                                Editar Cotizacion
+                            </h3>
+                            <button type="button"
+                                class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ml-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
+                                data-modal-hide="editarCotizacion">
+                                <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                    fill="none" viewBox="0 0 14 14">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                        stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+                                </svg>
+                                <span class="sr-only">Close modal</span>
+                            </button>
+                        </div>
+                        <!-- Modal body -->
+                        <div class="p-6 space-y-6">
+
+                            @if ($quoteEdit)
+                                @livewire('components.formulario-de-cotizacion', ['currentQuote' => $quoteEdit], key($quoteEdit->id))
+                            @endif
+                        </div>
+                        <h5 class="modal-title" id="showProductModalLabel">Detalles de la Cotizacion</h5>
+
+                        <div class="modal-body text-center">
+                            @if ($quoteShow)
+                                <div>
+                                    <p class="m-0 px-2">{{ $quoteShow->product->name }}</p>
+                                </div>
+                                <div>
+                                    <img src="{{ $quoteShow->images_selected ?: ($quoteShow->product->firstImage ? $quoteShow->product->firstImage->image_url : asset('img/default.jpg')) }}"
+                                        alt="" width="120">
+                                </div>
+                                <p> {{ $quoteShow->product->internal_sku }}</p>
+
+                                <p class="m-0"><strong>Costo
+                                        Indirecto:</strong>${{ $quoteShow->costo_indirecto }}</p>
+                                @if (!$quoteShow->quote_by_scales)
+                                    <p class="m-0"><strong>Margen de Utilidad:</strong>
+                                        {{ $quoteShow->utilidad }}%
+                                    </p>
+                                @endif
+
+                                <p class="m-0"><strong>Colores/Logos:</strong>
+                                    {{ $quoteShow->color_logos }}
+                                </p>
+                                <p class="m-0"><strong>Tiempo de entrega: </strong>
+                                    {{ $quoteShow->dias_entrega }}
+                                    dias
+                                </p>
+                                <p class="m-0"><strong>Costo de
+                                        Impresion por tinta:</strong>
+                                    ${{ $quoteShow->new_price_technique
+                                        ? $quoteShow->new_price_technique
+                                        : ($quoteShow->priceTechnique->tipo_precio == 'D'
+                                            ? round($quoteShow->priceTechnique->precio / $quoteShow->cantidad, 2)
+                                            : $quoteShow->priceTechnique->precio) }}
+                                </p>
+                                @if ($quoteShow->quote_by_scales)
+                                    @php
+                                        $priceScales = json_decode($quoteShow->scales_info);
+                                    @endphp
+                                    <br>
+                                    <table class="table table-sm table-responsive-sm w-100">
+                                        <thead>
+                                            <tr>
+                                                <th>Cantidad</th>
+                                                <th>Utilidad</th>
+                                                <th>Impresion</th>
+                                                <th>Unitario</th>
+                                                <th>Total</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach ($priceScales as $scale)
+                                                <tr>
+                                                    <td> {{ $scale->quantity }} pz</td>
+                                                    <td> {{ $scale->utility }} %</td>
+                                                    <td>$
+                                                        {{ number_format($scale->tecniquePrice, 2, '.', ',') }}
+                                                    </td>
+                                                    <td>$
+                                                        {{ number_format($scale->unit_price, 2, '.', ',') }}
+                                                    </td>
+                                                    <td>$
+                                                        {{ number_format($scale->total_price, 2, '.', ',') }}
+                                                    </td>
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                @else
+                                    <p class="m-0"><strong>Cantidad: </strong>
+                                        {{ $quoteShow->cantidad }} piezas
+                                    </p>
+                                    <p class="m-0"><strong>Precio Unitario:
+                                        </strong>${{ $quoteShow->precio_unitario }}
+                                    </p>
+                                    <p class="m-0"><strong>Precio
+                                            Total:</strong>${{ $quoteShow->precio_total }}
+                                    </p>
+                                @endif
+                            @endif
+                        </div>
+                    </div>
+                </div>
+                <!-- Modal footer -->
+                <div class="flex items-center p-6 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600">
+
+                </div>
             </div>
-            <style>
-                body {
-                    height: 100vh
-                }
-
-                .container.cq,
-                .container.cq .content-all {
-                    height: 100%;
-                }
-
-                .content-products {
-                    max-height: 100%;
-                    overflow: auto;
-                }
-
-                label {
-                    color: black;
-                }
-
-                .discount {
-                    width: 100%;
-                }
-
-                @media(min-width:768px) {
-                    .discount {
-                        width: 50%;
-                    }
-
-                    body {
-                        height: 100%
-                    }
-
-                    #app {
-                        height: auto;
-                    }
-
-                    .container.cq,
-                    .container.cq .content-all {
-                        height: auto;
-                    }
-
-                    .content-products {
-                        max-height: none;
-                        margin-bottom: 1rem;
-                    }
-
-                }
-
-                .container {
-                    max-height: 100%;
-                }
-            </style>
-            <script>
-                /* document.addEventListener('DOMContentLoaded', () => {
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            var height = document.querySelector('.navbar.d-block.d-md-none.mb-2').offsetHeight;
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            document.querySelector('#app').style.height = `calc(100% - ${height}px)`
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            console.log(height);
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        }) */
-
-                /* $(document).ready(function() {
-                    // $('#div2').height(height);
-                }); */
-                window.addEventListener('show-modal-show', event => {
-                    $('#showProductModal').modal('show')
-                })
-                window.addEventListener('show-modal-edit', event => {
-                    $('#editProductModal').modal('show')
-                })
-                window.addEventListener('hide-modal-discount', event => {
-                    $('#discountModal').modal('hide')
-                })
-                window.addEventListener('closeModal', event => {
-                    $(`#editProductModal`).modal('hide');
-                })
-
-                function eliminar(id) {
-                    Swal.fire({
-                        title: 'Esta seguro?',
-                        text: "Esta accion ya no se puede revertir!",
-                        icon: 'warning',
-                        showCancelButton: true,
-                        confirmButtonColor: '#3085d6',
-                        cancelButtonColor: '#d33',
-                        confirmButtonText: 'Si, eliminar!',
-                        cancelButtonText: 'Cancelar!'
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            @this.eliminar(id)
-                            Swal.fire(
-                                'Eliminado!',
-                                'El producto se ha eliminado.',
-
-                                'success'
-                            )
-                        }
-                    })
-                }
-            </script>
         </div>
-    @else
-        <div class="d-flex w-100 justify-content-center">
-            <p class="text-center m-0 my-5"><strong>No tienes productos en tu cotizacion actual </strong></p>
-        </div>
-    @endif
-    <script>
-        window.addEventListener('hideModalAddQuote', event => {
-            const modalAddQuote = new Modal(document.getElementById('modal-add-quote'), {
-                backdrop: 'static'
-            });
-            modalAddQuote.hide();
-            document.querySelector("body > div[modal-backdrop]")?.remove()
+</div>
+<style>
+    body {
+        height: 100vh
+    }
+
+    .container.cq,
+    .container.cq .content-all {
+        height: 100%;
+    }
+
+    .content-products {
+        max-height: 100%;
+        overflow: auto;
+    }
+
+    label {
+        color: black;
+    }
+
+    .discount {
+        width: 100%;
+    }
+
+    @media(min-width:768px) {
+        .discount {
+            width: 50%;
+        }
+
+        body {
+            height: 100%
+        }
+
+        #app {
+            height: auto;
+        }
+
+        .container.cq,
+        .container.cq .content-all {
+            height: auto;
+        }
+
+        .content-products {
+            max-height: none;
+            margin-bottom: 1rem;
+        }
+
+    }
+
+    .container {
+        max-height: 100%;
+    }
+</style>
+<script>
+    /* document.addEventListener('DOMContentLoaded', () => {
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        var height = document.querySelector('.navbar.d-block.d-md-none.mb-2').offsetHeight;
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        document.querySelector('#app').style.height = `calc(100% - ${height}px)`
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        console.log(height);
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    }) */
+
+    /* $(document).ready(function() {
+        // $('#div2').height(height);
+    }); */
+    window.addEventListener('show-modal-show', event => {
+        $('#showProductModal').modal('show')
+    })
+    window.addEventListener('show-modal-edit', event => {
+        $('#editProductModal').modal('show')
+    })
+    window.addEventListener('hide-modal-discount', event => {
+        $('#discountModal').modal('hide')
+    })
+    window.addEventListener('closeModal', event => {
+        $(`#editProductModal`).modal('hide');
+    })
+
+    function eliminar(id) {
+        Swal.fire({
+            title: 'Esta seguro?',
+            text: "Esta accion ya no se puede revertir!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Si, eliminar!',
+            cancelButtonText: 'Cancelar!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                @this.eliminar(id)
+                Swal.fire(
+                    'Eliminado!',
+                    'El producto se ha eliminado.',
+
+                    'success'
+                )
+            }
         })
-    </script>
-    <script>
-        // Función para abrir el modal
-        function openModal() {
-            document.getElementById("myModal").classList.remove("hidden");
-        }
+    }
+</script>
+</div>
+@else
+<div class="d-flex w-100 justify-content-center">
+    <p class="text-center m-0 my-5"><strong>No tienes productos en tu cotizacion actual </strong></p>
+</div>
+@endif
+<script>
+    window.addEventListener('hideModalAddQuote', event => {
+        const modalAddQuote = new Modal(document.getElementById('modal-add-quote'), {
+            backdrop: 'static'
+        });
+        modalAddQuote.hide();
+        document.querySelector("body > div[modal-backdrop]")?.remove()
+    })
+</script>
+<script>
+    // Función para abrir el modal
+    function openModal() {
+        document.getElementById("myModal").classList.remove("hidden");
+    }
 
-        // Función para cerrar el modal
-        function closeModal() {
-            document.getElementById("myModal").classList.add("hidden");
-        }
+    // Función para cerrar el modal
+    function closeModal() {
+        document.getElementById("myModal").classList.add("hidden");
+    }
 
-        // Asigna la función openModal al botón "openModalButton"
-        document.getElementById("openModalButton").addEventListener("click", openModal);
+    // Asigna la función openModal al botón "openModalButton"
+    document.getElementById("openModalButton").addEventListener("click", openModal);
 
-        // Asigna la función closeModal al botón "closeModal"
-        document.getElementById("closeModal").addEventListener("click", closeModal);
-    </script>
+    // Asigna la función closeModal al botón "closeModal"
+    document.getElementById("closeModal").addEventListener("click", closeModal);
+</script>
 
 </div>
