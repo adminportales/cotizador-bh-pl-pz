@@ -1,8 +1,8 @@
 <div>
-    <div class="card-body">
-        <div class="p-3" id="tabProducts">
-            <div class="d-flex justify-content-between">
-                <h5 class="card-title">Productos Cotizados</h5>
+    <div class="">
+        <div class="p-4 m-2" id="tabProducts">
+            <div class="flex justify-between ">
+                <h5 class="text-lg">Productos Cotizados</h5>
                 @if ($quote->company_id == auth()->user()->company_session)
                     <div class="text-success" style="width: 25px; cursor: pointer;" wire:click="editar"
                         data-toggle="tooltip" data-placement="bottom" title="Editar">
@@ -23,6 +23,7 @@
                 $quoteScales = false;
             @endphp
             @if ($quote->latestQuotesUpdate)
+
                 @if (count($quote->latestQuotesUpdate->quoteProducts) > 0)
                     <div class="w-100">
                         <table class="table table-responsive-sm">
@@ -287,6 +288,7 @@
                     @endif
                     {{-- INICIO DE LA PARTE DE LOS DESCUENTOS --}}
                     @if (!$quoteScales)
+
                         @php
                             $subtotal = $sumPrecioTotal - $subtotalSubstract;
                             $discountValue = 0;
@@ -324,7 +326,7 @@
                     @endif
 
                     <!-- Modal -->
-                    <div class="modal fade" id="discountModalEdit" tabindex="-1"
+                    {{--  <div class="modal fade" id="discountModalEdit" tabindex="-1"
                         aria-labelledby="discountModalEditLabel" aria-hidden="true" wire:ignore.self>
                         <div class="modal-dialog modal-sm">
                             <div class="modal-content">
@@ -374,7 +376,7 @@
 
                             </div>
                         </div>
-                    </div>
+                    </div> --}}
                     <script>
                         window.addEventListener('hideModalDiscount', event => {
                             $('#discountModalEdit').modal('hide')

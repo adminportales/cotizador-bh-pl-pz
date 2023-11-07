@@ -306,141 +306,239 @@
                             </fieldset>
                         </form>
                         <br>
-                        <h3>Tu cotizacion</h3>
-                        <div class="d-flex justify-content-between flex-column flex-sm-row">
-                            <div>
-                                <table class="table table-sm table-responsive-sm table-bordered">
-                                    <thead>
+                        <p class="text-2xl">Tu cotizacion</p>
+                        <div class="flex">
+
+
+                            <table class="w-1/4 border-2">
+                                <thead>
+                                    <tr>
+                                        <th class="px-6 py-3  text-left border-2 border-gray-400">Producto
+                                        </th>
+                                        <th class="px-6 py-3  text-left border-2 border-gray-400">Subtotal</th>
+                                        <th class="px-6 py-3  text-left border-2 border-gray-400">Piezas</th>
+                                        <th class="px-6 py-3  text-left border-2 border-gray-400">Total</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                    @php
+                                        $scales = false;
+                                    @endphp
+
+                                    @foreach (auth()->user()->currentQuoteActive->currentQuoteDetails as $quote)
                                         <tr>
-                                            <th>Producto</th>
-                                            <th>Subtotal</th>
-                                            <th>Piezas</th>
-                                            <th>Total</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @php
-                                            $scales = false;
-                                        @endphp
-                                        @foreach (auth()->user()->currentQuoteActive->currentQuoteDetails as $quote)
-                                            <tr>
-                                                <td class="pr-5" style="vertical-align: middle">
-                                                    <p class="m-0">{{ $quote->product->name }}</p>
+                                            <td class="px-6 py-3  text-left border-2 border-gray-400">
+                                                <p class="m-0">{{ $quote->product->name }}</p>
+                                                <p> </p>
+                                            </td>
+                                            @if ($quote->quote_by_scales)
+                                                @php
+                                                    $scales = true;
+                                                    $priceScales = json_decode($quote->scales_info);
+                                                @endphp
+                                                <td class="px-6 py-3  text-left border-2 border-gray-400">
+                                                    <table class="min-w-full border-2">
+                                                        <thead></thead>
+                                                        <tbody>
+                                                            @foreach ($priceScales as $it)
+                                                                <tr>
+                                                                    <td
+                                                                        class="px-6 py-3  text-left border-2 border-gray-400">
+
+                                                                        $ {{ $it->unit_price }}
+
+
+                                                                    </td>
+                                                                    <td
+                                                                        class="px-6 py-3  text-left border-2 border-gray-400">
+                                                                        <p
+                                                                            class="px-6 py-3  text-left border-2 border-gray-400">
+                                                                            {{ $it->quantity }} pz
+                                                                        </p>
+                                                                    </td>
+                                                                    <td
+                                                                        class="px-6 py-3  text-left border-2 border-gray-400">
+                                                                        <p
+                                                                            class="px-6 py-3  text-left border-2 border-gray-400">
+                                                                            $ {{ $it->total_price }}
+                                                                        </p>
+                                                                    </td>
+                                                                </tr>
+                                                            @endforeach
+                                                        </tbody>
+                                                    </table>
+                                                    {{--  --}}
                                                 </td>
-                                                @if ($quote->quote_by_scales)
-                                                    @php
-                                                        $scales = true;
-                                                        $priceScales = json_decode($quote->scales_info);
-                                                    @endphp
-                                                    <td colspan="3">
-                                                        <table class="table-sm table">
-                                                            <thead></thead>
-                                                            <tbody>
-                                                                @foreach ($priceScales as $it)
-                                                                    <tr>
-                                                                        <td class="">
-                                                                            <p class="m-0">$ {{ $it->unit_price }}
-                                                                            </p>
-                                                                        </td>
-                                                                        <td class="">
-                                                                            <p class="m-0"> {{ $it->quantity }} pz
-                                                                            </p>
-                                                                        </td>
-                                                                        <td>
-                                                                            <p class="m-0">$ {{ $it->total_price }}
-                                                                            </p>
-                                                                        </td>
-                                                                    </tr>
-                                                                @endforeach
-                                                            </tbody>
-                                                        </table>
-                                                        {{--  --}}
-                                                    </td>
-                                                @else
-                                                    <td class="">
-                                                        <p class="m-0">$ {{ $quote->precio_unitario }}</p>
-                                                    </td>
-                                                    <td class="">
-                                                        <p class="m-0"> {{ $quote->cantidad }} pz</p>
-                                                    </td>
-                                                    <td>
-                                                        <p class="m-0">$ {{ $quote->precio_total }}</p>
-                                                    </td>
-                                                @endif
-                                            </tr>
-                                        @endforeach
-                                        @if (!$scales)
-                                            @php
-                                                $subtotal = auth()
-                                                    ->user()
-                                                    ->currentQuoteActive->currentQuoteDetails->sum('precio_total');
-                                                $discount = 0;
-                                                if (auth()->user()->currentQuoteActive->type == 'Fijo') {
-                                                    $discount = auth()->user()->currentQuoteActive->value;
-                                                } else {
-                                                    $discount = round(($subtotal / 100) * auth()->user()->currentQuoteActive->value, 2);
-                                                }
-                                            @endphp
-                                            <tr>
-                                                <th colspan="3">Subtotal</th>
-                                                <th>$ {{ $subtotal }}</th>
-                                            </tr>
-                                            <tr>
-                                                <th colspan="3">Descuento</th>
-                                                <th>$ {{ $discount }}</th>
-                                            </tr>
-                                            <tr>
-                                                <th colspan="3">Total</th>
-                                                <th>$ {{ $subtotal - $discount }}</th>
-                                            </tr>
-                                        @endif
-                                    </tbody>
-                                </table>
+                                            @else
+                                                <td class="px-6 py-3  text-left border-2 border-gray-400">
+                                                    <p class="">$ {{ $quote->precio_unitario }}</p>
+                                                </td>
+                                                <td class="px-6 py-3  text-left border-2 border-gray-400">
+                                                    <p class=""> {{ $quote->cantidad }} pz</p>
+                                                </td>
+                                                <td class="px-6 py-3  text-left border-2 border-gray-400">
+                                                    <p class="">$ {{ $quote->precio_total }}</p>
+                                                </td>
+                                            @endif
+                                        </tr>
+                                    @endforeach
+                                    @if (!$scales)
+                                        @php
+                                            $subtotal = auth()
+                                                ->user()
+                                                ->currentQuoteActive->currentQuoteDetails->sum('precio_total');
+                                            $discount = 0;
+                                            if (auth()->user()->currentQuoteActive->type == 'Fijo') {
+                                                $discount = auth()->user()->currentQuoteActive->value;
+                                            } else {
+                                                $discount = round(($subtotal / 100) * auth()->user()->currentQuoteActive->value, 2);
+                                            }
+                                        @endphp
+                                        <tr>
+                                            <th class="px-6 py-3  text-left border-2 border-gray-400">Subtotal</th>
+                                            <th class="px-6 py-3  text-left border-2 border-gray-400" colspan="3">
+                                                $
+                                                {{ $subtotal }}</th>
+
+                                            {{--   <th class="px-6 py-3  text-left border-2 border-gray-400 justify-between">
+                                                    Subtotal
+                                                    <p class="text-right">$ {{ $subtotal }}</p>
+                                                </th> --}}
+                                        </tr>
+                                        <tr>
+                                            <th class="px-6 py-3  text-left border-2 border-gray-400">Descuento
+                                            </th>
+                                            <th class="px-6 py-3  text-left border-2 border-gray-400" colspan="3">
+                                                $
+                                                {{ $discount }}</th>
+                                        </tr>
+                                        <tr>
+                                            <th class="px-6 py-3  text-left border-2 border-gray-400">Total</th>
+                                            <th class="px-6 py-3  text-left border-2 border-gray-400" colspan="3">
+                                                $
+                                                {{ $subtotal - $discount }}</th>
+                                        </tr>
+                                    @endif
+                                </tbody>
+                            </table>
+                            <div class="w-1/2">
+
+
+                                <div wire:loading wire:target="guardarCotizacion">
+                                    <div class="spinner-border text-primary" role="status">
+                                        <span class="sr-only">Loading...</span>
+                                    </div>
+                                </div>
+
+                                <div class="spinner-border text-primary" role="status">
+                                    <span class="sr-only">Loading...</span>
+                                </div>
+
+                                <button class="bg-gray-200 ml-10 p-3  rounded-md" data-modal-target="preview"
+                                    data-modal-toggle="preview" onclick="preview()">Previsualizar
+                                    Cotizacion </button>
+                                <button class="bg-gray-200 ml-10 p-3  rounded-md" onclick="enviar()">Guardar
+                                    Cotizacion</button>
+
+
+
                             </div>
-                            <div class="d-flex flex-column">
+                            {{--  <div class="d-flex flex-column">
                                 <div wire:loading wire:target="guardarCotizacion">
                                     <div class="spinner-border text-primary" role="status">
                                         <span class="sr-only">Loading...</span>
                                     </div>
                                 </div>
                                 <button class="btn btn-primary btn-sm btn-block mb-1"
-                                    onclick="preview()">Previsualizar Cotizacion</button>
+                                    onclick="preview()">Previsualizar
+                                    Cotizacion</button>
                                 <button class="btn btn-primary btn-sm btn-block" onclick="enviar()">Guardar
                                     Cotizacion</button>
-                            </div>
+                            </div> --}}
+
                         </div>
-                    </div>
-                    <!-- Modal -->
-                    <div wire:ignore.self class="modal fade" id="modalPreview" tabindex="-1"
-                        aria-labelledby="modalPreviewLabel" aria-hidden="true">
-                        <div class="modal-dialog modal-lg">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="modalPreviewLabel">Vista Previa de la Cotizacion</h5>
-                                    <button type="button" class="close" onclick="cerrarPreview()">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                                <div class="modal-body">
-                                    <div wire:loading.flex wire:target="previewQuote" class="justify-content-center">
-                                        <div class="spinner-border text-primary" role="status">
-                                            <span class="sr-only">Loading...</span>
-                                        </div>
+
+                        {{--     <div wire:ignore.self class="modal fade" id="preview" tabindex="-1"
+                            aria-labelledby="modalPreviewLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-lg">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="modalPreviewLabel">Vista Previa de la Cotizacion
+                                        </h5>
+                                        <button type="button" class="close" onclick="cerrarPreview()">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
                                     </div>
-                                    @if ($urlPDFPreview)
-                                        <iframe src="{{ $urlPDFPreview }}" style="width:100%; height:700px;"
-                                            frameborder="0"></iframe>
-                                    @endif
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary"
-                                        onclick="cerrarPreview()">Cerrar</button>
+                                    <div class="modal-body">
+                                        <div wire:loading.flex wire:target="previewQuote"
+                                            class="justify-content-center">
+                                            <div class="spinner-border text-primary" role="status">
+                                                <span class="sr-only">Loading...</span>
+                                            </div>
+                                        </div>
+                                        @if ($urlPDFPreview)
+                                            <iframe src="{{ $urlPDFPreview }}" style="width:100%; height:700px;"
+                                                frameborder="0"></iframe>
+                                        @endif
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary"
+                                            onclick="cerrarPreview()">Cerrar</button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                @else
-                    <p class="text-center">No tienes productos en tu cotizacion actual</p>
+ --}}
+                        {{--  --}}
+
+                        <div wire:ignore.self id="preview" tabindex="-1" aria-hidden="true"
+                            class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
+                            <div class="relative w-full max-w-2xl max-h-full">
+                                <!-- Modal content -->
+                                <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+                                    <!-- Modal header -->
+                                    <div
+                                        class="flex items-start justify-between p-4 border-b rounded-t dark:border-gray-600">
+                                        <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
+                                            Vista Previa de la Cotizacion
+                                        </h3>
+                                        <button type="button"
+                                            class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ml-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
+                                            data-modal-hide="preview">
+                                            <svg class="w-3 h-3" aria-hidden="true"
+                                                xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                viewBox="0 0 14 14">
+                                                <path stroke="currentColor" stroke-linecap="round"
+                                                    stroke-linejoin="round" stroke-width="2"
+                                                    d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+                                            </svg>
+                                            <span class="sr-only">Close modal</span>
+                                        </button>
+
+
+                                    </div>
+                                    <!-- Modal body -->
+                                    <div class="p-6 space-y-6">
+                                        <div wire:loading.flex wire:target="previewQuote" class="justify-center">
+                                            <div
+                                                class="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-primary">
+                                            </div>
+                                        </div>
+
+                                        @if ($urlPDFPreview)
+                                            <iframe src="{{ $urlPDFPreview }}" class="w-full h-96"
+                                                frameborder="0"></iframe>
+                                        @endif
+                                    </div>
+                                    <div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    @else
+                        <p class="text-center">No tienes productos en tu cotizacion actual</p>
                 @endif
             </div>
         </div>
@@ -454,6 +552,8 @@
         function preview() {
             //$('#modalPreview').modal('show')
             @this.previewQuote()
+
+
         }
 
         function cerrarPreview() {
@@ -479,4 +579,6 @@
             })
         }
     </script>
+
+
 </div>
