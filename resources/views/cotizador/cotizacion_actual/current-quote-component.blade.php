@@ -236,18 +236,9 @@
                                 @endforeach
                             </tbody>
                         </table>
-
-                        <!-- Modal -->
-
-
                     </div>
-
-                    {{--  --}}
-
-                    {{--  --}}
-
-
-                    <div class="content-normal bg-white shadow-lg rounded-lg  w-4/4 lg:w-2/3  p-4 m-2 lg:flex-auto">
+                    <br>
+                    <div class="bg-white shadow-md rounded-md px-6 py-4 md:w-1/2 w-full">
                         @if (!$quoteByScales)
                             <p class="text-black text-center text-lg">Total de la cotizacion</p>
                             <button

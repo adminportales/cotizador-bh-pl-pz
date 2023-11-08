@@ -306,29 +306,26 @@
                             </fieldset>
                         </form>
                         <br>
-                        <p class="text-2xl">Tu cotizacion</p>
-                        <div class="flex">
-
-
-                            <table class="w-1/4 border-2">
+                        <p class="mb-2 text-xl">Resumen </p>
+                        <div class="flex gap-3 md:flex-row flex-col justify-between">
+                            <table class=" border border-gray-300">
                                 <thead>
                                     <tr>
-                                        <th class="px-6 py-3  text-left border-2 border-gray-400">Producto
+                                        <th class="px-6 py-3  text-left border">Producto
                                         </th>
-                                        <th class="px-6 py-3  text-left border-2 border-gray-400">Subtotal</th>
-                                        <th class="px-6 py-3  text-left border-2 border-gray-400">Piezas</th>
-                                        <th class="px-6 py-3  text-left border-2 border-gray-400">Total</th>
+                                        <th class="px-6 py-3  text-left border">Subtotal</th>
+                                        <th class="px-6 py-3  text-left border">Piezas</th>
+                                        <th class="px-6 py-3  text-left border">Total</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-
                                     @php
                                         $scales = false;
                                     @endphp
 
                                     @foreach (auth()->user()->currentQuoteActive->currentQuoteDetails as $quote)
                                         <tr>
-                                            <td class="px-6 py-3  text-left border-2 border-gray-400">
+                                            <td class="p-2 text-left border">
                                                 <p class="m-0">{{ $quote->product->name }}</p>
                                                 <p> </p>
                                             </td>
@@ -337,30 +334,22 @@
                                                     $scales = true;
                                                     $priceScales = json_decode($quote->scales_info);
                                                 @endphp
-                                                <td class="px-6 py-3  text-left border-2 border-gray-400">
+                                                <td class="p-2  text-left border">
                                                     <table class="min-w-full border-2">
                                                         <thead></thead>
                                                         <tbody>
                                                             @foreach ($priceScales as $it)
                                                                 <tr>
-                                                                    <td
-                                                                        class="px-6 py-3  text-left border-2 border-gray-400">
-
+                                                                    <td class="p-2  text-left border">
                                                                         $ {{ $it->unit_price }}
-
-
                                                                     </td>
-                                                                    <td
-                                                                        class="px-6 py-3  text-left border-2 border-gray-400">
-                                                                        <p
-                                                                            class="px-6 py-3  text-left border-2 border-gray-400">
+                                                                    <td class="p-2  text-left border">
+                                                                        <p class="p-2  text-left border">
                                                                             {{ $it->quantity }} pz
                                                                         </p>
                                                                     </td>
-                                                                    <td
-                                                                        class="px-6 py-3  text-left border-2 border-gray-400">
-                                                                        <p
-                                                                            class="px-6 py-3  text-left border-2 border-gray-400">
+                                                                    <td class="p-2  text-left border">
+                                                                        <p class="p-2  text-left border">
                                                                             $ {{ $it->total_price }}
                                                                         </p>
                                                                     </td>
@@ -371,13 +360,13 @@
                                                     {{--  --}}
                                                 </td>
                                             @else
-                                                <td class="px-6 py-3  text-left border-2 border-gray-400">
+                                                <td class="p-2  text-left border">
                                                     <p class="">$ {{ $quote->precio_unitario }}</p>
                                                 </td>
-                                                <td class="px-6 py-3  text-left border-2 border-gray-400">
+                                                <td class="p-2  text-left border">
                                                     <p class=""> {{ $quote->cantidad }} pz</p>
                                                 </td>
-                                                <td class="px-6 py-3  text-left border-2 border-gray-400">
+                                                <td class="p-2  text-left border">
                                                     <p class="">$ {{ $quote->precio_total }}</p>
                                                 </td>
                                             @endif
@@ -396,36 +385,34 @@
                                             }
                                         @endphp
                                         <tr>
-                                            <th class="px-6 py-3  text-left border-2 border-gray-400">Subtotal</th>
-                                            <th class="px-6 py-3  text-left border-2 border-gray-400" colspan="3">
+                                            <th class="p-2  text-left border">Subtotal</th>
+                                            <th class="p-2  text-left border" colspan="3">
                                                 $
                                                 {{ $subtotal }}</th>
 
-                                            {{--   <th class="px-6 py-3  text-left border-2 border-gray-400 justify-between">
+                                            {{--   <th class="p-2  text-left border justify-between">
                                                     Subtotal
                                                     <p class="text-right">$ {{ $subtotal }}</p>
                                                 </th> --}}
                                         </tr>
                                         <tr>
-                                            <th class="px-6 py-3  text-left border-2 border-gray-400">Descuento
+                                            <th class="p-2  text-left border">Descuento
                                             </th>
-                                            <th class="px-6 py-3  text-left border-2 border-gray-400" colspan="3">
+                                            <th class="p-2  text-left border" colspan="3">
                                                 $
                                                 {{ $discount }}</th>
                                         </tr>
                                         <tr>
-                                            <th class="px-6 py-3  text-left border-2 border-gray-400">Total</th>
-                                            <th class="px-6 py-3  text-left border-2 border-gray-400" colspan="3">
+                                            <th class="p-2  text-left border">Total</th>
+                                            <th class="p-2  text-left border" colspan="3">
                                                 $
                                                 {{ $subtotal - $discount }}</th>
                                         </tr>
                                     @endif
                                 </tbody>
                             </table>
-                            <div class="w-1/2">
-
-
-                                <div wire:loading wire:target="guardarCotizacion">
+                            <div class="">
+                                {{-- <div wire:loading wire:target="guardarCotizacion">
                                     <div class="spinner-border text-primary" role="status">
                                         <span class="sr-only">Loading...</span>
                                     </div>
@@ -433,16 +420,15 @@
 
                                 <div class="spinner-border text-primary" role="status">
                                     <span class="sr-only">Loading...</span>
+                                </div> --}}
+
+                                <div class="flex flex-col gap-2">
+                                    <button class="bg-gray-200 p-3  rounded-md" data-modal-target="preview"
+                                        data-modal-toggle="preview" onclick="preview()">Previsualizar
+                                        Cotizacion </button>
+                                    <button class="bg-gray-200 p-3  rounded-md" onclick="enviar()">Guardar
+                                        Cotizacion</button>
                                 </div>
-
-                                <button class="bg-gray-200 ml-10 p-3  rounded-md" data-modal-target="preview"
-                                    data-modal-toggle="preview" onclick="preview()">Previsualizar
-                                    Cotizacion </button>
-                                <button class="bg-gray-200 ml-10 p-3  rounded-md" onclick="enviar()">Guardar
-                                    Cotizacion</button>
-
-
-
                             </div>
                             {{--  <div class="d-flex flex-column">
                                 <div wire:loading wire:target="guardarCotizacion">
