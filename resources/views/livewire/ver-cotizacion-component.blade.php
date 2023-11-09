@@ -173,9 +173,9 @@
                                                 <span class="sr-only">loading...</span>
                                             </div>
                                         </div>
-                                        <button class="btn btn-primary w-100" wire:click="enviar">Enviar al
+                       {{--                  <button class="btn btn-primary w-100" wire:click="enviar">Enviar al
                                             Cliente</button>
-
+ --}}
                                     </div>
                                 </div>
                                 <div class="col-md-4 mb-2">
@@ -185,8 +185,8 @@
                                                 <span class="sr-only">loading...</span>
                                             </div>
                                         </div>
-                                        <button class="btn btn-danger w-100" wire:click="enviarOdoo">Enviar a
-                                            ODOO</button>
+                                       {{--  <button class="btn btn-danger w-100" wire:click="enviarOdoo">Enviar a
+                                            ODOO</button> --}}
                                     </div>
                                 </div>
                             @endif

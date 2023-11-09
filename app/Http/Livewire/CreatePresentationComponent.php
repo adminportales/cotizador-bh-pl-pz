@@ -4,6 +4,7 @@ namespace App\Http\Livewire;
 
 use App\Models\Client;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Dompdf\Dompdf;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use iio\libmergepdf\Merger;
@@ -80,21 +81,21 @@ class CreatePresentationComponent extends Component
             'generar_contraportada' => $this->generar_contraportada,
         ];
 
-        // $dataInformation = [
-        //     // 'portada' => 'https://png.pngtree.com/png-slide/20220812/ourmid/0-pngtree-ancient-brown-simple-and-elegant-pattern-ppt-cover-google-slides-and-powerpoint-template-background_8735.jpg',
-        //     'portada' => '',
-        //     // 'logo' => "https://store-images.s-microsoft.com/image/apps.10546.13571498826857201.6603a5e2-631f-4f29-9b08-f96589723808.dc893fe0-ecbc-4846-9ac6-b13886604095",
-        //     'logo' => '',
-        //     // 'contraportada' => "https://img.freepik.com/vector-premium/fondo-material-moderno_643365-269.jpg",
-        //     'contraportada' => "",
-        //     // 'fondo' => 'https://img.freepik.com/vector-premium/fondo-material-moderno_643365-269.jpg',
-        //     'fondo' => '',
-        //     'color_primario' => $this->color_primario,
-        //     'color_secundario' => $this->color_secundario,
-        //     'productos_por_pagina' => $this->productos_por_pagina,
-        //     'mostrar_formato_de_tabla' => $this->mostrar_formato_de_tabla,
-        //     'generar_contraportada' => $this->generar_contraportada,
-        // ];
+        $dataInformation = [
+            //     // 'portada' => 'https://png.pngtree.com/png-slide/20220812/ourmid/0-pngtree-ancient-brown-simple-and-elegant-pattern-ppt-cover-google-slides-and-powerpoint-template-background_8735.jpg',
+            'portada' => '',
+            'logo' => "https://c0.klipartz.com/pngpicture/16/408/sticker-png-logo-mcdonald-s-brand-scalable-graphics-mcdonalds-thumbnail.png",
+            //     'logo' => '',
+            //     // 'contraportada' => "https://img.freepik.com/vector-premium/fondo-material-moderno_643365-269.jpg",
+            'contraportada' => "",
+            //     // 'fondo' => 'https://img.freepik.com/vector-premium/fondo-material-moderno_643365-269.jpg',
+            'fondo' => '',
+            'color_primario' => $this->color_primario,
+            'color_secundario' => $this->color_secundario,
+            'productos_por_pagina' => $this->productos_por_pagina,
+            'mostrar_formato_de_tabla' => $this->mostrar_formato_de_tabla,
+            'generar_contraportada' => $this->generar_contraportada,
+        ];
 
         $empresa = Client::where("name", $this->quote->latestQuotesUpdate->quotesInformation->company)->first();
         $nombreComercial = null;
@@ -136,18 +137,18 @@ class CreatePresentationComponent extends Component
                 break;
         }
 
-        $pdfCuerpo->setPaper('Letter', 'landscape');
+        $pdfCuerpo->setPaper(array(0, 0, 872, 490));
         $pdfCuerpo = $pdfCuerpo->stream("Preview " . $this->quote->id . ".pdf");
         $pathCuerpo =  "/storage/quotes/tmp/" . time() . "Preview " . $this->quote->id  . ".pdf";
         file_put_contents(public_path() . $pathCuerpo, $pdfCuerpo);
 
-        $pdfPortada->setPaper('Letter', 'landscape');
+        $pdfPortada->setPaper(array(0, 0, 872, 490));
         $pdfPortada = $pdfPortada->stream("Preview " . $this->quote->id . "2.pdf");
         $pathPortada =  "/storage/quotes/tmp/" . time() . "Preview " . $this->quote->id  . "2.pdf";
         file_put_contents(public_path() . $pathPortada, $pdfPortada);
 
         if ($this->tieneContraportada) {
-            $pdfContraportada->setPaper('Letter', 'landscape');
+            $pdfContraportada->setPaper(array(0, 0, 872, 490));
             $pdfContraportada = $pdfContraportada->stream("Preview " . $this->quote->id . "2.pdf");
             $pathContraportada =  "/storage/quotes/tmp/" . time() . "Preview " . $this->quote->id  . "3.pdf";
             file_put_contents(public_path() . $pathContraportada, $pdfContraportada);

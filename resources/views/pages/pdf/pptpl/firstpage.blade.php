@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-    <title>Cotizacion BH</title>
+    <title>Cotizacion PL</title>
     <style>
         @page {
             margin: 0cm;
@@ -11,8 +11,9 @@
             margin-bottom: 0cm;
         }
 
-        body {
-            font-family: Arial, Helvetica, sans-serif;
+        #first-page-img {
+            width: 100vh;
+            height: 100vh;
         }
 
         .portada {
@@ -21,85 +22,71 @@
             object-fit: cover;
         }
 
-        #first-page-img {
-            width: 100vh;
-            height: 100vh;
-        }
 
-        .body {
-            height: 17cm;
-            margin: 2cm 2cm 2cm 2cm;
-            margin-top: -19.5cm;
-            /* background-color: red; */
-        }
 
-        .body-back {
-            height: 100vh;
-            background-image: url(quotesheet/pl/ppt/fondoportada.jpg);
+        body {
+            background-image: url(quotesheet/pl/ppt/PLPORTADA.jpg);
             background-repeat: no-repeat;
-            background-size: cover;
-            background-position: center left;
-            /* background-color: rgb(119, 194, 255); */
+            background-size: contain;
+            background-position: center center;
+
+
+            font-family: Arial, Helvetica, sans-serif;
+            /* height: 17cm;
+            margin: 2cm 2cm 2cm 2cm;
+            margin-top: -19.5cm; */
+
         }
 
-        .content {
-            height: 100%;
-            background-color: rgba(255, 255, 255, 0.62);
+        .contain {
+            margin: 1.2cm;
+            height: 13.7cm;
         }
 
-        .table-content {
+        .table {
+
             width: 100%;
-            height: 100%;
-            /* background-color: royalblue; */
         }
 
-        .table-content td {
-            /* vertical-align: top; */
-            /* background-color: red; */
-            width: 100%;
-            height: 100%;
-            vertical-align: middle;
-        }
 
-        /* Logos */
-        .logos {
-            width: 100%;
-            height: 120px;
+        .contenedor_logo {
+            height: 100%;
             text-align: center;
+
         }
 
         .logo {
             width: auto;
-            height: 100%;
-            object-fit: cover;
+            max-width: 90%;
+            height: auto;
+            max-height: 80%;
         }
 
-        /* Informacion */
-        .client {
-            margin-top: 35px;
-            font-size: 30px;
-            font-weight: bold;
+        .datos {
+            font-size: 24px;
+            color: white;
+            padding: 1.5px;
         }
 
-        .client p {
-            margin: 0;
-            text-align: center;
+
+        .tabla_datos {
+            width: 100%;
         }
 
-        .client .name-customer {
-            font-size: 25px;
-            font-weight: bold;
+        .name {
+
+            width: 50%;
+            padding-left: 25px;
+            font-size: 23px;
+
         }
 
         .fecha {
-            margin-top: 20px;
-            font-size: 28px;
-            font-weight: bold;
-        }
 
-        .fecha p {
-            margin: 0;
-            text-align: center;
+            width: 50%;
+            text-align: right;
+            font-size: 23px;
+            padding-right: 25px;
         }
     </style>
 </head>
@@ -111,43 +98,28 @@
             <img src="{{ $data['portada'] }}" class="portada" alt="">
         </div>
     @else
-        {{-- Esta portada va el logo, nombre del vendedor y cliente --}}
-        <div class="body-back">
-        </div>
-        <div class="body">
-            <div class="content">
-                <table class="table-content">
-                    <td>
-                        <div class="logos">
-                            <img src="quotesheet/pl/logo.png" class="logo">
-                            {{-- <img src="quotesheet/bh/logo.png" class="logo"> --}}
-                        </div>
-                        <div class="client">
-                            <p>
-                                @if ($nombreComercial)
-                                    @if ($quote->show_tax)
-                                        {{ $nombreComercial->name }}
-                                    @else
-                                        {{ $quote->latestQuotesUpdate->quotesInformation->company }}
-                                    @endif
-                                @else
-                                    {{ $quote->latestQuotesUpdate->quotesInformation->company }}
-                                @endif
-                            </p>
-                            <p class="name-customer">
-                                {{ $quote->latestQuotesUpdate->quotesInformation->name }}
-                            </p>
-                            @if ($quote->latestQuotesUpdate->quotesInformation->department)
-                                <p class="name-customer">
-                                    {{ $quote->latestQuotesUpdate->quotesInformation->department }}
-                                </p>
-                            @endif
-                        </div>
-                        <div class="fecha">
-                            <p>Fecha Cotización: {{ $quote->created_at->format('d/m/Y') }}</p>
-                        </div>
+        <div class="contain">
+            <table class="table">
+                <tr>
+                    <td class="contenedor_logo">
+                        <img src="{{ $data['logo'] }}" class="logo">
                     </td>
+                </tr>
+            </table>
+            <div class="datos">
+                <table class="tabla_datos">
+                    <tr>
+                        <td class="name"><span>
+                                <strong>
+                                    {{ $quote->latestQuotesUpdate->quotesInformation->name }}</strong>
+                            </span></td>
+                        <td class="fecha" style="width: 50%; text-align: right;">
+                            <span class="fecha_cot">FECHA DE COTIZACION:
+                                {{ $quote->created_at->format('d/m/Y') }}</span>
+                        </td>
+                    </tr>
                 </table>
+
             </div>
         </div>
     @endif
