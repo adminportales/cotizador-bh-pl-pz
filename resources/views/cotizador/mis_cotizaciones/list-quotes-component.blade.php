@@ -1,5 +1,4 @@
 <div>
-
     <div>
         <input wire:model='keyWord' type="text" class="form-control" name="search" id="search" placeholder="Buscar">
     </div>

@@ -154,4 +154,25 @@ class CurrentQuoteComponent extends Component
         }
         $this->allQuotes = auth()->user()->currentQuotes;
     }
+
+    //eliminarCurrentQuote
+    public function deleteCurrentQuote($cqid)
+    {
+        $currentQuote = auth()->user()->currentQuotes()->find($cqid);
+        $currentQuote->currentQuoteDetails()->delete();
+        $currentQuote->delete();
+        auth()->user()->currentQuotes()->first()->update(['active' => 1]);
+        $this->allQuotes = auth()->user()->currentQuotes;
+    }
+
+    //editarCurrentQuote
+    public function editCurrentQuote($cqid)
+    {
+        /* $currentQuote = auth()->user()->currentQuotes()->find($cqid);
+        $currentQuote->update(['name' => $this->nameQuote]);
+        $this->nameQuote = '';
+        $this->dispatchBrowserEvent('hideModalEditQuote');
+        $this->allQuotes = auth()->user()->currentQuotes; */
+    }
+
 }

@@ -355,12 +355,16 @@
                                             </div>
                                         </div>
                                         <div class="grid grid-cols-6 gap-2">
-                                            @foreach ($product->images as $image)
+                                            {{-- Quitar elementos duplicados --}}
+                                            @php
+                                                $images = $product->images->unique('image_url');
+                                            @endphp
+                                            @foreach ($images as $image)
                                                 <div class="col-span-3 sm:col-span-2">
                                                     <div class="w-full img-select object-contain {{ $imageSelected == $image->image_url ? 'selected' : '' }}"
                                                         wire:click="seleccionarImagen('{{ $image->image_url }}')">
-                                                        <img src="{{ $image->image_url }}" class="rounded w-full object-cover"
-                                                            style=" width: auto;"
+                                                        <img src="{{ $image->image_url }}"
+                                                            class="rounded w-full object-cover" style=" width: auto;"
                                                             alt="{{ $image->image_url }}">
                                                     </div>
                                                 </div>
@@ -386,79 +390,96 @@
                 </div>
             </div>
         </li>
-    </ol>
+        <li class="mb-2 ml-6">
+            <span
+                class="absolute flex items-center justify-center w-6 h-6 bg-blue-100 rounded-full -left-3 ring-8 ring-white ">4
+            </span>
+            <h3 class="flex items-center mb-1 text-lg font-semibold text-gray-900 ">
+                Finalizar Cotizacion
+            </h3>
+            <div class="bg-gray-50 p-3 rounded-sm">
+                <div class=" sm:flex justify-between p-4">
+                    @if (!$priceScales)
+                        <div>
+                            <h6 class="text-success">Precio Final por Articulo: $ {{ $precioCalculado }}</h6>
+                            <h6 class="text-success">Precio Total: $ {{ $precioTotal }}</h6>
+                        </div>
+                    @endif
+                    <div class="m-0 mb-1 text-center">
+                        @if ($currentQuote)
+                            <button type="button" class="btn btn-warning py-2 px-4"
+                                wire:click='editarCurrentCotizacion'>Editar
+                                cotizacion</button>
+                        @elseif ($productEdit)
+                            <button type="button" class="btn btn-info py-2 px-4"
+                                wire:click='editarCotizacion'>Actualizar
+                                cotizacion</button>
+                        @elseif ($productNewAdd)
+                            <button type="button" class="btn btn-secondary py-2 px-4"
+                                wire:click='addNewProductToQuote'>Agregar
+                                a la
+                                cotizacion</button>
+                        @else
+                            <button type="button" class="btn btn-primary py-2 px-4"
+                                wire:click='agregarCotizacion'>Añadir a
+                                la cotizacion</button>
+                        @endif
+                    </div>
+                </div>
 
-    @if ($errors)
-        <div wire:poll.12s>
-            @if ($errors->has('colores'))
-                <div class="btn btn-sm btn-danger w-100" style="margin-top:0px; margin-bottom:0px;">
-                    No se han especificado la cantidad de colores</div>
-            @endif
-            @if ($errors->has('operacion'))
-                <div class="btn btn-sm btn-danger w-100" style="margin-top:0px; margin-bottom:0px;">
-                    Es necesario el costo de operacion</div>
-            @endif
-            @if ($errors->has('utilidad'))
-                <div class="btn btn-sm btn-danger w-100" style="margin-top:0px; margin-bottom:0px;">
-                    No se ha colocado el margen de utilidad</div>
-            @endif
-            @if ($errors->has('cantidad'))
-                <div class="btn btn-sm btn-danger w-100" style="margin-top:0px; margin-bottom:0px;">
-                    No se ha colocado la cantidad de productos</div>
-            @endif
-            @if ($errors->has('entrega'))
-                <div class="btn btn-sm btn-danger w-100" style="margin-top:0px; margin-bottom:0px;">
-                    No se han colocado los dias de entrega </div>
-            @endif
-            @if ($errors->has('priceTechnique'))
-                <div class="btn btn-sm btn-danger w-100" style="margin-top:0px; margin-bottom:0px;">
-                    No se ha seleccionado una tecnica de personalizacion </div>
-            @endif
-            @if ($errors->has('infoScales'))
-                <div class="btn btn-sm btn-danger w-100" style="margin-top:0px; margin-bottom:0px;">
-                    No se ha creado una escala de precios </div>
-            @endif
-        </div>
-        @php
-            $errors = null;
-        @endphp
-    @endif
-    @if (session()->has('message'))
-        <div wire:poll.4s class="btn btn-sm btn-success w-100" style="margin-top:0px; margin-bottom:0px;">
-            {{ session('message') }} </div>
-        <div class="d-flex">
-            <a href="{{ url('/') }}" class="btn btn-sm btn-info w-50 px-1"
-                style="margin-top:0px; margin-bottom:0px;">
-                Ir al cotizador </a>
-            <a href="{{ url('/cotizacion-actual') }}" class="btn btn-sm btn-secondary w-50 px-1"
-                style="margin-top:0px; margin-bottom:0px;">
-                Ver mi cotizacion </a>
-        </div>
-    @endif
-    <div class=" d-sm-flex justify-content-between">
-        @if (!$priceScales)
-            <div>
-                <h6 class="text-success">Precio Final por Articulo: $ {{ $precioCalculado }}</h6>
-                <h6 class="text-success">Precio Total: $ {{ $precioTotal }}</h6>
+                @if (session()->has('message'))
+                    <div id="alert-2"
+                        class="flex items-center p-4 mb-4 text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400"
+                        role="alert">
+                        <div class="ms-3 text-sm font-medium grow">
+                            <p class="text-center mb-3">{{ session('message') }}</p>
+                            <div class="flex justify-center gap-x-3 w-full">
+                                <a href="{{ url('/') }}" class="btn btn-sm btn-info w-50 px-1">
+                                    Ir al cotizador </a>
+                                <a href="{{ url('/cotizacion-actual') }}" class="btn btn-sm btn-secondary w-50 px-1">
+                                    Ver mi cotizacion </a>
+                            </div>
+                        </div>
+                        <button type="button"
+                            class="ms-auto -mx-1.5 -my-1.5 bg-green-50 text-green-500 rounded-lg focus:ring-2 focus:ring-green-400 p-1.5 hover:bg-green-200 inline-flex items-center justify-center h-8 w-8 dark:bg-gray-800 dark:text-red-400 dark:hover:bg-gray-700"
+                            data-dismiss-target="#alert-2" aria-label="Close">
+                            <span class="sr-only">Close</span>
+                            <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                fill="none" viewBox="0 0 14 14">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                    stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+                            </svg>
+                        </button>
+                    </div>
+                @endif
+                @if (count($errors) > 0)
+                    <div wire:poll.12s class="p-4 text-sm text-red-800 rounded-lg bg-red-50  ">
+                        @if ($errors->has('colores'))
+                            <p>No se han especificado la cantidad de colores </p>
+                        @endif
+                        @if ($errors->has('operacion'))
+                            <p>Es necesario el costo de operacion</p>
+                        @endif
+                        @if ($errors->has('utilidad'))
+                            <p>No se ha colocado el margen de utilidad</p>
+                        @endif
+                        @if ($errors->has('cantidad'))
+                            <p>No se ha colocado la cantidad de productos</p>
+                        @endif
+                        @if ($errors->has('entrega'))
+                            <p>No se han colocado los dias de entrega</p>
+                        @endif
+                        @if ($errors->has('priceTechnique'))
+                            <p> No se ha seleccionado una tecnica de personalizacion</p>
+                        @endif
+                        @if ($errors->has('infoScales'))
+                            <p>No se ha creado una escala de precios</p>
+                        @endif
+                    </div>
+                @endif
             </div>
-        @endif
-        <div class="form-group m-0 mb-1 text-center">
-            @if ($currentQuote)
-                <button type="button" class="btn btn-warning py-2 px-4" wire:click='editarCurrentCotizacion'>Editar
-                    cotizacion</button>
-            @elseif ($productEdit)
-                <button type="button" class="btn btn-info py-2 px-4" wire:click='editarCotizacion'>Actualizar
-                    cotizacion</button>
-            @elseif ($productNewAdd)
-                <button type="button" class="btn btn-secondary py-2 px-4" wire:click='addNewProductToQuote'>Agregar
-                    a la
-                    cotizacion</button>
-            @else
-                <button type="button" class="btn btn-primary py-2 px-4" wire:click='agregarCotizacion'>Añadir a
-                    la cotizacion</button>
-            @endif
-        </div>
-    </div>
+        </li>
+    </ol>
 
     <style>
         .img-select:hover {

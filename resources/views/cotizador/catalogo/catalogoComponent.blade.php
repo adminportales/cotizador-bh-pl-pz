@@ -1,157 +1,43 @@
 <div class="">
     <div class="grid grid-cols-12 gap-3">
-        <div class="md:hidden block mb-2">
-            <div class="d-flex justify-content-between shadow-sm align-items-center p-1">
-                <p class="m-0">+ {{ $products->total() }} resultados</p>
-                <div>
-                    <div class="btn-group">
-                        <button type="button" class="btn btn-link btn-sm dropdown-toggle" data-toggle="dropdown"
-                            aria-haspopup="true" aria-expanded="false">
-                            Mis Productos
-                        </button>
-                        <div class="dropdown-menu dropdown-menu-right">
-                            <a href="{{ route('addProduct.cotizador') }}" class="dropdown-item">Nuevo
-                                Producto</a>
-                            <a href="{{ route('listProducts.cotizador') }}" class="dropdown-item">Ver Mis
-                                Productos</a>
-                        </div>
-                    </div>
-                    <button type="button" class="btn btn-link btn-sm dropdown-toggle" data-toggle="modal"
-                        data-target="#exampleModal">
-                        Busqueda
+        <div class="col-span-12 md:hidden block mb-2">
+            <div class="flex justify-between shadow-sm border border-gray-200 rounded-lg items-center p-1">
+                <p class="m-0 grow">+ {{ $products->total() }} resultados</p>
+                <div class="">
+                    <button id="dropdownDefaultButton" data-dropdown-toggle="dropdown"
+                        class="rounded-md text-gray-900 bg-white focus:outline-none focus:ring-4 focus:ring-gray-200 text-sm px-3 py-2.5  flex items-center"
+                        type="button"><p class="block">Mis Productos</p><svg class="w-2.5 h-2.5 ml-1" aria-hidden="true"
+                            xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="m1 1 4 4 4-4" />
+                        </svg>
                     </button>
-                </div>
-            </div>
-            <div wire:ignore.self class="modal fade" id="exampleModal" tabindex="-1"
-                aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">Configuracion de Filtros</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <p>Filtros de busqueda</p>
-                            <input wire:model='nombre' type="text" class="form-control mb-2" name="search"
-                                id="search" placeholder="Nombre">
-                            <input wire:model='sku' type="text" class="form-control mb-2" name="search"
-                                id="search" placeholder="SKU">
-                            <input wire:model='color' type="text" class="form-control mb-2" name="color"
-                                id="color" placeholder="Ingrese el color">
-                            <input wire:model='category' type="text" class="form-control mb-2" name="category"
-                                id="category" placeholder="Ingrese la familia">
-                            <select wire:model='proveedor' name="proveedores" id="provee" class="form-control mb-2">
-                                <option value="">Seleccione Proveedor...</option>
-                                @foreach ($proveedores as $provider)
-                                    <option value="{{ $provider->id }}">{{ $provider->company }}</option>
-                                @endforeach
-                            </select>
-                            <select wire:model='type' name="type" id="type" class="form-control mb-2">
-                                <option value="">Seleccione Tipo...</option>
-                                @foreach ($types as $type)
-                                    <option value="{{ $type->id }}">{{ $type->type }}</option>
-                                @endforeach
-                            </select>
-                            <p class="mb-0">Precio</p>
-                            <div class="d-flex align-items-center mb-2">
-                                <input wire:model='precioMin' type="number" class="form-control" name="search"
-                                    id="search" placeholder="Precio Minimo" min="0" value="0">
-                                -
-                                <input wire:model='precioMax' type="number" class="form-control" name="search"
-                                    id="search" placeholder="Precio Maximo" value="{{ $price }}"
-                                    max="{{ $price }}">
-                            </div>
-                            <p class="mb-0">Stock</p>
-                            <div class="d-flex align-items-center mb-2">
-                                <input wire:model='stockMin' type="number" class="form-control"
-                                    placeholder="Stock Minimo" min="0" value="0">
-                                -
-                                <input wire:model='stockMax' type="number" class="form-control"
-                                    placeholder="Stock Maximo" value="{{ $stock }}"
-                                    max="{{ $stock }}">
-                            </div>
-                            <p class="mb-0">Ordenar por Stock</p>
-                            <select wire:model='orderStock' name="orderStock" id="provee"
-                                class="form-control mb-2">
-                                <option value="">Ninguno</option>
-                                <option value="ASC">De menor a mayor</option>
-                                <option value="DESC">De mayor a menor</option>
-                            </select>
-                            <p class="mb-0">Ordenar por Precio</p>
-                            <select wire:model='orderPrice' name="orderPrice" id="provee"
-                                class="form-control mb-2">
-                                <option value="">Ninguno</option>
-                                <option value="ASC">De menor a mayor</option>
-                                <option value="DESC">De mayor a menor</option>
-                            </select>
-                            <div class="d-flex">
-                                <button class="btn btn-primary w-50" wire:click="limpiar">Limpiar</button>
-                                <button class="btn btn-success w-50" data-dismiss="modal">Buscar</button>
-                            </div>
-                        </div>
+
+                    <!-- Dropdown menu -->
+                    <div id="dropdown" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 ">
+                        <ul class="py-2 text-sm text-gray-700" aria-labelledby="dropdownDefaultButton">
+                            <li>
+                                <a href="{{ route('addProduct.cotizador') }}"
+                                    class="block px-4 py-2 hover:bg-gray-100">Nuevo Producto</a>
+                            </li>
+                            <li>
+                                <a href="{{ route('listProducts.cotizador') }}"
+                                    class="block px-4 py-2 hover:bg-gray-100">Ver Mis
+                                    Productos</a>
+                            </li>
+                        </ul>
                     </div>
                 </div>
+                <button data-modal-target="staticModal" data-modal-toggle="staticModal"
+                    class="rounded-md text-gray-900 bg-white focus:outline-none focus:ring-4 focus:ring-gray-200 text-sm px-3 py-2.5 "
+                    type="button">
+                    Busqueda
+                </button>
             </div>
         </div>
         <div class="col-span-3 hidden md:block">
             <div class="w-full border-2 border-gray-200 py-4 px-5 rounded-lg">
-                <div class="card-body">
-                    <p>Filtros de busqueda</p>
-                    <p>Buscar por</p>
-                    <input wire:model='nombre' type="text"
-                        class="block w-full p-3 mb-2 text-gray-900 border border-gray-300 rounded-md bg-gray-50 sm:text-xs focus:ring-blue-500 focus:border-blue-500 "
-                        name="search" id="search" placeholder="Nombre">
-                    <input wire:model='sku' type="text" class="block w-full p-3 mb-2 text-gray-900 border border-gray-300 rounded-md bg-gray-50 sm:text-xs focus:ring-blue-500 focus:border-blue-500" name="search" id="search"
-                        placeholder="SKU">
-                    <input wire:model='color' type="text" class="block w-full p-3 mb-2 text-gray-900 border border-gray-300 rounded-md bg-gray-50 sm:text-xs focus:ring-blue-500 focus:border-blue-500" name="color"
-                        id="color" placeholder="Ingrese el color">
-                    <input wire:model='category' type="text" class="block w-full p-3 mb-2 text-gray-900 border border-gray-300 rounded-md bg-gray-50 sm:text-xs focus:ring-blue-500 focus:border-blue-500" name="category"
-                        id="category" placeholder="Ingrese la familia">
-                    <select wire:model='proveedor' name="proveedores" id="provee" class="block w-full p-3 mb-2 text-gray-900 border border-gray-300 rounded-md bg-gray-50 sm:text-xs focus:ring-blue-500 focus:border-blue-500">
-                        <option value="">Seleccione Proveedor...</option>
-                        @foreach ($proveedores as $provider)
-                            <option value="{{ $provider->id }}">{{ $provider->company }}</option>
-                        @endforeach
-                    </select>
-                    <select wire:model='type' name="type" id="type" class="block w-full p-3 mb-2 text-gray-900 border border-gray-300 rounded-md bg-gray-50 sm:text-xs focus:ring-blue-500 focus:border-blue-500">
-                        <option value="">Seleccione Tipo...</option>
-                        @foreach ($types as $type)
-                            <option value="{{ $type->id }}">{{ $type->type }}</option>
-                        @endforeach
-                    </select>
-                    <p class="mb-0">Precio</p>
-                    <div class="flex items-center mb-2">
-                        <input wire:model='precioMin' type="number" class="block w-full p-3 mb-2 text-gray-900 border border-gray-300 rounded-md bg-gray-50 sm:text-xs focus:ring-blue-500 focus:border-blue-500" name="search"
-                            id="search" placeholder="Precio Minimo" min="0" value="0">
-                        -
-                        <input wire:model='precioMax' type="number" class="block w-full p-3 mb-2 text-gray-900 border border-gray-300 rounded-md bg-gray-50 sm:text-xs focus:ring-blue-500 focus:border-blue-500" name="search"
-                            id="search" placeholder="Precio Maximo" value="{{ $price }}"
-                            max="{{ $price }}">
-                    </div>
-                    <p class="mb-0">Stock</p>
-                    <div class="flex items-center mb-2">
-                        <input wire:model='stockMin' type="number" class="block w-full p-3 mb-2 text-gray-900 border border-gray-300 rounded-md bg-gray-50 sm:text-xs focus:ring-blue-500 focus:border-blue-500" placeholder="Stock Minimo"
-                            min="0" value="0">
-                        -
-                        <input wire:model='stockMax' type="number" class="block w-full p-3 mb-2 text-gray-900 border border-gray-300 rounded-md bg-gray-50 sm:text-xs focus:ring-blue-500 focus:border-blue-500" placeholder="Stock Maximo"
-                            value="{{ $stock }}" max="{{ $stock }}">
-                    </div>
-                    <p class="mb-0">Ordenar por Stock</p>
-                    <select wire:model='orderStock' name="orderStock" id="provee" class="block w-full p-3 mb-2 text-gray-900 border border-gray-300 rounded-md bg-gray-50 sm:text-xs focus:ring-blue-500 focus:border-blue-500">
-                        <option value="">Ninguno</option>
-                        <option value="ASC">De menor a mayor</option>
-                        <option value="DESC">De mayor a menor</option>
-                    </select>
-                    <p class="mb-0">Ordenar por Precio</p>
-                    <select wire:model='orderPrice' name="orderPrice" id="provee" class="block w-full p-3 mb-2 text-gray-900 border border-gray-300 rounded-md bg-gray-50 sm:text-xs focus:ring-blue-500 focus:border-blue-500">
-                        <option value="">Ninguno</option>
-                        <option value="ASC">De menor a mayor</option>
-                        <option value="DESC">De mayor a menor</option>
-                    </select>
-                    <button class="btn btn-primary btn-block" wire:click="limpiar">Limpiar Filtros</button>
-                </div>
+                @include('cotizador.catalogo.filter-section')
             </div>
         </div>
         <div class="col-span-12 md:col-span-9">
@@ -253,15 +139,8 @@
         </div>
     </div>
 
-    <!-- Modal toggle -->
-    <button data-modal-target="staticModal" data-modal-toggle="staticModal"
-        class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
-        type="button">
-        Toggle modal
-    </button>
-
     <!-- Main modal -->
-    <div id="staticModal" data-modal-backdrop="static" tabindex="-1" aria-hidden="true"
+    <div wire:ignore.self id="staticModal" data-modal-backdrop="static" tabindex="-1" aria-hidden="true"
         class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
         <div class="relative w-full max-w-2xl max-h-full">
             <!-- Modal content -->
@@ -269,7 +148,7 @@
                 <!-- Modal header -->
                 <div class="flex items-start justify-between p-4 border-b rounded-t">
                     <h3 class="text-xl font-semibold text-gray-900">
-                        Static modal
+                        Configuracion de Filtros
                     </h3>
                     <button type="button"
                         class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ml-auto inline-flex justify-center items-center"
@@ -284,15 +163,14 @@
                 </div>
                 <!-- Modal body -->
                 <div class="p-6 space-y-6">
-
+                    @include('cotizador.catalogo.filter-section')
                 </div>
                 <!-- Modal footer -->
                 <div class="flex items-center p-6 space-x-2 border-t border-gray-200 rounded-b">
-                    <button data-modal-hide="staticModal" type="button"
-                        class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center ">I
-                        accept</button>
-                    <button data-modal-hide="staticModal" type="button"
-                        class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 ">Decline</button>
+                    <button type="button" wire:click="limpiar"
+                        class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center ">Limpiar</button>
+                    <button type="button" data-modal-hide="staticModal"
+                        class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 ">Buscar</button>
                 </div>
             </div>
         </div>
