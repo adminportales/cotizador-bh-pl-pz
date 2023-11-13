@@ -271,10 +271,10 @@
                                                 <input type="file"
                                                     class="block w-full p-3 mb-2 text-gray-900 border border-gray-300 rounded-md bg-white sm:text-xs focus:ring-blue-500 focus:border-blue-500 "
                                                     wire:model="logo" accept="image/*">
-                                                <div x-show="isUploading" class="progress">
-                                                    <div class="progress-bar" role="progressbar"
-                                                        x-bind:style="`width: ${progress}%`" aria-valuenow="25"
-                                                        aria-valuemin="0" aria-valuemax="100"></div>
+
+                                                <div x-show="isUploading" class="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
+                                                    <div class="bg-blue-600 h-2.5 rounded-full" x-bind:style="`width: ${progress}%`" >
+                                                    </div>
                                                 </div>
                                             </div>
                                             @if ($logo)

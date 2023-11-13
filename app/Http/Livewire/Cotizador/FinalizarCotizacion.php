@@ -23,6 +23,7 @@ use Livewire\WithFileUploads;
 class FinalizarCotizacion extends Component
 {
     use WithFileUploads;
+
     public $tipoCliente, $clienteSeleccionado = '', $isClient, $nombre, $empresa, $email, $telefono, $celular, $oportunidad, $rank = '', $departamento, $informacion, $ivaByItem, $typeDays, $showTotal, $logo, $taxFee, $shelfLife;
     public $urlPDFPreview;
     public $ejecutivos, $ejecutivoSeleccionado = null, $selectEjecutivo;
