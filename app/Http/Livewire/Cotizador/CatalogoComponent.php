@@ -4,19 +4,17 @@ namespace App\Http\Livewire\Cotizador;
 
 use App\Models\Catalogo\GlobalAttribute;
 use App\Models\Catalogo\Product as CatalogoProduct;
-use App\Models\Catalogo\Provider as CatalogoProvider;
 use App\Models\Catalogo\Type;
 use Exception;
 use Livewire\Component;
 use Livewire\WithPagination;
-use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\DB;
 
-class Catalogo extends Component
+class CatalogoComponent extends Component
 {
     use WithPagination;
 
-    // protected $paginationTheme = 'bootstrap';
+    protected $paginationTheme = 'tailwind';
 
     public $nombre, $sku, $proveedor, $color, $category, $type, $precioMax, $precioMin, $stockMax, $stockMin, $orderStock = '', $orderPrice = '';
 
@@ -176,7 +174,7 @@ class Catalogo extends Component
         $this->color = '';
         $this->category = '';
         $this->proveedor = null;
-        $this->type = null;
+        $this->type = 1;
         $this->orderPrice = '';
         $this->orderStock = '';
         $this->precioMax = null;

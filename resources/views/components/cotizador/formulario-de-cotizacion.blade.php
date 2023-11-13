@@ -127,57 +127,80 @@
                                     <p class="font-semibold mb-2">
                                         Precios Por Cantidad de Articulos
                                     </p>
-                                    <div class="grid grid-cols-6 text-sm">
-                                        <div class="col-span-1 border-gray-200 border-b border-t font-semibold p-2 ">
-                                            Cantidad
-                                        </div>
-                                        <div class="col-span-1 p-2 border-b border-t font-semibold border-gray-200  ">
-                                            Tecnica
-                                        </div>
-                                        <div class="col-span-1 p-2 border-b border-t font-semibold border-gray-200  ">
-                                            Utilidad</div>
-                                        <div class="col-span-1 p-2 border-b border-t font-semibold border-gray-200  ">
-                                            Unitario</div>
-                                        <div class="col-span-1 p-2 border-b border-t font-semibold border-gray-200  ">
-                                            Total</div>
-                                        <div class="col-span-1 p-2 border-b border-t font-semibold border-gray-200  ">
-                                            ...</div>
-                                        @foreach ($priceScalesComplete as $key => $item)
-                                            <div class="col-span-1  border-b border-gray-200 p-2">
-                                                {{ $item['quantity'] }}</div>
-                                            <div class="col-span-1  border-b border-gray-200 p-2">
-                                                $ {{ number_format($item['tecniquePrice'], 2, '.', ',') }}</div>
-                                            <div class="col-span-1  border-b border-gray-200 p-2">
-                                                {{ $item['utility'] }} %</div>
-                                            <div class="col-span-1  border-b border-gray-200 p-2">
-                                                $ {{ number_format($item['unit_price'], 2, '.', ',') }}</div>
-                                            <div class="col-span-1  border-b border-gray-200 p-2">
-                                                $ {{ number_format($item['total_price'], 2, '.', ',') }}</div>
-                                            <div class="col-span-1  border-b border-gray-200 p-2">
-                                                <button type="button" class="btn btn-warning btn-sm"
-                                                    wire:click="editScale({{ $key }})">
-                                                    <div>
-                                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6"
-                                                            fill="none" viewBox="0 0 24 24" stroke="currentColor"
-                                                            stroke-width="2">
-                                                            <path stroke-linecap="round" stroke-linejoin="round"
-                                                                d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                                                        </svg>
-                                                    </div>
-                                                </button>
-                                                <button type="button" class="btn btn-danger btn-sm"
-                                                    wire:click="openDeleteScale({{ $key }})">
-                                                    <div>
-                                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6"
-                                                            fill="none" viewBox="0 0 24 24" stroke="currentColor"
-                                                            stroke-width="2">
-                                                            <path stroke-linecap="round" stroke-linejoin="round"
-                                                                d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                                                        </svg>
-                                                    </div>
-                                                </button>
-                                            </div>
-                                        @endforeach
+                                    <div class="relative overflow-x-auto">
+                                        <table
+                                            class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                                            <thead
+                                                class="text-xs text-gray-700 bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                                                <tr>
+                                                    <th scope="col" class="px-2 py-2">
+                                                        Cantidad
+                                                    </th>
+                                                    <th scope="col" class="px-2 py-2">
+                                                        Tecnica
+                                                    </th>
+                                                    <th scope="col" class="px-2 py-2">
+                                                        Utilidad
+                                                    </th>
+                                                    <th scope="col" class="px-2 py-2">
+                                                        Unitario
+                                                    </th>
+                                                    <th scope="col" class="px-2 py-2">
+                                                        Total
+                                                    </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach ($priceScalesComplete as $key => $item)
+                                                    <tr
+                                                        class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                                                        <td class="px-2 py-2 text-center">
+                                                            {{ $item['quantity'] }}
+                                                        </td>
+                                                        <td class="px-2 py-2 text-center">
+                                                            $ {{ number_format($item['tecniquePrice'], 2, '.', ',') }}
+                                                        </td>
+                                                        <td class="px-2 py-2 text-center">
+                                                            {{ $item['utility'] }} %
+                                                        </td>
+                                                        <td class="px-2 py-2 text-center">
+                                                            $ {{ number_format($item['unit_price'], 2, '.', ',') }}
+                                                        </td>
+                                                        <td class="px-2 py-2 text-center">
+                                                            $ {{ number_format($item['total_price'], 2, '.', ',') }}
+                                                        </td>
+                                                        <td class="px-2 py-2 text-center">
+                                                            <button type="button" class="btn btn-warning btn-sm"
+                                                                wire:click="editScale({{ $key }})">
+                                                                <div>
+                                                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                                                        class="h-6 w-6" fill="none"
+                                                                        viewBox="0 0 24 24" stroke="currentColor"
+                                                                        stroke-width="2">
+                                                                        <path stroke-linecap="round"
+                                                                            stroke-linejoin="round"
+                                                                            d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                                                                    </svg>
+                                                                </div>
+                                                            </button>
+                                                            <button type="button" class="btn btn-danger btn-sm"
+                                                                wire:click="openDeleteScale({{ $key }})">
+                                                                <div>
+                                                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                                                        class="h-6 w-6" fill="none"
+                                                                        viewBox="0 0 24 24" stroke="currentColor"
+                                                                        stroke-width="2">
+                                                                        <path stroke-linecap="round"
+                                                                            stroke-linejoin="round"
+                                                                            d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                                                    </svg>
+                                                                </div>
+                                                            </button>
+                                                        </td>
+                                                    </tr>
+                                                @endforeach
+                                            </tbody>
+                                        </table>
                                     </div>
                                 </div>
                             @endif
@@ -247,7 +270,7 @@
                                                     wire:click='addScale'>Agregar</button>
                                             @endif
                                             <button wire:click='closeScale' type="button"
-                                                class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 ">Decline</button>
+                                                class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 ">Cancelar</button>
                                         </div>
                                     </div>
                                 </div>
@@ -373,15 +396,8 @@
                                     </div>
                                     <!-- Modal footer -->
                                     <div class="flex items-center p-6 space-x-2 border-t border-gray-200 rounded-b">
-                                        @if ($editScale)
-                                            <button type="button" class="btn btn-warning btn-sm"
-                                                wire:click='updateScale'>Editar</button>
-                                        @else
-                                            <button type="button" class="btn btn-primary btn-sm"
-                                                wire:click='addScale'>Agregar</button>
-                                        @endif
                                         <button wire:click='closeModalImage' type="button"
-                                            class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 ">Decline</button>
+                                            class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 ">Cancelar</button>
                                     </div>
                                 </div>
                             </div>

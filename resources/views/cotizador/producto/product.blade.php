@@ -102,11 +102,12 @@
             <p class="mb-2 text-xl">Cotización</p>
             <div class="mb-3">
                 @if (!$disponiblidad)
-                    <div class="alert alert-danger">No puedes cotizar este producto porque no pertenece a tus proveedores
+                    <div class="w-full p-4 mb-2 text-sm text-red-800 rounded-lg bg-red-50">No puedes cotizar este producto
+                        porque no pertenece a tus proveedores
                     </div>
                 @endif
                 @if ($msg)
-                    <div class="alert alert-danger">{{ $msg }}</div>
+                    <div class="w-full p-4 mb-2 text-sm text-red-800 rounded-lg bg-red-50">{{ $msg }}</div>
                 @endif
                 <div class="flex items-center justify-between">
                     <p class="font-bold">{{ $product->name }}</p>
