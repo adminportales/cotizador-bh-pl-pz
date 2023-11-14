@@ -2,7 +2,6 @@
     <div class="">
         <p class="mb-2 text-xl">Mis Cotizaciones</p>
         @include('cotizador.cotizacion_actual.sections.all-current-quotes')
-
     </div>
     @if (auth()->user()->currentQuoteActive)
         <div class="px-2 mt-3">
@@ -208,37 +207,6 @@
             {{-- Modal Para Mostrar el product en responsive --}}
             @include('cotizador.cotizacion_actual.sections.show-product-modal')
             @include('cotizador.cotizacion_actual.sections.edit-product-modal')
-
-            <!-- Modal -->
-            {{--
-                <div class="modal fade" id="discountModal" tabindex="-1" aria-labelledby="discountModalLabel"
-                aria-hidden="true" wire:ignore.self>
-                <div class="modal-dialog modal-sm">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="discountModalLabel">Agregar Descuento11111</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-
-                            <label for="">Tipo de Descuento</label>
-                            {{ $cotizacion->type }}
-                            <select class="form-control" wire:model.lazy="type">
-                                <option value="">Seleccione...</option>
-                                <option value="Fijo">Valor Fijo</option>
-                                <option value="Porcentaje">Porcentaje</option>
-                            </select>
-
-
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-            --}}
-
         </div>
     @else
         <div class="d-flex w-100 justify-content-center">
