@@ -61,9 +61,9 @@
         </div>
     @else
         <div class="body">
-            <div class="content" style="background-color: rgba(238, 130, 238, 0.644); height: 100%;">
+            <div class="content" style= "height: 100%;">
                 <div class="contain" style=" widht:100%; height:95%;">
-                    <table class="info-seller" style= "widht:100%">
+                    <table class="info-seller" style= "widht:100%;">
                         <tr style="">
                             {{--  <td
                             style="background-color: orange;  height: 80%;
@@ -75,50 +75,69 @@
                         </td> --}}
 
                             <td
-                                style="padding-left: 110px; letter-spacing: 2px; width: 50%; vertical-align: bottom; height: 90%; color: white;  font-size: 20px">
+                                style="text-align: left; height: 50%;   letter-spacing: 2px; width: 50%; vertical-align: bottom; padding:10mm; padding-left: 3.3cm; margin: -1cm; color: white; font-size: 22px">
 
-                                <p style="">
+                                <p style="padding-bottom: 12px;">
                                     <strong> {{ $user->phone == null ? 'Sin Dato' : $user->phone }}
                                     </strong>
                                 </p>
-                                <p style="">
+                                <p style="margin: 1px;">
                                     {{ $user->email }}
                                 </p>
 
                             </td>
-                            <td style="background-color:rgba(0, 255, 76, 0.258); width: 50%; height: 100%;">
+                            <td style="width: 50%; height: 100%; margin-top: 60px;">
 
                                 <div class="condiciones"
-                                    style="text-align: justify; width: 80%; height: 80%; margin: 40px; padding: 20px; color: white; font-size: 18px;">
-                                    <p style="text-align: justify"> Condiciones:</p>
-                                    <ul>
-                                        <li>Condiciones de pago acordadas con el vendedor</li>
-                                        <li>Precios unitarios mostrados antes de IVA</li>
-                                        <li>Precios mostrados en
+                                    style="text-align: left; width: 85%; height: 80%; margin: 20px; padding: 20px; color: white; font-size: 19px; font-weight:bold">
+
+                                    <ul style="margin-top: 10%">
+                                        <p style="text-align: left; font-size: 22px;"> CONDICIONES:</p>
+                                        <span style="">.Condiciones de pago acordadas con el
+                                            vendedor</span>
+
+                                        <span style="white-space:pre-line">.Precios unitarios mostrados antes de IVA
+                                        </span>
+                                        <span>.Precios mostrados en
                                             {{ $quote->currency_type == 'USD' ? 'dolares (USD)' : 'pesos mexicanos (MXP)' }}.
-                                        </li>
-                                        <li>El importe cotizado corresponde a la cantidad de piezas y número de tintas
+                                        </span>
+                                        <br>
+                                        <span style="white-space: normal">.El importe cotizado corresponde a la cantidad
+                                            de
+                                            piezas y número de
+                                            tintas
                                             arriba
                                             mencionadas, si se
                                             modifica
-                                            el número de piezas el precio cambiaría.</li>
-                                        <li>El tiempo de entrega empieza a correr una vez recibida la Orden de Compra y
+                                            el número de piezas el precio cambiaría.</span>
+                                        <br>
+                                        <span>.El tiempo de entrega empieza a correr una vez recibida la Orden de Compra
+                                            y
                                             autorizada la muestra física
                                             o
-                                            virtual a solicitud del cliente.</li>
-                                        <li>Vigencia de la cotización
-                                            {{ $quote->latestQuotesUpdate->quotesInformation->shelf_life ?: 5 }} días
-                                            {{ $quote->type_days == 0 ? 'hábiles' : 'naturales' }}.</li>
-                                        <li>Producto cotizado de fabricación nacional o importación puede afinarse la
+                                            virtual a solicitud del cliente.</span>
+
+                                        <span style="white-space:normal">
+                                            .Vigencia de la cotización
+                                            {{ $quote->latestQuotesUpdate->quotesInformation->shelf_life ?: 5 }}
+                                            días
+                                            {{ $quote->type_days == 0 ? 'hábiles' : 'naturales' }}.
+                                        </span>
+                                        <br>
+                                        <span>.Producto cotizado de fabricación nacional o importación puede afinarse
+                                            la
                                             fecha de
                                             entrega previo a la
                                             emisión
-                                            de Orden de Compra.</li>
-                                        <li>Producto cotizado disponible en stock a la fecha de esta cotización puede
+                                            de Orden de Compra.</span>
+                                        <br>
+                                        <span>.Producto cotizado disponible en stock a la fecha de esta cotización
+                                            puede
                                             modificarse al paso de los
                                             días
                                             sin
-                                            previo aviso. Solo se bloquea el inventario al recibir Orden de Compra</li>
+                                            previo aviso. Solo se bloquea el inventario al recibir Orden de
+                                            Compra</span>
                                     </ul>
                                 </div>
 

@@ -11,9 +11,9 @@
             margin-bottom: 0cm;
         }
 
-        body {
+    /*     body {
             font-family: Arial, Helvetica, sans-serif;
-        }
+        } */
 
         .portada {
             width: 100%;
@@ -26,21 +26,21 @@
             height: 100vh;
         }
 
-        .body {
+     /*    .body {
             height: 19cm;
             margin: 1cm 1cm 1cm 1cm;
             margin-top: -20.5cm;
-        }
+        } */
 
-        .body-back {
+        .body {
             height: 100vh;
-            background-image: url(quotesheet/bh/ppt/fondocp.jpg);
+            background-image: url(quotesheet/pz/ppt/PSCONTRAPORTADA.jpg);
             background-repeat: no-repeat;
             background-size: cover;
             background-position: center left;
         }
 
-        .content {
+       /*  .content {
             height: 100%;
             background-color: rgba(255, 255, 255, 0.7);
         }
@@ -48,12 +48,11 @@
         .table-content {
             width: 100%;
             height: 100%;
-            /* background-color: royalblue; */
+
         }
 
         .table-content td.td-content {
-            /* vertical-align: top; */
-            /* background-color: red; */
+
             width: 80%;
             height: 80%;
             vertical-align: middle;
@@ -69,7 +68,7 @@
             width: 100%;
             margin-top: 20px;
             font-size: 20px;
-        }
+        } */
     </style>
 </head>
 
@@ -91,30 +90,20 @@
             <img src="{{ $data['contraportada'] }}" class="portada" alt="">
         </div>
     @else
-        <div class="body-back">
-        </div>
+
         <div class="body">
-            <div class="content">
+            <div class="contain" style="background-color: rgba(0, 0, 255, 0.429); width: 100%; height: 90%;">
                 <table class="table-content">
                     <td class="td-content">
-                        <div class="contact">
-                            Contacto
-                        </div>
-                        <table class="info-seller">
+
+                        <table class="info-seller" style="background-color: rgba(255, 192, 203, 0.557); width: 100%; height: 40%;
+                        padding: 20px;">
+
                             <tr>
-                                <td colspan="2">
-                                    <p style="font-size:20px;  font-weight: bold">
-                                    {{ $user->name }}
-                                    </p>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td style="vertical-align: middle"> <img src="quotesheet/bh/icon-whatsapp.png"
-                                        alt="">
-                                    {{ $user->phone == null ? 'Sin Dato' : $user->phone }} </td>
-                                <td style="vertical-align: middle"><img src="quotesheet/bh/icon-email.png"
-                                        alt="">
-                                    {{ $user->email }}</td>
+                                <p style="vertical-align: middle; width: 100%;  background-color: rgba(0, 255, 255, 0.418)">
+                                    {{ $user->phone == null ? 'Sin Dato' : $user->phone }} </p>
+                                <p style="vertical-align: middle; width: 100%; background-color: rgba(222, 184, 135, 0.258)" >
+                                    {{ $user->email }}</p>
                             </tr>
                         </table>
                         <div class="condiciones">
