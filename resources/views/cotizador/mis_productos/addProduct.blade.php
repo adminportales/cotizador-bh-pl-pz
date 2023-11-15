@@ -3,7 +3,7 @@
     <div class="container">
         <div class="card w-100">
             <div class="card-body">
-                @livewire('components.add-new-product')
+                @livewire('cotizador.add-new-product')
             </div>
         </div>
     </div>

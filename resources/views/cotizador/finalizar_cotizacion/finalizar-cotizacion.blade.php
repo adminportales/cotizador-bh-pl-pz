@@ -29,11 +29,10 @@
                                         </tr>
                                     </thead>
                                     <tbody>
+                                        @php
+                                            $scales = false;
+                                        @endphp
                                         @foreach (auth()->user()->currentQuoteActive->currentQuoteDetails as $quote)
-                                            @php
-                                                $scales = true;
-                                                $priceScales = json_decode($quote->scales_info);
-                                            @endphp
                                             <tr
                                                 class="text-center bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                                                 <td class="px-5 py-3">
@@ -44,6 +43,10 @@
                                                         <table
                                                             class="w-full text-left rtl:text-right text-gray-500 dark:text-gray-400">
                                                             <tbody>
+                                                                @php
+                                                                    $scales = true;
+                                                                    $priceScales = json_decode($quote->scales_info);
+                                                                @endphp
                                                                 @foreach ($priceScales as $it)
                                                                     <tr
                                                                         class="text-center bg-white border-b dark:bg-gray-800 dark:border-gray-700">
@@ -77,12 +80,38 @@
                                                 @endif
                                             </tr>
                                         @endforeach
+                                        @if (!$scales)
+                                            @php
+                                                $subtotal = auth()
+                                                    ->user()
+                                                    ->currentQuoteActive->currentQuoteDetails->sum('precio_total');
+                                                $discount = 0;
+                                                if (auth()->user()->currentQuoteActive->type == 'Fijo') {
+                                                    $discount = auth()->user()->currentQuoteActive->value;
+                                                } else {
+                                                    $discount = round(($subtotal / 100) * auth()->user()->currentQuoteActive->value, 2);
+                                                }
+                                            @endphp
+                                            <tr>
+                                                <th colspan="3">Subtotal</th>
+                                                <th>$ {{ $subtotal }}</th>
+                                            </tr>
+                                            <tr>
+                                                <th colspan="3">Descuento</th>
+                                                <th>$ {{ $discount }}</th>
+                                            </tr>
+                                            <tr>
+                                                <th colspan="3">Total</th>
+                                                <th>$ {{ $subtotal - $discount }}</th>
+                                            </tr>
+                                        @endif
                                     </tbody>
                                 </table>
                             </div>
 
                             <div class="">
-                                {{-- <div wire:loading wire:target="guardarCotizacion">
+                                {{--
+                                    <div wire:loading wire:target="guardarCotizacion">
                                     <div class="spinner-border text-primary" role="status">
                                         <span class="sr-only">Loading...</span>
                                     </div>
@@ -90,17 +119,19 @@
 
                                 <div class="spinner-border text-primary" role="status">
                                     <span class="sr-only">Loading...</span>
-                                </div> --}}
+                                </div>
+                                --}}
 
                                 <div class="flex flex-col gap-2">
-                                    <button class="bg-gray-200 p-3 rounded-md hover:bg-gray-300" data-modal-target="preview"
-                                        data-modal-toggle="preview" onclick="preview()">Previsualizar
-                                        Cotizacion </button>
-                                    <button class="bg-gray-200 p-3  rounded-md hover:bg-gray-300" onclick="enviar()">Guardar
+                                    <button class="bg-gray-200 p-3 rounded-md hover:bg-gray-300"
+                                        data-modal-target="preview" data-modal-toggle="preview"
+                                        onclick="preview()">Previsualizar Cotizacion</button>
+                                    <button class="bg-gray-200 p-3  rounded-md hover:bg-gray-300"
+                                        onclick="enviar()">Guardar
                                         Cotizacion</button>
                                 </div>
                             </div>
-                            {{--  <div class="d-flex flex-column">
+                            {{-- <div class="d-flex flex-column">
                                 <div wire:loading wire:target="guardarCotizacion">
                                     <div class="spinner-border text-primary" role="status">
                                         <span class="sr-only">Loading...</span>
@@ -115,7 +146,7 @@
 
                         </div>
 
-                        {{--     <div wire:ignore.self class="modal fade" id="preview" tabindex="-1"
+                        {{-- <div wire:ignore.self class="modal fade" id="preview" tabindex="-1"
                             aria-labelledby="modalPreviewLabel" aria-hidden="true">
                             <div class="modal-dialog modal-lg">
                                 <div class="modal-content">
