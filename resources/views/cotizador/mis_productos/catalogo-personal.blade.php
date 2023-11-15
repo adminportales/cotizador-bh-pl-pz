@@ -107,7 +107,7 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="nombre">Nombre</label>
-                                    <input type="text" class="form-control" wire:model="nombre"
+                                    <input type="text" class="block w-full p-3 mb-2 text-gray-900 border border-gray-300 rounded-md bg-white sm:text-xs focus:ring-blue-500 focus:border-blue-500 " wire:model="nombre"
                                         placeholder="Nombre del producto" value="{{ old('nombre') }}">
                                     @if ($errors->has('nombre'))
                                         <span class="text-danger">{{ $errors->first('nombre') }}</span>
@@ -117,7 +117,7 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="nombre">Descripcion</label>
-                                    <input type="text" class="form-control" wire:model="descripcion"
+                                    <input type="text" class="block w-full p-3 mb-2 text-gray-900 border border-gray-300 rounded-md bg-white sm:text-xs focus:ring-blue-500 focus:border-blue-500 " wire:model="descripcion"
                                         placeholder="Descripcion del producto" value="{{ old('descripcion') }}">
                                     @if ($errors->has('descripcion'))
                                         <span class="text-danger">{{ $errors->first('descripcion') }}</span>
@@ -138,7 +138,7 @@
                                         </div>
                                     </div>
                                     @if (!$priceScales)
-                                        <input type="number" class="form-control" wire:model="precio"
+                                        <input type="number" class="block w-full p-3 mb-2 text-gray-900 border border-gray-300 rounded-md bg-white sm:text-xs focus:ring-blue-500 focus:border-blue-500 " wire:model="precio"
                                             placeholder="Precio del producto" value="{{ old('precio') }}">
                                         @if ($errors->has('precio'))
                                             <span class="text-danger">{{ $errors->first('precio') }}</span>
@@ -267,7 +267,7 @@
                                                     </label>
                                                     <input type="number" name="cantidad" wire:model="inicial"
                                                         placeholder="Escala Inicial"
-                                                        class="form-control form-control-sm">
+                                                        class="block w-full p-3 mb-2 text-gray-900 border border-gray-300 rounded-md bg-white sm:text-xs focus:ring-blue-500 focus:border-blue-500 ">
                                                 </div>
                                                 <div class="form-group m-0 mb-1 col-md-4">
                                                     <label for="cantidad" class="text-dark m-0"><strong>Escala
@@ -275,13 +275,13 @@
                                                     </label>
                                                     <input type="number" name="cantidad" wire:model="final"
                                                         placeholder="Escala Final"
-                                                        class="form-control form-control-sm">
+                                                        class="block w-full p-3 mb-2 text-gray-900 border border-gray-300 rounded-md bg-white sm:text-xs focus:ring-blue-500 focus:border-blue-500 ">
                                                 </div>
                                                 <div class="form-group m-0 mb-1 col-md-4">
                                                     <label for="margen" class="text-dark m-0"><strong>Costo</strong>
                                                     </label>
                                                     <input type="number" name="margen" wire:model="costo"
-                                                        placeholder="Costo" class="form-control form-control-sm">
+                                                        placeholder="Costo" class="block w-full p-3 mb-2 text-gray-900 border border-gray-300 rounded-md bg-white sm:text-xs focus:ring-blue-500 focus:border-blue-500 ">
                                                 </div>
                                                 <div class="d-flex col-12 flex-column">
 
@@ -313,7 +313,7 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="nombre">Stock</label>
-                                    <input type="number" class="form-control" wire:model="stock"
+                                    <input type="number" class="block w-full p-3 mb-2 text-gray-900 border border-gray-300 rounded-md bg-white sm:text-xs focus:ring-blue-500 focus:border-blue-500 " wire:model="stock"
                                         placeholder="Cantidad Disponible o Cantidad que desea cotizar"
                                         value="{{ old('stock') }}">
                                     @if ($errors->has('stock'))
@@ -324,7 +324,7 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="nombre">Color</label>
-                                    <input type="text" class="form-control" wire:model="color"
+                                    <input type="text" class="block w-full p-3 mb-2 text-gray-900 border border-gray-300 rounded-md bg-white sm:text-xs focus:ring-blue-500 focus:border-blue-500 " wire:model="color"
                                         placeholder="Color del producto" value="{{ old('color') }}">
                                     @if ($errors->has('color'))
                                         <span class="text-danger">{{ $errors->first('color') }}</span>
@@ -334,7 +334,7 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="nombre">Proveedor</label>
-                                    <input type="text" class="form-control" wire:model="proveedor"
+                                    <input type="text" class="block w-full p-3 mb-2 text-gray-900 border border-gray-300 rounded-md bg-white sm:text-xs focus:ring-blue-500 focus:border-blue-500 " wire:model="proveedor"
                                         placeholder="Proverdor del Producto" value="{{ old('proveedor') }}">
                                     @if ($errors->has('proveedor'))
                                         <span class="text-danger">{{ $errors->first('proveedor') }}</span>
@@ -351,7 +351,7 @@
                                         x-on:livewire-upload-error="isUploading = false"
                                         x-on:livewire-upload-progress="progress = $event.detail.progress">
 
-                                        <input type="file" class="form-control" wire:model="imagen"
+                                        <input type="file" class="block w-full p-3 mb-2 text-gray-900 border border-gray-300 rounded-md bg-white sm:text-xs focus:ring-blue-500 focus:border-blue-500 " wire:model="imagen"
                                             accept="image/*">
                                         <div x-show="isUploading" class="progress">
                                             <div class="progress-bar" role="progressbar"

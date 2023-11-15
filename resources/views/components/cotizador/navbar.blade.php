@@ -1,20 +1,48 @@
 <nav class="bg-primary-500">
     <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
-        <a href="#" class="flex items-center">
-            @if (auth()->user()->companySession)
-                <div class="{{ auth()->user()->companySession->name != 'PROMO LIFE' ? 'bg-white' : '' }} rounded-sm">
-                    <img alt="logo" class="h-12 w-auto"
-                        src="{{ asset('img') . '/' . auth()->user()->companySession->image }}">
+        <div class="flex items-center gap-x-3">
+            <div class="flex">
+                @if (auth()->user()->companySession)
+                    <div class="{{ auth()->user()->companySession->name != 'PROMO LIFE' ? 'bg-white' : '' }} rounded-sm">
+                        <img alt="logo" class="h-12 w-auto"
+                            src="{{ asset('img') . '/' . auth()->user()->companySession->image }}">
+                    </div>
+                @endif
+                <div class="w-full ml-3 text-white">
+                    <h6 class="m-0 font-bold">
+                        COTIZADOR {{ auth()->user()->companySession ? auth()->user()->companySession->name : '' }}
+                    </h6>
+                    <p class="m-0">Cotiza tus
+                        Productos</p>
+                </div>
+            </div>
+            @if (count(auth()->user()->info) > 1)
+                <div class="">
+                    <button id="dropdownNavbarLink" data-dropdown-toggle="dropdownNavbar"
+                        class="flex items-center justify-between w-full py-2 pl-3 pr-4  text-white border-b border-gray-100 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-secondary-500 md:p-0 md:w-auto">{{ auth()->user()->companySession->name }}
+                        <svg class="w-2.5 h-2.5 ml-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                            fill="none" viewBox="0 0 10 6">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="m1 1 4 4 4-4" />
+                        </svg>
+                    </button>
+                    <!-- Dropdown menu -->
+                    <div id="dropdownNavbar"
+                        class="z-10 hidden font-normal bg-white divide-y divide-gray-100 rounded-lg shadow w-44">
+                        <ul class="py-2 text-sm text-gray-700 " aria-labelledby="dropdownLargeButton">
+
+                            @foreach (auth()->user()->info as $companyInfo)
+                                <li>
+                                    <a href="{{ route('changeCompany.cotizador', ['company' => $companyInfo->company_id]) }}"
+                                        class="block px-4 py-2 hover:bg-gray-100 {{ $companyInfo->company->id == auth()->user()->company_session ? 'bg-gray-300' : '' }}">{{ $companyInfo->company->name }}</a>
+                                </li>
+                            @endforeach
+
+                        </ul>
+                    </div>
                 </div>
             @endif
-            <div class="w-full ml-3 text-white">
-                <h6 class="m-0 font-bold">
-                    COTIZADOR {{ auth()->user()->companySession ? auth()->user()->companySession->name : '' }}
-                </h6>
-                <p class="m-0">Cotiza tus
-                    Productos</p>
-            </div>
-        </a>
+        </div>
         <button data-collapse-toggle="navbar-multi-level" type="button"
             class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200"
             aria-controls="navbar-multi-level" aria-expanded="false">
@@ -53,7 +81,7 @@
                     </a>
                 </li>
                 <li>
-                    <button id="dropdownNavbarLink" data-dropdown-toggle="dropdownNavbar"
+                    <button id="navMenuLink" data-dropdown-toggle="navMenu"
                         class="flex items-center justify-between w-full py-2 pl-3 pr-4  text-white border-b border-gray-100 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-secondary-500 md:p-0 md:w-auto">{{ auth()->user()->name }}
                         <svg class="w-2.5 h-2.5 ml-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
                             fill="none" viewBox="0 0 10 6">
@@ -61,56 +89,24 @@
                                 d="m1 1 4 4 4-4" />
                         </svg></button>
                     <!-- Dropdown menu -->
-                    <div id="dropdownNavbar"
+                    <div id="navMenu"
                         class="z-10 hidden font-normal bg-white divide-y divide-gray-100 rounded-lg shadow w-44">
                         <ul class="py-2 text-sm text-gray-700 " aria-labelledby="dropdownLargeButton">
+
+                            @role('admin')
+                                <a class="block px-4 py-2 hover:bg-gray-100 " href="{{ url('admin/') }}">
+                                    Administrador
+                                </a>
+                            @endrole
                             <li>
-                                <a href="#"
-                                    class="block px-4 py-2 hover:bg-gray-100 ">Dashboard</a>
-                            </li>
-                            <li aria-labelledby="dropdownNavbarLink">
-                                <button id="doubleDropdownButton" data-dropdown-toggle="doubleDropdown"
-                                    data-dropdown-placement="right-start" type="button"
-                                    class="flex items-center justify-between w-full px-4 py-2 hover:bg-gray-100 ">Dropdown<svg
-                                        class="w-2.5 h-2.5 ml-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                                        fill="none" viewBox="0 0 10 6">
-                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                            stroke-width="2" d="m1 1 4 4 4-4" />
-                                    </svg></button>
-                                <div id="doubleDropdown"
-                                    class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 ">
-                                    <ul class="py-2 text-sm text-gray-700 "
-                                        aria-labelledby="doubleDropdownButton">
-                                        <li>
-                                            <a href="#"
-                                                class="block px-4 py-2 hover:bg-gray-100 ">Overview</a>
-                                        </li>
-                                        <li>
-                                            <a href="#"
-                                                class="block px-4 py-2 hover:bg-gray-100 ">My
-                                                downloads</a>
-                                        </li>
-                                        <li>
-                                            <a href="#"
-                                                class="block px-4 py-2 hover:bg-gray-100 ">Billing</a>
-                                        </li>
-                                        <li>
-                                            <a href="#"
-                                                class="block px-4 py-2 hover:bg-gray-100 ">Rewards</a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </li>
-                            <li>
-                                <a href="#"
-                                    class="block px-4 py-2 hover:bg-gray-100 ">Earnings</a>
+                                <a href="{{ route('logout') }}" class="block px-4 py-2 hover:bg-gray-100 "
+                                    onclick="event.preventDefault();
+                                document.getElementById('logout-form').submit();">Salir</a>
+                                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                    @csrf
+                                </form>
                             </li>
                         </ul>
-                        <div class="py-1">
-                            <a href="#"
-                                class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 ">Sign
-                                out</a>
-                        </div>
                     </div>
                 </li>
             </ul>

@@ -22,9 +22,9 @@
             deshabilitadas
         </div>
     @endif
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-3">
         <div class="col-span-1 md:col-span-1">
-            <div class="flex flex-col p-3 border rounded-md">
+            <div class="flex flex-col p-3 gap-y-3 border rounded-md">
                 @if ($quote->latestQuotesUpdate)
                     <div class="flex justify-between">
                         <strong class="w-5/6">Información del Cliente</strong>
@@ -140,7 +140,7 @@
                 @endif
             </div>
         </div>
-        <div class="col-span-1 md:col-span-2 p-3 border rounded-md">
+        <div class="col-span-1 md:col-span-3 p-3 border rounded-md">
             <div class="card h-100">
                 @livewire('cotizador.editar-cotizacion-component', ['quote' => $quote], key($quote->id))
                 @if ($quote->latestQuotesUpdate)
@@ -156,7 +156,7 @@
                                         data-target="#createPPTModal">Crear Presentacion</button>
                                 </div>
 
-                                <!-- Modal -->
+                                {{-- <!-- Modal -->
                                 <div wire:ignore.self class="modal fade" id="createPPTModal" tabindex="-1"
                                     data-backdrop="static" aria-labelledby="createPPTModalLabel" aria-hidden="true">
 
@@ -176,7 +176,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                </div> --}}
                             </div>
                             @if ($quote->company_id == auth()->user()->company_session)
                                 <div class="col-md-4 mb-2">
@@ -209,8 +209,8 @@
             </div>
         </div>
     </div>
-    <div class="row">
-        <div class="col-md-12 mt-2">
+    <div class="grid grid-cols-12">
+        <div class="col-span-12 mt-2">
             <div class="card w-100">
                 <div class="card-body">
                     <h5 class="card-title">Historial de Modificaciones</h5>
