@@ -84,7 +84,7 @@ class CreatePresentationComponent extends Component
         $dataInformation = [
             //     // 'portada' => 'https://png.pngtree.com/png-slide/20220812/ourmid/0-pngtree-ancient-brown-simple-and-elegant-pattern-ppt-cover-google-slides-and-powerpoint-template-background_8735.jpg',
             'portada' => '',
-            'logo' => "https://c0.klipartz.com/pngpicture/16/408/sticker-png-logo-mcdonald-s-brand-scalable-graphics-mcdonalds-thumbnail.png",
+            'logo' => "https://logos-world.net/wp-content/uploads/2023/05/Ariana-Grande-Logo-2011.png",
             //     'logo' => '',
             //     // 'contraportada' => "https://img.freepik.com/vector-premium/fondo-material-moderno_643365-269.jpg",
             'contraportada' => "",

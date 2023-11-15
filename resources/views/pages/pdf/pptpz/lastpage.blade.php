@@ -11,7 +11,7 @@
             margin-bottom: 0cm;
         }
 
-    /*     body {
+        /*     body {
             font-family: Arial, Helvetica, sans-serif;
         } */
 
@@ -26,7 +26,7 @@
             height: 100vh;
         }
 
-     /*    .body {
+        /*    .body {
             height: 19cm;
             margin: 1cm 1cm 1cm 1cm;
             margin-top: -20.5cm;
@@ -40,7 +40,7 @@
             background-position: center left;
         }
 
-       /*  .content {
+        /*  .content {
             height: 100%;
             background-color: rgba(255, 255, 255, 0.7);
         }
@@ -90,45 +90,74 @@
             <img src="{{ $data['contraportada'] }}" class="portada" alt="">
         </div>
     @else
-
         <div class="body">
-            <div class="contain" style="background-color: rgba(0, 0, 255, 0.429); width: 100%; height: 90%;">
-                <table class="table-content">
-                    <td class="td-content">
+            <div class="contain" style=" height: 14.8cm;">
+                <div style=" width: 90%; height: 100%; margin: 1.2cm;">
+                    <table class="info-seller" style=" width: 86%; height: 40%; margin-left: 168px;">
 
-                        <table class="info-seller" style="background-color: rgba(255, 192, 203, 0.557); width: 100%; height: 40%;
-                        padding: 20px;">
-
-                            <tr>
-                                <p style="vertical-align: middle; width: 100%;  background-color: rgba(0, 255, 255, 0.418)">
+                        <tr style=" width: 100%;">
+                            <td style=" width: 100%; height: 30px; color: white; font-size: 22px; font-weight: bold;">
+                                <p style="vertical-align: middle; width: 100%;   margin-top: 112px;">
                                     {{ $user->phone == null ? 'Sin Dato' : $user->phone }} </p>
-                                <p style="vertical-align: middle; width: 100%; background-color: rgba(222, 184, 135, 0.258)" >
+                                <p style="vertical-align: middle; width: 100%; margin-top:35px;">
                                     {{ $user->email }}</p>
-                            </tr>
-                        </table>
-                        <div class="condiciones">
-                            <p> Condiciones:</p>
-                            <ul>
-                                <li>Condiciones de pago acordadas con el vendedor</li>
-                                <li>Precios unitarios mostrados antes de IVA</li>
-                                <li>Precios mostrados en {{ $quote->currency_type == 'USD' ? 'dolares (USD)' : 'pesos mexicanos (MXP)' }}.</li>
-                                <li>El importe cotizado corresponde a la cantidad de piezas y número de tintas arriba mencionadas, si se
-                                    modifica
-                                    el número de piezas el precio cambiaría.</li>
-                                <li>El tiempo de entrega empieza a correr una vez recibida la Orden de Compra y autorizada la muestra física
-                                    o
-                                    virtual a solicitud del cliente.</li>
-                                <li>Vigencia de la cotización {{ $quote->latestQuotesUpdate->quotesInformation->shelf_life ?: 5 }} días
-                                    {{ $quote->type_days == 0 ? 'hábiles' : 'naturales' }}.</li>
-                                <li>Producto cotizado de fabricación nacional o importación puede afinarse la fecha de entrega previo a la
-                                    emisión
-                                    de Orden de Compra.</li>
-                                <li>Producto cotizado disponible en stock a la fecha de esta cotización puede modificarse al paso de los
-                                    días sin previo aviso. Solo se bloquea el inventario al recibir Orden de Compra</li>
-                            </ul>
-                        </div>
+                            </td>
+                        </tr>
+                    </table>
 
-                        {{-- <div>
+                    <div class="condiciones" style="width: 98%; margin-left: 20px; margin-top: -20px;">
+
+                        <ul style="color: white; font-size: 19px; font-family: sans-serif; font-weight: bold;">
+                            <p> Condiciones:</p>
+                            <span style="">-Condiciones de pago acordadas con el
+                                vendedor</span>
+                            <br>
+                            <span style="white-space:pre-line">-Precios unitarios mostrados antes de IVA
+                            </span>
+                            <span>-Precios mostrados en
+                                {{ $quote->currency_type == 'USD' ? 'dolares (USD)' : 'pesos mexicanos (MXP)' }}.
+                            </span>
+                            <br>
+                            <span style="white-space: normal">-El importe cotizado corresponde a la cantidad
+                                de
+                                piezas y número de
+                                tintas
+                                arriba
+                                mencionadas, si se
+                                <br> modifica
+                                el número de piezas el precio cambiaría.</span>
+                            <br>
+                            <span>-El tiempo de entrega empieza a correr una vez recibida la Orden de Compra
+                                y
+                                autorizada la muestra <br>física
+                                o
+                                virtual a solicitud del cliente.</span>
+
+                            <span style="white-space:normal">
+                                -Vigencia de la cotización
+                                {{ $quote->latestQuotesUpdate->quotesInformation->shelf_life ?: 5 }}
+                                días
+                                {{ $quote->type_days == 0 ? 'hábiles' : 'naturales' }}.
+                            </span>
+                            <br>
+                            <span>-Producto cotizado de fabricación nacional o importación puede afinarse
+                                la
+                                fecha de
+                                entrega previo a la<br>
+                                emisión
+                                de Orden de Compra.</span>
+                            <br>
+                            <span>-Producto cotizado disponible en stock a la fecha de esta cotización
+                                puede
+                                modificarse al paso de los<br>
+                                días
+                                sin
+                                previo aviso. Solo se bloquea el inventario al recibir Orden de
+                                Compra</span>
+                        </ul>
+                    </div>
+                </div>
+                {{-- <div>
                             <p colspan="3" style="text-align: center;font-size: 27px;margin-bottom: 0">www.trademarket.com.mx
                             </p>
                             <p colspan="3" style="text-align: center; font-size: 16px;  margin-bottom: 0">San Andrés Atoto 155A
@@ -136,7 +165,7 @@
                                 Juárez, Méx. C.P. 53550
                                 Tel. +52(55) 5290 9100</p>
                         </div> --}}
-                </table>
+
             </div>
         </div>
     @endif

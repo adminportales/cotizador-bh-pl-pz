@@ -111,32 +111,38 @@
         @else
             {{-- Esta portada va el logo, nombre del vendedor y cliente --}}
 
-            <div class="contain"
-                style="width: 100%; height:90%;">
-                <table class="table-content" style="width: 100%; height:75%; background-color:">
-                    <td class="contenedor_logo"
-                        style="width: 100%; height: 10%; text-align: right; padding: 18px;">
-                        <img src="{{ $data['logo'] }}" class="logo"
-                            style="height: auto; width: auto; max-width: 54%; max-height: 54%; padding-right: 15px">
-                    </td>
-                </table>
-                <div class="client"
-                    style="width: 100%; height: 30%; margin-top: -62px;">
-                    <table style=" width: 100%; height: 68%; text-align:center; font-weight: bold; font-family: sans-serif;">
-                        <td class="name" style="color: black; width:25%;">
-                        </td>
-                        <td class="name" style="color: black; width:75%;">
-                            <span style="font-size: 60px">
-                                <strong>
-                                    {{ $quote->latestQuotesUpdate->quotesInformation->name }}</strong>
+            <div class="contain" style="width: 100%; height:100%;">
+                <div style=" width: 100%; height: 88%; max-height: 88%;">
+                    <div style=" margin: 1cm; height: 90%; max-height: 90%;">
+                        <table class="table-content" style="width: 95%; height:50%;">
+                            <td class="contenedor_logo"
+                                style="width: 60%; height: 10%; text-align: right;  margin: 1cm;">
+                                <img src="{{ $data['logo'] }}" class="logo"
+                                    style="height: auto; width: auto; max-width: 60%; max-height: 60%; padding-right: 15px;">
+                            </td>
+                        </table>
+                        <div style="width: 100%;">
+                            <table
+                                style="width: 100%; max-width:75%; margin:10px; font-family:sans-serif; font-weight:bolder;">
 
-                            </span>
-                            <br>
-                            <br>
-                            <span class="fecha_cot" style="font-weight: bold; font-size: 30px;">FECHA DE COTIZACION:
-                                {{ $quote->created_at->format('d/m/Y') }}</span>
-                        </td>
-                    </table>
+
+                                <td class="name" style="color: black; width:35%;">
+                                </td>
+                                <td class="name" style="color: black; width:55%; max-height: 30%;">
+                                    <span style="font-size: 60px">
+                                        <strong>
+                                            {{ $quote->latestQuotesUpdate->quotesInformation->name }}</strong>
+
+                                    </span>
+                                    <br>
+                                    <span class="fecha_cot" style="font-weight: bold; font-size: 30px;">FECHA DE
+                                        COTIZACION:
+                                        {{ $quote->created_at->format('d/m/Y') }}</span>
+                                </td>
+
+                            </table>
+                        </div>
+                    </div>
                 </div>
 
 
