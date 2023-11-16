@@ -42,30 +42,42 @@
                             <div class="col-span-1 mb-2">
                                 <div class="flex justify-center">
                                     <button class="bg-green-200 p-3 w-full rounded-md hover:bg-green-300"
-                                        data-toggle="modal" data-target="#createPPTModal">Crear Presentacion</button>
+                                        onclick="customToggleModal('createPPTModal', 1)">Crear Presentacion</button>
                                 </div>
-
-                                {{-- <!-- Modal -->
-                                <div wire:ignore.self class="modal fade" id="createPPTModal" tabindex="-1"
-                                    data-backdrop="static" aria-labelledby="createPPTModalLabel" aria-hidden="true">
-
-                                    <div class="modal-dialog modal-xl">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title" id="createPPTModalLabel">Crea tu
+                                {{--  --}}
+                                <div wire:ignore.self id="createPPTModal" tabindex="-1" aria-hidden="true"
+                                    class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
+                                    <div class="relative p-4 w-full max-w-4xl max-h-full">
+                                        <!-- Modal content -->
+                                        <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+                                            <!-- Modal header -->
+                                            <div
+                                                class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
+                                                <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
+                                                    Crea tu
                                                     presentacion
-                                                </h5>
-                                                <button type="button" class="close" data-dismiss="modal"
-                                                    aria-label="Close">
-                                                    <span aria-hidden="true">&times;</span>
+                                                </h3>
+                                                <button type="button" onclick="customToggleModal('createPPTModal', 0)"
+                                                    class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white">
+                                                    <svg class="w-3 h-3" aria-hidden="true"
+                                                        xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                        viewBox="0 0 14 14">
+                                                        <path stroke="currentColor" stroke-linecap="round"
+                                                            stroke-linejoin="round" stroke-width="2"
+                                                            d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+                                                    </svg>
+                                                    <span class="sr-only">Close modal</span>
                                                 </button>
                                             </div>
-                                            <div class="modal-body">
+                                            <!-- Modal body -->
+
+                                            <div class="p-10">
                                                 @livewire('cotizador.create-presentation-component', ['quote' => $quote])
                                             </div>
+
                                         </div>
                                     </div>
-                                </div> --}}
+                                </div>
                             </div>
                             @if ($quote->company_id == auth()->user()->company_session)
                                 <div class="col-span-1 mb-2">

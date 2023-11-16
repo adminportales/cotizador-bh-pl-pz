@@ -11,9 +11,7 @@
             margin-bottom: 0cm;
         }
 
-        body {
-            font-family: Arial, Helvetica, sans-serif;
-        }
+
 
         .portada {
             width: 100%;
@@ -26,23 +24,23 @@
             height: 100vh;
         }
 
-        .body {
+        /*   .body {
             height: 17cm;
             margin: 2cm 2cm 2cm 2cm;
             margin-top: -19.5cm;
-            /* background-color: red; */
-        }
 
-        .body-back {
+        } */
+
+        .body {
             height: 100vh;
-            background-image: url(quotesheet/pz/ppt/fondoportada.jpg);
+            background-image: url(quotesheet/pz/ppt/PSPORTADA.jpg);
             background-repeat: no-repeat;
             background-size: cover;
             background-position: center left;
             /* background-color: rgb(119, 194, 255); */
         }
 
-        .content {
+        /*   .content {
             height: 100%;
             background-color: rgba(255, 255, 255, 0.62);
         }
@@ -50,19 +48,18 @@
         .table-content {
             width: 100%;
             height: 100%;
-            /* background-color: royalblue; */
+
         }
 
         .table-content td {
-            /* vertical-align: top; */
-            /* background-color: red; */
+
             width: 100%;
             height: 100%;
             vertical-align: middle;
-        }
+        } */
 
         /* Logos */
-        .logos {
+        /*   .logos {
             width: 100%;
             height: 120px;
             text-align: center;
@@ -73,9 +70,9 @@
             height: 100%;
             object-fit: cover;
         }
-
+ */
         /* Informacion */
-        .client {
+        /*   .client {
             margin-top: 35px;
             font-size: 30px;
             font-weight: bold;
@@ -100,56 +97,57 @@
         .fecha p {
             margin: 0;
             text-align: center;
-        }
+        } */
     </style>
 </head>
 
 <body>
-    <!-- Imagen en la última página dentro de la etiqueta img -->
-    @if ($data['portada'] != '')
-        <div id="first-page-img">
-            <img src="{{ $data['portada'] }}" class="portada" alt="">
-        </div>
-    @else
-        {{-- Esta portada va el logo, nombre del vendedor y cliente --}}
-        <div class="body-back">
-        </div>
-        <div class="body">
-            <div class="content">
-                <table class="table-content">
-                    <td>
-                        <div class="logos">
-                            <img src="quotesheet/pz/logo.jpg" class="logo">
-                            {{-- <img src="quotesheet/bh/logo.png" class="logo"> --}}
-                        </div>
-                        <div class="client">
-                            <p>
-                                @if ($nombreComercial)
-                                    @if ($quote->show_tax)
-                                        {{ $nombreComercial->name }}
-                                    @else
-                                        {{ $quote->latestQuotesUpdate->quotesInformation->company }}
-                                    @endif
-                                @else
-                                    {{ $quote->latestQuotesUpdate->quotesInformation->company }}
-                                @endif
-                            </p>
-                            <p class="name-customer">
-                                {{ $quote->latestQuotesUpdate->quotesInformation->name }}
-                            </p>
-                            @if ($quote->latestQuotesUpdate->quotesInformation->department)
-                                <p class="name-customer">
-                                    {{ $quote->latestQuotesUpdate->quotesInformation->department }}
-                                </p>
-                            @endif
-                        </div>
-                        <div class="fecha">
-                            <p>Fecha Cotización: {{ $quote->created_at->format('d/m/Y') }}</p>
-                        </div>
-                    </td>
-                </table>
+    <div class="body">
+        <!-- Imagen en la última página dentro de la etiqueta img -->
+        @if ($data['portada'] != '')
+            <div id="first-page-img">
+                <img src="{{ $data['portada'] }}" class="portada" alt="">
             </div>
-        </div>
+        @else
+            {{-- Esta portada va el logo, nombre del vendedor y cliente --}}
+
+            <div class="contain" style="width: 100%; height:100%;">
+                <div style=" width: 100%; height: 88%; max-height: 88%;">
+                    <div style=" margin: 1cm; height: 90%; max-height: 90%;">
+                        <table class="table-content" style="width: 95%; height:50%;">
+                            <td class="contenedor_logo"
+                                style="width: 60%; height: 10%; text-align: right;  margin: 1cm;">
+                                <img src="{{ $data['logo'] }}" class="logo"
+                                    style="height: auto; width: auto; max-width: 60%; max-height: 60%; padding-right: 15px;">
+                            </td>
+                        </table>
+                        <div style="width: 100%;">
+                            <table
+                                style="width: 100%; max-width:75%; margin:10px; font-family:sans-serif; font-weight:bolder;">
+
+
+                                <td class="name" style="color: black; width:35%;">
+                                </td>
+                                <td class="name" style="color: black; width:55%; max-height: 30%;">
+                                    <span style="font-size: 60px">
+                                        <strong>
+                                            {{ $quote->latestQuotesUpdate->quotesInformation->name }}</strong>
+
+                                    </span>
+                                    <br>
+                                    <span class="fecha_cot" style="font-weight: bold; font-size: 30px;">FECHA DE
+                                        COTIZACION:
+                                        {{ $quote->created_at->format('d/m/Y') }}</span>
+                                </td>
+
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+    </div>
     @endif
 </body>
 

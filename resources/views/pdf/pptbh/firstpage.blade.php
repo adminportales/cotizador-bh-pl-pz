@@ -11,13 +11,9 @@
             margin-bottom: 0cm;
         }
 
-        body {
-            font-family: Arial, Helvetica, sans-serif;
-        }
-
         .portada {
             width: 100%;
-            height: 100vh;
+            height: 100%;
             object-fit: cover;
         }
 
@@ -27,55 +23,55 @@
         }
 
         .body {
-            height: 17cm;
+            /*    height: 17cm;
             margin: 2cm 2cm 2cm 2cm;
-            margin-top: -19.5cm;
+            margin-top: -19.5cm; */
             /* background-color: red; */
-        }
-
-        .body-back {
-            height: 100vh;
-            background-image: url(quotesheet/bh/ppt/fondoPPTbh.jpeg);
-            background-repeat: no-repeat;
-            background-size: cover;
-            background-position: center left;
-            /* background-color: rgb(119, 194, 255); */
-        }
-
-        .content {
-            height: 100%;
-            background-color: rgba(255, 255, 255, 0.62);
-        }
-
-        .table-content {
             width: 100%;
             height: 100%;
-            /* background-color: royalblue; */
+            background-image: url(quotesheet/bh/ppt/BHPORTADA.jpg);
+            background-repeat: no-repeat;
+            background-size: contain;
+            background-position: center center;
+
+
+            font-family: Arial, Helvetica, sans-serif;
         }
 
-        .table-content td {
-            /* vertical-align: top; */
-            /* background-color: red; */
+
+        /*   .content {
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.62);
+        } */
+
+        /*  .table-content {
+            width: 100%;
+            height: 100%;
+
+        } */
+
+        /*  .table-content td {
+
             width: 100%;
             height: 100%;
             vertical-align: middle;
-        }
+        } */
 
         /* Logos */
-        .logos {
+        /*   .logos {
             width: 100%;
             height: 120px;
             text-align: center;
-        }
+        } */
 
-        .logo {
+        /*  .logo {
             width: auto;
             height: 100%;
             object-fit: cover;
         }
-
+ */
         /* Informacion */
-        .client {
+        /*   .client {
             margin-top: 35px;
             font-size: 30px;
             font-weight: bold;
@@ -84,9 +80,9 @@
         .client p {
             margin: 0;
             text-align: center;
-        }
+        } */
 
-        .client .name-customer {
+        /*   .client .name-customer {
             font-size: 25px;
             font-weight: bold;
         }
@@ -100,29 +96,42 @@
         .fecha p {
             margin: 0;
             text-align: center;
-        }
+        } */
     </style>
 </head>
 
 <body>
-    <!-- Imagen en la última página dentro de la etiqueta img -->
-    @if ($data['portada'] != '')
-        <div id="first-page-img">
-            <img src="{{ $data['portada'] }}" class="portada" alt="">
-        </div>
-    @else
-        {{-- Esta portada va el logo, nombre del vendedor y cliente --}}
-        <div class="body-back">
-        </div>
-        <div class="body">
-            <div class="content">
-                <table class="table-content">
-                    <td>
-                        <div class="logos">
-                            <img src="quotesheet/bh/logo.png" class="logo">
+    <div class="body">
+        <!-- Imagen en la última página dentro de la etiqueta img -->
+        @if ($data['portada'] != '')
+            <div id="first-page-img">
+                <img src="{{ $data['portada'] }}" class="portada" alt="">
+            </div>
+        @else
+            <div class="contain" style="height:72%; text-align: center; ">
+                <table class="table-content" style="width: 100%;  height: 80%; vertical-align: middle">
+                    <td style="width: 100%">
+                        <div class="content-logos"
+                            style="height:62%; text-align:center; margin: 1.2cm">
+                            <img src="{{ $data['logo'] }}" class="logo"
+                                style="height: auto; width: auto; max-width: 90%; max-height: 90%">
                             {{-- <img src="quotesheet/bh/logo.png" class="logo"> --}}
                         </div>
-                        <div class="client">
+                    </td>
+
+                </table>
+                <div class="client" style="width: 100%; height: 20%; margin-top: 20px;">
+                    <table class="" style=" width: 100%;">
+                        <td class="name" style="color: white; text-align: center; font-size: 35px; margin-top: -50px">
+                            <span style="font-size: 45px">
+                                <strong>
+                                    {{ $quote->latestQuotesUpdate->quotesInformation->name }}</strong>
+                            </span>
+                            <br>
+                            <span class="fecha_cot" style="font-weight: bold;">FECHA DE COTIZACION:
+                                {{ $quote->created_at->format('d/m/Y') }}</span>
+                        </td>
+                        {{-- <td>
                             <p>
                                 @if ($nombreComercial)
                                     @if ($quote->show_tax)
@@ -141,16 +150,14 @@
                                 <p class="name-customer">
                                     {{ $quote->latestQuotesUpdate->quotesInformation->department }}
                                 </p>
-                            @endif
-                        </div>
-                        <div class="fecha">
-                            <p>Fecha Cotización: {{ $quote->created_at->format('d/m/Y') }}</p>
-                        </div>
-                    </td>
-                </table>
+                                <p>Fecha Cotización: {{ $quote->created_at->format('d/m/Y') }}</ @endif
+                        </td> --}}
+                    </table>
+                </div>
+
             </div>
-        </div>
-    @endif
+        @endif
+    </div>
 </body>
 
 </html>
