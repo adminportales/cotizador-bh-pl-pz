@@ -35,7 +35,7 @@
 <body class="alt-menu sidebar-noneoverflow">
 
     @auth
-        @include('components.nav')
+        @include('components.admin.nav')
     @endauth
 
     <!--  BEGIN MAIN CONTAINER  -->
@@ -44,7 +44,7 @@
         <div class="overlay"></div>
         <div class="search-overlay"></div>
 
-        @include('components.top')
+        @include('components.admin.top')
 
         <!--  BEGIN CONTENT PART  -->
         <div id="content" class="main-content">
