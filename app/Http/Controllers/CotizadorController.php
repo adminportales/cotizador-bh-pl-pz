@@ -98,7 +98,7 @@ class CotizadorController extends Controller
     }
     public function verCotizacion(Quote $quote)
     {
-        return view('cotizador.ver_cotizacion.ver-cotizacion', compact('quote'));
+        return view('cotizador.ver_cotizacion.page-ver-cotizacion', compact('quote'));
     }
 
     public function finalizar()
@@ -275,7 +275,7 @@ class CotizadorController extends Controller
                 $estimated = floatval($subtotal - $discountValue);
                 $responseOdoo = '';
                 try {
-                    $url = 'https://api-promolife.vde-suite.com:5030/custom/Promolife/V2/crm-lead/create';
+                    $url = config('settings.api_odoo');
                     $data =  [
                         'Opportunities' => [
                             [

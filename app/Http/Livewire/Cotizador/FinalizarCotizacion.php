@@ -339,7 +339,7 @@ class FinalizarCotizacion extends Component
         $estimated = floatval($subtotal - $discountValue);
         $responseOdoo = '';
         try {
-            $url = 'https://api-promolife.vde-suite.com:5030/custom/Promolife/V2/crm-lead/create';
+            $url = config('settings.api_odoo');
             $data =  [
                 'Opportunities' => [
                     [
