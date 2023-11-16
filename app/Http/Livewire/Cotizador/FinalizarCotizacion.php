@@ -174,8 +174,6 @@ class FinalizarCotizacion extends Component
             'type_days' => $this->typeDays,
             'logo' => $pathLogo,
             'pending_odoo' => true,
-            'currency_type' => $this->currency_type,
-            'currency' => $this->currency,
             'show_tax' => $this->show_tax,
             "company_id" => auth()->user()->company_session
         ]);
@@ -191,6 +189,8 @@ class FinalizarCotizacion extends Component
             'rank' => $this->rank,
             'department' => $this->departamento,
             'information' => $this->informacion,
+            'currency_type' => $this->currency_type,
+            'currency' => $this->currency,
             'tax_fee' => (int)$this->taxFee > 0 ? $this->taxFee : null,
             'shelf_life' =>  trim($this->shelfLife) == "" ? null : $this->shelfLife,
         ]);
@@ -402,6 +402,7 @@ class FinalizarCotizacion extends Component
             $message = $exception->getMessage();
             $errors = true;
         }
+
         $errorsMail = false;
         try {
             if ($errors) {
@@ -450,12 +451,28 @@ class FinalizarCotizacion extends Component
             unlink(public_path() . $newPath);
             auth()->user()->currentQuoteActive->currentQuoteDetails()->delete();
             auth()->user()->currentQuoteActive()->delete();
+
+            if (count(auth()->user()->currentQuotes) > 0) {
+                if (!auth()->user()->currentQuoteActive) {
+                    $quoteLast = auth()->user()->currentQuotes()->first();
+                    $quoteLast->active = 1;
+                    $quoteLast->save();
+                }
+            }
         } catch (Exception $exception) {
             $messageMail = $exception->getMessage();
             $errorsMail = true;
             auth()->user()->currentQuoteActive->currentQuoteDetails()->delete();
             auth()->user()->currentQuoteActive()->delete();
             unlink(public_path() . $newPath);
+
+            if (count(auth()->user()->currentQuotes) > 0) {
+                if (!auth()->user()->currentQuoteActive) {
+                    $quoteLast = auth()->user()->currentQuotes()->first();
+                    $quoteLast->active = 1;
+                    $quoteLast->save();
+                }
+            }
         }
         if ($errors || $errorsMail) {
             try {
