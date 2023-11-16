@@ -1,18 +1,18 @@
 <div>
-    <button class="btn btn-light shadow-none text-center" data-toggle="modal" data-target="#modalNewProduct">
-        <div class="d-flex justify-content-center w-100">
-            <div style="width: 1rem;">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 w-100" fill="none" viewBox="0 0 24 24"
+    <button class="bg-green-200 p-3  rounded-md hover:bg-green-300" data-toggle="modal" data-target="#modalNewProduct">
+        <div class="flex justify-center w-100">
+            <div style="width: 1rem;" class="mr-3">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-" fill="none" viewBox="0 0 24 24"
                     stroke="currentColor" stroke-width="2">
                     <path stroke-linecap="round" stroke-linejoin="round"
                         d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
             </div>
-            Agregar un Producto que no esta en el catalogo
+            <p> Agregar un Producto que no esta en el catalogo</p>
         </div>
     </button>
 
-    <div class="modal fade" id="modalNewProduct" tabindex="-1" aria-labelledby="modalNewProductLabel" data-backdrop="static"
+    {{-- <div class="modal fade" id="modalNewProduct" tabindex="-1" aria-labelledby="modalNewProductLabel" data-backdrop="static"
         aria-hidden="true" wire:ignore.self>
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
@@ -176,6 +176,6 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> --}}
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
 </div>

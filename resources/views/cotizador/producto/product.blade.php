@@ -102,11 +102,12 @@
             <p class="mb-2 text-xl">Cotización</p>
             <div class="mb-3">
                 @if (!$disponiblidad)
-                    <div class="alert alert-danger">No puedes cotizar este producto porque no pertenece a tus proveedores
+                    <div class="w-full p-4 mb-2 text-sm text-red-800 rounded-lg bg-red-50">No puedes cotizar este producto
+                        porque no pertenece a tus proveedores
                     </div>
                 @endif
                 @if ($msg)
-                    <div class="alert alert-danger">{{ $msg }}</div>
+                    <div class="w-full p-4 mb-2 text-sm text-red-800 rounded-lg bg-red-50">{{ $msg }}</div>
                 @endif
                 <div class="flex items-center justify-between">
                     <p class="font-bold">{{ $product->name }}</p>
@@ -119,9 +120,21 @@
                     @endif
                 </div>
                 <div class="flex items-center justify-between">
-                    <div>
-                        <p class="my-1">SKU Interno: {{ $product->internal_sku }}</p>
-                        <p class="my-1">SKU Proveedor: {{ $product->sku }}</p>
+                    <div class="grow ">
+                        <div class="hidden md:block">
+                            <p class="my-1">SKU Interno: {{ $product->internal_sku }}</p>
+                            <p class="my-1">SKU Proveedor: {{ $product->sku }}</p>
+                        </div>
+                        <div class="block md:hidden space-y-1 mb-2">
+                            <div>
+                                <p>Sku Interno:</p>
+                                <p>{{ $product->internal_sku }}</p>
+                            </div>
+                            <div>
+                                <p>Sku Proveedor:</p>
+                                <p>{{ $product->sku }}</p>
+                            </div>
+                        </div>
                     </div>
                     <div>
                         <p class="text-green-500">Disponibles:<strong> {{ $product->stock }}</strong> </p>

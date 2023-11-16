@@ -8,15 +8,13 @@ use Livewire\Component;
 
 class CurrentQuoteComponent extends Component
 {
-    public $allQuotes, $cotizacionActual;
+    public $allQuotes, $cotizacionActual, $nameQuote, $quoteEdit;
 
     public $listaProductos, $totalQuote;
-    public $discountMount = 0;
 
-    public $value, $type;
-    public $quoteEdit, $quoteShow;
+    public $currentQuoteEdit, $currentQuoteShow;
 
-    public $nameQuote;
+    public $value, $type, $discountMount = 0;
 
     protected $listeners = ['updateProductCurrent' => 'resetData'];
 
@@ -67,13 +65,13 @@ class CurrentQuoteComponent extends Component
 
     public function edit($quote_id)
     {
-        $this->quoteEdit = CurrentQuoteDetails::find($quote_id);
+        $this->currentQuoteEdit = CurrentQuoteDetails::find($quote_id);
         $this->dispatchBrowserEvent('show-modal-edit');
     }
 
     public function show($quote_id)
     {
-        $this->quoteShow = CurrentQuoteDetails::find($quote_id);
+        $this->currentQuoteShow = CurrentQuoteDetails::find($quote_id);
         $this->dispatchBrowserEvent('show-modal-show');
     }
 
@@ -121,11 +119,13 @@ class CurrentQuoteComponent extends Component
         $this->resetData();
         $this->emit('currentQuoteAdded');
     }
+
     public function resetData()
     {
-        $this->listaProductos = auth()->user()->currentQuote->currentQuoteDetails;
-        $this->quoteEdit = null;
-        $this->quoteShow = null;
+        $this->listaProductos = auth()->user()->currentQuoteActive->currentQuoteDetails;
+        $this->currentQuoteEdit = null;
+        $this->currentQuoteShow = null;
+        $this->dispatchBrowserEvent('hide-modal-edit');
     }
 
     public function addQuote()
@@ -152,6 +152,34 @@ class CurrentQuoteComponent extends Component
             $i->active = $i->id == $cqid ? 1 : 0;
             $i->save();
         }
+        $this->allQuotes = auth()->user()->currentQuotes;
+    }
+
+    //eliminarCurrentQuote
+    public function deleteCurrentQuote($cqid)
+    {
+        $currentQuote = auth()->user()->currentQuotes()->find($cqid);
+        $currentQuote->currentQuoteDetails()->delete();
+        $currentQuote->delete();
+        auth()->user()->currentQuotes()->first()->update(['active' => 1]);
+        $this->allQuotes = auth()->user()->currentQuotes;
+    }
+
+    //editarCurrentQuote
+    public function editQuote($cqid)
+    {
+        $this->quoteEdit = auth()->user()->currentQuotes()->find($cqid);
+        $this->dispatchBrowserEvent('showModalEditQuote');
+    }
+    //updateQuote
+    public function updateQuote()
+    {
+        $this->validate(['nameQuote' => 'required']);
+        $this->quoteEdit->name = $this->nameQuote;
+        $this->quoteEdit->save();
+        $this->quoteEdit = null;
+        $this->nameQuote = '';
+        $this->dispatchBrowserEvent('hideModalAddQuote');
         $this->allQuotes = auth()->user()->currentQuotes;
     }
 }
