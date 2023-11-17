@@ -50,15 +50,17 @@
             <!-- Modal header -->
             <div class="flex items-start justify-between p-4 border-b rounded-t">
                 <h3 class="text-xl font-semibold text-gray-900 ">
-                    Agregar nueva cotizacion
+                    {{ $quoteEdit ? 'Editar Nombre de la Cotizacion' : 'Agregar nueva cotizacion' }}
                 </h3>
             </div>
             <!-- Modal body -->
             <div class="p-6 space-y-6">
                 <div class="grid grid-cols-2 gap-2 text-left">
-                    <p class="col-span-2">Esta funcion es util cuando quieres crear una nueva cotizacion para un
-                        cliente nuevo o
-                        para el mismo cliente, pero no quieres perder el progreso de tu cotizacion actual</p>
+                    @if (!$quoteEdit)
+                        <p class="col-span-2">Esta funcion es util cuando quieres crear una nueva cotizacion para un
+                            cliente nuevo o
+                            para el mismo cliente, pero no quieres perder el progreso de tu cotizacion actual</p>
+                    @endif
                     <div class="col-span-2">
                         <label for="" class="text-sm font-semibold">Nombre de la cotizacion</label>
                         <input

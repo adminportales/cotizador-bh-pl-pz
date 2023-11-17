@@ -81,7 +81,7 @@
         }
 
         .logo {
-            width: 130px;
+            width: 110px;
             height: auto;
         }
 
@@ -142,7 +142,7 @@
         <div id="page-header">
             <table class="table-header">
                 <tr>
-                    <td style="width: 20%; text-align: left">
+                    <td style="width: 15%; text-align: left">
                         <img src="quotesheet/pz/logo.jpg" class="logo">
                     </td>
                     <td style="width: 60%; text-align: center">
