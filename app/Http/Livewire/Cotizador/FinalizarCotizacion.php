@@ -107,6 +107,8 @@ class FinalizarCotizacion extends Component
             dd("No hay productos en la cotizacion");
         }
 
+
+
         // Revisar que los productos si sean de mis proveedores
         foreach (auth()->user()->currentQuoteActive->currentQuoteDetails as $item) {
             $product = Product::find($item->product_id);
@@ -136,6 +138,7 @@ class FinalizarCotizacion extends Component
             }
         }
 
+
         $this->validate([
             'tipoCliente' => 'required',
             'email' => 'required|email',
@@ -160,6 +163,7 @@ class FinalizarCotizacion extends Component
             dd("El id de odoo no es valido");
             return;
         }
+
         $pathLogo = null;
         if ($this->logo != null) {
             $name = time() . $this->empresa .  $this->logo->getClientOriginalExtension();
@@ -485,7 +489,7 @@ class FinalizarCotizacion extends Component
             return redirect()->action([CotizadorController::class, 'verCotizacion'], ['quote' => $quote->id])->with('messageMail', json_encode($message) . ' ' . json_encode($messageMail))
                 ->with('messageError', 'Tu cotizacion se ha guardado exitosamente. ' .
                     ($errorsMail ? "No se pudo enviar el email debido a problemas tecnicos. " : "") .
-                    ($errors ? "No se puedo guardar el lead debido a problemas en la conexion con Odoo, lo intentaremos nuevamente mas tarde" : ""));
+                    ($errors ? "No se pudo guardar el lead debido a problemas en la conexion con Odoo, lo intentaremos nuevamente mas tarde" : ""));
         }
         return redirect()->action([CotizadorController::class, 'verCotizacion'], ['quote' => $quote->id])->with('message', 'Tu cotizacion se ha guardado exitosamente y ya fue enviada al correo electronico establecido.');
     }
