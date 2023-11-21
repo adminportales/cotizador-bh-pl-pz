@@ -262,7 +262,7 @@
                         x-on:livewire-upload-error="isUploading = false"
                         x-on:livewire-upload-progress="progress = $event.detail.progress">
                         <input type="file"
-                            class="block w-full p-3 mb-2 text-gray-900 border border-gray-300 rounded-md bg-white sm:text-xs focus:ring-blue-500 focus:border-blue-500 "
+                            class="block w-full mb-2 text-gray-900 border border-gray-300 rounded-md bg-white sm:text-xs focus:ring-blue-500 focus:border-blue-500 "
                             wire:model="logo" accept="image/*">
 
                         <div x-show="isUploading" class="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
@@ -271,10 +271,10 @@
                         </div>
                     </div>
                     @if ($logo)
-                        <p class="text-warning">Revisa que tenga fondo blanco o que se un
+                        <p class="text-yellow-500 py-3">Revisa que tenga fondo blanco o que se un
                             archivo PNG
                         </p>
-                        <div class="btn btn-danger btn-sm" wire:click="limpiarLogo()">Eliminar
+                        <div class="bg-red-200 p-2 rounded-md hover:bg-red-300 text-center" wire:click="limpiarLogo()">Eliminar
                         </div>
                     @else
                         <p>No hay un logo de cliente cargado</p>
@@ -285,7 +285,7 @@
                 @endif
             </div>
             <div class="col-span-3 md:col-span-1">
-                <div class="form-group">
+                <div class="flex justify-center">
                     @if ($logo)
                         <div class="text-center">
                             <p>Logo del cliente</p>

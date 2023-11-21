@@ -107,6 +107,8 @@ class FinalizarCotizacion extends Component
             dd("No hay productos en la cotizacion");
         }
 
+
+
         // Revisar que los productos si sean de mis proveedores
         foreach (auth()->user()->currentQuoteActive->currentQuoteDetails as $item) {
             $product = Product::find($item->product_id);
@@ -136,6 +138,7 @@ class FinalizarCotizacion extends Component
             }
         }
 
+
         $this->validate([
             'tipoCliente' => 'required',
             'email' => 'required|email',
@@ -160,6 +163,7 @@ class FinalizarCotizacion extends Component
             dd("El id de odoo no es valido");
             return;
         }
+
         $pathLogo = null;
         if ($this->logo != null) {
             $name = time() . $this->empresa .  $this->logo->getClientOriginalExtension();
@@ -174,8 +178,6 @@ class FinalizarCotizacion extends Component
             'type_days' => $this->typeDays,
             'logo' => $pathLogo,
             'pending_odoo' => true,
-            'currency_type' => $this->currency_type,
-            'currency' => $this->currency,
             'show_tax' => $this->show_tax,
             "company_id" => auth()->user()->company_session
         ]);
@@ -191,6 +193,8 @@ class FinalizarCotizacion extends Component
             'rank' => $this->rank,
             'department' => $this->departamento,
             'information' => $this->informacion,
+            'currency_type' => $this->currency_type,
+            'currency' => $this->currency,
             'tax_fee' => (int)$this->taxFee > 0 ? $this->taxFee : null,
             'shelf_life' =>  trim($this->shelfLife) == "" ? null : $this->shelfLife,
         ]);
@@ -402,6 +406,7 @@ class FinalizarCotizacion extends Component
             $message = $exception->getMessage();
             $errors = true;
         }
+
         $errorsMail = false;
         try {
             if ($errors) {
@@ -450,12 +455,28 @@ class FinalizarCotizacion extends Component
             unlink(public_path() . $newPath);
             auth()->user()->currentQuoteActive->currentQuoteDetails()->delete();
             auth()->user()->currentQuoteActive()->delete();
+
+            if (count(auth()->user()->currentQuotes) > 0) {
+                if (!auth()->user()->currentQuoteActive) {
+                    $quoteLast = auth()->user()->currentQuotes()->first();
+                    $quoteLast->active = 1;
+                    $quoteLast->save();
+                }
+            }
         } catch (Exception $exception) {
             $messageMail = $exception->getMessage();
             $errorsMail = true;
             auth()->user()->currentQuoteActive->currentQuoteDetails()->delete();
             auth()->user()->currentQuoteActive()->delete();
             unlink(public_path() . $newPath);
+
+            if (count(auth()->user()->currentQuotes) > 0) {
+                if (!auth()->user()->currentQuoteActive) {
+                    $quoteLast = auth()->user()->currentQuotes()->first();
+                    $quoteLast->active = 1;
+                    $quoteLast->save();
+                }
+            }
         }
         if ($errors || $errorsMail) {
             try {
@@ -468,7 +489,7 @@ class FinalizarCotizacion extends Component
             return redirect()->action([CotizadorController::class, 'verCotizacion'], ['quote' => $quote->id])->with('messageMail', json_encode($message) . ' ' . json_encode($messageMail))
                 ->with('messageError', 'Tu cotizacion se ha guardado exitosamente. ' .
                     ($errorsMail ? "No se pudo enviar el email debido a problemas tecnicos. " : "") .
-                    ($errors ? "No se puedo guardar el lead debido a problemas en la conexion con Odoo, lo intentaremos nuevamente mas tarde" : ""));
+                    ($errors ? "No se pudo guardar el lead debido a problemas en la conexion con Odoo, lo intentaremos nuevamente mas tarde" : ""));
         }
         return redirect()->action([CotizadorController::class, 'verCotizacion'], ['quote' => $quote->id])->with('message', 'Tu cotizacion se ha guardado exitosamente y ya fue enviada al correo electronico establecido.');
     }

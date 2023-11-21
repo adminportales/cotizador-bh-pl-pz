@@ -28,7 +28,7 @@ class CreateQuoteInformationTable extends Migration
             $table->integer('shelf_life')->nullable();
             $table->boolean('show_tax')->nullable();
             $table->decimal('currency', 8, 2)->nullable();
-            $table->string('currency_type')->nullable();
+            $table->string('currency_type')->default('MXN')->nullable();
             $table->timestamps();
         });
     }
