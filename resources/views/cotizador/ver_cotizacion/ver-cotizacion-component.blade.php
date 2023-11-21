@@ -78,40 +78,41 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            @if ($quote->company_id == auth()->user()->company_session)
-                                <div class="col-span-1 mb-2">
-                                    <div class="flex justify-center">
-                                        <div wire:loading wire:target="enviar">
-                                            <div class="spinner-border text-primary" role="status">
-                                                <span class="sr-only">loading...</span>
-                                            </div>
-                                        </div>
-                                        <button class="bg-green-200 p-3 w-full rounded-md hover:bg-green-300"
-                                            wire:click="enviar">Enviar al
-                                            Cliente</button>
 
-                                    </div>
-                                </div>
-                                <div class="col-span-1 mb-2">
-                                    <div class="flex justify-center">
-                                        <div wire:loading wire:target="enviarOdoo">
-                                            <div class="spinner-border text-danger" role="status">
-                                                <span class="sr-only">loading...</span>
+                                @if ($quote->company_id == auth()->user()->company_session)
+                                    <div class="col-span-1 mb-2">
+                                        <div class="flex justify-center">
+                                            <div wire:loading wire:target="enviar">
+                                                <div class="spinner-border text-primary" role="status">
+                                                    <span class="sr-only">loading...</span>
+                                                </div>
                                             </div>
+                                            <button class="bg-green-200 p-3 w-full rounded-md hover:bg-green-300"
+                                                wire:click="enviar">Enviar al
+                                                Cliente</button>
+
                                         </div>
-                                        <button class="bg-green-200 p-3 w-full rounded-md hover:bg-green-300"
-                                            wire:click="enviarOdoo">Enviar a
-                                            ODOO</button>
                                     </div>
-                                </div>
-                            @endif
+                                    <div class="col-span-1 mb-2">
+                                        <div class="flex justify-center">
+                                            <div wire:loading wire:target="enviarOdoo">
+                                                <div class="spinner-border text-danger" role="status">
+                                                    <span class="sr-only">loading...</span>
+                                                </div>
+                                            </div>
+                                            <button class="bg-green-200 p-3 w-full rounded-md hover:bg-green-300"
+                                                wire:click="enviarOdoo">Enviar a
+                                                ODOO</button>
+                                        </div>
+                                    </div>
+                                @endif
+                            </div>
                         </div>
-                    </div>
                 @endif
             </div>
         </div>
     </div>
+
 
     <script>
         window.addEventListener('showModalInfoClient', event => {
