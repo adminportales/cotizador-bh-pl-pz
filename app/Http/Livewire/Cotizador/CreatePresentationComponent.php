@@ -30,7 +30,7 @@ class CreatePresentationComponent extends Component
 
     public function render()
     {
-        return view('cotizador.ver_cotizacion.create-presentation-component');
+        return view('cotizador.ver_cotizacion.presentation.create-presentation-component');
     }
 
     public function previewPresentation()

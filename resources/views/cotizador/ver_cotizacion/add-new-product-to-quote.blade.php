@@ -1,5 +1,5 @@
-<div>
-    <button class="bg-green-200 p-3  rounded-md hover:bg-green-300" data-toggle="modal" data-target="#modalNewProduct">
+<div class="text-center mt-3">
+    <button class="w-full md:w-auto bg-green-200 p-3  rounded-md hover:bg-green-300" data-toggle="modal" data-target="#modalNewProduct">
         <div class="flex justify-center w-100">
             <div style="width: 1rem;" class="mr-3">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-" fill="none" viewBox="0 0 24 24"

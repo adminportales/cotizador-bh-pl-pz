@@ -15,11 +15,14 @@ class CatalogoMinComponent extends Component
 {
     use WithPagination;
 
-    protected $paginationTheme = 'bootstrap';
-
-    public $nombre, $producto = '';
+    public $nombre, $producto = '', $proveedores;
 
     protected $listeners = ['addProductNewQuote' => 'regresar'];
+
+    public function mount()
+    {
+        $this->proveedores = auth()->user()->companySession == null ? [] :  auth()->user()->companySession->providers;
+    }
 
     public function render()
     {
@@ -28,10 +31,15 @@ class CatalogoMinComponent extends Component
 
         $nombre = '%' . $this->nombre . '%';
 
-        $products  = CatalogoProduct::where('name', 'LIKE', $nombre)->where('visible', true)
+        $products  = CatalogoProduct::where(function ($query) use ($nombre) {
+            $query->where('products.name', 'LIKE', $nombre)
+                ->orWhere('products.description', 'LIKE', $nombre);
+        })
             ->where('products.visible', '=', true)
             ->whereIn('products.type_id', [1, 2])
             ->where('products.price', '>', 0)
+            ->whereIn('products.provider_id', count($this->proveedores) ? $this->proveedores->pluck('id') : [])
+            ->orderByRaw("CASE WHEN products.name LIKE '$nombre%' THEN 1 WHEN products.description LIKE '$nombre%' then 2 ELSE 3 END")
             ->paginate(9);
 
         return view('cotizador.ver_cotizacion.catalogo-min-component', [
