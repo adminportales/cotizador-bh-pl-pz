@@ -27,9 +27,6 @@
     <!-- BEGIN PAGE LEVEL PLUGINS/CUSTOM STYLES -->
     @yield('styles')
     <!-- END PAGE LEVEL PLUGINS/CUSTOM STYLES -->
-
-    <!-- Styles -->
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 </head>
 
 <body class="alt-menu sidebar-noneoverflow">

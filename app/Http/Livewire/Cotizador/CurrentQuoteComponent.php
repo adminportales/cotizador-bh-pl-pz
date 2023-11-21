@@ -169,6 +169,7 @@ class CurrentQuoteComponent extends Component
     public function editQuote($cqid)
     {
         $this->quoteEdit = auth()->user()->currentQuotes()->find($cqid);
+        $this->nameQuote = $this->quoteEdit->name;
         $this->dispatchBrowserEvent('showModalEditQuote');
     }
     //updateQuote
