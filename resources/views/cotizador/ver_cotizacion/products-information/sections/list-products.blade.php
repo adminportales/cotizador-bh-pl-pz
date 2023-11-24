@@ -152,58 +152,62 @@
                             @php
                                 $producto = json_decode($newProduct['product']);
                             @endphp
-                            <td class="text-center">
+                            <td class="px-3 py-2">
                                 <img src="{{ $producto->image == '' ? asset('img/default.jpg') : $producto->image }}"
                                     style="max-height: 100px;height:auto;max-width: 80px;width:auto;" alt=""
                                     srcset="">
                             </td>
-                            <td class="">
+                            <td class="px-3 py-2 ">
                                 <p>{{ $producto->name }}</p>
                             </td>
 
                             @if (!$newProduct['quote_by_scales'])
-                                <td class="">
+                                <td class="px-3 py-2 ">
                                     <p class="text-center">${{ $newProduct['precio_unitario'] }}
                                     </p>
                                 </td>
-                                <td class="">
+                                <td class="px-3 py-2 ">
                                     <p class="text-center"> {{ $newProduct['cantidad'] }} piezas
                                     </p>
                                 </td>
-                                <td>
+                                <td class="px-3 py-2 ">
                                     <p class="text-center">${{ $newProduct['precio_total'] }}</p>
                                     @php
                                         $subtotalAdded += $newProduct['precio_total'];
                                     @endphp
                                 </td>
                             @else
-                                <td colspan="3" class="text-right">
-                                    <table class="table table-sm table-bordered m-0">
-                                        <thead>
-                                            <tr>
-                                                <th>Cantidad</th>
-                                                <th>Utilidad</th>
-                                                <th>Impresion por tinta</th>
-                                                <th>Unitario</th>
-                                                <th>Total</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            @foreach (json_decode($newProduct['scales_info']) as $item)
+                                <td colspan="3" class="px-3 py-2">
+                                    <div class="relative overflow-x-auto my-2 shadow-md rounded-md">
+                                        <table
+                                            class="w-full text-left text-sm rtl:text-right text-gray-500 dark:text-gray-400">
+                                            <thead
+                                                class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                                                 <tr>
-                                                    <td>{{ $item->quantity }} pz</td>
-                                                    <td>{{ $item->utility }} %</td>
-                                                    <td>$
-                                                        {{ number_format($item->tecniquePrice, 2, '.', ',') }}
-                                                    </td>
-                                                    <td>$
-                                                        {{ number_format($item->unit_price, 2, '.', ',') }}
-                                                    </td>
-                                                    <td>$ {{ number_format($item->total_price, 2, '.', ',') }}</td>
+                                                    <th>Cantidad</th>
+                                                    <th>Utilidad</th>
+                                                    <th>Impresion por tinta</th>
+                                                    <th>Unitario</th>
+                                                    <th>Total</th>
                                                 </tr>
-                                            @endforeach
-                                        </tbody>
-                                    </table>
+                                            </thead>
+                                            <tbody>
+                                                @foreach (json_decode($newProduct['scales_info']) as $item)
+                                                    <tr>
+                                                        <td>{{ $item->quantity }} pz</td>
+                                                        <td>{{ $item->utility }} %</td>
+                                                        <td>$
+                                                            {{ number_format($item->tecniquePrice, 2, '.', ',') }}
+                                                        </td>
+                                                        <td>$
+                                                            {{ number_format($item->unit_price, 2, '.', ',') }}
+                                                        </td>
+                                                        <td>$ {{ number_format($item->total_price, 2, '.', ',') }}</td>
+                                                    </tr>
+                                                @endforeach
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </td>
                             @endif
                             <td class="text-center d-flex">

@@ -63,11 +63,8 @@
                 </div>
             @endforeach
         </div>
-        <div class="flex sm:hidden justify-center">
+        <div class="flex justify-center">
             {{ $products->onEachSide(0)->links() }}
-        </div>
-        <div class="hidden sm:flex justify-center">
-            {{ $products->onEachSide(3)->links() }}
         </div>
     </div>
     <div class="{{ trim($producto) == '' ? 'hidden' : '' }}">

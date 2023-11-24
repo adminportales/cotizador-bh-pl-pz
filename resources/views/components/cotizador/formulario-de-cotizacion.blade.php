@@ -514,29 +514,27 @@
         }
     </style>
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            window.addEventListener('hideModalScales', event => {
-                const modalScale = new Modal(document.getElementById('modal-scales-quote'));
-                modalScale.hide();
-                document.querySelector("body > div[modal-backdrop]")?.remove()
-            })
-            window.addEventListener('showModalScales', event => {
-                const modalScale = new Modal(document.getElementById('modal-scales-quote'), {
-                    backdrop: 'static'
-                });
-                modalScale.show();
-            })
-            window.addEventListener('showModalImage', event => {
-                const modalImage = new Modal(document.getElementById('modal-image-quote'), {
-                    backdrop: 'static'
-                });
-                modalImage.show();
-            })
-            window.addEventListener('hideModalImage', event => {
-                const modalImage = new Modal(document.getElementById('modal-image-quote'));
-                modalImage.hide();
-                document.querySelector("body > div[modal-backdrop]")?.remove()
-            })
+        window.addEventListener('hideModalScales', event => {
+            const modalScale = new Modal(document.getElementById('modal-scales-quote'));
+            modalScale.hide();
+            document.querySelector("body > div[modal-backdrop]")?.remove()
+        })
+        window.addEventListener('showModalScales', event => {
+            const modalScale = new Modal(document.getElementById('modal-scales-quote'), {
+                backdrop: 'static'
+            });
+            modalScale.show();
+        })
+        window.addEventListener('showModalImage', event => {
+            const modalImage = new Modal(document.getElementById('modal-image-quote'), {
+                backdrop: 'static'
+            });
+            modalImage.show();
+        })
+        window.addEventListener('hideModalImage', event => {
+            const modalImage = new Modal(document.getElementById('modal-image-quote'));
+            modalImage.hide();
+            document.querySelector("body > div[modal-backdrop]")?.remove()
         })
 
         window.addEventListener('openConfirmDelete', event => {
@@ -564,7 +562,6 @@
                                 )
                             }
                         }, function() {
-                            // one or more failed
                             Swal.fire('¡Error al elimiar el producto!', '', 'error')
                         });
                 }
