@@ -176,10 +176,10 @@
                             $quote_scales = true;
                         }
                     @endphp
-                    <td style="vertical-align: middle; height: 12cm;">
+                    <td style="vertical-align: middle;max-height: 12cm; {{ $loop->last ? 'height: auto;' : 'height: 12cm;' }}">
                         <p style="margin: 0; font-size: 31px; font-weight: bold;">{{ $producto->name }}</p>
                         <table>
-                            <td style="width:37%; vertical-align: middle">
+                            <td style="width:32%; vertical-align: middle">
                                 @if ($producto->image)
                                     <img src="{{ $producto->image }}"
                                         style="max-height: 320px;height:auto;max-width: 100%;width:auto;">
@@ -187,8 +187,8 @@
                                     <img src="img/default.jpg" width="180">
                                 @endif
                             </td>
-                            <td style="width: 5%; vertical-align: middle"></td>
-                            <td style="width:58%; vertical-align: middle">
+                            <td style="width: 3%; vertical-align: middle"></td>
+                            <td style="width:65%; vertical-align: middle">
                                 <p class="descripcion" style="font-size: 22px; text-align: justify">
                                     {{ Str::ucfirst($item->new_description ? $item->new_description : $producto->description) }}
                                 </p>
@@ -388,7 +388,8 @@
                         $discount = $quote->currency_type == 'USD' ? $discount / $quote->currency : $discount;
                         $iva = $quote->currency_type == 'USD' ? $iva / $quote->currency : $iva;
                     @endphp
-                    <div style="width: 100%; text-align: right">
+                    <div style="width: 100%; text-align: right; margin-top: 5px;">
+                        <br>
                         <p><b>Subtotal: </b> $ {{ number_format($subtotal, 2, '.', ',') }}</p>
                         @if ($discount > 0)
                             <p><b>Descuento: </b>$ {{ number_format($discount, 2, '.', ',') }}</p>
@@ -396,7 +397,6 @@
                         @if (!$quote->iva_by_item)
                             <p><b>IVA: </b> $ {{ number_format($iva, 2, '.', ',') }}</p>
                         @endif
-                        <br>
                         <p><b>Total: </b>$ {{ number_format($subtotal - $discount + $iva, 2, '.', ',') }}</p>
                     </div>
                 </div>
