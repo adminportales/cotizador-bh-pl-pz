@@ -55,9 +55,9 @@
             @enderror
         </div>
         <div class="flex justify-between mt-5">
-            <button class="bg-green-200 p-3 rounded-md hover:bg-green-300" onclick="preview()">Previsualizar
+            <button class="bg-green-200 p-3 rounded-md hover:bg-green-300" wire:loading.class='cursor-not-allowed' wire:loading.attr="disabled" onclick="preview()">Previsualizar
                 Presentacion</button>
-            <button class="bg-green-200 p-3 rounded-md hover:bg-green-300" onclick="savePPT()">Guardar
+            <button class="bg-green-200 p-3 rounded-md hover:bg-green-300" wire:loading.class='cursor-not-allowed' wire:loading.attr="disabled" onclick="savePPT()">Guardar
                 Presentacion</button>
         </div>
     </div>
