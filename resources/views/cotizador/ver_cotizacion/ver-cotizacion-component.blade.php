@@ -72,7 +72,6 @@
                                         <div class="p-10">
                                             @livewire('cotizador.create-presentation-component', ['quote' => $quote])
                                         </div>
-
                                     </div>
                                 </div>
                             </div>

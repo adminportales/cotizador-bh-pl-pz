@@ -25,9 +25,6 @@
         @if ($quote->latestQuotesUpdate)
             @if (count($quote->latestQuotesUpdate->quoteProducts) > 0)
                 @include('cotizador.ver_cotizacion.products-information.sections.list-products')
-                {{-- INICIO DE LA PARTE DE LOS DESCUENTOS --}}
-                @include('cotizador.ver_cotizacion.products-information.sections.discount')
-                {{-- FIN DE LA PARTE DE LOS DESCUENTOS --}}
             @else
                 <p>No hay Productos Cotizados</p>
             @endif
