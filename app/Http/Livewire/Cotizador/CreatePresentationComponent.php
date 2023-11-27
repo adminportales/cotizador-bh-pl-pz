@@ -171,18 +171,33 @@ class CreatePresentationComponent extends Component
         ]; */
 
         $dataUrl = [
-            'portada' =>  $this->dataInformation['portada'],
-            'logo' => $this->dataInformation['logo'],
-            'contraportada' => $this->dataInformation['contraportada'],
-            'fondo' => $this->dataInformation['fondo'],
+            'portada' =>  [
+                'temp' => $this->dataInformation['portada'],
+                'final' => ''
+            ],
+            'logo' => [
+                'temp' => $this->dataInformation['logo'],
+                'final' => ''
+            ],
+            'contraportada' => [
+                'temp' => $this->dataInformation['contraportada'],
+                'final' => ''
+
+            ],
+            'fondo' => [
+                'temp' => $this->dataInformation['fondo'],
+                'final' => ''
+            ],
         ];
 
-        foreach ($dataUrl as $value) {
+        foreach ($dataUrl as $key => $value) {
             if ($value != '') {
+                $urlPath = 'public/ppt/' . Str::slug($this->quote->company->name, '_') . '/' . $this->quote->id . '/' . explode('/', $value)[count(explode('/', $value)) - 1];
                 Storage::put(
-                    'public/ppt/' . Str::slug($this->quote->company->name, '_') . '/' . $this->quote->id . '/' . explode('/', $value)[count(explode('/', $value)) - 1],
+                    $urlPath,
                     Storage::get(Str::replaceFirst(url('storage/'), 'public/', $value))
                 );
+                $dataUrl[$key]['final'] = $urlPath;
                 /*  Storage::move(
                     Storage::get(Str::replaceFirst('storage/', 'public/', $value)),
                     Str::replaceFirst('tmp/', Str::slug($this->quote->company->name, '_') . '/', $value)
@@ -192,11 +207,11 @@ class CreatePresentationComponent extends Component
 
         // Obtener urls  de los archivos
         $this->quote->presentations()->create([
-            'front_page' => $this->dataInformation['portada'],
-            'back_page' => $this->dataInformation['contraportada'],
+            'front_page' => $dataUrl['portada']['final'],
+            'back_page' =>  $dataUrl['contraportada']['final'],
             'have_back_page' => $this->dataInformation['generar_contraportada'] ? 1 : 0,
-            'logo' => $this->dataInformation['logo'],
-            'background' => $this->dataInformation['fondo'],
+            'logo' => $dataUrl['logo']['final'],
+            'background' => $dataUrl['fondo']['final'],
         ]);
 
         return 1;
