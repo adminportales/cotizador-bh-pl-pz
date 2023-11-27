@@ -192,12 +192,12 @@ class CreatePresentationComponent extends Component
 
         foreach ($dataUrl as $key => $value) {
             if ($value['temp'] != '') {
-                $urlPath = 'public/ppt/' . Str::slug($this->quote->company->name, '_') . '/' . $this->quote->id . '/' . explode('/', $value['temp'])[count(explode('/', $value['temp'])) - 1];
+                $urlPath = 'ppt/' . Str::slug($this->quote->company->name, '_') . '/' . $this->quote->id . '/' . explode('/', $value['temp'])[count(explode('/', $value['temp'])) - 1];
                 Storage::put(
-                    $urlPath,
+                    'public/' . $urlPath,
                     Storage::get(Str::replaceFirst(url('storage/'), 'public/', $value['temp']))
                 );
-                $dataUrl[$key]['final'] = $urlPath;
+                $dataUrl[$key]['final'] = url('storage/' . $urlPath);
                 /*  Storage::move(
                     Storage::get(Str::replaceFirst('storage/', 'public/', $value)),
                     Str::replaceFirst('tmp/', Str::slug($this->quote->company->name, '_') . '/', $value)
