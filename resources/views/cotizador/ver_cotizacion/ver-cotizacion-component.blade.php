@@ -42,7 +42,7 @@
                                             <a href="{{ route('previsualizar_ppt.cotizacion', ['presentacion' => $presentation->id]) }}"
                                                 target="_blank"
                                                 class="relative flex justify-between  items-center w-full px-4 py-4 text-sm font-medium border-b border-gray-200 {{ $loop->first ? 'rounded-t-lg' : '' }} {{ $loop->last ? 'rounded-b-lg' : '' }} hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:border-gray-600 dark:hover:bg-gray-600 dark:hover:text-white dark:focus:ring-gray-500 dark:focus:text-white">
-                                                {{ $presentation->created_at->format('d-m-Y H:m:s') }}
+                                                {{ $presentation->created_at->format('d-m-Y H:i:s') }}
                                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none"
                                                     viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
                                                     class="w-5 h-5 ml-2.5">
