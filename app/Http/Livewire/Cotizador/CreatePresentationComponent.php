@@ -24,9 +24,11 @@ class CreatePresentationComponent extends Component
     public $color_secundario;
     public $productos_por_pagina = 1;
     public $mostrar_formato_de_tabla;
-    public $generar_contraportada;
 
     public $urlPDFPreview;
+
+
+    public $dataInformation;
 
     public function render()
     {
@@ -68,7 +70,7 @@ class CreatePresentationComponent extends Component
         }
 
 
-        $dataInformation = [
+        $this->dataInformation = [
             'portada' => $imagePortadaName ? asset('storage/ppt/' . $this->quote->id) . '/' . $imagePortadaName : '',
             'logo' => $imageLogoName ? asset('storage/ppt/' . $this->quote->id) . '/' . $imageLogoName : '',
             'contraportada' => $contraportada != '' ?  asset('storage/ppt/' . $this->quote->id) . '/' . $contraportada : '',
@@ -78,24 +80,8 @@ class CreatePresentationComponent extends Component
             'color_secundario' => $this->color_secundario,
             'productos_por_pagina' => $this->productos_por_pagina,
             'mostrar_formato_de_tabla' => $this->mostrar_formato_de_tabla,
-            'generar_contraportada' => $this->generar_contraportada,
+            'generar_contraportada' => $this->tieneContraportada,
         ];
-
-        // $dataInformation = [
-        //     //     // 'portada' => 'https://png.pngtree.com/png-slide/20220812/ourmid/0-pngtree-ancient-brown-simple-and-elegant-pattern-ppt-cover-google-slides-and-powerpoint-template-background_8735.jpg',
-        //     'portada' => '',
-        //     'logo' => "https://logos-world.net/wp-content/uploads/2023/05/Ariana-Grande-Logo-2011.png",
-        //     //     'logo' => '',
-        //     //     // 'contraportada' => "https://img.freepik.com/vector-premium/fondo-material-moderno_643365-269.jpg",
-        //     'contraportada' => "",
-        //     //     // 'fondo' => 'https://img.freepik.com/vector-premium/fondo-material-moderno_643365-269.jpg',
-        //     'fondo' => '',
-        //     'color_primario' => $this->color_primario,
-        //     'color_secundario' => $this->color_secundario,
-        //     'productos_por_pagina' => $this->productos_por_pagina,
-        //     'mostrar_formato_de_tabla' => $this->mostrar_formato_de_tabla,
-        //     'generar_contraportada' => $this->generar_contraportada,
-        // ];
 
         $empresa = Client::where("name", $this->quote->latestQuotesUpdate->quotesInformation->company)->first();
         $nombreComercial = null;
@@ -104,7 +90,7 @@ class CreatePresentationComponent extends Component
         }
 
         $dataToPPT = [
-            'data' => $dataInformation,
+            'data' => $this->dataInformation,
             'quote' => $this->quote,
             'nombreComercial' => $nombreComercial
         ];
@@ -168,5 +154,21 @@ class CreatePresentationComponent extends Component
         file_put_contents(public_path() . $pathPdf, $createdPdf);
 
         $this->urlPDFPreview = url('') . $pathPdf;
+    }
+
+    public function savePPT()
+    {
+        if($this->dataInformation === null){
+            return 2;
+        }
+        $this->quote->presentations()->create([
+            'front_page' => $this->dataInformation['portada'],
+            'back_page' => $this->dataInformation['contraportada'],
+            'have_back_page' => $this->dataInformation['generar_contraportada'] ? 1 : 0,
+            'logo' => $this->dataInformation['logo'],
+            'background' => $this->dataInformation['fondo'],
+        ]);
+
+        return 1;
     }
 }

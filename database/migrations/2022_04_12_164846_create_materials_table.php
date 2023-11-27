@@ -18,7 +18,7 @@ class CreateMaterialsTable extends Migration
             $table->string('nombre');
             $table->string('extras');
             $table->string('slug');
-            $table->boolean('active')->default(false);
+            $table->boolean('active')->default(true);
             $table->timestamps();
         });
     }

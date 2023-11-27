@@ -178,7 +178,6 @@ class FinalizarCotizacion extends Component
             'type_days' => $this->typeDays,
             'logo' => $pathLogo,
             'pending_odoo' => true,
-            'show_tax' => $this->show_tax,
             "company_id" => auth()->user()->company_session
         ]);
 
@@ -598,9 +597,6 @@ class FinalizarCotizacion extends Component
             "shelf_life" => $this->shelfLife,
             "preview" => true,
             "company" => auth()->user()->companySession,
-            "currency" => $this->currency,
-            "currency_type" => $this->currency_type,
-            "show_tax" => $this->show_tax,
             'latestQuotesUpdate' => (object)[
                 "quotesInformation" => (object)[
                     "company" => $this->empresa,
@@ -608,7 +604,10 @@ class FinalizarCotizacion extends Component
                     "department" => $this->departamento,
                     "information" => $this->informacion,
                     'shelf_life' => $this->shelfLife,
-                    "tax_fee" => (int)$this->taxFee > 0 ? $this->taxFee : null
+                    "tax_fee" => (int)$this->taxFee > 0 ? $this->taxFee : null,
+                    "currency" => $this->currency,
+                    "currency_type" => $this->currency_type,
+                    "show_tax" => $this->show_tax,
                 ],
                 "quoteProducts" => (object)$products,
                 "quoteDiscount" => (object)[

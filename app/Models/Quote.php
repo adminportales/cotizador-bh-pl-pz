@@ -17,9 +17,6 @@ class Quote extends Model
         'type_days',
         'logo',
         "pending_odoo",
-        'currency_type',
-        'currency',
-        'show_tax',
         "company_id",
     ];
 
@@ -40,5 +37,10 @@ class Quote extends Model
     public function company()
     {
         return $this->belongsTo(Company::class);
+    }
+
+    public function presentations()
+    {
+        return $this->hasMany(Presentation::class);
     }
 }
