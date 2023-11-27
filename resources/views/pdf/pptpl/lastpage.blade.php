@@ -98,8 +98,8 @@
 
                                         <span style="white-space:pre-line">.Precios unitarios mostrados antes de IVA
                                         </span>
-                                        <span>.Precios mostrados en
-                                            {{ $quote->currency_type == 'USD' ? 'dolares (USD)' : 'pesos mexicanos (MXP)' }}.
+                                        <span>.Precios mostrados en pesos mexicanos (MXP).
+                                            {{-- {{ $quote->currency_type == 'USD' ? 'dolares (USD)' : 'pesos mexicanos (MXP)' }}. --}}
                                         </span>
                                         <br>
                                         <span style="white-space: normal">.El importe cotizado corresponde a la cantidad

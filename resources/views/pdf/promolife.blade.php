@@ -257,9 +257,9 @@
                                 $precioUnitario = $scale->unit_price * $taxFee;
                                 $precioTotal = $scale->total_price * $taxFee;
                                 $totalIva = $scale->total_price * $taxFee * 0.16;
-                                $precioUnitario = $quote->currency_type == 'USD' ? $precioUnitario / $quote->currency : $precioUnitario;
-                                $precioTotal = $quote->currency_type == 'USD' ? $precioTotal / $quote->currency : $precioTotal;
-                                $totalIva = $quote->currency_type == 'USD' ? $totalIva / $quote->currency : $totalIva;
+                                // $precioUnitario = $quote->currency_type == 'USD' ? $precioUnitario / $quote->currency : $precioUnitario;
+                                // $precioTotal = $quote->currency_type == 'USD' ? $precioTotal / $quote->currency : $precioTotal;
+                                // $totalIva = $quote->currency_type == 'USD' ? $totalIva / $quote->currency : $totalIva;
                             @endphp
                             <tr>
                                 <td colspan="4" class="detalle-cantidad">{{ $scale->quantity }} pz</td>
@@ -282,9 +282,9 @@
                             $precioUnitario = $item->precio_unitario * $taxFee;
                             $precioTotal = $item->precio_total * $taxFee;
                             $totalIva = $item->precio_total * $taxFee * 0.16;
-                            $precioUnitario = $quote->currency_type == 'USD' ? $precioUnitario / $quote->currency : $precioUnitario;
-                            $precioTotal = $quote->currency_type == 'USD' ? $precioTotal / $quote->currency : $precioTotal;
-                            $totalIva = $quote->currency_type == 'USD' ? $totalIva / $quote->currency : $totalIva;
+                            // $precioUnitario = $quote->currency_type == 'USD' ? $precioUnitario / $quote->currency : $precioUnitario;
+                            // $precioTotal = $quote->currency_type == 'USD' ? $precioTotal / $quote->currency : $precioTotal;
+                            // $totalIva = $quote->currency_type == 'USD' ? $totalIva / $quote->currency : $totalIva;
                         @endphp
                         <tr>
                             <td colspan="4" class="detalle-cantidad">
@@ -335,9 +335,9 @@
                             }
                             $iva = round($subtotal * 0.16, 2);
 
-                            $subtotal = $quote->currency_type == 'USD' ? $subtotal / $quote->currency : $subtotal;
-                            $discount = $quote->currency_type == 'USD' ? $discount / $quote->currency : $discount;
-                            $iva = $quote->currency_type == 'USD' ? $iva / $quote->currency : $iva;
+                            // $subtotal = $quote->currency_type == 'USD' ? $subtotal / $quote->currency : $subtotal;
+                            // $discount = $quote->currency_type == 'USD' ? $discount / $quote->currency : $discount;
+                            // $iva = $quote->currency_type == 'USD' ? $iva / $quote->currency : $iva;
                         @endphp
                         <td style="width: 150px">
                             <p><b>Subtotal: </b>$ {{ number_format($subtotal, 2, '.', ',') }}</p>
@@ -359,7 +359,7 @@
         <ul>
             <li>Condiciones de pago acordadas con el vendedor</li>
             <li>Precios unitarios mostrados antes de IVA</li>
-            <li>Precios mostrados en {{ $quote->currency_type == 'USD' ? 'dolares (USD)' : 'pesos mexicanos (MXP)' }}.</li>
+            <li>Precios mostrados en {{ $quote->latestQuotesUpdate->quotesInformation->currency_type == 'USD' ? 'dolares (USD)' : 'pesos mexicanos (MXP)' }}.</li>
             <li>El importe cotizado corresponde a la cantidad de piezas y número de tintas arriba mencionadas, si se
                 modifica
                 el número de piezas el precio cambiaría.</li>

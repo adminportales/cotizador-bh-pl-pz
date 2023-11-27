@@ -242,9 +242,9 @@
                                                 $precioUnitario = $scale->unit_price * $taxFee;
                                                 $precioTotal = $scale->total_price * $taxFee;
                                                 $totalIva = $scale->total_price * $taxFee * 0.16;
-                                                $precioUnitario = $quote->currency_type == 'USD' ? $precioUnitario / $quote->currency : $precioUnitario;
-                                                $precioTotal = $quote->currency_type == 'USD' ? $precioTotal / $quote->currency : $precioTotal;
-                                                $totalIva = $quote->currency_type == 'USD' ? $totalIva / $quote->currency : $totalIva;
+                                                // $precioUnitario = $quote->currency_type == 'USD' ? $precioUnitario / $quote->currency : $precioUnitario;
+                                                // $precioTotal = $quote->currency_type == 'USD' ? $precioTotal / $quote->currency : $precioTotal;
+                                                // $totalIva = $quote->currency_type == 'USD' ? $totalIva / $quote->currency : $totalIva;
                                             @endphp
                                             <tr>
                                                 <td colspan="4" class="detalle-cantidad">{{ $scale->quantity }} pz
@@ -268,9 +268,9 @@
                                             $precioUnitario = $item->precio_unitario * $taxFee;
                                             $precioTotal = $item->precio_total * $taxFee;
                                             $totalIva = $item->precio_total * $taxFee * 0.16;
-                                            $precioUnitario = $quote->currency_type == 'USD' ? $precioUnitario / $quote->currency : $precioUnitario;
-                                            $precioTotal = $quote->currency_type == 'USD' ? $precioTotal / $quote->currency : $precioTotal;
-                                            $totalIva = $quote->currency_type == 'USD' ? $totalIva / $quote->currency : $totalIva;
+                                            // $precioUnitario = $quote->currency_type == 'USD' ? $precioUnitario / $quote->currency : $precioUnitario;
+                                            // $precioTotal = $quote->currency_type == 'USD' ? $precioTotal / $quote->currency : $precioTotal;
+                                            // $totalIva = $quote->currency_type == 'USD' ? $totalIva / $quote->currency : $totalIva;
                                         @endphp
                                         <tr>
                                             <td colspan="4" class="detalle-cantidad">{{ $item->cantidad }} pz</td>
@@ -346,9 +346,9 @@
                                 $precioUnitario = $item->precio_unitario;
                                 $precioTotal = $item->precio_total;
                                 $totalIva = $item->precio_total * 0.16;
-                                $precioUnitario = $quote->currency_type == 'USD' ? $precioUnitario / $quote->currency : $precioUnitario;
-                                $precioTotal = $quote->currency_type == 'USD' ? $precioTotal / $quote->currency : $precioTotal;
-                                $totalIva = $quote->currency_type == 'USD' ? $totalIva / $quote->currency : $totalIva;
+                                // $precioUnitario = $quote->currency_type == 'USD' ? $precioUnitario / $quote->currency : $precioUnitario;
+                                // $precioTotal = $quote->currency_type == 'USD' ? $precioTotal / $quote->currency : $precioTotal;
+                                // $totalIva = $quote->currency_type == 'USD' ? $totalIva / $quote->currency : $totalIva;
                             @endphp
                             <p>
                                 <strong>Cantidad: </strong> {{ $item->cantidad }} pz
@@ -384,9 +384,9 @@
                         }
                         $iva = round($subtotal * 0.16, 2);
 
-                        $subtotal = $quote->currency_type == 'USD' ? $subtotal / $quote->currency : $subtotal;
-                        $discount = $quote->currency_type == 'USD' ? $discount / $quote->currency : $discount;
-                        $iva = $quote->currency_type == 'USD' ? $iva / $quote->currency : $iva;
+                        // $subtotal = $quote->currency_type == 'USD' ? $subtotal / $quote->currency : $subtotal;
+                        // $discount = $quote->currency_type == 'USD' ? $discount / $quote->currency : $discount;
+                        // $iva = $quote->currency_type == 'USD' ? $iva / $quote->currency : $iva;
                     @endphp
                     <div style="width: 100%; text-align: right">
                         <br>
