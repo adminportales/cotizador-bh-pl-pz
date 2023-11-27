@@ -8,6 +8,8 @@ use Dompdf\Dompdf;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use iio\libmergepdf\Merger;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class CreatePresentationComponent extends Component
 {
@@ -42,7 +44,7 @@ class CreatePresentationComponent extends Component
             // Renombrar la imagen
             $imagePortadaName = time() . '_' . $this->portada->getClientOriginalName();
             // Subir la imagen
-            $this->portada->storeAs('public/ppt/' . $this->quote->id, $imagePortadaName);
+            $this->portada->storeAs('public/ppt/tmp/' . $this->quote->id, $imagePortadaName);
         }
 
         $imageLogoName = "";
@@ -50,7 +52,7 @@ class CreatePresentationComponent extends Component
             // Renombrar la imagen
             $imageLogoName = time() . '_' . $this->logo->getClientOriginalName();
             // Subir la imagen
-            $this->logo->storeAs('public/ppt/' . $this->quote->id, $imageLogoName);
+            $this->logo->storeAs('public/ppt/tmp/' . $this->quote->id, $imageLogoName);
         }
 
         $contraportada = "";
@@ -58,7 +60,7 @@ class CreatePresentationComponent extends Component
             // Renombrar la imagen
             $contraportada = time() . '_' . $this->contraportada->getClientOriginalName();
             // Subir la imagen
-            $this->contraportada->storeAs('public/ppt/' . $this->quote->id, $contraportada);
+            $this->contraportada->storeAs('public/ppt/tmp/' . $this->quote->id, $contraportada);
         }
 
         $imageFondoName = "";
@@ -66,15 +68,15 @@ class CreatePresentationComponent extends Component
             // Renombrar la imagen
             $imageFondoName = time() . '_' . $this->fondo->getClientOriginalName();
             // Subir la imagen
-            $this->fondo->storeAs('public/ppt/' . $this->quote->id, $imageFondoName);
+            $this->fondo->storeAs('public/ppt/tmp/' . $this->quote->id, $imageFondoName);
         }
 
 
         $this->dataInformation = [
-            'portada' => $imagePortadaName ? asset('storage/ppt/' . $this->quote->id) . '/' . $imagePortadaName : '',
-            'logo' => $imageLogoName ? asset('storage/ppt/' . $this->quote->id) . '/' . $imageLogoName : '',
-            'contraportada' => $contraportada != '' ?  asset('storage/ppt/' . $this->quote->id) . '/' . $contraportada : '',
-            'fondo' => $imageFondoName != '' ?  asset('storage/ppt/' . $this->quote->id) . '/' . $imageFondoName : '',
+            'portada' => $imagePortadaName ? asset('storage/ppt/tmp/' . $this->quote->id) . '/' . $imagePortadaName : '',
+            'logo' => $imageLogoName ? asset('storage/ppt/tmp/' . $this->quote->id) . '/' . $imageLogoName : '',
+            'contraportada' => $contraportada != '' ?  asset('storage/ppt/tmp/' . $this->quote->id) . '/' . $contraportada : '',
+            'fondo' => $imageFondoName != '' ?  asset('storage/ppt/tmp/' . $this->quote->id) . '/' . $imageFondoName : '',
 
             'color_primario' => $this->color_primario,
             'color_secundario' => $this->color_secundario,
@@ -158,9 +160,37 @@ class CreatePresentationComponent extends Component
 
     public function savePPT()
     {
-        if($this->dataInformation === null){
+        if ($this->dataInformation === null) {
             return 2;
         }
+        /* $dataUrl = [
+            'portada' => Str::replaceFirst(url(''), '',  $this->dataInformation['portada']),
+            'logo' => Str::replaceFirst(url(''), '', $this->dataInformation['logo']),
+            'contraportada' => Str::replaceFirst(url(''), '', $this->dataInformation['contraportada']),
+            'fondo' => Str::replaceFirst(url(''), '', $this->dataInformation['fondo']),
+        ]; */
+
+        $dataUrl = [
+            'portada' =>  $this->dataInformation['portada'],
+            'logo' => $this->dataInformation['logo'],
+            'contraportada' => $this->dataInformation['contraportada'],
+            'fondo' => $this->dataInformation['fondo'],
+        ];
+
+        foreach ($dataUrl as $value) {
+            if ($value != '') {
+                Storage::put(
+                    'public/ppt/' . Str::slug($this->quote->company->name, '_') . '/' . $this->quote->id . '/' . explode('/', $value)[count(explode('/', $value)) - 1],
+                    Storage::get(Str::replaceFirst(url('storage/'), 'public/', $value))
+                );
+                /*  Storage::move(
+                    Storage::get(Str::replaceFirst('storage/', 'public/', $value)),
+                    Str::replaceFirst('tmp/', Str::slug($this->quote->company->name, '_') . '/', $value)
+                ); */
+            }
+        }
+
+        // Obtener urls  de los archivos
         $this->quote->presentations()->create([
             'front_page' => $this->dataInformation['portada'],
             'back_page' => $this->dataInformation['contraportada'],
