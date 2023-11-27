@@ -29,6 +29,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/finalizar-cotizacion', [CotizadorController::class, 'finalizar'])->name('finalizar');
     Route::get('/previsualizar-cotizacion', [CotizadorController::class, 'previsualizar'])->name('previsualizar');
     Route::get('/ver-cotizacion-pdf/{quote}', [CotizadorController::class, 'previsualizar'])->name('previsualizar.cotizacion');
+    Route::get('/ver-presentacion-pdf/{presentacion}', [CotizadorController::class, 'previsualizarPPT'])->name('previsualizar_ppt.cotizacion');
     Route::get('/changeCompany/{company}', [CotizadorController::class, 'changeCompany'])->name('changeCompany.cotizador');
     Route::get('/changeCurrency/{currency}', [CotizadorController::class, 'changeCurrencyType'])->name('changeCurrency.cotizador');
     Route::get('/addProduct/create', [CotizadorController::class, 'addProductCreate'])->name('addProduct.cotizador');

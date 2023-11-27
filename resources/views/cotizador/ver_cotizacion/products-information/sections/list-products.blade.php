@@ -256,9 +256,7 @@
             <div class="col-span-1">
                 <div class="d-flex justify-content-center">
                     <div wire:loading wire:target="guardar">
-                        <div class="spinner-border text-success" role="status">
-                            <span class="sr-only">loading...</span>
-                        </div>
+                        Por Favor Espere ...
                     </div>
                 </div>
                 <button class="w-full md:w-auto  bg-green-200 p-3  rounded-md hover:bg-green-300"

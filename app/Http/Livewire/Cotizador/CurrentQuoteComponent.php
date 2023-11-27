@@ -128,6 +128,13 @@ class CurrentQuoteComponent extends Component
         $this->dispatchBrowserEvent('hide-modal-edit');
     }
 
+    public function addNewQuote()
+    {
+        $this->quoteEdit = null;
+        $this->nameQuote = '';
+        $this->dispatchBrowserEvent('showModalEditQuote');
+    }
+
     public function addQuote()
     {
         $this->validate(['nameQuote' => 'required']);

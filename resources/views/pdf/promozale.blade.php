@@ -60,7 +60,7 @@
             </div>
         @endif
         @if ($nombreComercial)
-            @if ($quote->show_tax)
+            @if ($quote->latestQuotesUpdate->quotesInformation->show_tax)
                 <p class="content" style="font-size: 20px;"> <b>{{ $nombreComercial->name }}</b></p>
             @else
                 <p class="content" style="font-size: 20px;">

@@ -6,11 +6,13 @@ use App\Mail\SendDataErrorCreateQuote;
 use App\Models\Catalogo\GlobalAttribute;
 use App\Models\Catalogo\Product;
 use App\Models\Client;
+use App\Models\Presentation;
 use App\Models\Quote;
 use App\Models\User;
 use Illuminate\Support\Facades\Storage;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Exception;
+use iio\libmergepdf\Merger;
 use Illuminate\Support\Facades\Mail;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
@@ -136,6 +138,95 @@ class CotizadorController extends Controller
 
         $pdf->setPaper('Letter', 'portrait');
         return $pdf->stream("QS-" . $quote->id . " " . $quote->latestQuotesUpdate->quotesInformation->oportunity . ' ' . $quote->updated_at->format('d/m/Y') . '.pdf');
+    }
+
+    public function previsualizarPPT(Presentation $presentacion)
+    {
+        $quote = $presentacion->quote;
+        $dataInformation = [
+            'portada' => $presentacion->front_page,
+            'logo' => $presentacion->logo,
+            'contraportada' => $presentacion->back_page,
+            'fondo' => $presentacion->background,
+
+            'color_primario' => null,
+            'color_secundario' => null,
+            'productos_por_pagina' => 1,
+            'mostrar_formato_de_tabla' => null,
+            'generar_contraportada' => $presentacion->have_back_page,
+        ];
+
+        $empresa = Client::where("name", $quote->latestQuotesUpdate->quotesInformation->company)->first();
+        $nombreComercial = null;
+        if ($empresa) {
+            $nombreComercial = $empresa->firstTradename;
+        }
+
+        $dataToPPT = [
+            'data' => $dataInformation,
+            'quote' => $quote,
+            'nombreComercial' => $nombreComercial
+        ];
+
+        $pdfCuerpo = '';
+        $pdfContraportada = '';
+        switch ($quote->company->name) {
+            case 'PROMO LIFE':
+                $pdfCuerpo = PDF::loadView('pdf.pptpl.body', $dataToPPT);
+                $pdfPortada = PDF::loadView('pdf.pptpl.firstpage', $dataToPPT);
+                if ($presentacion->have_back_page) {
+                    $pdfContraportada = PDF::loadView('pdf.pptpl.lastpage', $dataToPPT);
+                }
+                break;
+            case 'BH TRADEMARKET':
+                $pdfCuerpo = PDF::loadView('pdf.pptbh.body', $dataToPPT);
+                $pdfPortada = PDF::loadView('pdf.pptbh.firstpage', $dataToPPT);
+                if ($presentacion->have_back_page) {
+                    $pdfContraportada = PDF::loadView('pdf.pptbh.lastpage', $dataToPPT);
+                }
+                break;
+            case 'PROMO ZALE':
+                $pdfCuerpo = PDF::loadView('pdf.pptpz.body', $dataToPPT);
+                $pdfPortada = PDF::loadView('pdf.pptpz.firstpage', $dataToPPT);
+                if ($presentacion->have_back_page) {
+                    $pdfContraportada = PDF::loadView('pdf.pptpz.lastpage', $dataToPPT);
+                }
+                break;
+            default:
+                break;
+        }
+
+        $pdfCuerpo->setPaper(array(0, 0, 872, 490));
+        $pdfCuerpo = $pdfCuerpo->stream("Preview " . $quote->id . ".pdf");
+        $pathCuerpo =  "/storage/quotes/tmp/" . time() . "Preview " . $quote->id  . ".pdf";
+        file_put_contents(public_path() . $pathCuerpo, $pdfCuerpo);
+
+        $pdfPortada->setPaper(array(0, 0, 872, 490));
+        $pdfPortada = $pdfPortada->stream("Preview " . $quote->id . "2.pdf");
+        $pathPortada =  "/storage/quotes/tmp/" . time() . "Preview " . $quote->id  . "2.pdf";
+        file_put_contents(public_path() . $pathPortada, $pdfPortada);
+
+        if ($presentacion->have_back_page) {
+            $pdfContraportada->setPaper(array(0, 0, 872, 490));
+            $pdfContraportada = $pdfContraportada->stream("Preview " . $quote->id . "2.pdf");
+            $pathContraportada =  "/storage/quotes/tmp/" . time() . "Preview " . $quote->id  . "3.pdf";
+            file_put_contents(public_path() . $pathContraportada, $pdfContraportada);
+        }
+        $dataMerge = [
+            public_path() . $pathPortada,
+            public_path() . $pathCuerpo
+
+        ];
+        if ($presentacion->have_back_page) {
+            array_push($dataMerge, public_path() . $pathContraportada);
+        }
+        $merger = new Merger();
+        $merger->addIterator($dataMerge);
+        $createdPdf = $merger->merge();
+        $pathPdf = "/storage/quotes/tmp/" . time() . "Preview " . $quote->id  . "3.pdf";
+        file_put_contents(public_path() . $pathPdf, $createdPdf);
+
+        return redirect(url('') . $pathPdf);
     }
 
     public function all()
