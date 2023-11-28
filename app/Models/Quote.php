@@ -38,4 +38,9 @@ class Quote extends Model
     {
         return $this->belongsTo(Company::class);
     }
+
+    public function presentations()
+    {
+        return $this->hasMany(Presentation::class);
+    }
 }

@@ -6,11 +6,13 @@ use App\Mail\SendDataErrorCreateQuote;
 use App\Models\Catalogo\GlobalAttribute;
 use App\Models\Catalogo\Product;
 use App\Models\Client;
+use App\Models\Presentation;
 use App\Models\Quote;
 use App\Models\User;
 use Illuminate\Support\Facades\Storage;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Exception;
+use iio\libmergepdf\Merger;
 use Illuminate\Support\Facades\Mail;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
@@ -23,14 +25,9 @@ class CotizadorController extends Controller
         $this->middleware('auth')->except(['enviarCotizacionesAOdoo']);
     }
 
-    public function index()
-    {
-        return view('home');
-    }
-
     public function catalogo()
     {
-        return view('pages.catalogo.catalogo');
+        return view('cotizador.catalogo.catalogo');
     }
 
     public function verProducto(Product $product)
@@ -84,32 +81,31 @@ class CotizadorController extends Controller
         } catch (Exception $e) {
             $msg = "No se obtuvo informacion acerca del Stock de este producto. Es posible que los datos sean incorrectos. Error: " . $e->getMessage();
         }
-        return view('pages.catalogo.product', compact('product', 'utilidad', "msg", "disponiblidad"));
+        return view('cotizador.producto.product', compact('product', 'utilidad', "msg", "disponiblidad"));
     }
 
     public function cotizacion()
     {
         $cotizacionActual = [];
         $total = 0;
-        if (auth()->user()->currentQuote) {
-            $cotizacionActual = auth()->user()->currentQuote->currentQuoteDetails;
-            $total = $cotizacionActual->sum('precio_total');
+        if (auth()->user()->currentQuotes) {
+            $cotizacionActual = auth()->user()->currentQuotes->where('active', true)->first();
         }
-        return view('pages.catalogo.cotizacion-actual', compact('cotizacionActual', 'total'));
+        return view('cotizador.cotizacion_actual.cotizacion-actual', compact('cotizacionActual'));
     }
 
     public function cotizaciones()
     {
-        return view('pages.catalogo.cotizaciones');
+        return view('cotizador.mis_cotizaciones.cotizaciones');
     }
     public function verCotizacion(Quote $quote)
     {
-        return view('pages.catalogo.ver-cotizacion', compact('quote'));
+        return view('cotizador.ver_cotizacion.page-ver-cotizacion', compact('quote'));
     }
 
     public function finalizar()
     {
-        return view('pages.catalogo.finalizar');
+        return view('cotizador.finalizar_cotizacion.finalizar');
     }
     public function previsualizar(Quote $quote)
     {
@@ -124,15 +120,15 @@ class CotizadorController extends Controller
         switch ($company) {
             case 'PROMO LIFE':
                 # code...
-                $pdf = \PDF::loadView('pages.pdf.promolife', ['quote' => $quote, 'nombreComercial' => $nombreComercial]);
+                $pdf = \PDF::loadView('pdf.promolife', ['quote' => $quote, 'nombreComercial' => $nombreComercial]);
                 break;
             case 'BH TRADEMARKET':
                 # code...
-                $pdf = \PDF::loadView('pages.pdf.bh', ['quote' => $quote, 'nombreComercial' => $nombreComercial]);
+                $pdf = \PDF::loadView('pdf.bh', ['quote' => $quote, 'nombreComercial' => $nombreComercial]);
                 break;
             case 'PROMO ZALE':
                 # code...
-                $pdf = \PDF::loadView('pages.pdf.promozale', ['quote' => $quote, 'nombreComercial' => $nombreComercial]);
+                $pdf = \PDF::loadView('pdf.promozale', ['quote' => $quote, 'nombreComercial' => $nombreComercial]);
                 break;
 
             default:
@@ -144,13 +140,102 @@ class CotizadorController extends Controller
         return $pdf->stream("QS-" . $quote->id . " " . $quote->latestQuotesUpdate->quotesInformation->oportunity . ' ' . $quote->updated_at->format('d/m/Y') . '.pdf');
     }
 
+    public function previsualizarPPT(Presentation $presentacion)
+    {
+        $quote = $presentacion->quote;
+        $dataInformation = [
+            'portada' => $presentacion->front_page,
+            'logo' => $presentacion->logo,
+            'contraportada' => $presentacion->back_page,
+            'fondo' => $presentacion->background,
+
+            'color_primario' => null,
+            'color_secundario' => null,
+            'productos_por_pagina' => 1,
+            'mostrar_formato_de_tabla' => null,
+            'generar_contraportada' => $presentacion->have_back_page,
+        ];
+
+        $empresa = Client::where("name", $quote->latestQuotesUpdate->quotesInformation->company)->first();
+        $nombreComercial = null;
+        if ($empresa) {
+            $nombreComercial = $empresa->firstTradename;
+        }
+
+        $dataToPPT = [
+            'data' => $dataInformation,
+            'quote' => $quote,
+            'nombreComercial' => $nombreComercial
+        ];
+
+        $pdfCuerpo = '';
+        $pdfContraportada = '';
+        switch ($quote->company->name) {
+            case 'PROMO LIFE':
+                $pdfCuerpo = PDF::loadView('pdf.pptpl.body', $dataToPPT);
+                $pdfPortada = PDF::loadView('pdf.pptpl.firstpage', $dataToPPT);
+                if ($presentacion->have_back_page) {
+                    $pdfContraportada = PDF::loadView('pdf.pptpl.lastpage', $dataToPPT);
+                }
+                break;
+            case 'BH TRADEMARKET':
+                $pdfCuerpo = PDF::loadView('pdf.pptbh.body', $dataToPPT);
+                $pdfPortada = PDF::loadView('pdf.pptbh.firstpage', $dataToPPT);
+                if ($presentacion->have_back_page) {
+                    $pdfContraportada = PDF::loadView('pdf.pptbh.lastpage', $dataToPPT);
+                }
+                break;
+            case 'PROMO ZALE':
+                $pdfCuerpo = PDF::loadView('pdf.pptpz.body', $dataToPPT);
+                $pdfPortada = PDF::loadView('pdf.pptpz.firstpage', $dataToPPT);
+                if ($presentacion->have_back_page) {
+                    $pdfContraportada = PDF::loadView('pdf.pptpz.lastpage', $dataToPPT);
+                }
+                break;
+            default:
+                break;
+        }
+
+        $pdfCuerpo->setPaper(array(0, 0, 872, 490));
+        $pdfCuerpo = $pdfCuerpo->stream("Preview " . $quote->id . ".pdf");
+        $pathCuerpo =  "/storage/quotes/tmp/" . time() . "Preview " . $quote->id  . ".pdf";
+        file_put_contents(public_path() . $pathCuerpo, $pdfCuerpo);
+
+        $pdfPortada->setPaper(array(0, 0, 872, 490));
+        $pdfPortada = $pdfPortada->stream("Preview " . $quote->id . "2.pdf");
+        $pathPortada =  "/storage/quotes/tmp/" . time() . "Preview " . $quote->id  . "2.pdf";
+        file_put_contents(public_path() . $pathPortada, $pdfPortada);
+
+        if ($presentacion->have_back_page) {
+            $pdfContraportada->setPaper(array(0, 0, 872, 490));
+            $pdfContraportada = $pdfContraportada->stream("Preview " . $quote->id . "2.pdf");
+            $pathContraportada =  "/storage/quotes/tmp/" . time() . "Preview " . $quote->id  . "3.pdf";
+            file_put_contents(public_path() . $pathContraportada, $pdfContraportada);
+        }
+        $dataMerge = [
+            public_path() . $pathPortada,
+            public_path() . $pathCuerpo
+
+        ];
+        if ($presentacion->have_back_page) {
+            array_push($dataMerge, public_path() . $pathContraportada);
+        }
+        $merger = new Merger();
+        $merger->addIterator($dataMerge);
+        $createdPdf = $merger->merge();
+        $pathPdf = "/storage/quotes/tmp/" . time() . "Preview " . $quote->id  . "3.pdf";
+        file_put_contents(public_path() . $pathPdf, $createdPdf);
+
+        return redirect(url('') . $pathPdf);
+    }
+
     public function all()
     {
-        return view('pages.catalogo.cotizaciones-all');
+        return view('admin.cotizaciones.cotizaciones-all');
     }
     public function dashboard()
     {
-        return view('pages.catalogo.dashboard');
+        return view('admin.dashboard.dashboard');
     }
 
     public function changeCompany($company)
@@ -161,13 +246,43 @@ class CotizadorController extends Controller
         return back();
     }
 
+    public function changeCurrencyType($currency_type)
+    {
+        session()->put('currency_type', $currency_type);
+        $currency = 0;
+        if ($currency_type == "USD") {
+            try {
+                // Consumir api para el tipo de cambio con curl
+                $curl = curl_init(config('settings.url_api_banxico'));
+                curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+                curl_setopt($curl, CURLOPT_HTTPHEADER, [
+                    'Content-Type: application/json',
+                    'Bmx-Token: ' . 'd01cf1306eced862bc6eece145a3599bb1a62e5276009872139970849a93cf17',
+                ]);
+                $response = curl_exec($curl);
+                // Convertir la respuesta de string a json
+                $response = json_decode($response, true);
+                $currency = number_format($response['bmx']['series'][0]['datos'][0]['dato'], 2, '.', '');
+                session()->put('currency', $currency);
+                session()->put('date_update', now());
+            } catch (Exception $e) {
+            }
+        } else {
+            // Eliminar la session
+            session()->forget('currency');
+            session()->forget('date_update');
+            $currency = 1;
+        }
+        return back();
+    }
+
     public function addProductCreate()
     {
-        return view('pages.catalogo.addProduct');
+        return view('cotizador.mis_productos.addProduct');
     }
     public function listProducts()
     {
-        return view('pages.catalogo.listProducts');
+        return view('cotizador.mis_productos.listProducts');
     }
 
     public function enviarCotizacionesAOdoo()
@@ -207,17 +322,17 @@ class CotizadorController extends Controller
                     case 'PROMO LIFE':
                         # code...
                         $keyOdoo = 'cd78567e59e016e964cdcc1bd99367c6';
-                        $pdf = PDF::loadView('pages.pdf.promolife', ['quote' => $cotizacion, 'nombreComercial' => $nombreComercial]);
+                        $pdf = PDF::loadView('pdf.promolife', ['quote' => $cotizacion, 'nombreComercial' => $nombreComercial]);
                         break;
                     case 'BH TRADEMARKET':
                         # code...
                         $keyOdoo = 'e877f47a2a844ded99004e444c5a9797';
-                        $pdf = PDF::loadView('pages.pdf.bh', ['quote' => $cotizacion, 'nombreComercial' => $nombreComercial]);
+                        $pdf = PDF::loadView('pdf.bh', ['quote' => $cotizacion, 'nombreComercial' => $nombreComercial]);
                         break;
                     case 'PROMO ZALE':
                         # code...
                         $keyOdoo = '0e31683a8597606123ff4fcfab772ed7';
-                        $pdf = PDF::loadView('pages.pdf.promozale', ['quote' => $cotizacion, 'nombreComercial' => $nombreComercial]);
+                        $pdf = PDF::loadView('pdf.promozale', ['quote' => $cotizacion, 'nombreComercial' => $nombreComercial]);
                         break;
                     default:
                         # code...
@@ -251,7 +366,7 @@ class CotizadorController extends Controller
                 $estimated = floatval($subtotal - $discountValue);
                 $responseOdoo = '';
                 try {
-                    $url = 'https://api-promolife.vde-suite.com:5030/custom/Promolife/V2/crm-lead/create';
+                    $url = config('settings.api_odoo');
                     $data =  [
                         'Opportunities' => [
                             [

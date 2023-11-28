@@ -27,15 +27,12 @@
     <!-- BEGIN PAGE LEVEL PLUGINS/CUSTOM STYLES -->
     @yield('styles')
     <!-- END PAGE LEVEL PLUGINS/CUSTOM STYLES -->
-
-    <!-- Styles -->
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 </head>
 
 <body class="alt-menu sidebar-noneoverflow">
 
     @auth
-        @include('components.nav')
+        @include('components.admin.nav')
     @endauth
 
     <!--  BEGIN MAIN CONTAINER  -->
@@ -44,7 +41,7 @@
         <div class="overlay"></div>
         <div class="search-overlay"></div>
 
-        @include('components.top')
+        @include('components.admin.top')
 
         <!--  BEGIN CONTENT PART  -->
         <div id="content" class="main-content">
