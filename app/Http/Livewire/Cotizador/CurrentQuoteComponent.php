@@ -113,9 +113,9 @@ class CurrentQuoteComponent extends Component
     public function eliminar(CurrentQuoteDetails $cqd)
     {
         $cqd->delete();
-        if (count(auth()->user()->currentQuote->currentQuoteDetails) < 1) {
-            auth()->user()->currentQuotes->delete();
-        }
+        /*if (count(auth()->user()->currentQuoteActive->currentQuoteDetails) < 1) {
+            auth()->user()->currentQuoteActive->delete();
+        } */
         $this->resetData();
         $this->emit('currentQuoteAdded');
     }
@@ -126,6 +126,13 @@ class CurrentQuoteComponent extends Component
         $this->currentQuoteEdit = null;
         $this->currentQuoteShow = null;
         $this->dispatchBrowserEvent('hide-modal-edit');
+    }
+
+    public function addNewQuote()
+    {
+        $this->quoteEdit = null;
+        $this->nameQuote = '';
+        $this->dispatchBrowserEvent('showModalEditQuote');
     }
 
     public function addQuote()
@@ -161,7 +168,8 @@ class CurrentQuoteComponent extends Component
         $currentQuote = auth()->user()->currentQuotes()->find($cqid);
         $currentQuote->currentQuoteDetails()->delete();
         $currentQuote->delete();
-        auth()->user()->currentQuotes()->first()->update(['active' => 1]);
+        if (auth()->user()->currentQuotes()->first())
+            auth()->user()->currentQuotes()->first()->update(['active' => 1]);
         $this->allQuotes = auth()->user()->currentQuotes;
     }
 

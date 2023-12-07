@@ -28,7 +28,7 @@
                 </li>
             @endforeach
             <li class="hover:border-b-2 rounded-t-lg cursor-pointer text-center flex items-center"
-                onclick="customToggleModal('modal-add-quote',1)">
+                wire:click="addNewQuote()">
                 <a class="inline-block p-4 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300"
                     aria-current="page">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
@@ -76,7 +76,7 @@
                 @else
                     <button type="button" class="btn btn-primary btn-sm" wire:click="addQuote">Agregar</button>
                 @endif
-                <button onclick="customToggleModal('modal-add-quote',0)" type="button"
+                <button onclick="cerrarModalEditQuote()" type="button"
                     class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 ">Cancelar</button>
             </div>
         </div>
@@ -110,5 +110,9 @@
                 )
             }
         })
+    }
+
+    function cerrarModalEditQuote() {
+        customToggleModal('modal-add-quote', 0);
     }
 </script>

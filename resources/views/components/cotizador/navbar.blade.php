@@ -1,5 +1,5 @@
 <nav class="bg-primary-500">
-    <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
+    <div class="flex flex-wrap items-center justify-between mx-auto p-4">
         <div class="flex items-center gap-3 flex-col md:flex-row w-full md:w-auto">
             <div class="flex w-full md:w-auto ">
                 @if (auth()->user()->companySession)

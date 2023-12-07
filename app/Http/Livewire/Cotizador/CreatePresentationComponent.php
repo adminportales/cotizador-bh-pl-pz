@@ -8,6 +8,8 @@ use Dompdf\Dompdf;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use iio\libmergepdf\Merger;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class CreatePresentationComponent extends Component
 {
@@ -24,13 +26,15 @@ class CreatePresentationComponent extends Component
     public $color_secundario;
     public $productos_por_pagina = 1;
     public $mostrar_formato_de_tabla;
-    public $generar_contraportada;
 
     public $urlPDFPreview;
 
+
+    public $dataInformation;
+
     public function render()
     {
-        return view('cotizador.ver_cotizacion.create-presentation-component');
+        return view('cotizador.ver_cotizacion.presentation.create-presentation-component');
     }
 
     public function previewPresentation()
@@ -40,7 +44,7 @@ class CreatePresentationComponent extends Component
             // Renombrar la imagen
             $imagePortadaName = time() . '_' . $this->portada->getClientOriginalName();
             // Subir la imagen
-            $this->portada->storeAs('public/ppt/' . $this->quote->id, $imagePortadaName);
+            $this->portada->storeAs('public/ppt/tmp/' . $this->quote->id, $imagePortadaName);
         }
 
         $imageLogoName = "";
@@ -48,7 +52,7 @@ class CreatePresentationComponent extends Component
             // Renombrar la imagen
             $imageLogoName = time() . '_' . $this->logo->getClientOriginalName();
             // Subir la imagen
-            $this->logo->storeAs('public/ppt/' . $this->quote->id, $imageLogoName);
+            $this->logo->storeAs('public/ppt/tmp/' . $this->quote->id, $imageLogoName);
         }
 
         $contraportada = "";
@@ -56,7 +60,7 @@ class CreatePresentationComponent extends Component
             // Renombrar la imagen
             $contraportada = time() . '_' . $this->contraportada->getClientOriginalName();
             // Subir la imagen
-            $this->contraportada->storeAs('public/ppt/' . $this->quote->id, $contraportada);
+            $this->contraportada->storeAs('public/ppt/tmp/' . $this->quote->id, $contraportada);
         }
 
         $imageFondoName = "";
@@ -64,38 +68,22 @@ class CreatePresentationComponent extends Component
             // Renombrar la imagen
             $imageFondoName = time() . '_' . $this->fondo->getClientOriginalName();
             // Subir la imagen
-            $this->fondo->storeAs('public/ppt/' . $this->quote->id, $imageFondoName);
+            $this->fondo->storeAs('public/ppt/tmp/' . $this->quote->id, $imageFondoName);
         }
 
 
-        $dataInformation = [
-            'portada' => $imagePortadaName ? asset('storage/ppt/' . $this->quote->id) . '/' . $imagePortadaName : '',
-            'logo' => $imageLogoName ? asset('storage/ppt/' . $this->quote->id) . '/' . $imageLogoName : '',
-            'contraportada' => $contraportada != '' ?  asset('storage/ppt/' . $this->quote->id) . '/' . $contraportada : '',
-            'fondo' => $imageFondoName != '' ?  asset('storage/ppt/' . $this->quote->id) . '/' . $imageFondoName : '',
+        $this->dataInformation = [
+            'portada' => $imagePortadaName ? asset('storage/ppt/tmp/' . $this->quote->id) . '/' . $imagePortadaName : '',
+            'logo' => $imageLogoName ? asset('storage/ppt/tmp/' . $this->quote->id) . '/' . $imageLogoName : '',
+            'contraportada' => $contraportada != '' ?  asset('storage/ppt/tmp/' . $this->quote->id) . '/' . $contraportada : '',
+            'fondo' => $imageFondoName != '' ?  asset('storage/ppt/tmp/' . $this->quote->id) . '/' . $imageFondoName : '',
 
             'color_primario' => $this->color_primario,
             'color_secundario' => $this->color_secundario,
             'productos_por_pagina' => $this->productos_por_pagina,
             'mostrar_formato_de_tabla' => $this->mostrar_formato_de_tabla,
-            'generar_contraportada' => $this->generar_contraportada,
+            'generar_contraportada' => $this->tieneContraportada,
         ];
-
-        // $dataInformation = [
-        //     //     // 'portada' => 'https://png.pngtree.com/png-slide/20220812/ourmid/0-pngtree-ancient-brown-simple-and-elegant-pattern-ppt-cover-google-slides-and-powerpoint-template-background_8735.jpg',
-        //     'portada' => '',
-        //     'logo' => "https://logos-world.net/wp-content/uploads/2023/05/Ariana-Grande-Logo-2011.png",
-        //     //     'logo' => '',
-        //     //     // 'contraportada' => "https://img.freepik.com/vector-premium/fondo-material-moderno_643365-269.jpg",
-        //     'contraportada' => "",
-        //     //     // 'fondo' => 'https://img.freepik.com/vector-premium/fondo-material-moderno_643365-269.jpg',
-        //     'fondo' => '',
-        //     'color_primario' => $this->color_primario,
-        //     'color_secundario' => $this->color_secundario,
-        //     'productos_por_pagina' => $this->productos_por_pagina,
-        //     'mostrar_formato_de_tabla' => $this->mostrar_formato_de_tabla,
-        //     'generar_contraportada' => $this->generar_contraportada,
-        // ];
 
         $empresa = Client::where("name", $this->quote->latestQuotesUpdate->quotesInformation->company)->first();
         $nombreComercial = null;
@@ -104,7 +92,7 @@ class CreatePresentationComponent extends Component
         }
 
         $dataToPPT = [
-            'data' => $dataInformation,
+            'data' => $this->dataInformation,
             'quote' => $this->quote,
             'nombreComercial' => $nombreComercial
         ];
@@ -168,5 +156,64 @@ class CreatePresentationComponent extends Component
         file_put_contents(public_path() . $pathPdf, $createdPdf);
 
         $this->urlPDFPreview = url('') . $pathPdf;
+    }
+
+    public function savePPT()
+    {
+        if ($this->dataInformation === null) {
+            return 2;
+        }
+        /* $dataUrl = [
+            'portada' => Str::replaceFirst(url(''), '',  $this->dataInformation['portada']),
+            'logo' => Str::replaceFirst(url(''), '', $this->dataInformation['logo']),
+            'contraportada' => Str::replaceFirst(url(''), '', $this->dataInformation['contraportada']),
+            'fondo' => Str::replaceFirst(url(''), '', $this->dataInformation['fondo']),
+        ]; */
+
+        $dataUrl = [
+            'portada' =>  [
+                'temp' => $this->dataInformation['portada'],
+                'final' => ''
+            ],
+            'logo' => [
+                'temp' => $this->dataInformation['logo'],
+                'final' => ''
+            ],
+            'contraportada' => [
+                'temp' => $this->dataInformation['contraportada'],
+                'final' => ''
+
+            ],
+            'fondo' => [
+                'temp' => $this->dataInformation['fondo'],
+                'final' => ''
+            ],
+        ];
+
+        foreach ($dataUrl as $key => $value) {
+            if ($value['temp'] != '') {
+                $urlPath = 'ppt/' . Str::slug($this->quote->company->name, '_') . '/' . $this->quote->id . '/' . explode('/', $value['temp'])[count(explode('/', $value['temp'])) - 1];
+                Storage::put(
+                    'public/' . $urlPath,
+                    Storage::get(Str::replaceFirst(url('storage/'), 'public/', $value['temp']))
+                );
+                $dataUrl[$key]['final'] = url('storage/' . $urlPath);
+                /*  Storage::move(
+                    Storage::get(Str::replaceFirst('storage/', 'public/', $value)),
+                    Str::replaceFirst('tmp/', Str::slug($this->quote->company->name, '_') . '/', $value)
+                ); */
+            }
+        }
+
+        // Obtener urls  de los archivos
+        $this->quote->presentations()->create([
+            'front_page' => $dataUrl['portada']['final'],
+            'back_page' =>  $dataUrl['contraportada']['final'],
+            'have_back_page' => $this->dataInformation['generar_contraportada'] ? 1 : 0,
+            'logo' => $dataUrl['logo']['final'],
+            'background' => $dataUrl['fondo']['final'],
+        ]);
+
+        return 1;
     }
 }

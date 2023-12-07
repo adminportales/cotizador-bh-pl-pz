@@ -1,13 +1,14 @@
 <div>
-    <div class="{{ trim($producto) == '' ? '' : 'd-none' }}">
+    <div class="{{ trim($producto) == '' ? '' : 'hidden' }}">
         <div class="row">
             <div class="col-md-12">
-                <input wire:model='nombre' type="text" class="form-control" name="search" id="search"
-                    placeholder="Buscar Unicamente Por Nombre">
+                <input wire:model='nombre' type="text"
+                    class="block w-full p-3 mb-2 text-gray-900 border border-gray-300 rounded-md bg-white sm:text-xs focus:ring-blue-500 focus:border-blue-500 "
+                    name="search" id="search" placeholder="Buscar Unicamente Por Nombre">
                 <br>
             </div>
         </div>
-        <div class="row">
+        <div class="grid grid-cols-12 gap-2 mb-3" wire:loading.class="opacity-70">
             @php
                 $counter = $products->perPage() * $products->currentPage() - $products->perPage() + 1;
             @endphp
@@ -20,9 +21,9 @@
                 </div>
             @endif
             @foreach ($products as $row)
-                <div class="col-md-4 col-lg-3 col-sm-6  d-flex justify-content-center">
-                    <div class="card product-info">
-                        <div class="card-body text-center shadow-sm p-2">
+                <div class="sm:col-span-12 lg:col-span-4 md:col-span-6 col-span-12 flex justify-center">
+                    <div class="border-2 border-gray-200 py-2 px-3 rounded-xl w-full h-full">
+                        <div class="text-center shadow-sm p-2 h-full">
                             @php
                                 $priceProduct = $row->price;
                                 if ($row->producto_promocion) {
@@ -31,42 +32,42 @@
                                     $priceProduct = round($priceProduct - $priceProduct * ($row->provider->discount / 100), 2);
                                 }
                             @endphp
-                            <p class="stock-relative m-0 mb-1 pt-1" style="font-size: 16px">Stock: <span
-                                    style="font-weight: bold">{{ $row->stock }}</span></p>
-                            <div class="d-flex flex-row flex-sm-column">
-                                <div class="text-center" style="height: 110px">
+
+                            <div class="flex flex-row sm:flex-col sm:justify-between h-full ">
+                                <div class="flex justify-center" style="height: 150px;">
                                     <img src="{{ $row->firstImage ? $row->firstImage->image_url : '' }}"
-                                        class="card-img-top " alt="{{ $row->name }}"
-                                        style="width: auto; max-width: 100px; max-height: 110px; height: auto">
+                                        alt="{{ $row->name }}" class="text-center"
+                                        style="width: auto; max-width: 150px; max-height: 150px; height: auto">
                                 </div>
-                                <div class="info-products">
-                                    <h5 class="card-title m-0" style="text-transform: capitalize">
+                                <div class="flex flex-col sm:text-center sm:flex-grow flex-grow-0 text-left">
+                                    <h5 class="text-lg font-medium m-0" style="text-transform: capitalize">
                                         {{ Str::limit($row->name, 22, '...') }}</h5>
-                                    <p class=" m-0 pt-1" style="font-size: 16px"><strong>SKU:</strong>
-                                        {{ $row->sku }}</p>
-                                    <p class="m-0 mb-1 pt-1 d-sm-none" style="font-size: 16px">Stock: <span
-                                            style="font-weight: bold">{{ $row->stock }}</span></p>
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <p class=" m-0 pt-1" style="font-weight: bold">$
-                                            {{ round($priceProduct / ((100 - $utilidad) / 100), 2) }}</p>
-                                        <button class="btn btn-primary btn-sm"
-                                            wire:click="seleccionarProducto({{ $row }})"> Seleccionar </button>
+                                    <p class="m-0 pt-0" style="font-size: 16px">SKU: {{ $row->sku }}</p>
+                                    <div class="flex justify-between items-center mb-2 flex-grow">
+                                        <div class="text-left">
+                                            <p class=" m-0">$
+                                                {{ round($priceProduct / ((100 - $utilidad) / 100), 2) }}</p>
+                                            <p class="m-0" style="font-size: 16px">Disponible:
+                                                <span class="font-bold">{{ $row->stock }}</span>
+                                            </p>
+                                        </div>
                                     </div>
+                                    <button wire:click="seleccionarProducto({{ $row }})"
+                                        class="block text-white bg-blue-500 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-xl text-sm px-5 py-2.5 text-center">
+                                        Seleccionar
+                                    </button>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             @endforeach
-            <div class="d-flex d-sm-none justify-content-center">
-                {{ $products->onEachSide(0)->links() }}
-            </div>
-            <div class="d-none d-sm-flex justify-content-center">
-                {{ $products->onEachSide(3)->links() }}
-            </div>
+        </div>
+        <div class="flex justify-center">
+            {{ $products->onEachSide(0)->links() }}
         </div>
     </div>
-    <div class="{{ trim($producto) == '' ? 'd-none' : '' }}">
+    <div class="{{ trim($producto) == '' ? 'hidden' : '' }}">
         <div style="width: 20px; cursor: pointer;">
             <div wire:click="regresar()">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
@@ -85,75 +86,46 @@
                     $priceProduct = round($priceProduct - $priceProduct * ($producto->provider->discount / 100), 2);
                 }
             @endphp
-            <div class="d-flex">
+            <div class="mb-3">
                 <div class="img-container w-25 text-center">
                     <img id="imgBox" style="max-width: 150px; max-height: 200px"
                         src="{{ $producto->firstImage ? $producto->firstImage->image_url : asset('img/default.jpg') }}"
                         class="img-fluid" alt="imagen">
                 </div>
-                <div class="px-3 flex-grow-1">
-                    <div class="d-flex align-items-center justify-content-between">
+                <div class="flex items-center justify-between">
+                    <p class="font-bold">{{ $producto->name }}</p>
+                    @if ($producto->precio_unico)
                         <div>
-                            <h4 class="card-title">{{ $producto->name }}</h4>
+                            <p class="text-lg font-bold">
+                                $ {{ round($priceProduct + $priceProduct * ($utilidad / 100), 2) }}</p>
+                            </p>
                         </div>
-                        @if ($producto->precio_unico)
-                            <div class="w-25">
-                                <h5 class="text-primary text-right">
-                                    $ {{ round($priceProduct + $priceProduct * ($utilidad / 100), 2) }}</p>
-                                </h5>
-                            </div>
-                        @endif
-                    </div>
-                    <div class="d-flex align-items-center justify-content-between">
-                        <div>
-                            <p class="my-1"><strong>SKU Interno: </strong> {{ $producto->internal_sku }}</p>
-                            <p class="my-1"><strong>SKU Proveedor: </strong> {{ $producto->sku }}</p>
-                        </div>
-                        <div>
-                            <h5 class="text-success">Disponibles:<strong> {{ $producto->stock }}</strong> </h5>
-                        </div>
-                    </div>
-                    <br>
+                    @endif
                 </div>
+                <div class="flex items-center justify-between">
+                    <div class="grow ">
+                        <div class="hidden md:block">
+                            <p class="my-1">SKU Interno: {{ $producto->internal_sku }}</p>
+                            <p class="my-1">SKU Proveedor: {{ $producto->sku }}</p>
+                        </div>
+                        <div class="block md:hidden space-y-1 mb-2">
+                            <div>
+                                <p>Sku Interno:</p>
+                                <p>{{ $producto->internal_sku }}</p>
+                            </div>
+                            <div>
+                                <p>Sku Proveedor:</p>
+                                <p>{{ $producto->sku }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <p class="text-green-500">Disponibles:<strong> {{ $producto->stock }}</strong> </p>
+                    </div>
+                </div>
+                <p>{{ $producto->description }}</p>
             </div>
             @livewire('components.formulario-de-cotizacion', ['productNewAdd' => $producto])
         @endif
     </div>
-    <style>
-        .product-info {
-            width: 100%;
-            margin-bottom: 0.5rem;
-        }
-
-        .info-products {
-            flex-grow: 1;
-            text-align: left;
-        }
-
-        @media(min-width:576px) {
-            .product-info {
-                width: 14rem;
-                margin-bottom: 1.5rem;
-            }
-
-            .info-products {
-                flex-grow: 0;
-                text-align: center;
-            }
-
-            .stock-relative {
-                display: block !important;
-            }
-        }
-
-        .stock-relative {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background-color: #fcfcfcf2;
-            border-radius: 5px;
-            padding: 0px 5px;
-            display: none;
-        }
-    </style>
 </div>

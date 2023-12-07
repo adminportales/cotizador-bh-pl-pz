@@ -16,6 +16,10 @@ class AddNewProductToQuote extends Component
 
     public $nombre, $descripcion, $precio, $stock, $color, $proveedor, $imagen,  $thereProduct = false, $producto;
     public $isNewProduct = 1;
+    public $inicial, $final, $costo;
+
+    public $priceScales, $infoScales = [], $editScale = false, $itemEditScale = null;
+
     public function render()
     {
         $utilidad = GlobalAttribute::find(1);
@@ -27,24 +31,25 @@ class AddNewProductToQuote extends Component
         ]);
     }
 
-    // public function typeProduct($isNew)
-    // {
-    //     $this->isNewProduct = $isNew;
-    // }
-
     public function guardar()
     {
         $this->validate([
             'nombre' => 'required|max:100',
             'descripcion' => 'required',
-            'precio' => 'required',
             'stock' => 'required',
             'color' => 'required',
             'proveedor' => 'required',
             'imagen' => 'required|image|max:1536',
         ]);
-
-
+        if ($this->priceScales) {
+            $this->validate([
+                "infoScales" => "required|array|min:1",
+            ]);
+        } else {
+            $this->validate([
+                "precio" => "required|numeric|min:0",
+            ]);
+        }
         $maxSKU = Product::max('internal_sku');
         $idSku = null;
         if (!$maxSKU) {
@@ -63,7 +68,7 @@ class AddNewProductToQuote extends Component
         }
 
         $proveedor = Provider::firstOrCreate([
-            'company' => $this->proveedor
+            'company' => "Registro Personal"
         ], [
             'email' => "no-mail",
             'phone' => 000,
@@ -73,31 +78,56 @@ class AddNewProductToQuote extends Component
 
         $pathImagen = null;
         if ($this->imagen != null) {
-            $name = time() . $this->nombre . '.' .  $this->imagen->getClientOriginalExtension();
+            $name = time() . str_replace("%", " ", str_replace("/", " ", str_replace(",", " ", $this->nombre))) . '.' .  $this->imagen->getClientOriginalExtension();
             $pathImagen = url('') . '/storage/media/' . $name;
             $this->imagen->storeAs('public/media', $name);
             // Guardar La cotizacion
         }
 
-        $newProduct = Product::create([
+        $dataProduct = [
             'internal_sku' => "PROM-" . str_pad($idSku, 7, "0", STR_PAD_LEFT),
             'sku' => 0000,
             'name' => $this->nombre,
-            'price' =>   $this->precio,
             'description' =>  $this->descripcion,
             'stock' => $this->stock,
             'producto_promocion' => false,
             'descuento' => 0,
             'producto_nuevo' =>  false,
-            'precio_unico' => true,
             'type_id' => 3,
             'color_id' => $color->id,
             'provider_id' => $proveedor->id,
-            'visible' => false,
-        ]);
+            'visible' => true,
+        ];
+
+        if ($this->priceScales) {
+            $dataProduct['precio_unico'] = false;
+            $dataProduct['price'] = $this->infoScales[0]['cost'];
+        } else {
+            $dataProduct['precio_unico'] = true;
+            $dataProduct['price'] = $this->precio;
+        }
+
+        $newProduct = Product::create($dataProduct);
+
         $newProduct->images()->create([
             'image_url' =>   $pathImagen
         ]);
+
+        $newProduct->productAttributes()->create([
+            'attribute' => 'Proveedor',
+            'slug' => 'proveedor',
+            'value' => $this->proveedor,
+        ]);
+
+        if ($this->priceScales) {
+            foreach ($this->infoScales as $value) {
+                $newProduct->precios()->create([
+                    'price' => $value['cost'],
+                    'escala_inicial' => $value['initial'],
+                    'escala_final' => $value['final'],
+                ]);
+            }
+        }
 
         UserProduct::create([
             'user_id' => auth()->user()->id,
@@ -111,5 +141,95 @@ class AddNewProductToQuote extends Component
     public function limpiarImagen()
     {
         $this->imagen = null;
+    }
+
+    public function openScale()
+    {
+        $this->editScale = false;
+        $this->itemEditScale = null;
+        $this->dispatchBrowserEvent('showModalScales');
+    }
+
+    public function closeScale()
+    {
+        $this->editScale = false;
+        $this->itemEditScale = null;
+        $this->dispatchBrowserEvent('hideModalScales');
+    }
+
+    public function addScale()
+    {
+        $this->itemEditScale = null;
+        // Final tiene que estar vacio o ser mayor que inicial
+        if ($this->final != null && $this->final <= $this->inicial) {
+            $this->dispatchBrowserEvent('showError', ['message' => 'El valor final debe ser mayor que el inicial']);
+            return;
+        }
+        $this->validate([
+            'inicial' => 'required|numeric|min:1',
+            'costo' => 'required|numeric|min:0',
+        ]);
+        array_push($this->infoScales, [
+            'initial' => $this->inicial,
+            'final' => $this->final,
+            'cost' => $this->costo,
+        ]);
+        $this->inicial = null;
+        $this->final = null;
+        $this->costo = null;
+        $this->dispatchBrowserEvent('hideModalScales');
+    }
+
+    public function deleteScale($scale_id)
+    {
+        try {
+            unset($this->infoScales[$scale_id]);
+            $newScales = [];
+            foreach ($this->infoScales as $v) {
+                array_push($newScales, $v);
+            }
+            $this->infoScales = $newScales;
+            return 1;
+        } catch (Exception $e) {
+            return json_encode($e->getMessage());
+        }
+    }
+
+    public function editScale($scale_id)
+    {
+        $this->editScale =  true;
+        $this->itemEditScale = $scale_id;
+        $this->inicial = $this->infoScales[$scale_id]['initial'];
+        $this->final = $this->infoScales[$scale_id]['final'];
+        $this->costo = $this->infoScales[$scale_id]['cost'];
+        $this->dispatchBrowserEvent('showModalScales');
+    }
+
+    public function updateScale()
+    {
+        if ($this->final != null && $this->final <= $this->inicial) {
+            $this->dispatchBrowserEvent('showError', ['message' => 'El valor final debe ser mayor que el inicial']);
+            return;
+        }
+        $this->validate([
+            'inicial' => 'required|numeric|min:1',
+            'costo' => 'required|numeric|min:0',
+        ]);
+        $this->infoScales[$this->itemEditScale] =  [
+            'initial' => $this->inicial,
+            'final' => $this->final,
+            'cost' => $this->costo,
+        ];
+        $this->inicial = null;
+        $this->final = null;
+        $this->costo = null;
+        $this->editScale =  false;
+        $this->itemEditScale = null;
+        $this->dispatchBrowserEvent('hideModalScales');
+    }
+
+    public function changeTypePrice()
+    {
+        $this->priceScales = !$this->priceScales;
     }
 }
