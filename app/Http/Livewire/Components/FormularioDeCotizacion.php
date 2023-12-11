@@ -53,7 +53,10 @@ class FormularioDeCotizacion extends Component
             if ($this->priceScales) {
                 $this->priceScalesComplete = json_decode($this->currentQuote->scales_info);
                 $this->infoScales = array_map(function ($scale) {
-                    return ['quantity' => $scale->quantity, 'utility' => $scale->utility, 'tecniquePrice' => $scale->tecniquePrice];
+
+                    $costoIndirecto = (property_exists($scale, 'operacion') && $scale->operacion) ? $scale->operacion : $this->operacion;
+
+                    return ['quantity' => $scale->quantity, 'utility' => $scale->utility, 'operacion' => $costoIndirecto, 'tecniquePrice' => $scale->tecniquePrice];
                 }, $this->priceScalesComplete);
             }
         }
@@ -82,7 +85,10 @@ class FormularioDeCotizacion extends Component
             if ($this->priceScales) {
                 $this->priceScalesComplete = json_decode($this->productEdit['scales_info']);
                 $this->infoScales = array_map(function ($scale) {
-                    return ['quantity' => $scale->quantity, 'utility' => $scale->utility, 'tecniquePrice' => $scale->tecniquePrice];
+                    //agregar prices_Saclae de la variable $info o scale
+
+                    $costoIndirecto = (property_exists($scale, 'operacion') && $scale->operacion) ? $scale->operacion : $this->operacion;
+                    return ['quantity' => $scale->quantity, 'utility' => $scale->utility, 'operacion' => $costoIndirecto, 'tecniquePrice' => $scale->tecniquePrice];
                 }, $this->priceScalesComplete);
             }
         }
@@ -256,13 +262,16 @@ class FormularioDeCotizacion extends Component
                     }
                 }
                 // dd($this->infoScales);
-                $nuevoPrecio = round(($this->precio + ($precioDeTecnicaUsado * $this->colores) + $this->operacion) / ((100 - $info['utility']) / 100), 2);
+                $nuevoPrecio = round(($this->precio + ($precioDeTecnicaUsado * $this->colores) + $info['operacion']) / ((100 - $info['utility']) / 100), 2);
+
                 array_push($this->priceScalesComplete, [
                     'quantity' => $info['quantity'],
                     'tecniquePrice' => $info['tecniquePrice'] != null ? floatval($info['tecniquePrice'])  : $precioDeTecnica,
                     'utility' => $info['utility'],
                     'unit_price' => $nuevoPrecio,
+                    'operacion' => $info['operacion'],
                     'total_price' => $nuevoPrecio * $info['quantity'],
+
                 ]);
             }
             if ((int)$this->cantidad > 0 && $preciosDisponibles && $this->sizeSeleccionado !== null) {
@@ -390,6 +399,7 @@ class FormularioDeCotizacion extends Component
             $dataQuote['new_price_technique'] = null;
             $dataQuote['cantidad'] = null;
             $dataQuote['precio_unitario'] = null;
+            $dataQuote['operacion'] = null;
             $dataQuote['precio_total'] = null;
             $dataQuote['quote_by_scales'] = true;
             $dataQuote['scales_info'] = json_encode($this->priceScalesComplete);
@@ -553,6 +563,8 @@ class FormularioDeCotizacion extends Component
             'quantity' => $this->cantidad,
             'utility' => $this->utilidad,
             'tecniquePrice' => $this->precioTecnicaEscala,
+            'operacion' => $this->operacion
+
         ]);
         $this->cantidad = 1;
         $this->precioTecnicaEscala = null;
@@ -601,6 +613,7 @@ class FormularioDeCotizacion extends Component
             'quantity' => $this->cantidad,
             'utility' => $this->utilidad,
             'tecniquePrice' => $this->precioTecnicaEscala >= 0 ? $this->precioTecnicaEscala : null,
+            'operacion' => $this->operacion
         ];
         $this->cantidad = 1;
         $this->precioTecnicaEscala = null;
