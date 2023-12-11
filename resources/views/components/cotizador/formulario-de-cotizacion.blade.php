@@ -103,12 +103,14 @@
                     </ul>
                 </div>
                 <div class="grid grid-cols-2 gap-2 bg-gray-50 p-3 rounded-sm">
-                    <div class="col-span-2">
-                        <label for="" class="text-sm font-semibold">Costo de Operacion</label>
-                        <input type="number" name="operacion" wire:model="operacion" placeholder="Costo de operacion"
-                            class="block w-full p-3 mb-2 text-gray-900 border border-gray-300 rounded-md bg-white sm:text-xs focus:ring-blue-500 focus:border-blue-500 ">
-                    </div>
+
                     @if (!$priceScales)
+                        <div class="col-span-2">
+                            <label for="" class="text-sm font-semibold">Costo de Operacion</label>
+                            <input type="number" name="operacion" wire:model="operacion"
+                                placeholder="Costo de operacion"
+                                class="block w-full p-3 mb-2 text-gray-900 border border-gray-300 rounded-md bg-white sm:text-xs focus:ring-blue-500 focus:border-blue-500 ">
+                        </div>
                         <div class="md:col-span-1 col-span-2">
                             <label for="" class="text-sm font-semibold">Margen de Utilidad</label>
                             <input type="number" name="margen" wire:model="utilidad" placeholder="Margen de Utilidad"
@@ -146,6 +148,9 @@
                                                         Unitario
                                                     </th>
                                                     <th scope="col" class="px-2 py-2">
+                                                        Costo de Operacion
+                                                    </th>
+                                                    <th scope="col" class="px-2 py-2">
                                                         Total
                                                     </th>
                                                 </tr>
@@ -165,6 +170,9 @@
                                                         </td>
                                                         <td class="px-2 py-2 text-center">
                                                             $ {{ number_format($item['unit_price'], 2, '.', ',') }}
+                                                        </td>
+                                                        <td class="px-2 py-2 text-center">
+                                                            $ {{ number_format($item['operacion'], 2, '.', ',') }}
                                                         </td>
                                                         <td class="px-2 py-2 text-center">
                                                             $ {{ number_format($item['total_price'], 2, '.', ',') }}
@@ -226,6 +234,13 @@
                                         <!-- Modal body -->
                                         <div class="p-6 space-y-6">
                                             <div class="grid grid-cols-2 gap-2 text-left">
+                                                <div class="col-span-2">
+                                                    <label for="" class="text-sm font-semibold">Costo de
+                                                        Operacion</label>
+                                                    <input type="number" name="operacion" wire:model="operacion"
+                                                        placeholder="Costo de operacion"
+                                                        class="block w-full p-3 mb-2 text-gray-900 border border-gray-300 rounded-md bg-white sm:text-xs focus:ring-blue-500 focus:border-blue-500 ">
+                                                </div>
                                                 <div class="col-span-2 md:col-span-1">
                                                     <label for=""
                                                         class="text-sm font-semibold">Cantidad</label>
@@ -233,6 +248,7 @@
                                                         placeholder="Cantidad de productos a cotizar"
                                                         class="block w-full p-3 mb-2 text-gray-900 border border-gray-300 rounded-md bg-white sm:text-xs focus:ring-blue-500 focus:border-blue-500 ">
                                                 </div>
+
                                                 <div class="col-span-2 md:col-span-1">
                                                     <label for="" class="text-sm font-semibold">Utilidad Por
                                                         Partida</label>

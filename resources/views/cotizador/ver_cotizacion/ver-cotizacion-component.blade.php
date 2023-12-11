@@ -169,6 +169,7 @@
         </div>
     </div>
 
+
     <script>
         window.addEventListener('showModalInfoClient', event => {
             $('#editarInfoCliente').modal('hide')
