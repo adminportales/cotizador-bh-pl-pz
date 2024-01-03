@@ -292,15 +292,15 @@
                             </td>
                             <td colspan="4" class="detalle-cantidad">
                                 <p>$
-                                    {{ number_format($precioUnitario, 4, '.', ',') }}</p>
+                                    {{ number_format($precioUnitario, 2, '.', ',') }}</p>
 
                             </td>
                             <td colspan="4" class="detalle-cantidad">
                                 <p>$
-                                    {{ number_format($precioTotal, 4, '.', ',') }}</p>
+                                    {{ number_format($precioTotal, 2, '.', ',') }}</p>
                                 @if ($quote->iva_by_item)
                                     <p style="font-size: 12px"><b>IVA:
-                                        </b>${{ number_format($totalIva, 4, '.', ',') }}
+                                        </b>${{ number_format($totalIva, 2, '.', ',') }}
                                     </p>
                                 @endif
                             </td>
