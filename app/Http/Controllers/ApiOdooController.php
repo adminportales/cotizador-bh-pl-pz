@@ -17,6 +17,12 @@ use Illuminate\Support\Str;
 class ApiOdooController extends Controller
 {
 
+    /**
+     * Método para obtener los usuarios y actualizar su información de Odoo.
+     *
+     * @param Request $request La solicitud HTTP recibida.
+     * @return JsonResponse La respuesta JSON con el resultado de la actualización.
+     */
     public function getUsers(Request $request)
     {
         $time = time();
@@ -93,6 +99,15 @@ class ApiOdooController extends Controller
         }
     }
 
+    /**
+     * Recupera los clientes de la solicitud y almacena los datos en un archivo.
+     * Valida el token de la solicitud y procesa los datos del cliente.
+     * Crea o actualiza los clientes en la base de datos en función de los datos recibidos.
+     * Envía un correo electrónico con los datos de error si hay información incompleta del cliente.
+     *
+     * @param  Request  $request  El objeto de solicitud HTTP.
+     * @return JsonResponse  La respuesta JSON que contiene el resultado de la operación.
+     */
     public function getClients(Request $request)
     {
         Storage::put('/public/dataClients' . time() . '.txt', json_encode($request->all()));

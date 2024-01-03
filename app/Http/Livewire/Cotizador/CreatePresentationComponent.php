@@ -11,6 +11,11 @@ use iio\libmergepdf\Merger;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
+/**
+ * Clase CreatePresentationComponent.
+ *
+ * Componente de Livewire para crear una presentación.
+ */
 class CreatePresentationComponent extends Component
 {
     use WithFileUploads;

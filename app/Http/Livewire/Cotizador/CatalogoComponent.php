@@ -10,6 +10,11 @@ use Livewire\Component;
 use Livewire\WithPagination;
 use Illuminate\Support\Facades\DB;
 
+/**
+ * Clase CatalogoComponent
+ *
+ * Componente de Livewire que maneja la lógica y la presentación de la página de catálogo.
+ */
 class CatalogoComponent extends Component
 {
     use WithPagination;

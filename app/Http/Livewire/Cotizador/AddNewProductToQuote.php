@@ -10,6 +10,10 @@ use App\Models\UserProduct;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 
+
+/**
+ * Clase que representa el componente Livewire para agregar un nuevo producto a una cotización.
+ */
 class AddNewProductToQuote extends Component
 {
     use WithFileUploads;

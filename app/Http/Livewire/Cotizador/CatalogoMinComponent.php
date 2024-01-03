@@ -11,6 +11,11 @@ use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\DB;
 use App\Models\Catalogo\Product;
 
+/**
+ * Clase CatalogoMinComponent
+ *
+ * Componente Livewire que representa el catálogo mínimo de productos.
+ */
 class CatalogoMinComponent extends Component
 {
     use WithPagination;
@@ -19,11 +24,27 @@ class CatalogoMinComponent extends Component
 
     protected $listeners = ['addProductNewQuote' => 'regresar'];
 
+    /**
+     * Método mount
+     *
+     * Se ejecuta al inicializar el componente.
+     * Obtiene los proveedores de la sesión de la compañía del usuario autenticado.
+     */
     public function mount()
     {
         $this->proveedores = auth()->user()->companySession == null ? [] :  auth()->user()->companySession->providers;
     }
 
+    /**
+     * Método render
+     *
+     * Renderiza la vista del catálogo mínimo de productos.
+     * Obtiene los productos que coinciden con el nombre de búsqueda y los filtros aplicados.
+     * Ordena los productos según la coincidencia con el nombre de búsqueda.
+     * Pagina los resultados y los pasa a la vista.
+     *
+     * @return \Illuminate\View\View
+     */
     public function render()
     {
         $utilidad = GlobalAttribute::find(1);
@@ -47,6 +68,15 @@ class CatalogoMinComponent extends Component
             'utilidad' => $utilidad,
         ]);
     }
+
+    /**
+     * Método seleccionarProducto
+     *
+     * Selecciona un producto y realiza acciones adicionales si el proveedor es el número 5.
+     *
+     * @param Product $product El producto seleccionado.
+     * @return void
+     */
     public function seleccionarProducto(Product $product)
     {
         if ($product->provider_id == 5) {
@@ -81,6 +111,13 @@ class CatalogoMinComponent extends Component
         $this->producto = $product;
     }
 
+    /**
+     * Método regresar
+     *
+     * Restablece el producto seleccionado.
+     *
+     * @return void
+     */
     public function regresar()
     {
         $this->producto = '';
