@@ -354,7 +354,7 @@
                                 <strong>Cantidad: </strong> {{ $item->cantidad }} pz
                             </p>
                             <p>
-                                <strong>Precio: </strong> $ {{ number_format($precioUnitario, 4, '.', ',') }}
+                                <strong>Precio: </strong> $ {{ number_format($precioUnitario, 2, '.', ',') }}
                             </p>
                         @endif
                     </td>

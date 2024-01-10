@@ -10,22 +10,96 @@ use App\Models\Company;
 use Illuminate\Http\Request;
 
 
+/**
+ * Clase Companies
+ *
+ * Esta clase es responsable de manejar la lógica relacionada con las empresas en el panel de administración.
+ */
 class Companies extends Component
 {
+    /**
+     * Trait WithPagination
+     *
+     * Este trait proporciona métodos para la paginación de resultados.
+     */
     use WithPagination;
 
+    /**
+     * Tema de paginación utilizado para la visualización de la paginación.
+     */
     protected $paginationTheme = 'bootstrap';
-    public $selected_id, $keyWord, $name, $image, $manager, $email, $phone;
+
+    /**
+     * ID seleccionado.
+     */
+    public $selected_id;
+
+    /**
+     * Palabra clave utilizada para la búsqueda de empresas.
+     */
+    public $keyWord;
+
+    /**
+     * Nombre de la empresa.
+     */
+    public $name;
+
+    /**
+     * Imagen de la empresa.
+     */
+    public $image;
+
+    /**
+     * Gerente de la empresa.
+     */
+    public $manager;
+
+    /**
+     * Correo electrónico de la empresa.
+     */
+    public $email;
+
+    /**
+     * Teléfono de la empresa.
+     */
+    public $phone;
+
+    /**
+     * Proveedores seleccionados.
+     */
     public $selectedProveedores = [];
+
+    /**
+     * Empresa seleccionada.
+     */
     public $companySelected = [];
+
+    /**
+     * ID de la empresa.
+     */
     public $companyId;
+
+    /**
+     * Modo de actualización.
+     */
     public $updateMode = false;
+
+    /**
+     * IDs de las empresas seleccionadas.
+     */
     public $companySelectedIds = [];
 
+    /**
+     * Renderiza la vista de empresas.
+     *
+     * @param Request $request La solicitud HTTP.
+     * @return \Illuminate\Contracts\View\View La vista de empresas.
+     */
     public function render(Request $request)
     {
-
         $keyWord = '%' . $this->keyWord . '%';
+
+        // Obtiene las empresas que coinciden con la palabra clave y las paginación.
         $companies = Company::latest()
             ->orWhere('name', 'LIKE', $keyWord)
             ->orWhere('image', 'LIKE', $keyWord)
@@ -34,13 +108,13 @@ class Companies extends Component
             ->orWhere('phone', 'LIKE', $keyWord)
             ->paginate(10);
 
-
-
+        // Obtiene los proveedores limitados a 15.
         $proveders = Provider::limit(15)->get();
+
         $companiesPro = [];
 
         foreach ($companies as $company) {
-            // Get the selected providers for the current company and store them in the array using the company ID as the key.
+            // Obtiene los proveedores seleccionados para la empresa actual y los almacena en un array utilizando el ID de la empresa como clave.
             $companiesPro[$company->id] = CompaniePro::where('companie_id', $company->id)->pluck('provider_id')->toArray();
         }
 
@@ -50,11 +124,24 @@ class Companies extends Component
             'companiesPro' => $companiesPro
         ]);
     }
+
+    /**
+     * Establece el ID de la empresa seleccionada.
+     *
+     * @param int $companyId El ID de la empresa seleccionada.
+     * @return void
+     */
     public function setCompanyId($companyId)
     {
-
         $this->companyId = $companyId;
     }
+
+    /**
+     * Guarda los proveedores seleccionados.
+     *
+     * @param array $selectedProveedores Los proveedores seleccionados.
+     * @return void
+     */
     public function saveSelectedProveedores($selectedProveedores)
     {
         $companiePro = CompaniePro::where('companie_id', $this->companyId)
@@ -72,17 +159,34 @@ class Companies extends Component
             session()->flash('message', 'Proveedor asociado correctamente.');
         }
     }
+
+    /**
+     * Verifica si un proveedor está seleccionado.
+     *
+     * @param int $providerId El ID del proveedor.
+     * @return bool True si el proveedor está seleccionado, de lo contrario False.
+     */
     public function isProviderSelected($providerId)
     {
         return $this->providerIds->contains($providerId);
     }
 
+    /**
+     * Cancela la operación actual.
+     *
+     * @return void
+     */
     public function cancel()
     {
         $this->resetInput();
         $this->updateMode = false;
     }
 
+    /**
+     * Restablece los valores de entrada.
+     *
+     * @return void
+     */
     private function resetInput()
     {
         $this->name = null;
@@ -92,9 +196,12 @@ class Companies extends Component
         $this->phone = null;
     }
 
-
-
-
+    /**
+     * Edita una empresa.
+     *
+     * @param int $id El ID de la empresa a editar.
+     * @return void
+     */
     public function edit($id)
     {
         $record = Company::findOrFail($id);
@@ -109,6 +216,11 @@ class Companies extends Component
         $this->updateMode = true;
     }
 
+    /**
+     * Actualiza una empresa.
+     *
+     * @return void
+     */
     public function update()
     {
         $this->validate([
@@ -131,7 +243,7 @@ class Companies extends Component
 
             $this->resetInput();
             $this->updateMode = false;
-            session()->flash('message', 'Company Successfully updated.');
+            session()->flash('message', 'Empresa actualizada correctamente.');
         }
     }
 }

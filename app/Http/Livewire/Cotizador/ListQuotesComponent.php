@@ -6,12 +6,24 @@ use Livewire\Component;
 use Livewire\WithPagination;
 use App\Models\Client;
 
+/**
+ * Clase ListQuotesComponent
+ *
+ * Componente de Livewire que muestra una lista de cotizaciones.
+ */
 class ListQuotesComponent extends Component
 {
     use WithPagination;
 
     public $selected_id, $keyWord, $user_id, $client_odoo_id, $name, $contact, $email, $phone;
 
+    /**
+     * Método render
+     *
+     * Renderiza la vista de la lista de cotizaciones.
+     *
+     * @return \Illuminate\Contracts\View\View
+     */
     public function render()
     {
         $keyWord = '%' . $this->keyWord . '%';

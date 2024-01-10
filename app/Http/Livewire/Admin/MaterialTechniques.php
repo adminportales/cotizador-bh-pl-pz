@@ -6,6 +6,12 @@ use Livewire\Component;
 use Livewire\WithPagination;
 use App\Models\MaterialTechnique;
 
+/**
+ * Clase MaterialTechniques
+ * NO TIENE USO ACTUALMENTE
+ *
+ * Esta clase es responsable de manejar la lógica y la presentación de la página de técnicas de materiales en el panel de administración.
+ */
 class MaterialTechniques extends Component
 {
     use WithPagination;
@@ -14,6 +20,11 @@ class MaterialTechniques extends Component
     public $selected_id, $keyWord, $technique_id, $material_id;
     public $updateMode = false;
 
+    /**
+     * Renderiza la vista de la página de técnicas de materiales.
+     *
+     * @return \Illuminate\View\View
+     */
     public function render()
     {
         $keyWord = '%' . $this->keyWord . '%';
@@ -24,18 +35,33 @@ class MaterialTechniques extends Component
         ]);
     }
 
+    /**
+     * Cancela la edición o creación de una técnica de material.
+     *
+     * @return void
+     */
     public function cancel()
     {
         $this->resetInput();
         $this->updateMode = false;
     }
 
+    /**
+     * Reinicia los valores de los campos de entrada.
+     *
+     * @return void
+     */
     private function resetInput()
     {
         $this->technique_id = null;
         $this->material_id = null;
     }
 
+    /**
+     * Almacena una nueva técnica de material en la base de datos.
+     *
+     * @return void
+     */
     public function store()
     {
         $this->validate([
@@ -50,9 +76,15 @@ class MaterialTechniques extends Component
 
         $this->resetInput();
         $this->emit('closeModal');
-        session()->flash('message', 'MaterialTechnique Successfully created.');
+        session()->flash('message', 'Técnica de material creada exitosamente.');
     }
 
+    /**
+     * Prepara los campos de entrada para editar una técnica de material existente.
+     *
+     * @param int $id El ID de la técnica de material a editar.
+     * @return void
+     */
     public function edit($id)
     {
         $record = MaterialTechnique::findOrFail($id);
@@ -64,6 +96,11 @@ class MaterialTechniques extends Component
         $this->updateMode = true;
     }
 
+    /**
+     * Actualiza una técnica de material existente en la base de datos.
+     *
+     * @return void
+     */
     public function update()
     {
         $this->validate([
@@ -80,10 +117,16 @@ class MaterialTechniques extends Component
 
             $this->resetInput();
             $this->updateMode = false;
-            session()->flash('message', 'MaterialTechnique Successfully updated.');
+            session()->flash('message', 'Técnica de material actualizada exitosamente.');
         }
     }
 
+    /**
+     * Elimina una técnica de material de la base de datos.
+     *
+     * @param int $id El ID de la técnica de material a eliminar.
+     * @return void
+     */
     public function destroy($id)
     {
         if ($id) {

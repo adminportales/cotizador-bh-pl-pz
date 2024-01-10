@@ -9,6 +9,9 @@ use Livewire\Component;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Livewire\WithFileUploads;
 
+/**
+ * Clase que representa el componente de edición de información del cliente en el cotizador.
+ */
 class EditInformationClientComponent extends Component
 {
     use AuthorizesRequests;
@@ -17,6 +20,11 @@ class EditInformationClientComponent extends Component
     public $quoteInfo, $quote;
     public $tipoCliente, $clienteSeleccionado = '', $nombre, $empresa, $email, $telefono, $celular, $oportunidad, $rank = '', $departamento, $informacion, $clients,  $logo,  $ivaByItem, $showTotal, $typeDays, $taxFee, $shelfLife;
 
+    /**
+     * Método que se ejecuta al inicializar el componente.
+     * Asigna los valores correspondientes a las propiedades del componente
+     * utilizando los datos de la cotización y la información del cliente.
+     */
     public function mount()
     {
         $this->ivaByItem = $this->quote->iva_by_item;
@@ -35,6 +43,11 @@ class EditInformationClientComponent extends Component
         $this->shelfLife = $this->quoteInfo->shelfLife;
     }
 
+    /**
+     * Renderiza el componente de edición de información del cliente.
+     *
+     * @return \Illuminate\Contracts\View\View
+     */
     public function render()
     {
         if ($this->taxFee > 99)
@@ -42,6 +55,16 @@ class EditInformationClientComponent extends Component
         return view('cotizador.ver_cotizacion.edit-information-client-component');
     }
 
+    /**
+     * Guarda la cotización y la información del cliente.
+     *
+     * Este método guarda la cotización y la información del cliente en la base de datos.
+     * Realiza validaciones de los campos requeridos y actualiza los datos de la cotización.
+     * También guarda la información del cliente y los productos de la cotización.
+     * Finalmente, emite un evento para actualizar la información de la cotización y muestra un modal al cliente.
+     *
+     * @return void
+     */
     public function guardarCotizacion()
     {
         $this->authorize('update', $this->quote);

@@ -6,6 +6,12 @@ use App\Models\Quote;
 use Livewire\Component;
 use Livewire\WithPagination;
 
+/**
+ * Clase AllQuotesComponent
+ *
+ * Esta clase representa el componente de Livewire para mostrar todas las cotizaciones.
+ * Contiene la lógica para filtrar y ordenar las cotizaciones según una palabra clave.
+ */
 class AllQuotesComponent extends Component
 {
     use WithPagination;

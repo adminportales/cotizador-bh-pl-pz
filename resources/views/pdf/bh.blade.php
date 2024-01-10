@@ -251,14 +251,14 @@
                             <tr>
                                 <td colspan="4" class="detalle-cantidad">{{ $scale->quantity }} pz</td>
                                 <td colspan="4" class="detalle-cantidad">$
-                                    {{ number_format($precioUnitario, 4, '.', ',') }}
+                                    {{ number_format($precioUnitario, 2, '.', ',') }}
 
                                 </td>
                                 <td colspan="4" class="detalle-cantidad">$
-                                    {{ number_format($precioTotal, 4, '.', ',') }}
+                                    {{ number_format($precioTotal, 2, '.', ',') }}
                                     @if ($quote->iva_by_item)
                                         <p style="font-size: 12px"><b>IVA:
-                                            </b>${{ number_format($totalIva, 4, '.', ',') }}
+                                            </b>${{ number_format($totalIva, 2, '.', ',') }}
                                         </p>
                                     @endif
                                 </td>
@@ -276,14 +276,14 @@
                         <tr>
                             <td colspan="4" class="detalle-cantidad">{{ $item->cantidad }} pz</td>
                             <td colspan="4" class="detalle-cantidad">$
-                                {{ number_format($precioUnitario, 4, '.', ',') }}
+                                {{ number_format($precioUnitario, 2, '.', ',') }}
 
                             </td>
                             <td colspan="4" class="detalle-cantidad">$
-                                {{ number_format($precioTotal, 4, '.', ',') }}
+                                {{ number_format($precioTotal, 2, '.', ',') }}
                                 @if ($quote->iva_by_item)
                                     <p style="font-size: 12px"><b>IVA:
-                                        </b>${{ number_format($totalIva, 4, '.', ',') }}
+                                        </b>${{ number_format($totalIva, 2, '.', ',') }}
                                     </p>
                                 @endif
                             </td>

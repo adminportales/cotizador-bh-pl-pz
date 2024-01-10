@@ -19,17 +19,34 @@ use PhpOffice\PhpSpreadsheet\Spreadsheet;
 
 class CotizadorController extends Controller
 {
-    // use WithPagination;
+    /**
+     * Constructor de la clase CotizadorController.
+     *
+     * Este método se ejecuta automáticamente al crear una instancia de la clase.
+     * Establece el middleware de autenticación para todos los métodos de la clase,
+     * excepto el método 'enviarCotizacionesAOdoo'.
+     */
     public function __construct()
     {
         $this->middleware('auth')->except(['enviarCotizacionesAOdoo']);
     }
 
+    /**
+     * Método que muestra la vista del catálogo del cotizador.
+     *
+     * @return \Illuminate\Contracts\View\View
+     */
     public function catalogo()
     {
         return view('cotizador.catalogo.catalogo');
     }
 
+    /**
+     * Método para ver un producto.
+     *
+     * @param Product $product El producto a visualizar.
+     * @return \Illuminate\View\View La vista del producto.
+     */
     public function verProducto(Product $product)
     {
         $proveedores = auth()->user()->companySession->providers->pluck('id');
@@ -84,6 +101,11 @@ class CotizadorController extends Controller
         return view('cotizador.producto.product', compact('product', 'utilidad', "msg", "disponiblidad"));
     }
 
+    /**
+     * Método para obtener la cotización actual del usuario.
+     *
+     * @return \Illuminate\View\View
+     */
     public function cotizacion()
     {
         $cotizacionActual = [];
@@ -94,19 +116,44 @@ class CotizadorController extends Controller
         return view('cotizador.cotizacion_actual.cotizacion-actual', compact('cotizacionActual'));
     }
 
+    /**
+     * Método que devuelve la vista de las cotizaciones del cotizador.
+     *
+     * @return \Illuminate\Contracts\View\View
+     */
     public function cotizaciones()
     {
         return view('cotizador.mis_cotizaciones.cotizaciones');
     }
+
+    /**
+     * Muestra la cotización en la vista correspondiente.
+     *
+     * @param Quote $quote La cotización a mostrar.
+     * @return \Illuminate\View\View La vista de la cotización.
+     */
     public function verCotizacion(Quote $quote)
     {
         return view('cotizador.ver_cotizacion.page-ver-cotizacion', compact('quote'));
     }
 
+    /**
+     * Método que muestra la vista para finalizar la cotización.
+     *
+     * @return \Illuminate\View\View
+     */
     public function finalizar()
     {
         return view('cotizador.finalizar_cotizacion.finalizar');
     }
+
+
+    /**
+     * Genera una vista previa del cotizador en formato PDF y lo devuelve como una respuesta HTTP.
+     *
+     * @param Quote $quote El objeto Quote para el cual se generará la vista previa.
+     * @return \Illuminate\Http\Response La respuesta HTTP que contiene el archivo PDF de la vista previa.
+     */
     public function previsualizar(Quote $quote)
     {
         $empresa = Client::where("name", $quote->latestQuotesUpdate->quotesInformation->company)->first();
@@ -140,6 +187,12 @@ class CotizadorController extends Controller
         return $pdf->stream("QS-" . $quote->id . " " . $quote->latestQuotesUpdate->quotesInformation->oportunity . ' ' . $quote->updated_at->format('d/m/Y') . '.pdf');
     }
 
+    /**
+     * Previsualiza una presentación en formato PPT.
+     *
+     * @param Presentation $presentacion La presentación a previsualizar.
+     * @return \Illuminate\Http\RedirectResponse Redirige a la URL de la previsualización en PDF.
+     */
     public function previsualizarPPT(Presentation $presentacion)
     {
         $quote = $presentacion->quote;
@@ -229,15 +282,32 @@ class CotizadorController extends Controller
         return redirect(url('') . $pathPdf);
     }
 
+    /**
+     * Método que devuelve la vista de todas las cotizaciones.
+     *
+     * @return \Illuminate\Contracts\View\View
+     */
     public function all()
     {
         return view('admin.cotizaciones.cotizaciones-all');
     }
+
+    /**
+     * Método que muestra el panel de control del administrador.
+     *
+     * @return \Illuminate\Contracts\View\View
+     */
     public function dashboard()
     {
         return view('admin.dashboard.dashboard');
     }
 
+    /**
+     * Cambia la compañía de sesión del usuario.
+     *
+     * @param string $company La compañía a la que se desea cambiar.
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function changeCompany($company)
     {
         $user = User::find(auth()->user()->id);
@@ -246,6 +316,13 @@ class CotizadorController extends Controller
         return back();
     }
 
+    /**
+     * Cambia el tipo de moneda de la sesión y obtiene el tipo de cambio actual.
+     * SIN USO ACTUALMENTE
+     *
+     * @param string $currency_type El tipo de moneda a establecer (USD o cualquier otro valor).
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function changeCurrencyType($currency_type)
     {
         session()->put('currency_type', $currency_type);
@@ -276,15 +353,39 @@ class CotizadorController extends Controller
         return back();
     }
 
+    /**
+     * Método que devuelve la vista para agregar un nuevo producto.
+     *
+     * @return \Illuminate\View\View
+     */
     public function addProductCreate()
     {
         return view('cotizador.mis_productos.addProduct');
     }
+
+    /**
+     * Método que devuelve la vista para listar los productos.
+     *
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function listProducts()
     {
         return view('cotizador.mis_productos.listProducts');
     }
 
+    /**
+     * Envia las cotizaciones a Odoo.
+     *
+     * Este método recupera las cotizaciones pendientes de enviar a Odoo y las envía una por una.
+     * Para cada cotización, se obtiene la información necesaria, como el descuento, la empresa, el nombre comercial, etc.
+     * Luego se genera un archivo PDF correspondiente a la cotización y se guarda en el servidor.
+     * A continuación, se realiza una solicitud a la API de Odoo para crear una oportunidad con los datos de la cotización.
+     * Si la solicitud es exitosa, se actualiza el número de lead de la cotización y se marca como no pendiente de enviar a Odoo.
+     * Si ocurre algún error durante el proceso, se registra en un array de errores.
+     * Al finalizar, si hay errores registrados, se guarda un archivo de texto con los errores y se envía un correo electrónico al administrador.
+     *
+     * @return void
+     */
     public function enviarCotizacionesAOdoo()
     {
         $cotizacionesAEnviar = Quote::where("pending_odoo", true)->whereBetween("created_at", [now()->subWeek(), now()->subMinutes(3)])->orderBy('created_at', "DESC")->limit(10)->get();
@@ -441,6 +542,12 @@ class CotizadorController extends Controller
         }
     }
 
+    /**
+     * Exporta los usuarios a un archivo Excel.
+     *
+     * Crea un archivo Excel con los datos de los usuarios registrados en el sistema.
+     * El archivo se descarga automáticamente al ser accedido.
+     */
     public function exportUsuarios()
     {
 

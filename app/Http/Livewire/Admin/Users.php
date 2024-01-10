@@ -11,6 +11,11 @@ use Exception;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
+/**
+ * Clase Users
+ *
+ * Esta clase representa el componente Livewire para la gestión de usuarios en el panel de administración.
+ */
 class Users extends Component
 {
     use WithPagination;
@@ -21,6 +26,11 @@ class Users extends Component
         $password;
     public $updateMode = false;
 
+    /**
+     * Renderiza la vista del componente Users.
+     *
+     * @return \Illuminate\View\View
+     */
     public function render()
     {
         $this->companies = Company::all();
@@ -34,6 +44,13 @@ class Users extends Component
                 ->paginate(50),
         ]);
     }
+
+    /**
+     * Envía el acceso al usuario especificado.
+     *
+     * @param int $id El ID del usuario
+     * @return void
+     */
     public function sendAccess($id)
     {
         $user = User::find($id);
@@ -48,12 +65,23 @@ class Users extends Component
         ];
         $user->notify(new RegisteredUser($dataNotification));
     }
+
+    /**
+     * Cancela la operación actual y reinicia los valores de entrada.
+     *
+     * @return void
+     */
     public function cancel()
     {
         $this->resetInput();
         $this->updateMode = false;
     }
 
+    /**
+     * Reinicia los valores de entrada.
+     *
+     * @return void
+     */
     private function resetInput()
     {
         $this->name = null;
@@ -63,6 +91,11 @@ class Users extends Component
         $this->password = null;
     }
 
+    /**
+     * Almacena un nuevo usuario en la base de datos.
+     *
+     * @return void
+     */
     public function store()
     {
         $this->validate([
@@ -86,6 +119,12 @@ class Users extends Component
         session()->flash('message', 'User Successfully created.');
     }
 
+    /**
+     * Edita el usuario especificado.
+     *
+     * @param int $id El ID del usuario
+     * @return void
+     */
     public function edit($id)
     {
         $record = User::findOrFail($id);
@@ -101,6 +140,11 @@ class Users extends Component
         $this->updateMode = true;
     }
 
+    /**
+     * Actualiza el usuario especificado en la base de datos.
+     *
+     * @return void
+     */
     public function update()
     {
         $this->validate([
@@ -134,6 +178,12 @@ class Users extends Component
         }
     }
 
+    /**
+     * Elimina el usuario especificado de la base de datos.
+     *
+     * @param int $id El ID del usuario
+     * @return void
+     */
     public function destroy($id)
     {
         if ($id) {
@@ -142,6 +192,11 @@ class Users extends Component
         }
     }
 
+    /**
+     * Envía el acceso a todos los usuarios visibles.
+     *
+     * @return int|string
+     */
     public function sendAccessAll()
     {
         $users = User::where('visible', true)->get();
@@ -169,6 +224,12 @@ class Users extends Component
         }
     }
 
+    /**
+     * Actualiza el asistente del usuario especificado.
+     *
+     * @param int $user_id El ID del usuario
+     * @return void
+     */
     public function updateAssistant($user_id)
     {
         $user = User::find($user_id);
