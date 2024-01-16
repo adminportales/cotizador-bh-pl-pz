@@ -20,7 +20,7 @@ class CatalogoMinComponent extends Component
 {
     use WithPagination;
 
-    public $nombre, $producto = '', $proveedores;
+    public $nombre, $producto = '', $proveedores, $sku;
 
     protected $listeners = ['addProductNewQuote' => 'regresar'];
 
@@ -54,8 +54,10 @@ class CatalogoMinComponent extends Component
 
         $products  = CatalogoProduct::where(function ($query) use ($nombre) {
             $query->where('products.name', 'LIKE', $nombre)
-                ->orWhere('products.description', 'LIKE', $nombre);
+                ->orWhere('products.description', 'LIKE', $nombre)
+                ->orWhere('products.sku', 'LIKE', $nombre);
         })
+
             ->where('products.visible', '=', true)
             ->whereIn('products.type_id', [1, 2])
             ->where('products.price', '>', 0)

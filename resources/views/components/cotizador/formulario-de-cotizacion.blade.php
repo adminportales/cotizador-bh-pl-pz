@@ -106,7 +106,7 @@
 
                     @if (!$priceScales)
                         <div class="col-span-2">
-                            <label for="" class="text-sm font-semibold">Costo de Operacion</label>
+                            <label for="" class="text-sm font-semibold">Costo adicionales de operacion</label>
                             <input type="number" name="operacion" wire:model="operacion"
                                 placeholder="Costo de operacion"
                                 class="block w-full p-3 mb-2 text-gray-900 border border-gray-300 rounded-md bg-white sm:text-xs focus:ring-blue-500 focus:border-blue-500 ">
