@@ -372,6 +372,10 @@ class FormularioDeCotizacion extends Component
         // Calculo de Precio
         if (!is_numeric($this->colores))
             $this->colores = null;
+        if ($this->tecnicaSeleccionada == 8)
+            $this->colores = 1;
+        else
+            $this->colores = null;
         if (!is_numeric($this->operacion))
             $this->operacion = null;
         if (!is_numeric($this->utilidad))
@@ -951,6 +955,7 @@ class FormularioDeCotizacion extends Component
     public function resetTecnique()
     {
         $this->sizeSeleccionado = null;
+
         $this->tecnicaSeleccionada = null;
     }
 
