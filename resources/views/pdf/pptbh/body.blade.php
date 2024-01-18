@@ -229,11 +229,11 @@
                                     vertical-align: middle;
                                 }
                             </style>
-                            <table class="precio" style="font-size: 21px; width: 100%">
+                            <table class="precio" style="font-size: 21px; width: 100%; border: 1px solid black;">
                                 <tr class="text-background">
-                                    <td colspan="4" class="title-cantidad">Cantidad</td>
-                                    <td colspan="4" class="title-cantidad">Precio Unitario</td>
-                                    <td colspan="4" class="title-cantidad">Precio Total</td>
+                                    <td colspan="4" class="title-cantidad" style="background-color: #006EAD; color:white;">Cantidad</td>
+                                    <td colspan="4" class="title-cantidad" style="background-color: #006EAD; color:white;">Precio Unitario</td>
+                                    <td colspan="4" class="title-cantidad" style="background-color: #006EAD; color:white;">Precio Total</td>
                                 </tr>
                                 @if ($item->quote_by_scales)
                                     @foreach ($scales_info as $scale)
