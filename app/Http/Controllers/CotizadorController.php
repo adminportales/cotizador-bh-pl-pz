@@ -596,4 +596,98 @@ class CotizadorController extends Controller
         $writer->save('php://output');
         exit;
     }
+
+    public function exportProducts() {
+        return view('admin.export.products');
+    }
+
+    public function exportProductsDownload() {
+
+        try {
+            $products = Product::where('provider_id',1)->get();
+
+            $spreadsheet = new Spreadsheet();
+            $sheet = $spreadsheet->getActiveSheet();
+            $sheet->setTitle('Productos');
+
+
+            $spreadsheet->getActiveSheet()->getColumnDimension('A')->setAutoSize(true);
+            $spreadsheet->getActiveSheet()->getColumnDimension('B')->setAutoSize(true);
+            $spreadsheet->getActiveSheet()->getColumnDimension('C')->setAutoSize(true);
+            $spreadsheet->getActiveSheet()->getColumnDimension('D')->setAutoSize(true);
+            $spreadsheet->getActiveSheet()->getColumnDimension('E')->setAutoSize(true);
+            $spreadsheet->getActiveSheet()->getColumnDimension('F')->setAutoSize(true);
+            $spreadsheet->getActiveSheet()->getColumnDimension('G')->setAutoSize(true);
+            $spreadsheet->getActiveSheet()->getColumnDimension('H')->setAutoSize(true);
+
+
+            $contador_col = 1;
+
+            $sheet->setCellValue('A1', 'SKU');
+            $sheet->setCellValue('B1', 'Internal SKU');
+            $sheet->setCellValue('C1', 'Nombre');
+            $sheet->setCellValue('D1', 'Descripción');
+
+            $sheet->setCellValue('E1', 'Alto de producto');
+            $sheet->setCellValue('F1', 'Ancho de producto');
+            $sheet->setCellValue('G1', 'Área de impresión');
+            $sheet->setCellValue('H1', 'Impresión');
+            $sheet->setCellValue('I1', 'Alto de la caja');
+            $sheet->setCellValue('J1', 'Ancho de la caja');
+            $sheet->setCellValue('K1', 'Largo de la caja');
+            $sheet->setCellValue('L1', 'Perso de la caja');
+            $sheet->setCellValue('M1', 'Piezas de la caja');
+
+
+            $sheet->setCellValue('N1', 'Precio');
+            $sheet->setCellValue('O1', 'Stock');
+            $sheet->setCellValue('P1', 'Color');
+            $sheet->setCellValue('Q1', 'Proveedor');
+            
+
+            $utilidad = GlobalAttribute::find(1);
+            $utilidad = (float) $utilidad->value;
+
+            $products_to_export = [];
+
+            
+            foreach($products as $product){
+                $contador_col =  $contador_col + 1;
+                $attributes = $product->productAttributes->pluck('value','attribute')->toArray();
+               
+                $sheet->setCellValue('A'. $contador_col, $product->sku );
+                $sheet->setCellValue('B'. $contador_col, $product->internal_sku );
+                $sheet->setCellValue('C'. $contador_col, $product->name);
+                $sheet->setCellValue('D'. $contador_col, $product->description);
+
+                $sheet->setCellValue('E'. $contador_col, isset(array_values($attributes)[0]) ? array_values($attributes)[0]: '');
+                $sheet->setCellValue('F'. $contador_col, isset(array_values($attributes)[1]) ? array_values($attributes)[1]: '');
+                $sheet->setCellValue('G'. $contador_col, isset(array_values($attributes)[2]) ? array_values($attributes)[2]: '');
+                $sheet->setCellValue('H'. $contador_col, isset(array_values($attributes)[3]) ? array_values($attributes)[3]: '');
+                $sheet->setCellValue('I'. $contador_col, isset(array_values($attributes)[4]) ? array_values($attributes)[4]: '');
+                $sheet->setCellValue('J'. $contador_col, isset(array_values($attributes)[5]) ? array_values($attributes)[5]: '');
+                $sheet->setCellValue('K'. $contador_col, isset(array_values($attributes)[6]) ? array_values($attributes)[6]: '');
+                $sheet->setCellValue('L'. $contador_col, isset(array_values($attributes)[7]) ? array_values($attributes)[7]: '');
+                $sheet->setCellValue('M'. $contador_col, isset(array_values($attributes)[8]) ? array_values($attributes)[8]: '');
+
+                $sheet->setCellValue('N'. $contador_col, $product->price);
+                $sheet->setCellValue('O'. $contador_col, $product->stock);
+                $sheet->setCellValue('P'. $contador_col, $product->color->color);
+                $sheet->setCellValue('Q'. $contador_col, $product->provider->company);
+
+
+
+            }
+
+            header('Content-Disposition: attachment;filename=PRODUCTOS.xls');
+            header('Cache-Control: max-age=0');
+            
+            $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Xls');
+            $writer->save('php://output');
+        } catch (\Exception $e) {
+            dd($e->getMessage());
+        }
+
+        
+    }
 }

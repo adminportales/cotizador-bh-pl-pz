@@ -36,6 +36,8 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/addProduct/store', [CotizadorController::class, 'addProductStore'])->name('storeproduct.cotizador');
     Route::get('/list-products', [CotizadorController::class, 'listProducts'])->name('listProducts.cotizador');
     Route::get('/exportUsuarios', [CotizadorController::class, 'exportUsuarios'])->name('exportUsuarios.cotizador');
+    Route::get('/exportProducts', [CotizadorController::class, 'exportProducts'])->name('exportProducts.cotizador');
+    Route::post('/exportProducts/download', [CotizadorController::class, 'exportProductsDownload'])->name('exportProducts.download.cotizador');
 
     //Route Hooks - Do not delete//
     Route::prefix('admin')->middleware(['role:admin'])->group(function () {
@@ -48,6 +50,7 @@ Route::middleware(['auth'])->group(function () {
         Route::view('users', 'admin.users.index')->middleware('auth');
         Route::view('clients', 'admin.clients.index')->middleware('auth');
         Route::view('companies', 'admin.companies.index')->middleware('auth');
+        Route::view('tradenames', 'admin.tradenames.index')->middleware('auth');
         Route::view('tradenames', 'admin.tradenames.index')->middleware('auth');
 
     });
