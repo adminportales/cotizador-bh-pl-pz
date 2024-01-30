@@ -130,9 +130,9 @@
                                                     <span class="sr-only">Loading...</span>
                                                 </div>
                                             </div>
-                                            <button class="bg-yellow-200 p-3 w-full rounded-md hover:bg-yellow-300"
+                                            {{-- <button class="bg-yellow-200 p-3 w-full rounded-md hover:bg-yellow-300"
                                                 wire:click="enviar">Enviar al
-                                                Cliente</button>
+                                                Cliente</button> --}}
 
                                         </div>
                                     </div>
