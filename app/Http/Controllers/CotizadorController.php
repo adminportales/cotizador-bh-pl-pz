@@ -156,6 +156,7 @@ class CotizadorController extends Controller
      */
     public function previsualizar(Quote $quote)
     {
+
         $empresa = Client::where("name", $quote->latestQuotesUpdate->quotesInformation->company)->first();
         $nombreComercial = null;
         if ($empresa) {
@@ -182,7 +183,6 @@ class CotizadorController extends Controller
                 # code...
                 break;
         }
-
         $pdf->setPaper('Letter', 'portrait');
         return $pdf->stream("QS-" . $quote->id . " " . $quote->latestQuotesUpdate->quotesInformation->oportunity . ' ' . $quote->updated_at->format('d/m/Y') . '.pdf');
     }
