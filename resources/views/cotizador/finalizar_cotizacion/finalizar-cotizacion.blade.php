@@ -284,7 +284,7 @@
         function enviar() {
             Swal.fire({
                 title: '¿Desea confirmar la cotización?',
-                html: "{{ auth()->user()->companySession->name }}<br><br>Se enviará una copia de la cotización al correo electrónico establecido y se registra como un lead nuevo en Odoo.",
+                html: "{{ auth()->user()->companySession->name }}<br><br>Se registrá como un lead nuevo en Odoo.",
                 showCancelButton: true,
                 icon: 'warning',
                 confirmButtonText: 'Guardar',
@@ -294,7 +294,7 @@
                 if (result.isConfirmed) {
                     @this.guardarCotizacion()
                 } else {
-                    Swal.fire('No se realizo ningun cambio', '', 'info')
+                    Swal.fire('No se realizó ningún cambio.', '', 'info')
                 }
             })
         }

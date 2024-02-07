@@ -430,7 +430,9 @@ class FinalizarCotizacion extends Component
                     $mailer = 'smtp';
                     break;
             }
-            $mailSend = '';
+
+            /////AQUÍ SE ENVIABAN LOS CORREOS DE LOS CLIENTES//////
+            /*$mailSend = '';
             switch (auth()->user()->companySession->name) {
                 case 'PROMO LIFE':
                     $nameFile = "QS-" . $quote->id . " " . $quote->latestQuotesUpdate->quotesInformation->oportunity . ' ' . $quote->updated_at->format('d/m/Y') . '.pdf';
@@ -449,8 +451,9 @@ class FinalizarCotizacion extends Component
                     break;
                 default:
                     dd(1);
-                    break;
-            }
+                    break;  
+            }*/
+
             unlink(public_path() . $newPath);
             auth()->user()->currentQuoteActive->currentQuoteDetails()->delete();
             auth()->user()->currentQuoteActive()->delete();
@@ -486,9 +489,9 @@ class FinalizarCotizacion extends Component
                 //throw $th;
             }
             return redirect()->action([CotizadorController::class, 'verCotizacion'], ['quote' => $quote->id])->with('messageMail', json_encode($message) . ' ' . json_encode($messageMail))
-                ->with('messageError', 'Tu cotizacion se ha guardado exitosamente. ' .
+                ->with('messageError', 'Tu cotización se ha guardado exitosamente.' .
                     ($errorsMail ? "No se pudo enviar el email debido a problemas tecnicos. " : "") .
-                    ($errors ? "No se pudo guardar el lead debido a problemas en la conexion con Odoo, lo intentaremos nuevamente mas tarde" : ""));
+                    ($errors ? "No se pudo guardar el lead debido a problemas en la conexión con Odoo. Lo intentaremos nuevamente más tarde." : ""));
         }
         return redirect()->action([CotizadorController::class, 'verCotizacion'], ['quote' => $quote->id])->with('message', 'Tu cotizacion se ha guardado exitosamente y ya fue enviada al correo electronico establecido.');
     }
