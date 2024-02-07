@@ -187,9 +187,9 @@
                                 @else
                                     <img src="img/default.jpg" width="180">
                                 @endif --}}
-                                @if ($producto->image != null || $producto->image != '')
+                                @if ($producto->image)
                                     @php
-                                        $logo = $product->image;
+                                        $logo = $producto->image;
 
                                         $filename = basename($logo);
 
@@ -207,9 +207,11 @@
 
                                         $image64 = base64_encode($imageData);
                                     @endphp
-                                @else
                                     <img style="width:200px; height:240px; object-fit:contain;"
-                                        src="data:image/png;base64,{{ $image64 }}" alt="">
+                                    src="data:image/png;base64,{{ $image64 }}" alt="">
+                                @else
+                                    
+                                    <img src="img/default.jpg" width="180">
                                 @endif
                             </td>
                             <td style="width: 3%; vertical-align: middle"></td>
