@@ -3,7 +3,7 @@
         document.addEventListener('DOMContentLoaded', () => {
             const solicitarInfo = () => {
                 Swal.fire({
-                    title: 'Nos hace falta informacion',
+                    title: 'Nos hace falta información',
                     text: 'Selecciona la empresa a la que perteneces.',
                     input: 'select',
                     inputOptions: {
@@ -26,11 +26,11 @@
 
                             let respuesta = await @this.changeCompany()
                             if (respuesta == 1) {
-                                Swal.fire('La informacion se registro correctamente',
+                                Swal.fire('La información se registró correctamente.',
                                     '',
                                     'success')
                             } else {
-                                Swal.fire('¡Error al registrar la informacion!', '',
+                                Swal.fire('¡Error al registrar la información!', '',
                                     'error')
                                 solicitarInfo()
                             }

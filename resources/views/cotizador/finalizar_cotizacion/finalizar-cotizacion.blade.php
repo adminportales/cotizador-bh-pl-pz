@@ -158,7 +158,7 @@
                             <div class="modal-dialog modal-lg">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h5 class="modal-title" id="modalPreviewLabel">Vista Previa de la Cotizacion
+                                        <h5 class="modal-title" id="modalPreviewLabel">Vista Previa de la Cotización
                                         </h5>
                                         <button type="button" class="close" onclick="cerrarPreview()">
                                             <span aria-hidden="true">&times;</span>
@@ -194,7 +194,7 @@
                                         <div
                                             class="flex items-start justify-between p-4 border-b rounded-t dark:border-gray-600">
                                             <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
-                                                Vista Previa de la Cotizacion
+                                                Vista Previa de la Cotización
                                             </h3>
                                             <button type="button"
                                                 class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ml-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
