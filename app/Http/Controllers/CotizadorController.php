@@ -11,6 +11,7 @@ use App\Models\Quote;
 use App\Models\User;
 use Illuminate\Support\Facades\Storage;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Dompdf\Options;
 use Exception;
 use iio\libmergepdf\Merger;
 use Illuminate\Support\Facades\Mail;
@@ -188,8 +189,8 @@ class CotizadorController extends Controller
         $pdf->save(public_path($filename));
 
         return response()->download(public_path($filename))->deleteFileAfterSend(true); */
-
         $pdf->setPaper('Letter', 'portrait');
+        $pdf->output(['isRemoteEnabled' => true]);
         $filename = trim("QS-" . $quote->id  . $quote->updated_at->format('d-m-Y') . '.pdf');
         $pdf->save(public_path($filename));
         return response()->download(public_path($filename))->deleteFileAfterSend(true); 
