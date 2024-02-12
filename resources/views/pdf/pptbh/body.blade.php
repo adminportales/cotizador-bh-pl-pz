@@ -179,28 +179,11 @@
                     <p style="margin: 0; font-size: 31px; font-weight: bold;">{{ Str::ucfirst($producto->name) }}</p>
                     <table>
                         <td style="width:32%; vertical-align: middle">
-                            @if ($producto->image)
+                        @if ($producto->image)
                                 @php
-                                    $logo = $producto->image;
-
-                                    $filename = basename($logo);
-
-                                    $encodedFilename = rawurlencode($filename);
-
-                                    $encodedUrl = str_replace($filename, $encodedFilename, $logo);
-
-                                    $ch = curl_init($encodedUrl);
-
-                                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-
-                                    $imageData = curl_exec($ch);
-
-                                    curl_close($ch);
-
-                                    $image64 = base64_encode($imageData);
+                                    $imageSrc = trim($producto->image);
                                 @endphp
-                                <img style="width:200px; height:240px; object-fit:contain;"
-                                src="data:image/png;base64,{{ $image64 }}" alt="">
+                                <img style="max-height: 220px;height:auto;max-width: 220px;width:auto;" src="{{ $imageSrc }}" alt="">
                             @else
                                 <img src="img/default.jpg" width="180">
                             @endif
