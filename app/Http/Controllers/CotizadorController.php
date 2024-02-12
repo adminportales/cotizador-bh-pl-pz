@@ -11,6 +11,7 @@ use App\Models\Quote;
 use App\Models\User;
 use Illuminate\Support\Facades\Storage;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Dompdf\Options;
 use Exception;
 use iio\libmergepdf\Merger;
 use Illuminate\Support\Facades\Mail;
@@ -183,9 +184,18 @@ class CotizadorController extends Controller
                 # code...
                 break;
         }
+       /*  $pdf->setPaper('Letter', 'portrait');
+        
+        $pdf->save(public_path($filename));
+
+        return response()->download(public_path($filename))->deleteFileAfterSend(true); */
         $pdf->setPaper('Letter', 'portrait');
-        return $pdf->stream("QS-" . $quote->id . " " . $quote->latestQuotesUpdate->quotesInformation->oportunity . ' ' . $quote->updated_at->format('d/m/Y') . '.pdf');
-    }
+        $pdf->output(['isRemoteEnabled' => true]);
+        $filename = trim("QS-" . $quote->id  . $quote->updated_at->format('d-m-Y') . '.pdf');
+        $pdf->save(public_path($filename));
+        return response()->download(public_path($filename))->deleteFileAfterSend(true); 
+/*         return $pdf->stream("QS-" . $quote->id . " " . $quote->latestQuotesUpdate->quotesInformation->oportunity . ' ' . $quote->updated_at->format('d/m/Y') . '.pdf');
+ */    }
 
     /**
      * Previsualiza una presentación en formato PPT.
