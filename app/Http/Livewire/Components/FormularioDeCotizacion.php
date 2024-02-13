@@ -322,7 +322,7 @@ class FormularioDeCotizacion extends Component
         // Verifica si existe el atributo 'Outlet' y hace el 30 de descuento
         $productType = $this->product->productAttributes->where('attribute', 'Tipo Descuento')->first();
 
-        if ($productType && $productType->value != 'Normal') {
+        if ($productType && $productType->value == 'Normal') {
             $priceProduct = round($priceProduct - $priceProduct * (30 / 100), 2);
         }
 
