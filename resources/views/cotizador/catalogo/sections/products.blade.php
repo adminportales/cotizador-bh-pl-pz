@@ -33,7 +33,7 @@
                             }
 
                             if ($product_type) {
-                                if($product_type->value == 'Outlet'){
+                                if($product_type->value == 'Normal'){
                                     $priceProduct = round($priceProduct - $priceProduct * (30 / 100), 2);
                                 }
                             } 
