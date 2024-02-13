@@ -312,11 +312,20 @@ class FormularioDeCotizacion extends Component
 
         // Calcular el precio del producto
         $priceProduct = $this->product->price;
+
         if ($this->product->producto_promocion) {
             $priceProduct = round($priceProduct - $priceProduct * ($this->product->descuento / 100), 2);
         } else {
             $priceProduct = round($priceProduct - $priceProduct * ($this->product->provider->discount / 100), 2);
         }
+
+        // Verifica si existe el atributo 'Outlet' y hace el 30 de descuento
+        $productType = $this->product->productAttributes->where('attribute', 'Tipo Descuento')->first();
+
+        if ($productType && $productType->value == 'Outlet') {
+            $priceProduct = round($priceProduct - $priceProduct * (30 / 100), 2);
+        }
+
         $this->precio = round($priceProduct + $priceProduct * ($utilidad / 100), 2);
         $this->precioCalculado = $this->precio;
     }

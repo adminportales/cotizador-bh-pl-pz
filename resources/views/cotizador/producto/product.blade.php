@@ -5,12 +5,22 @@
         <div class="md:col-span-5 col-span-12 w-full border-2 border-gray-200 py-4 px-5 rounded-lg">
             @if ($product->precio_unico)
                 @php
+
+                    $product_type = $product->productAttributes->where('attribute', 'Tipo Descuento')->first();
+
                     $priceProduct = $product->price;
                     if ($product->producto_promocion) {
                         $priceProduct = round($priceProduct - $priceProduct * ($product->descuento / 100), 2);
                     } else {
                         $priceProduct = round($priceProduct - $priceProduct * ($product->provider->discount / 100), 2);
                     }
+
+                    if ($product_type) {
+                        if($product_type->value == 'Outlet'){
+                            $priceProduct = round($priceProduct - $priceProduct * (30 / 100), 2);
+                        }
+                    } 
+
                 @endphp
             @endif
             <p class="mb-2 text-xl">Detalles del Producto</p>
@@ -58,12 +68,22 @@
                             <div class="col-span-3 p-2 border font-bold border-gray-200  bg-gray-200"> Precio</div>
                             @foreach ($product->precios as $precio)
                                 @php
-                                    $priceProduct = $precio->price;
+
+                                    $product_type = $product->productAttributes->where('attribute', 'Tipo Descuento')->first();
+
+                                    $priceProduct = $product->price;
                                     if ($product->producto_promocion) {
                                         $priceProduct = round($priceProduct - $priceProduct * ($product->descuento / 100), 2);
                                     } else {
                                         $priceProduct = round($priceProduct - $priceProduct * ($product->provider->discount / 100), 2);
                                     }
+
+                                    if ($product_type) {
+                                        if($product_type->value == 'Outlet'){
+                                            $priceProduct = round($priceProduct - $priceProduct * (30 / 100), 2);
+                                        }
+                                    } 
+
                                 @endphp
                                 <div class="col-span-2  border border-gray-200 p-2">{{ $precio->escala_inicial }} -
                                     {{ $precio->escala_final }}</div>
