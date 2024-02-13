@@ -196,7 +196,24 @@
                                 @php
                                     $imageSrc = trim($producto->image);
                                 @endphp
-                                <img style="max-height: 220px;height:auto;max-width: 220px;width:auto;" src="{{ $imageSrc }}" alt="">
+                                <img id="productImage" style="max-height: 100px; max-width: 100px;" src="{{ $imageSrc }}" alt="">
+                                
+                                <script>
+                                    // Obtener la URL de la imagen
+                                    var imageUrl = "{{ $imageSrc }}";
+                                    
+                                    // Función para cargar la imagen a través del proxy
+                                    function loadImageWithProxy(url) {
+                                        $.get('/proxy-image?url=' + encodeURIComponent(url), function(data) {
+                                            $('#productImage').attr('src', 'data:image/jpeg;base64,' + btoa(data)); // Convertir la respuesta en base64
+                                        });
+                                    }
+
+                                    // Cargar la imagen a través del proxy al cargar la página
+                                    $(document).ready(function() {
+                                        loadImageWithProxy(imageUrl);
+                                    });
+                                </script>
                             @else
                                 <img src="img/default.jpg" width="180">
                             @endif
