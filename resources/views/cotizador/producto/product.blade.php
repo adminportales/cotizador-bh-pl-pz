@@ -7,19 +7,19 @@
                 @php
 
                     $product_type = $product->productAttributes->where('attribute', 'Tipo Descuento')->first();
-
                     $priceProduct = $product->price;
-                    if ($product->producto_promocion) {
-                        $priceProduct = round($priceProduct - $priceProduct * ($product->descuento / 100), 2);
-                    } else {
-                        $priceProduct = round($priceProduct - $priceProduct * ($product->provider->discount / 100), 2);
-                    }
-
+                    
                     if ($product_type) {
                         if($product_type->value == 'Normal'){
                             $priceProduct = round($priceProduct - $priceProduct * (30 / 100), 2);
                         }
-                    } 
+                    }else{
+                        if ($product->producto_promocion) {
+                        $priceProduct = round($priceProduct - $priceProduct * ($product->descuento / 100), 2);
+                        } else {
+                            $priceProduct = round($priceProduct - $priceProduct * ($product->provider->discount / 100), 2);
+                        }
+                    }
 
                 @endphp
             @endif
@@ -70,19 +70,19 @@
                                 @php
 
                                     $product_type = $product->productAttributes->where('attribute', 'Tipo Descuento')->first();
-
                                     $priceProduct = $product->price;
-                                    if ($product->producto_promocion) {
-                                        $priceProduct = round($priceProduct - $priceProduct * ($product->descuento / 100), 2);
-                                    } else {
-                                        $priceProduct = round($priceProduct - $priceProduct * ($product->provider->discount / 100), 2);
-                                    }
 
                                     if ($product_type) {
                                         if($product_type->value == 'Normal'){
                                             $priceProduct = round($priceProduct - $priceProduct * (30 / 100), 2);
                                         }
-                                    } 
+                                    }else{
+                                        if ($product->producto_promocion) {
+                                        $priceProduct = round($priceProduct - $priceProduct * ($product->descuento / 100), 2);
+                                        } else {
+                                            $priceProduct = round($priceProduct - $priceProduct * ($product->provider->discount / 100), 2);
+                                        }
+                                    }
 
                                 @endphp
                                 <div class="col-span-2  border border-gray-200 p-2">{{ $precio->escala_inicial }} -
