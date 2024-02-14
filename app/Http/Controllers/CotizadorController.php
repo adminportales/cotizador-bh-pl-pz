@@ -169,15 +169,15 @@ class CotizadorController extends Controller
         switch ($company) {
             case 'PROMO LIFE':
                 # code...
-                $pdf = \PDF::loadView('pdf.promolife', ['quote' => $quote, 'nombreComercial' => $nombreComercial]);
+                $pdf = \PDF::loadView('pdf.prueba', ['quote' => $quote, 'nombreComercial' => $nombreComercial]);
                 break;
             case 'BH TRADEMARKET':
                 # code...
-                $pdf = \PDF::loadView('pdf.bh', ['quote' => $quote, 'nombreComercial' => $nombreComercial]);
+                $pdf = \PDF::loadView('pdf.prueba', ['quote' => $quote, 'nombreComercial' => $nombreComercial]);
                 break;
             case 'PROMO ZALE':
                 # code...
-                $pdf = \PDF::loadView('pdf.promozale', ['quote' => $quote, 'nombreComercial' => $nombreComercial]);
+                $pdf = \PDF::loadView('pdf.prueba', ['quote' => $quote, 'nombreComercial' => $nombreComercial]);
                 break;
 
             default:
@@ -396,7 +396,7 @@ class CotizadorController extends Controller
      *
      * @return void
      */
-    public function enviarCotizacionesAOdoo()
+    /*public function enviarCotizacionesAOdoo()
     {
         $cotizacionesAEnviar = Quote::where("pending_odoo", true)->whereBetween("created_at", [now()->subWeek(), now()->subMinutes(3)])->orderBy('created_at', "DESC")->limit(10)->get();
         $erroresAlCotizar = [];
@@ -550,7 +550,7 @@ class CotizadorController extends Controller
             Storage::put('/public/dataErrorToTrySendQuote.txt',   json_encode($erroresAlCotizar));
             Mail::to('adminportales@promolife.com.mx')->send(new SendDataErrorCreateQuote('adminportales@promolife.com.mx', '/storage/dataErrorToTrySendQuote.txt'));
         }
-    }
+    }*/
 
     /**
      * Exporta los usuarios a un archivo Excel.
