@@ -9,10 +9,10 @@
                     $product_type = $product->productAttributes->where('attribute', 'Tipo Descuento')->first();
                     $priceProduct = $product->price;
                     
-                    if ($product_type) {
-                        if($product_type->value == 'Normal'){
-                            $priceProduct = round($priceProduct - $priceProduct * (30 / 100), 2);
-                        }
+                    if ($product_type && $product_type->value == 'Normal') {
+                        $priceProduct = round($priceProduct - $priceProduct * (30 / 100), 2);
+                    }else if($product_type && ($product_type->value == 'Outlet' || $product_type->value == 'Unico')){
+                        $priceProduct = round($priceProduct - $priceProduct * (0 / 100), 2);
                     }else{
                         if ($product->producto_promocion) {
                         $priceProduct = round($priceProduct - $priceProduct * ($product->descuento / 100), 2);
@@ -72,11 +72,11 @@
                                     $product_type = $product->productAttributes->where('attribute', 'Tipo Descuento')->first();
                                     $priceProduct = $product->price;
 
-                                    if ($product_type) {
-                                        if($product_type->value == 'Normal'){
-                                            $priceProduct = round($priceProduct - $priceProduct * (30 / 100), 2);
-                                        }
-                                    }else{
+                                    if ($product_type && $product_type->value == 'Normal') {
+                                        $priceProduct = round($priceProduct - $priceProduct * (30 / 100), 2);
+                                    }else if($product_type && ($product_type->value == 'Outlet' || $product_type->value == 'Unico'))
+                                        $priceProduct = round($priceProduct - $priceProduct * (0 / 100), 2);
+                                    else{
                                         if ($product->producto_promocion) {
                                         $priceProduct = round($priceProduct - $priceProduct * ($product->descuento / 100), 2);
                                         } else {

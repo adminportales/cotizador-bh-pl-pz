@@ -30,10 +30,10 @@
                                 $product_type = $row->productAttributes->where('attribute', 'Tipo Descuento')->first();
                                 $priceProduct = $row->price;
                                 
-                                if ($product_type) {
-                                    if($product_type->value == 'Normal'){
-                                        $priceProduct = round($priceProduct - $priceProduct * (30 / 100), 2);
-                                    }
+                                if ($product_type && $product_type->value == 'Normal') {
+                                    $priceProduct = round($priceProduct - $priceProduct * (30 / 100), 2);
+                                }else if(){
+
                                 }else{
                                     if ($row->producto_promocion) {
                                     $priceProduct = round($priceProduct - $priceProduct * ($row->descuento / 100), 2);

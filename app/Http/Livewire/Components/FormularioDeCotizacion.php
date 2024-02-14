@@ -317,6 +317,8 @@ class FormularioDeCotizacion extends Component
 
         if ($productType && $productType->value == 'Normal') {
             $priceProduct = round($priceProduct - $priceProduct * (30 / 100), 2);
+        }else if($productType && ($productType->value == 'Outlet' || $productType->value == 'Unico')){
+            $priceProduct = round($priceProduct - $priceProduct * (0 / 100), 2);
         }else{
             if ($this->product->producto_promocion) {
                 $priceProduct = round($priceProduct - $priceProduct * ($this->product->descuento / 100), 2);
@@ -328,6 +330,7 @@ class FormularioDeCotizacion extends Component
         $this->precio = round($priceProduct + $priceProduct * ($utilidad / 100), 2);
         $this->precioCalculado = $this->precio;
     }
+    
 
     /**
      * Renderiza el formulario de cotización y calcula el precio total.
