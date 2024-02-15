@@ -195,11 +195,8 @@
                         <td rowspan="{{ $item->quote_by_scales ? 5 + count($scales_info) : 6 }}"
                             style="width: 250px; text-align: center; vertical-align: middle; padding: 0; border-right: 1px solid #1485cc">
                             @if ($producto->image)
-                                @php
-                                    $imageSrc = trim($producto->image);
-                                @endphp
-                                <img id="productImage" style="max-height: 100px; max-width: 100px;" src="{{ $imageSrc }}" alt="">
-                                {{ $imageSrc }}
+                                
+                                <img  style="max-height: 220px;height:auto;max-width: 220px;width:auto;" src="{{$producto->image}}" alt="">
                             @else
                                 <img src="img/default.jpg" width="180">
                             @endif

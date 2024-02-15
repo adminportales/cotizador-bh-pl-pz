@@ -188,14 +188,11 @@
                                     <img src="img/default.jpg" width="180">
                                 @endif --}}
                                 @if ($producto->image)
-                                @php
-                                    $imageSrc = trim($producto->image);
-                                @endphp
-                                <img id="productImage" style="max-height: 100px; max-width: 100px;" src="{{ $imageSrc }}" alt="">
-                                {{ $imageSrc }}
-                            @else
-                                <img src="img/default.jpg" width="180">
-                            @endif
+                                
+                                    <img  style="max-height: 220px;height:auto;max-width: 220px;width:auto;" src="{{$producto->image}}" alt="">
+                                @else
+                                    <img src="img/default.jpg" width="180">
+                                @endif
                             </td>
                             <td style="width: 3%; vertical-align: middle"></td>
                             <td style="width:65%; vertical-align: middle">

@@ -179,12 +179,9 @@
                     <p style="margin: 0; font-size: 31px; font-weight: bold;">{{ Str::ucfirst($producto->name) }}</p>
                     <table>
                         <td style="width:32%; vertical-align: middle">
-                        @if ($producto->image)
-                                @php
-                                    $imageSrc = trim($producto->image);
-                                @endphp
-                                <img id="productImage" style="max-height: 100px; max-width: 100px;" src="{{ $imageSrc }}" alt="">
-                                {{ $imageSrc }}
+                            @if ($producto->image)
+                                
+                                <img  style="max-height: 220px;height:auto;max-width: 220px;width:auto;" src="{{$producto->image}}" alt="">
                             @else
                                 <img src="img/default.jpg" width="180">
                             @endif
