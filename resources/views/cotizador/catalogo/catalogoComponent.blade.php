@@ -44,7 +44,7 @@
         <div class="col-span-12 md:col-span-9">
             <div class="w-full border-2 border-gray-200 py-4 px-5 rounded-lg md:block hidden mb-3">
                 <div class="flex justify-between items-center">
-                    <p class="m-0 text-lg font-semibold grow">¿Vas a cotizar un producto que no esta en el catalogo?
+                    <p class="m-0 text-lg font-semibold grow" style="font-size: 20px; font-weight: bold; color: red;">¿Vas a cotizar un producto que no está en el catálogo?
                     </p>
                     <div class="text-center flex lg:flex-row md:flex-col">
                         <a href="{{ route('addProduct.cotizador') }}"

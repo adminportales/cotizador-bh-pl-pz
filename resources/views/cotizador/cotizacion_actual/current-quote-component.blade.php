@@ -28,7 +28,7 @@
                                                 Nombre
                                             </th>
                                             <th scope="col" class="sm:table-cell hidden px-6 py-3">
-                                                Informacion
+                                                Información
                                             </th>
                                             <th scope="col" class="sm:table-cell hidden px-6 py-3">
                                                 Cantidad
@@ -209,7 +209,7 @@
         </div>
     @else
         <div class="d-flex w-100 justify-content-center">
-            <p class="text-center m-0 my-5"><strong>No tienes productos en tu cotizacion actual </strong></p>
+            <p class="text-center m-0 my-5"><strong>No tienes productos en tu cotización actual </strong></p>
         </div>
     @endif
     <script>
