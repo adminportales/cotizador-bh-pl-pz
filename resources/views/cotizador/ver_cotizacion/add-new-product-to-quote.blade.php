@@ -20,7 +20,8 @@
             <!-- Modal content -->
             <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
                 <!-- Modal header -->
-                <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
+                <div class="flex items-center justify-between p-4 md:p-5 border-b Proverdor del Producto
+rounded-t dark:border-gray-600">
                     <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
                         Añadir producto a la cotizacion que no esta en el catalogo
                     </h3>
@@ -188,7 +189,7 @@
                                         <label for="nombre">Proveedor</label>
                                         <input type="text"
                                             class="block w-full p-3 mb-2 text-gray-900 border border-gray-300 rounded-md bg-white sm:text-xs focus:ring-blue-500 focus:border-blue-500 "
-                                            wire:model="proveedor" placeholder="Proverdor del Producto"
+                                            wire:model="proveedor" placeholder="Proverdor del producto"
                                             value="{{ old('proveedor') }}">
                                         @if ($errors->has('proveedor'))
                                             <span class="text-red-500">{{ $errors->first('proveedor') }}</span>
@@ -224,9 +225,9 @@
                                             <span class="text-red-500">{{ $errors->first('imagen') }}</span>
                                         @endif
                                     </div>
-                                    <p>Si tu imagen pesa mas de 500 KB, puedes comprimirla <a
+                                    <p>Si tu imagen pesa más de 500 KB, puedes comprimirla <a
                                             href="https://www.iloveimg.com/es/comprimir-imagen"
-                                            target="_blank">aqui</a></p>
+                                            target="_blank">aquí</a></p>
                                 </div>
                                 <div class="col-span-1">
                                     <div class="form-group">

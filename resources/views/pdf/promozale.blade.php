@@ -175,7 +175,7 @@
                 <table style="border-collapse: collapse;width:100%;border: 1px solid #72C3D6;">
                     <tr class="title">
                         <td>
-                            <p class="title-text">Imágen de referencia</p>
+                            <p class="title-text">Imagen de referencia</p>
                         </td>
                         <td colspan="12">
                             <p class="title-text">Descripción</p>
