@@ -130,8 +130,7 @@
 
 
                                     <div class="flex flex-col gap-2">
-                                        <input type="checkbox" id="enviar_correo" name="enviar_correo" class="mr-2">
-                                        <label for="enviar_correo">Enviar PDF por correo electrónico</label>
+                                        <input type="checkbox" wire:model="enviarCorreo" id="enviarCorreo"> Enviar cotización por correo electrónico
                                         <button class="bg-gray-200 p-3 rounded-md hover:bg-gray-300"
                                             data-modal-target="preview" data-modal-toggle="preview"
                                             onclick="preview()">Previsualizar Cotizacion</button>
@@ -287,7 +286,7 @@
             const enviarCorreo = document.getElementById('enviar_correo').checked;
             Swal.fire({
                 title: '¿Desea confirmar la cotización?',
-                html: {{ auth()->user()->companySession->name }}"<br><br>Se enviará una copia de la cotización al correo electrónico establecido y se registra como un lead nuevo en Odoo.",
+                html: "{{ auth()->user()->companySession->name }}<br><br>Se enviará una copia de la cotización al correo electrónico establecido y se registra como un lead nuevo en Odoo.",
                 showCancelButton: true,
                 icon: 'warning',
                 confirmButtonText: 'Guardar',
