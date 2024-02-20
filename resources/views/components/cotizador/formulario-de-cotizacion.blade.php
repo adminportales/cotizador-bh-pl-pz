@@ -429,15 +429,164 @@
             </span>
             <h3 class="flex items-center mb-1 text-lg font-semibold text-gray-900 ">
                 Finalizar Cotización
+                @php
+
+                    $precioDeTecnica = 0;
+
+                    if (!$this->priceScales) {
+                        if (!is_numeric($this->cantidad)) {
+                            $this->cantidad = null;
+                        }
+
+                        if (!is_numeric($this->newPriceTechnique)) {
+                            $this->newPriceTechnique = null;
+                        }
+
+                        if ((int) $this->cantidad > 0 && $preciosDisponibles && $this->sizeSeleccionado !== null) {
+                            foreach ($preciosDisponibles as $precioDisponible) {
+                                if ($precioDisponible->escala_final != null) {
+                                    if ((int) $this->cantidad >= $precioDisponible->escala_inicial && (int) $this->cantidad <= $precioDisponible->escala_final) {
+                                        $this->priceTechnique = $precioDisponible;
+                                        $precioDeTecnica = $precioDisponible->tipo_precio == 'D' ? round($precioDisponible->precio / (int) $this->cantidad, 2) : $precioDisponible->precio;
+                                    }
+                                } elseif ($precioDisponible->escala_final == null) {
+                                    if ((int) $this->cantidad >= $precioDisponible->escala_inicial) {
+                                        $this->priceTechnique = $precioDisponible;
+                                        $precioDeTecnica = $precioDisponible->tipo_precio == 'D' ? round($precioDisponible->precio / (int) $this->cantidad, 2) : $precioDisponible->precio;
+                                    }
+                                }
+                            }
+                        } else {
+                            $precioDeTecnica = 0;
+                            $this->priceTechnique = null;
+                        }
+
+                        $precioDeTecnicaUsado = $precioDeTecnica;
+                        if ($this->newPriceTechnique != null && $this->newPriceTechnique >= 0) {
+                            $precioDeTecnicaUsado = $this->newPriceTechnique;
+                        }
+
+                        if (!$this->product->precio_unico) {
+                            $escalasDeProductoDisponibles = $this->product->precios;
+                            if ((int) $this->cantidad > 0 && $escalasDeProductoDisponibles) {
+                                foreach ($escalasDeProductoDisponibles as $escalaDeCosto) {
+                                    if ($escalaDeCosto->escala_final != null) {
+                                        if ((int) $this->cantidad >= $escalaDeCosto->escala_inicial && (int) $this->cantidad <= $escalaDeCosto->escala_final) {
+                                            $this->precio = $escalaDeCosto->price;
+                                        }
+                                    } elseif ($escalaDeCosto->escala_final == null) {
+                                        if ((int) $this->cantidad >= $escalaDeCosto->escala_inicial) {
+                                            $this->precio = $escalaDeCosto->price;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                        $nuevoPrecio = round(($this->precio + $precioDeTecnicaUsado * $this->colores + $this->operacion) / ((100 - $this->utilidad) / 100), 2);
+
+                        $this->precioCalculado = $nuevoPrecio;
+                        $this->precioTotal = $nuevoPrecio * $this->cantidad;
+                    } else {
+                        $this->priceScalesComplete = [];
+                        foreach ($this->infoScales as $info) {
+                            if ((int) $info['quantity'] > 0 && $preciosDisponibles && $this->sizeSeleccionado !== null) {
+                                foreach ($preciosDisponibles as $precioDisponible) {
+                                    if ($precioDisponible->escala_final != null) {
+                                        if ((int) $info['quantity'] >= $precioDisponible->escala_inicial && (int) $info['quantity'] <= $precioDisponible->escala_final) {
+                                            $this->priceTechnique = $precioDisponible;
+                                            $precioDeTecnica = $precioDisponible->tipo_precio == 'D' ? round($precioDisponible->precio / (int) $info['quantity'], 2) : $precioDisponible->precio;
+                                        }
+                                    } elseif ($precioDisponible->escala_final == null) {
+                                        if ((int) $info['quantity'] >= $precioDisponible->escala_inicial) {
+                                            $this->priceTechnique = $precioDisponible;
+                                            $precioDeTecnica = $precioDisponible->tipo_precio == 'D' ? round($precioDisponible->precio / (int) $info['quantity'], 2) : $precioDisponible->precio;
+                                        }
+                                    }
+                                }
+                            } else {
+                                $precioDeTecnica = 0;
+                                $this->priceTechnique = null;
+                            }
+
+                            if (!is_numeric($info['quantity'])) {
+                                $info['quantity'] = null;
+                            }
+
+                            if (!is_numeric($info['tecniquePrice'])) {
+                                $info['tecniquePrice'] = null;
+                            }
+                            $precioDeTecnicaUsado = $precioDeTecnica;
+                            if ($info['tecniquePrice'] != null && $info['tecniquePrice'] >= 0) {
+                                $precioDeTecnicaUsado = $info['tecniquePrice'];
+                            }
+
+                            if (!$this->product->precio_unico) {
+                                $escalasDeProductoDisponibles = $this->product->precios;
+                                if ((int) $info['quantity'] > 0 && $escalasDeProductoDisponibles) {
+                                    foreach ($escalasDeProductoDisponibles as $escalaDeCosto) {
+                                        if ($escalaDeCosto->escala_final != null) {
+                                            if ((int) $info['quantity'] >= $escalaDeCosto->escala_inicial && (int) $info['quantity'] <= $escalaDeCosto->escala_final) {
+                                                $this->precio = $escalaDeCosto->price;
+                                            }
+                                        } elseif ($escalaDeCosto->escala_final == null) {
+                                            if ((int) $info['quantity'] >= $escalaDeCosto->escala_inicial) {
+                                                $this->precio = $escalaDeCosto->price;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                            $nuevoPrecio = round(($this->precio + $precioDeTecnicaUsado * $this->colores + $info['operacion']) / ((100 - $info['utility']) / 100), 2);
+
+                            array_push($this->priceScalesComplete, [
+                                'quantity' => $info['quantity'],
+                                'tecniquePrice' => $info['tecniquePrice'] != null ? floatval($info['tecniquePrice']) : $precioDeTecnica,
+                                'utility' => $info['utility'],
+                                'unit_price' => $nuevoPrecio,
+                                'operacion' => $info['operacion'],
+                                'total_price' => $nuevoPrecio * $info['quantity'],
+                            ]);
+                        }
+                        if ((int) $this->cantidad > 0 && $preciosDisponibles && $this->sizeSeleccionado !== null) {
+                            foreach ($preciosDisponibles as $precioDisponible) {
+                                if ($precioDisponible->escala_final != null) {
+                                    if ((int) $this->cantidad >= $precioDisponible->escala_inicial && (int) $this->cantidad <= $precioDisponible->escala_final) {
+                                        $this->priceTechnique = $precioDisponible;
+                                        $precioDeTecnica = $precioDisponible->tipo_precio == 'D' ? round($precioDisponible->precio / (int) $this->cantidad, 2) : $precioDisponible->precio;
+                                    }
+                                } elseif ($precioDisponible->escala_final == null) {
+                                    if ((int) $this->cantidad >= $precioDisponible->escala_inicial) {
+                                        $this->priceTechnique = $precioDisponible;
+                                        $precioDeTecnica = $precioDisponible->tipo_precio == 'D' ? round($precioDisponible->precio / (int) $this->cantidad, 2) : $precioDisponible->precio;
+                                    }
+                                }
+                            }
+                        } else {
+                            $precioDeTecnica = 0;
+                            $this->priceTechnique = null;
+                        }
+                    }
+                @endphp
+                {{ $this->product->precios }}
+                {{ ' precio de la tecnica' }}
+                {{ $precioDeTecnica }}
+                {{ 'precio de tecnica con colores' }}
+                {{ $precioDeTecnicaUsado * $this->colores }}
+                Finalizar Cotizacion
             </h3>
             <div class="bg-gray-50 p-3 rounded-sm">
                 <div class=" sm:flex justify-between p-4">
+
+
+
                     @if (!$priceScales)
                         <div>
                             <h6 class="text-success">Precio Final por Artículo: $ {{ $precioCalculado }}</h6>
                             <h6 class="text-success">Precio Total: $ {{ $precioTotal }}</h6>
                         </div>
                     @endif
+
                     <div class="m-0 mb-1 text-center">
                         @if ($currentQuote)
                             <button type="button" class="btn btn-warning py-2 px-4"
