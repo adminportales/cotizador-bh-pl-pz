@@ -180,8 +180,8 @@
                     <table>
                         <td style="width:32%; vertical-align: middle">
                             @if ($producto->image)
-                                <img style="width:200px; height:240px; object-fit:contain;"
-                                src="{{$producto->image}}" alt="">
+                                
+                                <img  style="max-height: 220px;height:auto;max-width: 220px;width:auto;" src="{{$producto->image}}" alt="">
                             @else
                                 <img src="img/default.jpg" width="180">
                             @endif

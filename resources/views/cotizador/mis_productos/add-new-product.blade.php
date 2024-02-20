@@ -14,10 +14,10 @@
         </div>
         <div class="col-span-1">
             <div class="form-group">
-                <label for="nombre">Descripcion</label>
+                <label for="nombre">Descripción</label>
                 <input type="text"
                     class="block w-full p-3 mb-2 text-gray-900 border border-gray-300 rounded-md bg-white sm:text-xs focus:ring-blue-500 focus:border-blue-500 "
-                    wire:model="descripcion" placeholder="Descripcion del producto" value="{{ old('descripcion') }}">
+                    wire:model="descripcion" placeholder="Descripción del producto" value="{{ old('descripcion') }}">
                 @if ($errors->has('descripcion'))
                     <span class="text-red-500">{{ $errors->first('descripcion') }}</span>
                 @endif
@@ -133,7 +133,7 @@
                 <label for="nombre">Proveedor</label>
                 <input type="text"
                     class="block w-full p-3 mb-2 text-gray-900 border border-gray-300 rounded-md bg-white sm:text-xs focus:ring-blue-500 focus:border-blue-500 "
-                    wire:model="proveedor" placeholder="Proverdor del Producto" value="{{ old('proveedor') }}">
+                    wire:model="proveedor" placeholder="Proverdor del producto" value="{{ old('proveedor') }}">
                 @if ($errors->has('proveedor'))
                     <span class="text-red-500">{{ $errors->first('proveedor') }}</span>
                 @endif
@@ -164,8 +164,8 @@
                     <span class="text-red-500">{{ $errors->first('imagen') }}</span>
                 @endif
             </div>
-            <p>Si tu imagen pesa mas de 500 KB, puedes comprimirla <a
-                    href="https://www.iloveimg.com/es/comprimir-imagen" target="_blank">aqui</a></p>
+            <p>Si tu imagen pesa más de 500 KB, puedes comprimirla <a
+                    href="https://www.iloveimg.com/es/comprimir-imagen" target="_blank">aquí</a></p>
         </div>
         <div class="col-span-1">
             <div class="form-group">
@@ -181,7 +181,7 @@
         </div>
         <div class="col-md-12">
             <button class="bg-green-300 p-3  rounded-md hover:bg-green-400" wire:click="guardar()">Utilizar
-                Producto</button>
+                producto</button>
         </div>
     </div>
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>

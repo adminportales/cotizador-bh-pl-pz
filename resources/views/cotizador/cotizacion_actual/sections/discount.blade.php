@@ -1,6 +1,6 @@
 <div class="col-span-4 lg:col-span-1">
     <div class="bg-white shadow-md rounded-md px-6 py-4">
-        <p class="text-black text-center text-lg mb-3">Total de la cotizacion</p>
+        <p class="text-black text-center text-lg mb-3">Total de la cotización</p>
         @if (false)
             <button
                 class="bg-gray-200 hover:bg-gray-200 text-black font-bold py-2 px-4 rounded w-full  {{ $cotizacion->discount }}"
@@ -31,7 +31,7 @@
         </div>
         <div class="justify-items-center bg-gray-200 text-center p-2 font-bold">
             <a href="{{ route('finalizar') }}" class="">Finalizar
-                Cotizacion</a>
+                cotización</a>
         </div>
     </div>
 </div>

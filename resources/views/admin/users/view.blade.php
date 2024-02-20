@@ -41,8 +41,8 @@
                                     <td>#</td>
                                     <th>Name</th>
                                     <th>Email</th>
-                                    <th>Ultimo Login</th>
-                                    <th>Informacion</th>
+                                    <th>Último Login</th>
+                                    <th>InformacIón</th>
                                     <td>ACTIONS</td>
                                 </tr>
                             </thead>
@@ -85,7 +85,7 @@
                                                     <a class="dropdown-item"
                                                         onclick="confirm('Enviar acceso a {{ $row->name }} por email?')||event.stopImmediatePropagation()"
                                                         wire:click="sendAccess({{ $row->id }})"><i
-                                                            class="fa fa-trash"></i> Enviar Acceso </a>
+                                                            class="fa fa-trash"></i> Enviar acceso </a>
                                                 </div>
                                             </div>
                                         </td>

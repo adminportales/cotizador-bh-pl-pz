@@ -399,7 +399,7 @@ class FinalizarCotizacion extends Component
                 }
             } else {
                 $errors = true;
-                $message = "Error al enviar la cotizacion a odoo";
+                $message = "Error al envíar la cotización a odoo";
             }
         } catch (Exception $exception) {
             $message = $exception->getMessage();
@@ -486,11 +486,11 @@ class FinalizarCotizacion extends Component
                 //throw $th;
             }
             return redirect()->action([CotizadorController::class, 'verCotizacion'], ['quote' => $quote->id])->with('messageMail', json_encode($message) . ' ' . json_encode($messageMail))
-                ->with('messageError', 'Tu cotizacion se ha guardado exitosamente. ' .
-                    ($errorsMail ? "No se pudo enviar el email debido a problemas tecnicos. " : "") .
-                    ($errors ? "No se pudo guardar el lead debido a problemas en la conexion con Odoo, lo intentaremos nuevamente mas tarde" : ""));
+                ->with('messageError', 'Tu cotización se ha guardado exitosamente.' .
+                    ($errorsMail ? "No se pudo enviar el email debido a problemas técnicos. " : "") .
+                    ($errors ? "No se pudo guardar el lead debido a problemas en la conexión con Odoo. Lo intentaremos nuevamente más tarde." : ""));
         }
-        return redirect()->action([CotizadorController::class, 'verCotizacion'], ['quote' => $quote->id])->with('message', 'Tu cotizacion se ha guardado exitosamente y ya fue enviada al correo electronico establecido.');
+        return redirect()->action([CotizadorController::class, 'verCotizacion'], ['quote' => $quote->id])->with('message', 'Tu cotización se ha guardado exitosamente y ya fue enviada al correo electrónico establecido.');
     }
 
     public function cargarDatosCliente()

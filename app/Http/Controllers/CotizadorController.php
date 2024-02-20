@@ -84,20 +84,20 @@ class CotizadorController extends Controller
                                 $productoEsEncontrado = true;
                                 break;
                             }
-                            $msg = "Este producto no se encuentra en el catalogo que esta enviado DV via Servicio WEB";
+                            $msg = "Este producto no se encuentra en el catálogo que está siendo enviado DV vía servicio web.";
                         }
                     } else {
-                        $msg = "Este producto no se encuentra en el catalogo que esta enviado DV via Servicio WEB";
+                        $msg = "Este producto no se encuentra en el catálogo que está siendo enviado DV vía servicio web.";
                     }
                 } else {
-                    $msg = "No se obtuvo informacion acerca del Stock de este producto. Es posible que los datos sean incorrectos";
+                    $msg = "No se obtuvo información acerca del stock de este producto. Es posible que los datos sean incorrectos.";
                 }
                 if ($productoEsEncontrado) {
                     $msg = '';
                 }
             }
         } catch (Exception $e) {
-            $msg = "No se obtuvo informacion acerca del Stock de este producto. Es posible que los datos sean incorrectos. Error: " . $e->getMessage();
+            $msg = "No se obtuvo información acerca del stock de este producto. Es posible que los datos sean incorrectos. Error: " . $e->getMessage();
         }
         return view('cotizador.producto.product', compact('product', 'utilidad', "msg", "disponiblidad"));
     }
@@ -534,7 +534,7 @@ class CotizadorController extends Controller
                         }
                     } else {
                         $errors = true;
-                        $message = "Error al enviar la cotizacion a odoo";
+                        $message = "Error al enviar la cotizaciÓn a odoo";
                     }
                 } catch (Exception $exception) {
                     $message = $exception->getMessage();
