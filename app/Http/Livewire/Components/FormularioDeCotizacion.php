@@ -390,10 +390,10 @@ class FormularioDeCotizacion extends Component
         if ($this->utilidad > 99)
             $this->utilidad = 99;
 
-        if ($this->tecnicaSeleccionada == 8){
+        if ($this->tecnicaSeleccionada == 8) {
             $this->colores = 1;
         }
-            
+
 
         $precioDeTecnica = 0;
 
@@ -444,7 +444,7 @@ class FormularioDeCotizacion extends Component
                 }
             }
 
-            $nuevoPrecio = round(($this->precio + ($precioDeTecnicaUsado * $this->colores) + $this->operacion) / ((100 - $this->utilidad) / 100), 2);
+            $nuevoPrecio = round(($this->precio + ($precioDeTecnicaUsado * $this->colores) + $this->operacion) / ((100 - $this->utilidad) / 100),2);
 
             $this->precioCalculado = $nuevoPrecio;
             $this->precioTotal = $nuevoPrecio * $this->cantidad;
