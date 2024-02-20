@@ -87,7 +87,6 @@ class ImportTechniques extends Component
                 "end" => $hojaActual->getCellByColumnAndRow(3, $indiceFila)->getValue(),
                 "price" => $hojaActual->getCellByColumnAndRow(6, $indiceFila)->getValue(),
                 "type" => $hojaActual->getCellByColumnAndRow(7, $indiceFila)->getValue(),
-                "extras" => $hojaActual->getCellByColumnAndRow(8, $indiceFila)->getValue()
             ];
 
             // Verificar si hay valores incorrectos o vacíos en la fila
