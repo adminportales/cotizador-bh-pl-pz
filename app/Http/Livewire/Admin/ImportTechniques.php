@@ -69,7 +69,7 @@ class ImportTechniques extends Component
         }
 
         // Verificar si todas las columnas están presentes
-        if ($numeroMayorDeColumna < 8) {
+        if ($numeroMayorDeColumna < 7) {
             session()->flash('error', "Al parecer no están todas las columnas");
             return;
         }
@@ -80,13 +80,14 @@ class ImportTechniques extends Component
         for ($indiceFila = 2; $indiceFila <= $numeroMayorDeFila; $indiceFila++) {
             $data = [
                 "material" => $hojaActual->getCellByColumnAndRow(1, $indiceFila)->getValue(),
-                "extras" => $hojaActual->getCellByColumnAndRow(2, $indiceFila)->getValue(),
-                "technique" => $hojaActual->getCellByColumnAndRow(5, $indiceFila)->getValue(),
-                "size" => $hojaActual->getCellByColumnAndRow(6, $indiceFila)->getValue(),
-                "start" => $hojaActual->getCellByColumnAndRow(3, $indiceFila)->getValue(),
-                "end" => $hojaActual->getCellByColumnAndRow(4, $indiceFila)->getValue(),
-                "price" => $hojaActual->getCellByColumnAndRow(7, $indiceFila)->getValue(),
-                "type" => $hojaActual->getCellByColumnAndRow(8, $indiceFila)->getValue()
+                "technique" => $hojaActual->getCellByColumnAndRow(4, $indiceFila)->getValue(),
+                "extras" => $hojaActual->getCellByColumnAndRow(8, $indiceFila)->getValue(),
+                "size" => $hojaActual->getCellByColumnAndRow(5, $indiceFila)->getValue(),
+                "start" => $hojaActual->getCellByColumnAndRow(2, $indiceFila)->getValue(),
+                "end" => $hojaActual->getCellByColumnAndRow(3, $indiceFila)->getValue(),
+                "price" => $hojaActual->getCellByColumnAndRow(6, $indiceFila)->getValue(),
+                "type" => $hojaActual->getCellByColumnAndRow(7, $indiceFila)->getValue(),
+                "extras" => $hojaActual->getCellByColumnAndRow(8, $indiceFila)->getValue()
             ];
 
             // Verificar si hay valores incorrectos o vacíos en la fila
@@ -97,7 +98,6 @@ class ImportTechniques extends Component
             }
             array_push($information, $data);
         }
-
         // Mostrar errores si los hay
         if (count($errores) > 0) {
             $message = '';
@@ -120,9 +120,12 @@ class ImportTechniques extends Component
             try {
                 // Registrar el material si no existe
                 $slugMaterial = mb_strtolower(str_replace(' ', '-', $dataInfo['material']));
-                $material = Material::where("slug", $slugMaterial)->where('active', 1)->first();
-                if (!$material) {
-                    $material = Material::create([
+                $mat = Material::where('slug', $slugMaterial)->first();
+                //$material = Material::where("slug", $slugMaterial)->where('active', 1)->first();
+
+                if ($mat == null) {
+
+                    $mat = Material::create([
                         'nombre' => $dataInfo['material'],
                         'extras' => $dataInfo['extras'],
                         'slug' => $slugMaterial,
@@ -132,7 +135,7 @@ class ImportTechniques extends Component
                 // Registrar la técnica si no existe
                 $slugTecnique = mb_strtolower(str_replace(' ', '-', $dataInfo['technique']));
                 $technique = Technique::where("slug", $slugTecnique)->first();
-                if (!$technique) {
+                if (!$technique || $technique == null) {
                     $technique = Technique::create([
                         'nombre' => $dataInfo['technique'],
                         'slug' => $slugTecnique,
@@ -140,18 +143,19 @@ class ImportTechniques extends Component
                 }
 
                 // Registrar la relación entre el material y la técnica
-                $materialTechnique = MaterialTechnique::where('technique_id', $technique->id)->where('material_id', $material->id)->first();
-                if (!$materialTechnique) {
+                $materialTechnique = MaterialTechnique::where('material_id', $mat->id)->where('technique_id', $technique->id)->first();
+
+                if (!$materialTechnique || $materialTechnique == null) {
                     $materialTechnique = MaterialTechnique::create([
                         'technique_id' => $technique->id,
-                        'material_id' => $material->id
+                        'material_id' => $mat->id
                     ]);
                 }
 
                 // Registrar el tamaño si no existe
                 $slugSize = mb_strtolower(str_replace(' ', '-', $dataInfo['size']));
                 $size = Size::where("slug", $slugSize)->first();
-                if (!$size) {
+                if (!$size  || $size == null) {
                     $size = Size::create([
                         'nombre' => $dataInfo['size'],
                         'slug' => $slugSize,
@@ -160,7 +164,8 @@ class ImportTechniques extends Component
 
                 // Registrar la relación entre el tamaño, el material y la técnica
                 $sizeMaterialTechnique = SizeMaterialTechnique::where('size_id', $size->id)->where('material_technique_id', $materialTechnique->id)->first();
-                if (!$sizeMaterialTechnique) {
+
+                if (!$sizeMaterialTechnique || $sizeMaterialTechnique == null) {
                     $sizeMaterialTechnique = SizeMaterialTechnique::create([
                         'size_id' => $size->id,
                         'material_technique_id' => $materialTechnique->id
