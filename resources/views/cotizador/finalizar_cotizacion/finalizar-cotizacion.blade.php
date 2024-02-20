@@ -283,7 +283,7 @@
         }
 
         function enviar() {
-            const enviarCorreo = document.getElementById('enviar_correo').checked;
+            const enviarCorreo = document.getElementById('enviarCorreo').checked;
             Swal.fire({
                 title: '¿Desea confirmar la cotización?',
                 html: "{{ auth()->user()->companySession->name }}<br><br>Se enviará una copia de la cotización al correo electrónico establecido y se registra como un lead nuevo en Odoo.",

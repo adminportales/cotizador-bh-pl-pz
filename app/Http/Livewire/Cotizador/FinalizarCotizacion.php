@@ -452,7 +452,9 @@ class FinalizarCotizacion extends Component
                     dd(1);
                     break;
             }
-        }    
+        }  else {
+            $errorsMail = true;
+        }     
             unlink(public_path() . $newPath);
             auth()->user()->currentQuoteActive->currentQuoteDetails()->delete();
             auth()->user()->currentQuoteActive()->delete();
