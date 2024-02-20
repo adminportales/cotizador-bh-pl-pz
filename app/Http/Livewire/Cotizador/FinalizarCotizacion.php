@@ -431,6 +431,7 @@ class FinalizarCotizacion extends Component
                     break;
             }
             $mailSend = '';
+            if ($this->enviarCorreo) {
             switch (auth()->user()->companySession->name) {
                 case 'PROMO LIFE':
                     $nameFile = "QS-" . $quote->id . " " . $quote->latestQuotesUpdate->quotesInformation->oportunity . ' ' . $quote->updated_at->format('d/m/Y') . '.pdf';
@@ -451,6 +452,9 @@ class FinalizarCotizacion extends Component
                     dd(1);
                     break;
             }
+        }  else {
+            $errorsMail = true;
+        }     
             unlink(public_path() . $newPath);
             auth()->user()->currentQuoteActive->currentQuoteDetails()->delete();
             auth()->user()->currentQuoteActive()->delete();
