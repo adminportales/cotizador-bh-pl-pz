@@ -92,14 +92,14 @@
 
     function eliminarCurrentQuote(quoteId) {
         Swal.fire({
-            title: 'Esta seguro?',
-            text: "Esta accion ya no se puede revertir!",
+            title: '¿Está seguro?',
+            text: "¡Esta acción ya no se puede revertir!",
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
-            confirmButtonText: 'Si, eliminar mi cotizacion!',
-            cancelButtonText: 'Cancelar!'
+            confirmButtonText: 'Sí, eliminar mi cotización',
+            cancelButtonText: 'Cancelar'
         }).then((result) => {
             if (result.isConfirmed) {
                 @this.deleteCurrentQuote(quoteId)

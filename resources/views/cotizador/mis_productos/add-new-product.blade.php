@@ -188,14 +188,14 @@
     <script>
         function deleteEscala(id) {
             Swal.fire({
-                title: 'Esta seguro?',
-                text: "Desea eliminar esta escala",
+                title: '¿Está seguro?',
+                text: "¿Desea eliminar esta escala?",
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
                 cancelButtonColor: '#d33',
-                confirmButtonText: 'Si!',
-                cancelButtonText: 'Cancelar!'
+                confirmButtonText: 'Sí',
+                cancelButtonText: 'Cancelar'
             }).then((result) => {
                 if (result.isConfirmed) {
                     let respuesta = @this.deleteScale(id)

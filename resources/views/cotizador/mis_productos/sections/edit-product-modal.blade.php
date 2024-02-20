@@ -40,7 +40,7 @@
                                 <label for="nombre">Descripcion</label>
                                 <input type="text"
                                     class="block w-full p-3 mb-2 text-gray-900 border border-gray-300 rounded-md bg-white sm:text-xs focus:ring-blue-500 focus:border-blue-500 "
-                                    wire:model="descripcion" placeholder="Descripcion del producto"
+                                    wire:model="descripcion" placeholder="Descripción del producto"
                                     value="{{ old('descripcion') }}">
                                 @if ($errors->has('descripcion'))
                                     <span class="text-danger">{{ $errors->first('descripcion') }}</span>
@@ -242,7 +242,7 @@
                                 <label for="nombre">Stock</label>
                                 <input type="number"
                                     class="block w-full p-3 mb-2 text-gray-900 border border-gray-300 rounded-md bg-white sm:text-xs focus:ring-blue-500 focus:border-blue-500 "
-                                    wire:model="stock" placeholder="Cantidad Disponible o Cantidad que desea cotizar"
+                                    wire:model="stock" placeholder="Cantidad disponible o Cantidad que desea cotizar"
                                     value="{{ old('stock') }}">
                                 @if ($errors->has('stock'))
                                     <span class="text-danger">{{ $errors->first('stock') }}</span>

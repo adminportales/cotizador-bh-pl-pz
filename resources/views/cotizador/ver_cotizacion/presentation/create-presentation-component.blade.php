@@ -94,14 +94,14 @@
 
         function savePPT() {
             Swal.fire({
-                title: 'Esta seguro?',
-                text: "Desea guardar esta presentacion",
+                title: '¿Está seguro?',
+                text: "¿Desea guardar esta presentación?",
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
                 cancelButtonColor: '#d33',
-                confirmButtonText: 'Si!',
-                cancelButtonText: 'Cancelar!'
+                confirmButtonText: 'Sí',
+                cancelButtonText: 'Cancelar'
             }).then((result) => {
                 if (result.isConfirmed) {
                     let respuesta = @this.savePPT()
