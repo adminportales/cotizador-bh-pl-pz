@@ -92,7 +92,7 @@
                     <label for="">Email</label>
                     <input type="email"
                         class="block w-full p-3 mb-2 text-gray-900 border border-gray-300 rounded-md bg-white sm:text-xs focus:ring-blue-500 focus:border-blue-500 "
-                        placeholder="Correo electronico del contacto" wire:model="email">
+                        placeholder="Correo electrónico del contacto" wire:model="email">
                 </div>
                 @if ($errors->has('email'))
                     <span class="text-danger">{{ $errors->first('email') }}</span>
@@ -211,7 +211,7 @@
                     <label for="">Tax Fee (Opcional)</label>
                     <input type="number"
                         class="block w-full p-3 mb-2 text-gray-900 border border-gray-300 rounded-md bg-white sm:text-xs focus:ring-blue-500 focus:border-blue-500 "
-                        placeholder="Tax Fee (Valor Maximo 99)" wire:model="taxFee"
+                        placeholder="Tax Fee (Valor Máximo 99)" wire:model="taxFee"
                         max="99">
                 </div>
             </div>

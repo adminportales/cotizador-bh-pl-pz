@@ -12,7 +12,7 @@
         <div class="col-md-1">
             <div class="form-group">
                 <label for="">Email</label>
-                <input type="email" class="block w-full p-3 mb-2 text-gray-900 border border-gray-300 rounded-md bg-white sm:text-xs focus:ring-blue-500 focus:border-blue-500 " placeholder="Correo electronico del contacto"
+                <input type="email" class="block w-full p-3 mb-2 text-gray-900 border border-gray-300 rounded-md bg-white sm:text-xs focus:ring-blue-500 focus:border-blue-500 " placeholder="Correo electrónico del contacto"
                     wire:model="email">
             </div>
             @if ($errors->has('email'))
@@ -22,7 +22,7 @@
         <div class="col-md-1">
             <div class="form-group">
                 <label for="">Telefono</label>
-                <input type="tel" class="block w-full p-3 mb-2 text-gray-900 border border-gray-300 rounded-md bg-white sm:text-xs focus:ring-blue-500 focus:border-blue-500 " placeholder="Telefono del contacto" wire:model="telefono">
+                <input type="tel" class="block w-full p-3 mb-2 text-gray-900 border border-gray-300 rounded-md bg-white sm:text-xs focus:ring-blue-500 focus:border-blue-500 " placeholder="Teléfono del contacto" wire:model="telefono">
             </div>
             @if ($errors->has('telefono'))
                 <span class="text-danger">{{ $errors->first('telefono') }}</span>
@@ -99,14 +99,14 @@
         <div class="col-md-1">
             <div class="form-group">
                 <label for="">Tax Fee (Opcional)</label>
-                <input type="number" class="block w-full p-3 mb-2 text-gray-900 border border-gray-300 rounded-md bg-white sm:text-xs focus:ring-blue-500 focus:border-blue-500 " placeholder="Tax Fee (Valor Maximo 99)" wire:model="taxFee"
+                <input type="number" class="block w-full p-3 mb-2 text-gray-900 border border-gray-300 rounded-md bg-white sm:text-xs focus:ring-blue-500 focus:border-blue-500 " placeholder="Tax Fee (Valor Máximo 99)" wire:model="taxFee"
                     max="99">
             </div>
         </div>
         <div class="col-md-1">
             <div class="form-group">
                 <label for="">Vigencia de la cotizacion (Opcional)</label>
-                <input type="number" class="block w-full p-3 mb-2 text-gray-900 border border-gray-300 rounded-md bg-white sm:text-xs focus:ring-blue-500 focus:border-blue-500 " placeholder="Duracion de la vigencia"
+                <input type="number" class="block w-full p-3 mb-2 text-gray-900 border border-gray-300 rounded-md bg-white sm:text-xs focus:ring-blue-500 focus:border-blue-500 " placeholder="Duración de la vigencia"
                     wire:model="shelfLife" max="99">
             </div>
         </div>

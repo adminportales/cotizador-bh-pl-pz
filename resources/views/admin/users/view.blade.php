@@ -101,14 +101,14 @@
     <script>
         function enviar(id) {
             Swal.fire({
-                title: 'Esta seguro?',
-                text: "Se enviara un email a todos los usuarios!",
+                title: '¿Está seguro?',
+                text: "Se enviará un email a todos los usuarios",
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
                 cancelButtonColor: '#d33',
-                confirmButtonText: 'Si!',
-                cancelButtonText: 'Cancelar!'
+                confirmButtonText: 'Sí',
+                cancelButtonText: 'Cancelar'
             }).then((result) => {
                 if (result.isConfirmed) {
 
