@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\Admin;
 
+use App\Models\Catalogo\Price;
 use App\Models\Material;
 use App\Models\MaterialTechnique;
 use App\Models\PricesTechnique;
@@ -110,10 +111,13 @@ class ImportTechniques extends Component
         // Eliminar los datos anteriores
         try {
             DB::table('materials')->where('active', 1)->update(['active' => 0]);
+            DB::table('prices_techniques')->select('tipo_precio')->update([
+                'escala_final' => null, 'escala_inicial' => null,
+                'precio' => null, 'tipo_precio' => null
+            ]);
         } catch (Exception $th) {
             session()->flash('error', $th->getMessage());
         }
-
         // Comenzar a cargar las técnicas
         foreach ($information as $dataInfo) {
             try {
@@ -171,14 +175,47 @@ class ImportTechniques extends Component
                     ]);
                 }
 
-                // Registrar el precio de la técnica
-                $priceTechnique = PricesTechnique::create([
-                    'size_material_technique_id' => $sizeMaterialTechnique->id,
-                    'escala_inicial' => floatval($dataInfo['start']),
-                    'escala_final' => $dataInfo['end'] == '-' ? null : floatval($dataInfo['end']),
-                    'precio' => floatval($dataInfo['price']),
-                    'tipo_precio' => $dataInfo['type']
-                ]);
+                $priceTechniques = PricesTechnique::where('size_material_technique_id', $sizeMaterialTechnique->id)->get();
+
+                $updated = false;
+
+                foreach ($priceTechniques as $priceTechnique) {
+                    if ($priceTechnique->escala_inicial === null) {
+                        // Actualiza el registro existente
+                        $priceTechnique->update([
+                            'escala_inicial' => floatval($dataInfo['start']),
+                            'escala_final' => $dataInfo['end'] == '-' ? null : floatval($dataInfo['end']),
+                            'precio' => floatval($dataInfo['price']),
+                            'tipo_precio' => $dataInfo['type']
+                        ]);
+                        // Establece la bandera de actualización en verdadero
+                        $updated = true;
+                        // Rompe el bucle ya que se ha actualizado un registro
+                        break;
+                    }
+                }
+
+                // Si no se actualizó ningún registro existente, crea uno nuevo
+                if (!$updated) {
+                    PricesTechnique::create([
+                        'size_material_technique_id' => $sizeMaterialTechnique->id,
+                        'escala_inicial' => floatval($dataInfo['start']),
+                        'escala_final' => $dataInfo['end'] == '-' ? null : floatval($dataInfo['end']),
+                        'precio' => floatval($dataInfo['price']),
+                        'tipo_precio' => $dataInfo['type']
+                    ]);
+                }
+
+                /*    if ($priceTechnique->escala_inicial == null) {
+
+                    $priceTechnique = PricesTechnique::updated([
+                        'size_material_technique_id' => $sizeMaterialTechnique->id,
+                        'escala_inicial' => floatval($dataInfo['start']),
+                        'escala_final' => $dataInfo['end'] == '-' ? null : floatval($dataInfo['end']),
+                        'precio' => floatval($dataInfo['price']),
+                        'tipo_precio' => $dataInfo['type']
+                    ]);
+                } */
             } catch (Exception $th) {
                 session()->flash('error', "Error al insertar la información, revise el archivo e inténtelo de nuevo");
             }
