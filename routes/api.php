@@ -3,6 +3,7 @@
 use App\Http\Controllers\ApiOdooController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Livewire\Cotizador\CatalogoComponent;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,3 +22,5 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::post('setUsers/v1',[ ApiOdooController::class, 'getUsers']);
 Route::post('setClients/v1',[ ApiOdooController::class, 'getClients']);
+
+Route::get('/catalogo/proveedor', [CatalogoComponent::class, 'catalogoImportacion']);
