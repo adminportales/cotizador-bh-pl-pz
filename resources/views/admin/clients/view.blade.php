@@ -36,7 +36,7 @@
                                     <th>Nombre de la empresa</th>
                                     <th>Contacto</th>
                                     <th>Email</th>
-                                    <th>Telefono</th>
+                                    <th>Teléfono</th>
                                     <th>Etiquetas</th>
                                     <td>ACTIONS</td>
                                 </tr>

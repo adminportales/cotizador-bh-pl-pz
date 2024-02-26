@@ -28,7 +28,7 @@
                                                 Nombre
                                             </th>
                                             <th scope="col" class="sm:table-cell hidden px-6 py-3">
-                                                Informacion
+                                                Información
                                             </th>
                                             <th scope="col" class="sm:table-cell hidden px-6 py-3">
                                                 Cantidad
@@ -209,7 +209,7 @@
         </div>
     @else
         <div class="d-flex w-100 justify-content-center">
-            <p class="text-center m-0 my-5"><strong>No tienes productos en tu cotizacion actual </strong></p>
+            <p class="text-center m-0 my-5"><strong>No tienes productos en tu cotización actual </strong></p>
         </div>
     @endif
     <script>
@@ -230,14 +230,14 @@
 
         function eliminar(id) {
             Swal.fire({
-                title: 'Esta seguro?',
-                text: "Esta accion ya no se puede revertir!",
+                title: '¿Está seguro?',
+                text: "¡Esta acción ya no se puede revertir!",
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
                 cancelButtonColor: '#d33',
-                confirmButtonText: 'Si, eliminar mi producto!',
-                cancelButtonText: 'Cancelar!'
+                confirmButtonText: 'Sí, eliminar mi producto',
+                cancelButtonText: 'Cancelar'
             }).then((result) => {
                 if (result.isConfirmed) {
                     @this.eliminar(id)

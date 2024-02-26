@@ -5,7 +5,7 @@
                 @if (auth()->user()->currentQuoteActive)
                     @if (count(auth()->user()->currentQuoteActive->currentQuoteDetails) > 0)
                         <div class="card-body">
-                            <p class="mb-2 text-xl">Finalizar la cotizacion</p>
+                            <p class="mb-2 text-xl">Finalizar la Cotización</p>
                             @include('cotizador.finalizar_cotizacion.sections.form-finalizar')
                             <br>
                             <p class="mb-2 text-xl">Resumen </p>
@@ -130,12 +130,13 @@
 
 
                                     <div class="flex flex-col gap-2">
+                                        <input type="checkbox" wire:model="enviarCorreo" id="enviarCorreo"> Enviar cotización por correo electrónico
                                         <button class="bg-gray-200 p-3 rounded-md hover:bg-gray-300"
                                             data-modal-target="preview" data-modal-toggle="preview"
-                                            onclick="preview()">Previsualizar Cotizacion</button>
+                                            onclick="preview()">Previsualizar cotización</button>
                                         <button class="bg-gray-200 p-3  rounded-md hover:bg-gray-300"
                                             onclick="enviar()">Guardar
-                                            Cotizacion</button>
+                                            cotización</button>
                                     </div>
                                 </div>
                                 {{-- <div class="d-flex flex-column">
@@ -244,7 +245,7 @@
                             </div>
                         </div>
                     @else
-                        <p class="text-center mb-4">No tienes productos en tu cotizacion actual</p>
+                        <p class="text-center mb-4">No tienes productos en tu cotización actual</p>
                         {{-- Boton ir al carrito  --}}
                         <div class="flex justify-center">
                             <a href="{{ route('cotizacion') }}"
@@ -282,6 +283,7 @@
         }
 
         function enviar() {
+            const enviarCorreo = document.getElementById('enviarCorreo').checked;
             Swal.fire({
                 title: '¿Desea confirmar la cotización?',
                 html: "{{ auth()->user()->companySession->name }}<br><br>Se enviará una copia de la cotización al correo electrónico establecido y se registra como un lead nuevo en Odoo.",
@@ -292,7 +294,7 @@
             }).then((result) => {
                 /* Read more about isConfirmed, isDenied below */
                 if (result.isConfirmed) {
-                    @this.guardarCotizacion()
+                    @this.guardarCotizacion(enviarCorreo)
                 } else {
                     Swal.fire('No se realizo ningun cambio', '', 'info')
                 }

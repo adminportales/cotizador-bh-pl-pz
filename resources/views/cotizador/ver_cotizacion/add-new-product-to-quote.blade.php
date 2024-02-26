@@ -20,7 +20,8 @@
             <!-- Modal content -->
             <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
                 <!-- Modal header -->
-                <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
+                <div class="flex items-center justify-between p-4 md:p-5 border-b Proverdor del Producto
+rounded-t dark:border-gray-600">
                     <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
                         Añadir producto a la cotizacion que no esta en el catalogo
                     </h3>
@@ -56,7 +57,7 @@
                                         <label for="nombre">Descripcion</label>
                                         <input type="text"
                                             class="block w-full p-3 mb-2 text-gray-900 border border-gray-300 rounded-md bg-white sm:text-xs focus:ring-blue-500 focus:border-blue-500 "
-                                            wire:model="descripcion" placeholder="Descripcion del producto"
+                                            wire:model="descripcion" placeholder="Descripción del producto"
                                             value="{{ old('descripcion') }}">
                                         @if ($errors->has('descripcion'))
                                             <span class="text-red-500">{{ $errors->first('descripcion') }}</span>
@@ -164,7 +165,7 @@
                                         <input type="number"
                                             class="block w-full p-3 mb-2 text-gray-900 border border-gray-300 rounded-md bg-white sm:text-xs focus:ring-blue-500 focus:border-blue-500"
                                             wire:model="stock"
-                                            placeholder="Cantidad Disponible o Cantidad que desea cotizar"
+                                            placeholder="Cantidad disponible o Cantidad que desea cotizar"
                                             value="{{ old('stock') }}">
                                         @if ($errors->has('stock'))
                                             <span class="text-red-500">{{ $errors->first('stock') }}</span>
@@ -188,7 +189,7 @@
                                         <label for="nombre">Proveedor</label>
                                         <input type="text"
                                             class="block w-full p-3 mb-2 text-gray-900 border border-gray-300 rounded-md bg-white sm:text-xs focus:ring-blue-500 focus:border-blue-500 "
-                                            wire:model="proveedor" placeholder="Proverdor del Producto"
+                                            wire:model="proveedor" placeholder="Proverdor del producto"
                                             value="{{ old('proveedor') }}">
                                         @if ($errors->has('proveedor'))
                                             <span class="text-red-500">{{ $errors->first('proveedor') }}</span>
@@ -224,9 +225,9 @@
                                             <span class="text-red-500">{{ $errors->first('imagen') }}</span>
                                         @endif
                                     </div>
-                                    <p>Si tu imagen pesa mas de 500 KB, puedes comprimirla <a
+                                    <p>Si tu imagen pesa más de 500 KB, puedes comprimirla <a
                                             href="https://www.iloveimg.com/es/comprimir-imagen"
-                                            target="_blank">aqui</a></p>
+                                            target="_blank">aquí</a></p>
                                 </div>
                                 <div class="col-span-1">
                                     <div class="form-group">
@@ -311,14 +312,14 @@
     <script>
         function deleteEscala(id) {
             Swal.fire({
-                title: 'Esta seguro?',
-                text: "Desea eliminar esta escala",
+                title: '¿Está seguro?',
+                text: "¿Desea eliminar esta escala?",
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
                 cancelButtonColor: '#d33',
-                confirmButtonText: 'Si!',
-                cancelButtonText: 'Cancelar!'
+                confirmButtonText: 'Sí',
+                cancelButtonText: 'Cancelar'
             }).then((result) => {
                 if (result.isConfirmed) {
                     let respuesta = @this.deleteScale(id)
