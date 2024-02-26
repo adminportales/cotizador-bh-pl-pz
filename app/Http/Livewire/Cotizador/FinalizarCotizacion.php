@@ -25,7 +25,7 @@ class FinalizarCotizacion extends Component
     use WithFileUploads;
 
     public $tipoCliente, $clienteSeleccionado = '', $isClient, $nombre, $empresa, $email, $telefono, $celular, $oportunidad, $rank = '', $departamento, $informacion, $ivaByItem, $typeDays, $showTotal, $logo, $taxFee, $shelfLife;
-    public $urlPDFPreview;
+    public $urlPDFPreview, $enviarCorreo;
     public $ejecutivos, $ejecutivoSeleccionado = null, $selectEjecutivo;
 
     public $currency, $currency_type, $show_tax;
@@ -432,6 +432,7 @@ class FinalizarCotizacion extends Component
             }
             $mailSend = '';
             if ($this->enviarCorreo) {
+
             switch (auth()->user()->companySession->name) {
                 case 'PROMO LIFE':
                     $nameFile = "QS-" . $quote->id . " " . $quote->latestQuotesUpdate->quotesInformation->oportunity . ' ' . $quote->updated_at->format('d/m/Y') . '.pdf';
@@ -453,6 +454,7 @@ class FinalizarCotizacion extends Component
                     break;
             }
         }  else {
+           
             $errorsMail = true;
         }     
             unlink(public_path() . $newPath);
