@@ -226,6 +226,7 @@ class FormularioDeCotizacion extends Component
      * Se encarga de asignar los valores iniciales a las propiedades del componente
      * basados en la cotización actual o en la edición de un producto.
      */
+    public $taxFee;
     public function mount()
     {
         // Asignar valores iniciales si existe una cotización actual
@@ -444,10 +445,19 @@ class FormularioDeCotizacion extends Component
                 }
             }
 
-            $nuevoPrecio = round(($this->precio + ($precioDeTecnicaUsado * $this->colores) + $this->operacion) / ((100 - $this->utilidad) / 100),2);
+            $nuevoPrecio = round(($this->precio + ($precioDeTecnicaUsado * $this->colores) + $this->operacion) / ((100 - $this->utilidad) / 100), 2);
+            if ($this->taxFee > 99)
+                $this->taxFee = 99;
 
-            $this->precioCalculado = $nuevoPrecio;
-            $this->precioTotal = $nuevoPrecio * $this->cantidad;
+            if ($this->taxFee) {
+                // Calcula el precio con el taxFee
+                $precioConTaxFee = round($nuevoPrecio * (1 + ($this->taxFee / 100)), 2);
+                $this->precioCalculado = $precioConTaxFee;
+                $this->precioTotal = $this->precioCalculado * $this->cantidad;
+            } else {
+                $this->precioCalculado = $nuevoPrecio;
+                $this->precioTotal = $nuevoPrecio * $this->cantidad;
+            }
         } else {
             $this->priceScalesComplete = [];
             foreach ($this->infoScales as $info) {
