@@ -56,8 +56,7 @@
                         </select>
                     </div>
                     @if ($errors->has('clienteSeleccionado'))
-                        <span
-                            class="text-danger">{{ $errors->first('clienteSeleccionado') }}</span>
+                        <span class="text-danger">{{ $errors->first('clienteSeleccionado') }}</span>
                     @endif
                 </div>
             @elseif($tipoCliente == 'crear')
@@ -206,7 +205,7 @@
                         placeholder="Duracion de la vigencia" wire:model="shelfLife">
                 </div>
             </div>
-            <div class="col-span-3 md:col-span-1">
+            {{--    <div class="col-span-3 md:col-span-1">
                 <div class="form-group">
                     <label for="">Tax Fee (Opcional)</label>
                     <input type="number"
@@ -214,7 +213,7 @@
                         placeholder="Tax Fee (Valor Maximo 99)" wire:model="taxFee"
                         max="99">
                 </div>
-            </div>
+            </div> --}}
             <div class="col-span-3 md:col-span-1">
                 <div class="form-group">
                     <label for="">En la cotizacion se mostrara:</label>
@@ -256,8 +255,7 @@
             <div class="col-span-3 md:col-span-1">
                 <div class="form-group">
                     <label for="">Logo del Cliente</label>
-                    <div class="form-group" x-data="{ isUploading: false, progress: 5 }"
-                        x-on:livewire-upload-start="isUploading = true"
+                    <div class="form-group" x-data="{ isUploading: false, progress: 5 }" x-on:livewire-upload-start="isUploading = true"
                         x-on:livewire-upload-finish="isUploading = false"
                         x-on:livewire-upload-error="isUploading = false"
                         x-on:livewire-upload-progress="progress = $event.detail.progress">
@@ -266,7 +264,7 @@
                             wire:model="logo" accept="image/*">
 
                         <div x-show="isUploading" class="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
-                            <div class="bg-blue-600 h-2.5 rounded-full" x-bind:style="`width: ${progress}%`" >
+                            <div class="bg-blue-600 h-2.5 rounded-full" x-bind:style="`width: ${progress}%`">
                             </div>
                         </div>
                     </div>
@@ -274,7 +272,8 @@
                         <p class="text-yellow-500 py-3">Revisa que tenga fondo blanco o que se un
                             archivo PNG
                         </p>
-                        <div class="bg-red-200 p-2 rounded-md hover:bg-red-300 text-center" wire:click="limpiarLogo()">Eliminar
+                        <div class="bg-red-200 p-2 rounded-md hover:bg-red-300 text-center"
+                            wire:click="limpiarLogo()">Eliminar
                         </div>
                     @else
                         <p>No hay un logo de cliente cargado</p>
