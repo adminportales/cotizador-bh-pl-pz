@@ -25,7 +25,7 @@ class FinalizarCotizacion extends Component
     use WithFileUploads;
 
     public $tipoCliente, $clienteSeleccionado = '', $isClient, $nombre, $empresa, $email, $telefono, $celular, $oportunidad, $rank = '', $departamento, $informacion, $ivaByItem, $typeDays, $showTotal, $logo, $taxFee, $shelfLife;
-    public $urlPDFPreview;
+    public $urlPDFPreview, $enviarCorreo;
     public $ejecutivos, $ejecutivoSeleccionado = null, $selectEjecutivo;
 
     public $currency, $currency_type, $show_tax;
@@ -399,7 +399,7 @@ class FinalizarCotizacion extends Component
                 }
             } else {
                 $errors = true;
-                $message = "Error al enviar la cotizacion a odoo";
+                $message = "Error al envíar la cotización a odoo";
             }
         } catch (Exception $exception) {
             $message = $exception->getMessage();
@@ -431,6 +431,8 @@ class FinalizarCotizacion extends Component
                     break;
             }
             $mailSend = '';
+            if ($this->enviarCorreo) {
+
             switch (auth()->user()->companySession->name) {
                 case 'PROMO LIFE':
                     $nameFile = "QS-" . $quote->id . " " . $quote->latestQuotesUpdate->quotesInformation->oportunity . ' ' . $quote->updated_at->format('d/m/Y') . '.pdf';
@@ -451,6 +453,10 @@ class FinalizarCotizacion extends Component
                     dd(1);
                     break;
             }
+        }  else {
+           
+            $errorsMail = true;
+        }     
             unlink(public_path() . $newPath);
             auth()->user()->currentQuoteActive->currentQuoteDetails()->delete();
             auth()->user()->currentQuoteActive()->delete();
@@ -486,11 +492,11 @@ class FinalizarCotizacion extends Component
                 //throw $th;
             }
             return redirect()->action([CotizadorController::class, 'verCotizacion'], ['quote' => $quote->id])->with('messageMail', json_encode($message) . ' ' . json_encode($messageMail))
-                ->with('messageError', 'Tu cotizacion se ha guardado exitosamente. ' .
-                    ($errorsMail ? "No se pudo enviar el email debido a problemas tecnicos. " : "") .
-                    ($errors ? "No se pudo guardar el lead debido a problemas en la conexion con Odoo, lo intentaremos nuevamente mas tarde" : ""));
+                ->with('messageError', 'Tu cotización se ha guardado exitosamente.' .
+                    ($errorsMail ? "No se pudo enviar el email debido a problemas técnicos. " : "") .
+                    ($errors ? "No se pudo guardar el lead debido a problemas en la conexión con Odoo. Lo intentaremos nuevamente más tarde." : ""));
         }
-        return redirect()->action([CotizadorController::class, 'verCotizacion'], ['quote' => $quote->id])->with('message', 'Tu cotizacion se ha guardado exitosamente y ya fue enviada al correo electronico establecido.');
+        return redirect()->action([CotizadorController::class, 'verCotizacion'], ['quote' => $quote->id])->with('message', 'Tu cotización se ha guardado exitosamente y ya fue enviada al correo electrónico establecido.');
     }
 
     public function cargarDatosCliente()

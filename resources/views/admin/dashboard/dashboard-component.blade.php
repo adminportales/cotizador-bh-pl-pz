@@ -27,7 +27,7 @@
         <div class="dashboard-content">
             <section class="row" wire:loading.class="opacity">
                 <div class="col-md-4">
-                    <p class="text-center">Numero de Leads Por Empresa</p>
+                    <p class="text-center">Número de Leads Por Empresa</p>
                     <canvas id="myChart" width="400" height="400"></canvas>
                 </div>
                 <div class="col-md-8">

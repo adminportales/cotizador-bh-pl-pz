@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-    <title>Cotizacion Promo Zale</title>
+    <title>Cotización Promo Zale</title>
     <link rel="stylesheet" href="quotesheet/pz/style.css">
 </head>
 
@@ -27,7 +27,7 @@
                 <td colspan="6" class="company">PROMO ZALE S.A. DE C.V.</td>
             </tr>
             <tr>
-                <td style="text-align: left;" colspan="6" class="company-quote">Cotizacion</td>
+                <td style="text-align: left;" colspan="6" class="company-quote">Cotización</td>
             </tr>
         </table>
     </header>
@@ -44,7 +44,7 @@
         <table style="magin-bottom: 0mm; position: absolute; bottom: 60px; z-index:100;" class="content">
             <tr>
                 <td>
-                    <p style="font-size: 12px; margin-left:3px; color:#fff;">Pagina <span class="pagenum"></span> </p>
+                    <p style="font-size: 12px; margin-left:3px; color:#fff;">Página <span class="pagenum"></span> </p>
                     <br>
                     <p style="font-size: 12px; margin-left:3px; color:#fff; text-transform: uppercase">San Andr&#233;s
                         Atoto 155, San Est&#233;ban, Naucalpan, Edo. Méx. C.P. 53550 <br></p>
@@ -175,21 +175,23 @@
                 <table style="border-collapse: collapse;width:100%;border: 1px solid #72C3D6;">
                     <tr class="title">
                         <td>
-                            <p class="title-text">Imagen de Referencia</p>
+                            <p class="title-text">Imagen de referencia</p>
                         </td>
                         <td colspan="12">
-                            <p class="title-text">Descripcion</p>
+                            <p class="title-text">Descripción</p>
                         </td>
                     </tr>
                     <tr>
                         <td rowspan="{{ $item->quote_by_scales ? 5 + count($scales_info) : 6 }}"
                             style="width: 230px; text-align: center; vertical-align: middle; padding: 0; border-right: 1px solid #72C3D6;">
                             @if ($producto->image)
+                                
                                 <img  style="max-height: 220px;height:auto;max-width: 220px;width:auto;" src="{{$producto->image}}" alt="">
                             @else
                                 <img src="img/default.jpg" width="180">
                             @endif
                         </td>
+
                         <td colspan="12">
                             <p class="descripcion">
                                 {{ $item->new_description ? $item->new_description : $producto->description }}
@@ -197,8 +199,8 @@
                         </td>
                     </tr>
                     <tr>
-                        <td colspan="6" class="title-tecnica">Tecnica de Personalizacion</td>
-                        <td colspan="6" class="title-tecnica">Detalle de la Personalizacion</td>
+                        <td colspan="6" class="title-tecnica">Técnica de personalización</td>
+                        <td colspan="6" class="title-tecnica">Detalle de la personalización</td>
                     </tr>
                     <tr>
                         <td colspan="6" class="detalle-tecnica">
@@ -211,7 +213,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <td colspan="12" class="title-entrega">Tiempo de Entrega: {{ $item->dias_entrega }} días
+                        <td colspan="12" class="title-entrega">Tiempo de entrega: {{ $item->dias_entrega }} días
                             {{ $item->type_days == null
                                 ? ($quote->type_days == 0
                                     ? 'hábiles'
@@ -225,8 +227,8 @@
                     </tr>
                     <tr>
                         <td colspan="4" class="title-cantidad">Cantidad</td>
-                        <td colspan="4" class="title-cantidad">Precio Unitario</td>
-                        <td colspan="4" class="title-cantidad">Precio Total</td>
+                        <td colspan="4" class="title-cantidad">Precio unitario</td>
+                        <td colspan="4" class="title-cantidad">Precio total</td>
                     </tr>
                     @if ($item->quote_by_scales)
                         @foreach ($scales_info as $scale)
@@ -334,16 +336,16 @@
             <li>El importe cotizado corresponde a la cantidad de piezas y número de tintas arriba mencionadas, si se
                 modifica
                 el número de piezas el precio cambiaría.</li>
-            <li>El tiempo de entrega empieza a correr una vez recibida la Orden de Compra y autorizada la muestra física
+            <li>El tiempo de entrega empieza a correr una vez recibida la orden de compra y autorizada la muestra física
                 o
                 virtual a solicitud del cliente.</li>
             <li>Vigencia de la cotización {{ $quote->latestQuotesUpdate->quotesInformation->shelf_life ?: 5 }} días
                 {{ $quote->type_days == 0 ? 'hábiles' : 'naturales' }}.</li>
             <li>Producto cotizado de fabricación nacional o importación puede afinarse la fecha de entrega previo a la
                 emisión
-                de Orden de Compra.</li>
-            <li>Producto cotizado disponible en stock a la fecha de esta cotización puede modificarse al paso de los
-                días sin previo aviso. Solo se bloquea el inventario al recibir Orden de Compra</li>
+                de orden de compra.</li>
+            <li>El producto cotizado, disponible en stock a la fecha de esta cotización, puede modificarse con el paso de los
+                días sin previo aviso. Solo se bloquea el inventario al recibir la orden de compra.</li>
         </ul>
     </div>
     <div style="text-align: center;">

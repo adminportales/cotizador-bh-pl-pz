@@ -18,8 +18,7 @@
     @endif
     @if ($quote->company_id != auth()->user()->company_session)
         <div class="w-full p-4 mb-2 text-sm text-red-800 rounded-lg bg-red-50">
-            Esta cotizacion fue realizada con {{ $quote->company->name }}. Algunas opciones, estan
-            deshabilitadas
+            Esta cotización fue realizada con {{ $quote->company->name }}. Algunas opciones están deshabilitadas.
         </div>
     @endif
     <div class="grid grid-cols-1 md:grid-cols-4 gap-3">
@@ -75,7 +74,7 @@
                                 <div class="col-span-1 mb-2">
                                     <div class="flex justify-center">
                                         <button class="bg-green-200 p-3 w-full rounded-md hover:bg-green-300"
-                                            onclick="customToggleModal('createPPTModal', 1)">Crear Presentacion</button>
+                                            onclick="customToggleModal('createPPTModal', 1)">Crear presentación</button>
                                     </div>
                                     <div wire:ignore.self id="createPPTModal" tabindex="-1" aria-hidden="true"
                                         class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">

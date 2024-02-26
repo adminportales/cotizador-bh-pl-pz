@@ -7,7 +7,7 @@
             <!-- Modal header -->
             <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
                 <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
-                    Informacion del producto
+                    Información del producto
                 </h3>
                 <button type="button" onclick="customToggleModal('ver-product-modal', 0)"
                     class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white">
@@ -28,9 +28,9 @@
                                 $productoShow = (object) json_decode($showProduct['product']);
                                 $tecnicaShow = (object) json_decode($showProduct['technique']);
                             @endphp
-                            <p class="m-0">Informacion del Producto: </p>
+                            <p class="m-0">Información del Producto: </p>
                             <p class="m-0"><b>Nombre: </b>{{ $productoShow->name }} </p>
-                            <p class="m-0"><b>Descripcion: </b>{{ $productoShow->description }} </p>
+                            <p class="m-0"><b>Descripción: </b>{{ $productoShow->description }} </p>
                             <p class="m-0"><b>Precio: </b> $
                                 @php
                                     $priceProduct = 0;
@@ -57,16 +57,16 @@
                                 @endif
                             @endif
                             <br>
-                            <p class="m-0">Informacion de la Tecnica: </p>
+                            <p class="m-0">Información de la Técnica: </p>
                             <p class="m-0"><b>Material: </b>{{ $tecnicaShow->material }} </p>
-                            <p class="m-0"><b>Tecnica: </b>{{ $tecnicaShow->tecnica }} </p>
+                            <p class="m-0"><b>Técnica: </b>{{ $tecnicaShow->tecnica }} </p>
                             <p class="m-0"><b>Tamaño: </b>{{ $tecnicaShow->size }}</p>
                             <br>
-                            <p class="m-0"><b>Numero de tintas o logos:</b> {{ $showProduct['color_logos'] }}
+                            <p class="m-0"><b>Número de tintas o logos:</b> {{ $showProduct['color_logos'] }}
                             </p>
                             <p class="m-0"><b>Costo Indirecto:</b> $ {{ $showProduct['costo_indirecto'] }}</p>
                             <p class="m-0"><b>Margen de Utilidad:</b> {{ $showProduct['utilidad'] }} %</p>
-                            <p class="m-0"><b>Dias de entrega:</b> {{ $showProduct['dias_entrega'] }} dias
+                            <p class="m-0"><b>Días de entrega:</b> {{ $showProduct['dias_entrega'] }} dias
                                 {{ $showProduct['type_days'] == 1 ? 'habiles' : ($showProduct['type_days'] == 2 ? 'naturales' : '') }}
                             </p>
                             @if ($showProduct['quote_by_scales'])
@@ -75,7 +75,7 @@
                                         <tr>
                                             <th>Cantidad</th>
                                             <th>Utilidad</th>
-                                            <th>Impresion por tinta</th>
+                                            <th>Impresión por tinta</th>
                                             <th>Unitario</th>
                                             <th>Total</th>
                                         </tr>
@@ -99,7 +99,7 @@
                                     </tbody>
                                 </table>
                             @else
-                                <p class="m-0"><b>Precio de la tecnica:</b> $
+                                <p class="m-0"><b>Precio de la técnica:</b> $
                                     {{ $showProduct['prices_techniques'] }}</p>
                                 <p class="m-0"><b>Precio Unitario:</b> $ {{ $showProduct['precio_unitario'] }}
                                 </p>
