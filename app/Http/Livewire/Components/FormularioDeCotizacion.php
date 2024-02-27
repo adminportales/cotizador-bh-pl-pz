@@ -287,7 +287,7 @@ class FormularioDeCotizacion extends Component
             $this->utilidad = $this->productEdit['utilidad'];
             $this->entrega = $this->productEdit['dias_entrega'];
             $this->typeDays = $this->productEdit['type_days'];
-            $this->newPriceTechnique = $this->productEdit['prices_techniques'];
+          /*   $this->newPriceTechnique = $this->productEdit['prices_techniques']; */
             $this->newDescription = $this->productEdit['new_description'];
 
             // Verificar si la cotización se realiza por escalas de precio
@@ -331,7 +331,7 @@ class FormularioDeCotizacion extends Component
         $this->precio = round($priceProduct + $priceProduct * ($utilidad / 100), 2);
         $this->precioCalculado = $this->precio;
     }
-    
+
 
     /**
      * Renderiza el formulario de cotización y calcula el precio total.
