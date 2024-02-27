@@ -434,7 +434,7 @@
                 class="absolute flex items-center justify-center w-6 h-6 bg-blue-100 rounded-full -left-3 ring-8 ring-white ">4
             </span>
             <h3 class="flex items-center mb-1 text-lg font-semibold text-gray-900 ">
-              {{--   @php
+                {{--   @php
 
                     $precioDeTecnica = 0;
 

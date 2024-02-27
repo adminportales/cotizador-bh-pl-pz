@@ -229,7 +229,6 @@ class FinalizarCotizacion extends Component
         foreach (auth()->user()->currentQuoteActive->currentQuoteDetails as $item) {
             $product = Product::find($item->product_id);
             $tecnica = PricesTechnique::find($item->prices_techniques_id);
-
             $material = $tecnica->sizeMaterialTechnique->materialTechnique->material->nombre;
             $material_id = $tecnica->sizeMaterialTechnique->materialTechnique->material->id;
             $tecnica_nombre = $tecnica->sizeMaterialTechnique->materialTechnique->technique->nombre;
@@ -433,30 +432,30 @@ class FinalizarCotizacion extends Component
             $mailSend = '';
             if ($this->enviarCorreo) {
 
-            switch (auth()->user()->companySession->name) {
-                case 'PROMO LIFE':
-                    $nameFile = "QS-" . $quote->id . " " . $quote->latestQuotesUpdate->quotesInformation->oportunity . ' ' . $quote->updated_at->format('d/m/Y') . '.pdf';
-                    $mailSend = new SendQuotePL(auth()->user()->name, $quote->latestQuotesUpdate->quotesInformation->name, $nameFile, $newPath);
-                    Mail::mailer($mailer)->to($quote->latestQuotesUpdate->quotesInformation->email)->send($mailSend);
-                    break;
-                case 'BH TRADEMARKET':
-                    $nameFile = "QS-" . $quote->id . " " . $quote->latestQuotesUpdate->quotesInformation->oportunity . ' ' . $quote->updated_at->format('d/m/Y') . '.pdf';
-                    $mailSend = new SendQuoteBH(auth()->user()->name, $quote->latestQuotesUpdate->quotesInformation->name, $nameFile, $newPath);
-                    Mail::mailer('smtp_bh')->to($quote->latestQuotesUpdate->quotesInformation->email)->send($mailSend);
-                    break;
-                case 'PROMO ZALE':
-                    $nameFile = "QS-" . $quote->id . " " . $quote->latestQuotesUpdate->quotesInformation->oportunity . ' ' . $quote->updated_at->format('d/m/Y') . '.pdf';
-                    $mailSend = new SendQuotePZ(auth()->user()->name, $quote->latestQuotesUpdate->quotesInformation->name, $nameFile, $newPath);
-                    Mail::mailer('smtp_bh')->to($quote->latestQuotesUpdate->quotesInformation->email)->send($mailSend);
-                    break;
-                default:
-                    dd(1);
-                    break;
+                switch (auth()->user()->companySession->name) {
+                    case 'PROMO LIFE':
+                        $nameFile = "QS-" . $quote->id . " " . $quote->latestQuotesUpdate->quotesInformation->oportunity . ' ' . $quote->updated_at->format('d/m/Y') . '.pdf';
+                        $mailSend = new SendQuotePL(auth()->user()->name, $quote->latestQuotesUpdate->quotesInformation->name, $nameFile, $newPath);
+                        Mail::mailer($mailer)->to($quote->latestQuotesUpdate->quotesInformation->email)->send($mailSend);
+                        break;
+                    case 'BH TRADEMARKET':
+                        $nameFile = "QS-" . $quote->id . " " . $quote->latestQuotesUpdate->quotesInformation->oportunity . ' ' . $quote->updated_at->format('d/m/Y') . '.pdf';
+                        $mailSend = new SendQuoteBH(auth()->user()->name, $quote->latestQuotesUpdate->quotesInformation->name, $nameFile, $newPath);
+                        Mail::mailer('smtp_bh')->to($quote->latestQuotesUpdate->quotesInformation->email)->send($mailSend);
+                        break;
+                    case 'PROMO ZALE':
+                        $nameFile = "QS-" . $quote->id . " " . $quote->latestQuotesUpdate->quotesInformation->oportunity . ' ' . $quote->updated_at->format('d/m/Y') . '.pdf';
+                        $mailSend = new SendQuotePZ(auth()->user()->name, $quote->latestQuotesUpdate->quotesInformation->name, $nameFile, $newPath);
+                        Mail::mailer('smtp_bh')->to($quote->latestQuotesUpdate->quotesInformation->email)->send($mailSend);
+                        break;
+                    default:
+                        dd(1);
+                        break;
+                }
+            } else {
+
+                $errorsMail = true;
             }
-        }  else {
-           
-            $errorsMail = true;
-        }     
             unlink(public_path() . $newPath);
             auth()->user()->currentQuoteActive->currentQuoteDetails()->delete();
             auth()->user()->currentQuoteActive()->delete();
@@ -536,6 +535,7 @@ class FinalizarCotizacion extends Component
             $material_id = $tecnica->sizeMaterialTechnique->materialTechnique->material->id;
             $tecnica_nombre = $tecnica->sizeMaterialTechnique->materialTechnique->technique->nombre;
             $tecnica_id = $tecnica->sizeMaterialTechnique->materialTechnique->technique->id;
+            $size = $tecnica->sizeMaterialTechnique->size->nombre;
             $size = $tecnica->sizeMaterialTechnique->size->nombre;
             $size_id = $tecnica->sizeMaterialTechnique->size->id;
             $infoTecnica = [
