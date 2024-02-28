@@ -205,15 +205,14 @@
                         placeholder="Duración de la vigencia" wire:model="shelfLife">
                 </div>
             </div>
-            {{--    <div class="col-span-3 md:col-span-1">
+            <div class="col-span-3 md:col-span-1">
                 <div class="form-group">
                     <label for="">Tax Fee (Opcional)</label>
                     <input type="number"
                         class="block w-full p-3 mb-2 text-gray-900 border border-gray-300 rounded-md bg-white sm:text-xs focus:ring-blue-500 focus:border-blue-500 "
-                        placeholder="Tax Fee (Valor Máximo 99)" wire:model="taxFee"
-                        max="99">
+                        placeholder="Tax Fee (Valor Máximo 99)" wire:model="taxFee" max="99">
                 </div>
-            </div> --}}
+            </div>
             <div class="col-span-3 md:col-span-1">
                 <div class="form-group">
                     <label for="">En la cotización se mostrará:</label>
@@ -256,7 +255,6 @@
                 <div class="form-group">
                     <label for="">Logo del Cliente</label>
                     <div class="form-group" x-data="{ isUploading: false, progress: 5 }" x-on:livewire-upload-start="isUploading = true"
-
                         x-on:livewire-upload-finish="isUploading = false"
                         x-on:livewire-upload-error="isUploading = false"
                         x-on:livewire-upload-progress="progress = $event.detail.progress">

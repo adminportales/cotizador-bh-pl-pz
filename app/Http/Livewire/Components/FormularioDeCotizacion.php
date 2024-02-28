@@ -287,7 +287,7 @@ class FormularioDeCotizacion extends Component
             $this->utilidad = $this->productEdit['utilidad'];
             $this->entrega = $this->productEdit['dias_entrega'];
             $this->typeDays = $this->productEdit['type_days'];
-          /*   $this->newPriceTechnique = $this->productEdit['prices_techniques']; */
+            /*   $this->newPriceTechnique = $this->productEdit['prices_techniques']; */
             $this->newDescription = $this->productEdit['new_description'];
 
             // Verificar si la cotización se realiza por escalas de precio
@@ -318,9 +318,9 @@ class FormularioDeCotizacion extends Component
 
         if ($productType && $productType->value == 'Normal') {
             $priceProduct = round($priceProduct - $priceProduct * (30 / 100), 2);
-        }else if($productType && ($productType->value == 'Outlet' || $productType->value == 'Unico')){
+        } else if ($productType && ($productType->value == 'Outlet' || $productType->value == 'Unico')) {
             $priceProduct = round($priceProduct - $priceProduct * (0 / 100), 2);
-        }else{
+        } else {
             if ($this->product->producto_promocion) {
                 $priceProduct = round($priceProduct - $priceProduct * ($this->product->descuento / 100), 2);
             } else {
@@ -507,7 +507,18 @@ class FormularioDeCotizacion extends Component
                 }
                 // dd($this->infoScales);
                 $nuevoPrecio = round(($this->precio + ($precioDeTecnicaUsado * $this->colores) + $info['operacion']) / ((100 - $info['utility']) / 100), 2);
+               /*  if ($this->taxFee > 99)
+                    $this->taxFee = 99;
 
+                if ($this->taxFee) {
+                    // Calcula el precio con el taxFee
+                    $precioConTaxFee = round($nuevoPrecio * (1 + ($this->taxFee / 100)), 2);
+                    $this->precioCalculado = $precioConTaxFee;
+                    $this->precioTotal = $this->precioCalculado * $this->cantidad;
+                } else {
+                    $this->precioCalculado = $nuevoPrecio;
+                    $this->precioTotal = $nuevoPrecio * $this->cantidad;
+                } */
                 array_push($this->priceScalesComplete, [
                     'quantity' => $info['quantity'],
                     'tecniquePrice' => $info['tecniquePrice'] != null ? floatval($info['tecniquePrice'])  : $precioDeTecnica,

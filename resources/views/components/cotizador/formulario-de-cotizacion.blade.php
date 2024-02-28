@@ -264,6 +264,13 @@
                                                         maxlength="2" max="100"
                                                         class="block w-full p-3 mb-2 text-gray-900 border border-gray-300 rounded-md bg-white sm:text-xs focus:ring-blue-500 focus:border-blue-500 ">
                                                 </div>
+                                               {{--  <div class="md:col-span-1 col-span-2">
+                                                    <label for="" class="text-sm font-semibold">Tax
+                                                        Fee</label>
+                                                    <input type="number" name="margen" wire:model="taxFee"
+                                                        placeholder="Tax Fee (Valor Maximo 99)"
+                                                        class="block w-full p-3 mb-2 text-gray-900 border border-gray-300 rounded-md bg-white sm:text-xs focus:ring-blue-500 focus:border-blue-500 ">
+                                                </div> --}}
                                                 <div class="col-span-2">
                                                     <label for="" class="text-sm font-semibold block">Precio
                                                         actual de la técnica (por
