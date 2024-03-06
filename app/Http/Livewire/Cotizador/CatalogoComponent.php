@@ -234,4 +234,15 @@ class CatalogoComponent extends Component
         $product = CatalogoProduct::find($id);
         $this->dispatchBrowserEvent('showPreview', ['images' => $product->images]);
     }
+
+    public function catalogoImportacion()
+    {
+        $products = CatalogoProduct::where('provider_id', 13)
+            ->where('visible', true)
+            ->where('price', '>', 0)
+            ->select('id', 'internal_sku', 'sku_parent', 'sku', 'name', 'description', 'stock', 'producto_promocion', 'descuento', 'producto_nuevo', 'precio_unico', 'disponible', 'type_id', 'color_id', 'provider_id', 'visible', 'created_at', 'updated_at')
+            ->paginate(16);
+    
+        return response()->json($products);
+    }
 }
