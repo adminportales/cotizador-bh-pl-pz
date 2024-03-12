@@ -268,7 +268,6 @@ class FormularioDeCotizacion extends Component
         if ($this->productEdit) {
             // Obtener el producto a editar
             $product = json_decode($this->productEdit['product']);
-            dd($product) ;
             $this->product = Product::find($product->id);
             $this->product->price = $product->price;
 
