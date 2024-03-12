@@ -268,6 +268,7 @@ class FormularioDeCotizacion extends Component
         if ($this->productEdit) {
             // Obtener el producto a editar
             $product = json_decode($this->productEdit['product']);
+            dd($product) ;
             $this->product = Product::find($product->id);
             $this->product->price = $product->price;
 
@@ -319,12 +320,16 @@ class FormularioDeCotizacion extends Component
         if ($productType && $productType->value == 'Normal') {
             $priceProduct = round($priceProduct - $priceProduct * (30 / 100), 2);
         } else if ($productType && ($productType->value == 'Outlet' || $productType->value == 'Unico')) {
-            $priceProduct = round($priceProduct - $priceProduct * (0 / 100), 2);
         } else {
             if ($this->product->producto_promocion) {
                 $priceProduct = round($priceProduct - $priceProduct * ($this->product->descuento / 100), 2);
             } else {
                 $priceProduct = round($priceProduct - $priceProduct * ($this->product->provider->discount / 100), 2);
+            }
+            if ($this->product->provider->company == 'EuroCotton') {
+                $priceProduct = round($priceProduct - $priceProduct * ($this->product->provider->discount / 100), 2);
+                $iva = $priceProduct * 0.16;
+                $priceProduct = round($priceProduct - $iva, 2);
             }
         }
 

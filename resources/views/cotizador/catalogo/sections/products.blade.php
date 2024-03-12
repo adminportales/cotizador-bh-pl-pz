@@ -34,7 +34,12 @@
                     } else {
                         $priceProduct = round($priceProduct - $priceProduct * ($row->provider->discount / 100), 2);
                     }
-                }
+                        if ($row->provider->company == 'EuroCotton') {
+                            $priceProduct = round($priceProduct - $priceProduct * ($row->provider->discount / 100), 2);
+                             $iva = $priceProduct * 0.16;
+                             $priceProduct = round($priceProduct - $iva, 2);
+                        }
+                }                
 
             @endphp
 
