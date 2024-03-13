@@ -19,6 +19,11 @@
                         } else {
                             $priceProduct = round($priceProduct - $priceProduct * ($product->provider->discount / 100), 2);
                         }
+                        if ($product->provider->company == 'EuroCotton') {
+                            $priceProduct = round($priceProduct - $priceProduct * ($product->provider->discount / 100), 2);
+                             $iva = $priceProduct * 0.16;
+                             $priceProduct = round($priceProduct - $iva, 2);
+                        }
                     }
 
                 @endphp
@@ -81,6 +86,11 @@
                                         $priceProduct = round($priceProduct - $priceProduct * ($product->descuento / 100), 2);
                                         } else {
                                             $priceProduct = round($priceProduct - $priceProduct * ($product->provider->discount / 100), 2);
+                                        }
+                                        if ($product->provider->company == 'EuroCotton') {
+                                            $priceProduct = round($priceProduct - $priceProduct * ($product->provider->discount / 100), 2);
+                                            $iva = $priceProduct * 0.16;
+                                            $priceProduct = round($priceProduct - $iva, 2);
                                         }
                                     }
 
