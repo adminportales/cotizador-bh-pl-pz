@@ -324,7 +324,8 @@ class FormularioDeCotizacion extends Component
             if ($this->product->producto_promocion) {
                 $priceProduct = round($priceProduct - $priceProduct * ($this->product->descuento / 100), 2);
             } else {
-                $priceProduct = round($priceProduct - $priceProduct * ($this->product->provider->discount / 100), 2);
+
+                $priceProduct = round($priceProduct - $priceProduct * (isset($this->product->provider->discount) ? $this->product->provider->discount : 0 / 100), 2);
             }
         }
 
@@ -507,7 +508,7 @@ class FormularioDeCotizacion extends Component
                 }
                 // dd($this->infoScales);
                 $nuevoPrecio = round(($this->precio + ($precioDeTecnicaUsado * $this->colores) + $info['operacion']) / ((100 - $info['utility']) / 100), 2);
-               /*  if ($this->taxFee > 99)
+                /*  if ($this->taxFee > 99)
                     $this->taxFee = 99;
 
                 if ($this->taxFee) {
