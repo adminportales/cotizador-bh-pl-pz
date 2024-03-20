@@ -325,7 +325,7 @@ class FormularioDeCotizacion extends Component
                 $priceProduct = round($priceProduct - $priceProduct * ($this->product->descuento / 100), 2);
             } else {
 
-                $priceProduct = round($priceProduct - $priceProduct * (isset($this->product->provider->discount) ? $this->product->provider->discount : 0 / 100), 2);
+                $priceProduct = round($priceProduct - $priceProduct *  ($this->product->provider->discount / 100), 2);
             }
             if ($this->product->provider->company == 'EuroCotton') {
                 $iva = $priceProduct * 0.16;
