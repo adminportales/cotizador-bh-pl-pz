@@ -23,6 +23,15 @@
                              $iva = $priceProduct * 0.16;
                              $priceProduct = round($priceProduct - $iva, 2);
                         }
+                        if ($product->provider->company == 'For Promotional') {
+                  
+                            if ($product->descuento > $product->provider->discount ) {
+                                $priceProduct = round($product->price- $product->price * ($product->descuento /100),2);
+                            } else {
+                                $priceProduct = round($product->price - $product->price * ($product->provider->dicount/100),2);
+                            }
+                    
+                        }
                     }
 
                 @endphp
@@ -89,6 +98,15 @@
                                         if ($product->provider->company == 'EuroCotton') {
                                             $iva = $priceProduct * 0.16;
                                             $priceProduct = round($priceProduct - $iva, 2);
+                                        }
+                                        if ($product->provider->company == 'For Promotional') {
+                  
+                                            if ($product->descuento > $product->provider->discount ) {
+                                                $priceProduct = round($product->price- $product->price * ($product->descuento /100),2);
+                                            } else {
+                                                $priceProduct = round($product->price - $product->price * ($product->provider->dicount/100),2);
+                                            }
+                                    
                                         }
                                     }
 

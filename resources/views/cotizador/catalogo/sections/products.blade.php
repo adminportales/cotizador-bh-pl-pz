@@ -34,10 +34,23 @@
                     } else {
                         $priceProduct = round($priceProduct - $priceProduct * ($row->provider->discount / 100), 2);
                     }
-                    if ($row->provider->company == 'EuroCotton') {
-                        $iva = $priceProduct * 0.16;
-                        $priceProduct = round($priceProduct - $iva, 2);
-                    }
+
+                        if ($row->provider->company == 'EuroCotton') {
+                            $priceProduct = round($priceProduct - $priceProduct * ($row->provider->discount / 100), 2);
+                             $iva = $priceProduct * 0.16;
+                             $priceProduct = round($priceProduct - $iva, 2);
+                        }
+
+                        if ($row->provider->company == 'For Promotional') {
+                  
+                            if ($row->descuento > $row->provider->discount ) {
+                                $priceProduct = round($row->price- $row->price * ($row->descuento /100),2);
+                            } else {
+                                $priceProduct = round($row->price - $row->price * ($row->provider->dicount/100),2);
+                            }
+                    
+                        }
+
                 }                
 
             @endphp
@@ -83,7 +96,7 @@
                     <div class="sm:col-span-6 lg:col-span-3 md:col-span-4 col-span-12 flex justify-center">
 
                         <div class="border-2 border-gray-200 py-2 px-3 rounded-xl w-full h-full">
-
+                                
                             <div class="text-center shadow-sm p-2 h-full">
                                 <div class="flex flex-row sm:flex-col sm:justify-between h-full ">
                                     <div class="flex justify-center" style="height: 150px;">

@@ -331,6 +331,18 @@ class FormularioDeCotizacion extends Component
                 $iva = $priceProduct * 0.16;
                 $priceProduct = round($priceProduct - $iva, 2);
             }
+
+            if ($this->product->provider->company  == 'For Promotional') {
+                  
+                if ($this->product->descuento > $this->product->provider->discount ) {
+                    $priceProduct = round($this->product->price- $this->product->price * ($this->product->descuento /100),2);
+                } else {
+                    $priceProduct = round($this->product->price - $this->product->price * ($this->product->provider->dicount/100),2);
+                }
+        
+            }
+
+
         }
 
         $this->precio = round($priceProduct + $priceProduct * ($utilidad / 100), 2);
