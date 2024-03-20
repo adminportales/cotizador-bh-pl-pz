@@ -94,7 +94,7 @@
                     <div class="sm:col-span-6 lg:col-span-3 md:col-span-4 col-span-12 flex justify-center">
 
                         <div class="border-2 border-gray-200 py-2 px-3 rounded-xl w-full h-full">
-                                {{$row->price  }}
+                                
                             <div class="text-center shadow-sm p-2 h-full">
                                 <div class="flex flex-row sm:flex-col sm:justify-between h-full ">
                                     <div class="flex justify-center" style="height: 150px;">
