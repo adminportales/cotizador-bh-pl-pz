@@ -334,10 +334,10 @@ class FormularioDeCotizacion extends Component
 
             if ($this->product->provider->company  == 'For Promotional') {
                   
-                if ($this->product->descuento > $this->product->provider->discount ) {
+                if ($this->product->descuento >= $this->product->provider->discount ) {
                     $priceProduct = round($this->product->price- $this->product->price * ($this->product->descuento /100),2);
                 } else {
-                    $priceProduct = round($this->product->price - $this->product->price * ($this->product->provider->dicount/100),2);
+                    $priceProduct = round($this->product->price - $this->product->price * (25/100),2);
                 }
         
             }

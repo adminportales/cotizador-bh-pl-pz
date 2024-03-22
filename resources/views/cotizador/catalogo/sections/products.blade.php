@@ -42,10 +42,10 @@
 
                         if ($row->provider->company == 'For Promotional') {
                   
-                            if ($row->descuento > $row->provider->discount ) {
+                            if ($row->descuento >= $row->provider->discount ) {
                                 $priceProduct = round($row->price- $row->price * ($row->descuento /100),2);
                             } else {
-                                $priceProduct = round($row->price - $row->price * ($row->provider->dicount/100),2);
+                                $priceProduct = round($row->price - $row->price * (25/100),2);
                             }
                     
                         }
