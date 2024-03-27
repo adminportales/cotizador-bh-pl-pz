@@ -6,6 +6,11 @@ use App\Models\CurrentQuoteDetails;
 use Exception;
 use Livewire\Component;
 
+/**
+ * Clase CurrentQuoteComponent
+ *
+ * Componente de Livewire que maneja la lógica y la presentación de la página de cotización actual.
+ */
 class CurrentQuoteComponent extends Component
 {
     public $allQuotes, $cotizacionActual, $nameQuote, $quoteEdit;
@@ -18,11 +23,24 @@ class CurrentQuoteComponent extends Component
 
     protected $listeners = ['updateProductCurrent' => 'resetData'];
 
+    /*
+    * Método mount
+    *  Se ejecuta al inicializar el componente.
+    *  Obtiene la cotización actual del usuario autenticado.
+    */
     public function mount()
     {
         $this->allQuotes = auth()->user()->currentQuotes;
     }
 
+    /*
+    * Método render
+    * Renderiza la vista de la cotización actual.
+    * Obtiene los productos de la cotización actual del usuario autenticado.
+    * Calcula el total de la cotización actual.
+    * Calcula el descuento de la cotización actual.
+    * @return \Illuminate\View\View
+    */
     public function render()
     {
         $this->cotizacionActual = auth()->user()->currentQuoteActive;
@@ -62,6 +80,7 @@ class CurrentQuoteComponent extends Component
 
         return view('cotizador.cotizacion_actual.current-quote-component', ['total' => $total, 'discount' => $discount, 'cotizacion' => $this->cotizacionActual]);
     }
+
 
     public function edit($quote_id)
     {

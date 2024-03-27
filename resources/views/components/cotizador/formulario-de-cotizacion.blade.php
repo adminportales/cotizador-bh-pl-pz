@@ -5,7 +5,7 @@
                 class="absolute flex items-center justify-center w-6 h-6 bg-blue-100 rounded-full -left-3 ring-8 ring-white ">1
             </span>
             <h3 class="flex items-center mb-1 text-lg font-semibold text-gray-900 ">
-                Personalizacion de la Tecnica
+                Personalización de la técnica
             </h3>
             <div class="bg-gray-50 p-3 rounded-sm">
                 <div class="grid grid-cols-2 gap-2">
@@ -92,13 +92,13 @@
                         <li class="hover:border-b-2 rounded-t-lg cursor-pointer text-center flex-1 {{ !$priceScales ? 'bg-gray-50 active border-gray-300 border-b-2' : '' }}"
                             wire:click='changeTypePrice(false)'>
                             <a
-                                class="inline-block p-4 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300">Cotizacion
-                                Normal</a>
+                                class="inline-block p-4 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300">Cotización
+                                normal</a>
                         </li>
                         <li class="hover:border-b-2 rounded-t-lg cursor-pointer text-center flex-1 {{ $priceScales ? 'bg-gray-50 active border-gray-300 border-b-2' : '' }}"
                             wire:click='changeTypePrice(true)'>
                             <a class="inline-block p-4 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300"
-                                aria-current="page">Cotizacion por escalas</a>
+                                aria-current="page">Cotización por escalas</a>
                         </li>
                     </ul>
                 </div>
@@ -106,14 +106,14 @@
 
                     @if (!$priceScales)
                         <div class="col-span-2">
-                            <label for="" class="text-sm font-semibold">Costo de Operacion</label>
+                            <label for="" class="text-sm font-semibold">Costo adicionales de operación</label>
                             <input type="number" name="operacion" wire:model="operacion"
-                                placeholder="Costo de operacion"
+                                placeholder="Costo de operación"
                                 class="block w-full p-3 mb-2 text-gray-900 border border-gray-300 rounded-md bg-white sm:text-xs focus:ring-blue-500 focus:border-blue-500 ">
                         </div>
                         <div class="md:col-span-1 col-span-2">
                             <label for="" class="text-sm font-semibold">Margen de Utilidad</label>
-                            <input type="number" name="margen" wire:model="utilidad" placeholder="Margen de Utilidad"
+                            <input type="number" name="margen" wire:model="utilidad" placeholder="Margen de utilidad"
                                 class="block w-full p-3 mb-2 text-gray-900 border border-gray-300 rounded-md bg-white sm:text-xs focus:ring-blue-500 focus:border-blue-500 ">
                         </div>
                         <div class="md:col-span-1 col-span-2">
@@ -122,12 +122,18 @@
                                 placeholder="Cantidad de productos a cotizar"
                                 class="block w-full p-3 mb-2 text-gray-900 border border-gray-300 rounded-md bg-white sm:text-xs focus:ring-blue-500 focus:border-blue-500 ">
                         </div>
+                        <div class="md:col-span-1 col-span-2">
+                            <label for="" class="text-sm font-semibold">Tax Fee</label>
+                            <input type="number" name="margen" wire:model="taxFee"
+                                placeholder="Tax Fee (Valor Maximo 99)"
+                                class="block w-full p-3 mb-2 text-gray-900 border border-gray-300 rounded-md bg-white sm:text-xs focus:ring-blue-500 focus:border-blue-500 ">
+                        </div>
                     @else
                         <div class="m-0 mb-1 col-span-2 text-center">
                             @if (count($this->priceScalesComplete) > 0)
                                 <div class="col-span-2">
                                     <p class="font-semibold mb-2">
-                                        Precios Por Cantidad de Articulos
+                                        Precios Por Cantidad de Artículos
                                     </p>
                                     <div class="relative overflow-x-auto">
                                         <table
@@ -139,7 +145,7 @@
                                                         Cantidad
                                                     </th>
                                                     <th scope="col" class="px-2 py-2">
-                                                        Tecnica
+                                                        Técnica
                                                     </th>
                                                     <th scope="col" class="px-2 py-2">
                                                         Utilidad
@@ -148,7 +154,7 @@
                                                         Unitario
                                                     </th>
                                                     <th scope="col" class="px-2 py-2">
-                                                        Costo de Operacion
+                                                        Costo de Operación
                                                     </th>
                                                     <th scope="col" class="px-2 py-2">
                                                         Total
@@ -236,9 +242,9 @@
                                             <div class="grid grid-cols-2 gap-2 text-left">
                                                 <div class="col-span-2">
                                                     <label for="" class="text-sm font-semibold">Costo de
-                                                        Operacion</label>
+                                                        operación</label>
                                                     <input type="number" name="operacion" wire:model="operacion"
-                                                        placeholder="Costo de operacion"
+                                                        placeholder="Costo de operación"
                                                         class="block w-full p-3 mb-2 text-gray-900 border border-gray-300 rounded-md bg-white sm:text-xs focus:ring-blue-500 focus:border-blue-500 ">
                                                 </div>
                                                 <div class="col-span-2 md:col-span-1">
@@ -250,27 +256,35 @@
                                                 </div>
 
                                                 <div class="col-span-2 md:col-span-1">
-                                                    <label for="" class="text-sm font-semibold">Utilidad Por
-                                                        Partida</label>
+                                                    <label for="" class="text-sm font-semibold">Utilidad por
+                                                        partida
+                                                    </label>
                                                     <input type="number" name="margen" wire:model="utilidad"
                                                         placeholder="Margen de Utilidad. Max: 99" max="99"
                                                         maxlength="2" max="100"
                                                         class="block w-full p-3 mb-2 text-gray-900 border border-gray-300 rounded-md bg-white sm:text-xs focus:ring-blue-500 focus:border-blue-500 ">
                                                 </div>
+                                               {{--  <div class="md:col-span-1 col-span-2">
+                                                    <label for="" class="text-sm font-semibold">Tax
+                                                        Fee</label>
+                                                    <input type="number" name="margen" wire:model="taxFee"
+                                                        placeholder="Tax Fee (Valor Maximo 99)"
+                                                        class="block w-full p-3 mb-2 text-gray-900 border border-gray-300 rounded-md bg-white sm:text-xs focus:ring-blue-500 focus:border-blue-500 ">
+                                                </div> --}}
                                                 <div class="col-span-2">
                                                     <label for="" class="text-sm font-semibold block">Precio
-                                                        actual de la tecnica (por
+                                                        actual de la técnica (por
                                                         tinta):
                                                         <span class="font-bold"> $
                                                             {{ $precioDeTecnica }}</span></label>
                                                     <label for="" class="text-sm font-semibold block">Precio
-                                                        actual de la tecnica (por
-                                                        articulo con {{ $colores }} tintas seleccionadas): <span
+                                                        actual de la técnica (por
+                                                        artículo con {{ $colores }} tintas seleccionadas): <span
                                                             class="font-bold"> $
                                                             {{ $precioDeTecnica * $colores }}</span></label>
                                                     <input type="number" name="newTechnique"
                                                         wire:model="precioTecnicaEscala"
-                                                        placeholder="Nuevo precio de la tecnica por tinta (Opcional)"
+                                                        placeholder="Nuevo precio de la técnica por tinta (Opcional)"
                                                         class="block w-full p-3 mb-2 text-gray-900 border border-gray-300 rounded-md bg-white sm:text-xs focus:ring-blue-500 focus:border-blue-500 ">
                                                 </div>
                                             </div>
@@ -301,56 +315,56 @@
                 class="absolute flex items-center justify-center w-6 h-6 bg-blue-100 rounded-full -left-3 ring-8 ring-white ">3
             </span>
             <h3 class="flex items-center mb-1 text-lg font-semibold text-gray-900 ">
-                Configuracion
+                Configuración
             </h3>
             <div class="bg-gray-50 p-3 rounded-sm">
                 <div class="grid grid-cols-2 gap-2">
                     <div class="md:col-span-1 col-span-2">
-                        <label for="" class="text-sm font-semibold">Dias de Entrega</label>
+                        <label for="" class="text-sm font-semibold">Días de entrega</label>
                         <input type="number" name="dias" wire:model="entrega"
-                            placeholder="Dias de entrega estimada"
+                            placeholder="Días de entrega estimada"
                             class="block w-full p-3 mb-2 text-gray-900 border border-gray-300 rounded-md bg-white sm:text-xs focus:ring-blue-500 focus:border-blue-500 ">
                     </div>
                     <div class="md:col-span-1 col-span-2">
-                        <label for="" class="text-sm font-semibold">Naturales o Habiles</label>
+                        <label for="" class="text-sm font-semibold">Naturales o Hábiles</label>
                         <select name="" id=""
                             class="block w-full p-3 mb-2 text-gray-900 border border-gray-300 rounded-md bg-white sm:text-xs focus:ring-blue-500 focus:border-blue-500 "
                             wire:model="typeDays">
-                            <option value="">Seleccione el tipo de dias (opcional)</option>
-                            <option value="1">Habiles</option>
+                            <option value="">Seleccione el tipo de días (opcional)</option>
+                            <option value="1">Hábiles</option>
                             <option value="2">Naturales</option>
                         </select>
                     </div>
                     @if (!$priceScales)
                         <div class="col-span-2">
-                            <label for="" class="text-sm font-semibold block">Precio actual de la tecnica (por
+                            <label for="" class="text-sm font-semibold block">Precio actual de la técnica (por
                                 tinta):
                                 <span class="font-bold"> $ {{ $precioDeTecnica }}</span></label>
-                            <label for="" class="text-sm font-semibold block">Precio actual de la tecnica (por
-                                articulo con {{ $colores }} tintas seleccionadas): <span class="font-bold"> $
+                            <label for="" class="text-sm font-semibold block">Precio actual de la técnica (por
+                                artículo con {{ $colores }} tintas seleccionadas): <span class="font-bold"> $
                                     {{ $precioDeTecnica * $colores }}</span></label>
                             <input type="number" name="newTechnique" wire:model="newPriceTechnique"
-                                placeholder="Nuevo precio de la tecnica por tinta (Opcional)"
+                                placeholder="Nuevo precio de la técnica por tinta (Opcional)"
                                 class="block w-full p-3 mb-2 text-gray-900 border border-gray-300 rounded-md bg-white sm:text-xs focus:ring-blue-500 focus:border-blue-500 ">
                         </div>
                     @endif
                     <div class="col-span-2">
-                        <label for="" class="text-sm font-semibold block">Coloca la descripcion que se
+                        <label for="" class="text-sm font-semibold block">Coloca la descripción que se
                             mostrara
                             en la
-                            cotizacion:</label>
+                            cotización:</label>
                         <textarea rows="3" name="newDescription" wire:model="newDescription"
                             class="block w-full p-3 mb-2 text-gray-900 border border-gray-300 rounded-md bg-white sm:text-xs focus:ring-blue-500 focus:border-blue-500 "
-                            placeholder="Descripcion que se mostrara en la cotizacion, si se deja vacio, se mostrara la descripcion que se encuentra en la parte de arriba (Opcional)"> </textarea>
+                            placeholder="Descripción que se mostrará en la cotización. Si se deja vacío, se mostrará la descripción que se encuentra en la parte de arriba. (Opcional)"> </textarea>
                     </div>
                     <div class="col-span-2">
                         <label for="" class="text-sm font-semibold block">Imagen que sera visualizada en la
-                            cotizacion</label>
+                            cotización</label>
                         @if (!$imageSelected)
                             <button type="button"
                                 class="w-full block mt-2 text-white bg-green-500 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded text-sm px-5 py-2.5 text-center mr-2 mb-2 "
                                 data-toggle="modal" wire:click='openModalImage'>
-                                Selecciona la imagen que se vera en la cotizacion
+                                Selecciona la imagen que se vera en la cotización
                             </button>
                         @else
                             <div class="flex justify-between items-center">
@@ -363,7 +377,7 @@
                                     <button type="button"
                                         class="inline-block text-white bg-green-500 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-xl text-sm px-5 py-2.5 text-center mr-2 mb-2 "
                                         data-toggle="modal" wire:click='openModalImage'>
-                                        Actualiza la imagen que se vera en la cotizacion
+                                        Actualiza la imagen que se vera en la cotización
                                     </button>
                                     <button type="button"
                                         class="inline-block text-white bg-green-500 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-xl text-sm px-5 py-2.5 text-center mr-2 mb-2 "
@@ -382,7 +396,7 @@
                                     <!-- Modal header -->
                                     <div class="flex items-start justify-between p-4 border-b rounded-t">
                                         <h3 class="text-xl font-semibold text-gray-900 ">
-                                            Seleccionar la imagen que se visualizara en la cotizacion
+                                            Seleccionar la imagen que se visualizara en la cotización
                                         </h3>
                                     </div>
                                     <!-- Modal body -->
@@ -427,16 +441,164 @@
                 class="absolute flex items-center justify-center w-6 h-6 bg-blue-100 rounded-full -left-3 ring-8 ring-white ">4
             </span>
             <h3 class="flex items-center mb-1 text-lg font-semibold text-gray-900 ">
+                {{--   @php
+
+                    $precioDeTecnica = 0;
+
+                    if (!$this->priceScales) {
+                        if (!is_numeric($this->cantidad)) {
+                            $this->cantidad = null;
+                        }
+
+                        if (!is_numeric($this->newPriceTechnique)) {
+                            $this->newPriceTechnique = null;
+                        }
+
+                        if ((int) $this->cantidad > 0 && $preciosDisponibles && $this->sizeSeleccionado !== null) {
+                            foreach ($preciosDisponibles as $precioDisponible) {
+                                if ($precioDisponible->escala_final != null) {
+                                    if ((int) $this->cantidad >= $precioDisponible->escala_inicial && (int) $this->cantidad <= $precioDisponible->escala_final) {
+                                        $this->priceTechnique = $precioDisponible;
+                                        $precioDeTecnica = $precioDisponible->tipo_precio == 'D' ? round($precioDisponible->precio / (int) $this->cantidad, 2) : $precioDisponible->precio;
+                                    }
+                                } elseif ($precioDisponible->escala_final == null) {
+                                    if ((int) $this->cantidad >= $precioDisponible->escala_inicial) {
+                                        $this->priceTechnique = $precioDisponible;
+                                        $precioDeTecnica = $precioDisponible->tipo_precio == 'D' ? round($precioDisponible->precio / (int) $this->cantidad, 2) : $precioDisponible->precio;
+                                    }
+                                }
+                            }
+                        } else {
+                            $precioDeTecnica = 0;
+                            $this->priceTechnique = null;
+                        }
+
+                        $precioDeTecnicaUsado = $precioDeTecnica;
+                        if ($this->newPriceTechnique != null && $this->newPriceTechnique >= 0) {
+                            $precioDeTecnicaUsado = $this->newPriceTechnique;
+                        }
+
+                        if (!$this->product->precio_unico) {
+                            $escalasDeProductoDisponibles = $this->product->precios;
+                            if ((int) $this->cantidad > 0 && $escalasDeProductoDisponibles) {
+                                foreach ($escalasDeProductoDisponibles as $escalaDeCosto) {
+                                    if ($escalaDeCosto->escala_final != null) {
+                                        if ((int) $this->cantidad >= $escalaDeCosto->escala_inicial && (int) $this->cantidad <= $escalaDeCosto->escala_final) {
+                                            $this->precio = $escalaDeCosto->price;
+                                        }
+                                    } elseif ($escalaDeCosto->escala_final == null) {
+                                        if ((int) $this->cantidad >= $escalaDeCosto->escala_inicial) {
+                                            $this->precio = $escalaDeCosto->price;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                        $nuevoPrecio = round(($this->precio + $precioDeTecnicaUsado * $this->colores + $this->operacion) / ((100 - $this->utilidad) / 100), 2);
+
+                        $this->precioCalculado = $nuevoPrecio;
+                        $this->precioTotal = $nuevoPrecio * $this->cantidad;
+                    } else {
+                        $this->priceScalesComplete = [];
+                        foreach ($this->infoScales as $info) {
+                            if ((int) $info['quantity'] > 0 && $preciosDisponibles && $this->sizeSeleccionado !== null) {
+                                foreach ($preciosDisponibles as $precioDisponible) {
+                                    if ($precioDisponible->escala_final != null) {
+                                        if ((int) $info['quantity'] >= $precioDisponible->escala_inicial && (int) $info['quantity'] <= $precioDisponible->escala_final) {
+                                            $this->priceTechnique = $precioDisponible;
+                                            $precioDeTecnica = $precioDisponible->tipo_precio == 'D' ? round($precioDisponible->precio / (int) $info['quantity'], 2) : $precioDisponible->precio;
+                                        }
+                                    } elseif ($precioDisponible->escala_final == null) {
+                                        if ((int) $info['quantity'] >= $precioDisponible->escala_inicial) {
+                                            $this->priceTechnique = $precioDisponible;
+                                            $precioDeTecnica = $precioDisponible->tipo_precio == 'D' ? round($precioDisponible->precio / (int) $info['quantity'], 2) : $precioDisponible->precio;
+                                        }
+                                    }
+                                }
+                            } else {
+                                $precioDeTecnica = 0;
+                                $this->priceTechnique = null;
+                            }
+
+                            if (!is_numeric($info['quantity'])) {
+                                $info['quantity'] = null;
+                            }
+
+                            if (!is_numeric($info['tecniquePrice'])) {
+                                $info['tecniquePrice'] = null;
+                            }
+                            $precioDeTecnicaUsado = $precioDeTecnica;
+                            if ($info['tecniquePrice'] != null && $info['tecniquePrice'] >= 0) {
+                                $precioDeTecnicaUsado = $info['tecniquePrice'];
+                            }
+
+                            if (!$this->product->precio_unico) {
+                                $escalasDeProductoDisponibles = $this->product->precios;
+                                if ((int) $info['quantity'] > 0 && $escalasDeProductoDisponibles) {
+                                    foreach ($escalasDeProductoDisponibles as $escalaDeCosto) {
+                                        if ($escalaDeCosto->escala_final != null) {
+                                            if ((int) $info['quantity'] >= $escalaDeCosto->escala_inicial && (int) $info['quantity'] <= $escalaDeCosto->escala_final) {
+                                                $this->precio = $escalaDeCosto->price;
+                                            }
+                                        } elseif ($escalaDeCosto->escala_final == null) {
+                                            if ((int) $info['quantity'] >= $escalaDeCosto->escala_inicial) {
+                                                $this->precio = $escalaDeCosto->price;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                            $nuevoPrecio = round(($this->precio + $precioDeTecnicaUsado * $this->colores + $info['operacion']) / ((100 - $info['utility']) / 100), 2);
+
+                            array_push($this->priceScalesComplete, [
+                                'quantity' => $info['quantity'],
+                                'tecniquePrice' => $info['tecniquePrice'] != null ? floatval($info['tecniquePrice']) : $precioDeTecnica,
+                                'utility' => $info['utility'],
+                                'unit_price' => $nuevoPrecio,
+                                'operacion' => $info['operacion'],
+                                'total_price' => $nuevoPrecio * $info['quantity'],
+                            ]);
+                        }
+                        if ((int) $this->cantidad > 0 && $preciosDisponibles && $this->sizeSeleccionado !== null) {
+                            foreach ($preciosDisponibles as $precioDisponible) {
+                                if ($precioDisponible->escala_final != null) {
+                                    if ((int) $this->cantidad >= $precioDisponible->escala_inicial && (int) $this->cantidad <= $precioDisponible->escala_final) {
+                                        $this->priceTechnique = $precioDisponible;
+                                        $precioDeTecnica = $precioDisponible->tipo_precio == 'D' ? round($precioDisponible->precio / (int) $this->cantidad, 2) : $precioDisponible->precio;
+                                    }
+                                } elseif ($precioDisponible->escala_final == null) {
+                                    if ((int) $this->cantidad >= $precioDisponible->escala_inicial) {
+                                        $this->priceTechnique = $precioDisponible;
+                                        $precioDeTecnica = $precioDisponible->tipo_precio == 'D' ? round($precioDisponible->precio / (int) $this->cantidad, 2) : $precioDisponible->precio;
+                                    }
+                                }
+                            }
+                        } else {
+                            $precioDeTecnica = 0;
+                            $this->priceTechnique = null;
+                        }
+                    }
+                @endphp
+                {{ $this->product->precios }}
+                {{ ' precio de la tecnica' }}
+                {{ $precioDeTecnica }}
+                {{ 'precio de tecnica con colores' }}
+                {{ $precioDeTecnicaUsado * $this->colores }} --}}
                 Finalizar Cotizacion
             </h3>
             <div class="bg-gray-50 p-3 rounded-sm">
                 <div class=" sm:flex justify-between p-4">
+
+
+
                     @if (!$priceScales)
                         <div>
-                            <h6 class="text-success">Precio Final por Articulo: $ {{ $precioCalculado }}</h6>
+                            <h6 class="text-success">Precio Final por Artículo: $ {{ $precioCalculado }}</h6>
                             <h6 class="text-success">Precio Total: $ {{ $precioTotal }}</h6>
                         </div>
                     @endif
+
                     <div class="m-0 mb-1 text-center">
                         @if ($currentQuote)
                             <button type="button" class="btn btn-warning py-2 px-4"
@@ -445,16 +607,16 @@
                         @elseif ($productEdit)
                             <button type="button" class="btn btn-info py-2 px-4"
                                 wire:click='editarCotizacion'>Actualizar
-                                cotizacion</button>
+                                cotización</button>
                         @elseif ($productNewAdd)
                             <button type="button" class="btn btn-secondary py-2 px-4"
                                 wire:click='addNewProductToQuote'>Agregar
                                 a la
-                                cotizacion</button>
+                                cotización</button>
                         @else
                             <button type="button" class="btn btn-primary py-2 px-4"
                                 wire:click='agregarCotizacion'>Añadir a
-                                la cotizacion</button>
+                                la cotización</button>
                         @endif
                     </div>
                 </div>
@@ -469,7 +631,7 @@
                                 <a href="{{ url('/') }}" class="btn btn-sm btn-info w-50 px-1">
                                     Ir al cotizador </a>
                                 <a href="{{ url('/cotizacion-actual') }}" class="btn btn-sm btn-secondary w-50 px-1">
-                                    Ver mi cotizacion </a>
+                                    Ver mi cotización </a>
                             </div>
                         </div>
                         <button type="button"
@@ -555,14 +717,14 @@
 
         window.addEventListener('openConfirmDelete', event => {
             Swal.fire({
-                title: 'Esta seguro?',
-                text: "Desea eliminar esta escala",
+                title: '¿Está seguro?',
+                text: "¿Desea eliminar esta escala?",
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
                 cancelButtonColor: '#d33',
-                confirmButtonText: 'Si!',
-                cancelButtonText: 'Cancelar!'
+                confirmButtonText: 'Sí',
+                cancelButtonText: 'Cancelar'
             }).then((result) => {
                 if (result.isConfirmed) {
                     let respuesta = @this.deleteScale(event.detail.id)

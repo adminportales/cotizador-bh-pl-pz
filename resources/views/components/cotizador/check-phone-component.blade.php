@@ -3,8 +3,8 @@
         document.addEventListener('DOMContentLoaded', () => {
             const solicitarInfo = () => {
                 Swal.fire({
-                    title: 'Nos hace falta informacion',
-                    text: 'Ingresa tu numero de telefono para colocarlo en las cotizaciones.',
+                    title: 'Nos hace falta información',
+                    text: 'Ingresa tu número de teléfono para colocarlo en las cotizaciones.',
                     input: 'number',
                     showCancelButton: true,
                     confirmButtonText: 'Enviar',
@@ -21,11 +21,11 @@
 
                             let respuesta = await @this.changePhone()
                             if (respuesta == 1) {
-                                Swal.fire('La informacion se registro correctamente',
+                                Swal.fire('La información se registró correctamente.',
                                     '',
                                     'success')
                             } else {
-                                Swal.fire('¡Error al registrar la informacion!', '',
+                                Swal.fire('¡Error al registrar la información!', '',
                                     'error')
                                 solicitarInfo()
                             }

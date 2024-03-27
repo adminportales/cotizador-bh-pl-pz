@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-    <title>Cotizacion BH</title>
+    <title>Cotización BH</title>
     <link rel="stylesheet" href="quotesheet/bh/stylebh.css">
 </head>
 
@@ -24,7 +24,7 @@
         <table class="head content">
             <tr>
                 <td style="text-align: left; width:20%"><img src="quotesheet/bh/logo.png" class="logo"></td>
-                <td style="text-align: center; width:65%">Presupuesto | Compañia</td>
+                <td style="text-align: center; width:65%">Presupuesto | Compañía</td>
                 <td></td>
             </tr>
         </table>
@@ -42,7 +42,7 @@
             </tr>
         </table>
         <div style="text-align: right">
-            <p class="content text-page-num">Pagina <span class="pagenum"></span></p>
+            <p class="content text-page-num">Página <span class="pagenum"></span></p>
         </div>
     </footer>
     <div class="body-pdf">
@@ -183,18 +183,18 @@
                 <table style="border-collapse: collapse;width:100%;border: 1px solid #0464b4">
                     <tr class="title text-background">
                         <td>
-                            <p class="title-text">Imagen de Referencia</p>
+                            <p class="title-text">Imagen de referencia</p>
                         </td>
                         <td colspan="12">
-                            <p class="title-text">Descripcion</p>
+                            <p class="title-text">Descripción</p>
                         </td>
                     </tr>
                     <tr>
                         <td rowspan="{{ $item->quote_by_scales ? 5 + count($scales_info) : 6 }}"
                             style="width: 250px; text-align: center; vertical-align: middle; padding: 0; border-right: 1px solid #0464b4">
                             @if ($producto->image)
-                                <img src="{{ $producto->image }}"
-                                    style="max-height: 220px;height:auto;max-width: 220px;width:auto;">
+                                
+                                <img  style="max-height: 220px;height:auto;max-width: 220px;width:auto;" src="{{$producto->image}}" alt="">
                             @else
                                 <img src="img/default.jpg" width="180">
                             @endif
@@ -206,8 +206,8 @@
                         </td>
                     </tr>
                     <tr class="text-background">
-                        <td colspan="6" class="title-tecnica">Tecnica de Personalizacion</td>
-                        <td colspan="6" class="title-tecnica">Detalle de la Personalizacion</td>
+                        <td colspan="6" class="title-tecnica">Técnica de personalización</td>
+                        <td colspan="6" class="title-tecnica">Detalle de la personalización</td>
                     </tr>
                     <tr>
                         <td colspan="6" class="detalle-tecnica">
@@ -220,7 +220,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <td colspan="12" class="title-entrega">Tiempo de Entrega: {{ $item->dias_entrega }} días
+                        <td colspan="12" class="title-entrega">Tiempo de entrega: {{ $item->dias_entrega }} días
                             {{ $item->type_days == null
                                 ? ($quote->type_days == 0
                                     ? 'hábiles'
@@ -234,8 +234,8 @@
                     </tr>
                     <tr class="text-background">
                         <td colspan="4" class="title-cantidad">Cantidad</td>
-                        <td colspan="4" class="title-cantidad">Precio Unitario</td>
-                        <td colspan="4" class="title-cantidad">Precio Total</td>
+                        <td colspan="4" class="title-cantidad">Precio unitario</td>
+                        <td colspan="4" class="title-cantidad">Precio total</td>
                     </tr>
                     @if ($item->quote_by_scales)
                         @foreach ($scales_info as $scale)
@@ -251,14 +251,14 @@
                             <tr>
                                 <td colspan="4" class="detalle-cantidad">{{ $scale->quantity }} pz</td>
                                 <td colspan="4" class="detalle-cantidad">$
-                                    {{ number_format($precioUnitario, 4, '.', ',') }}
+                                    {{ number_format($precioUnitario, 2, '.', ',') }}
 
                                 </td>
                                 <td colspan="4" class="detalle-cantidad">$
-                                    {{ number_format($precioTotal, 4, '.', ',') }}
+                                    {{ number_format($precioTotal, 2, '.', ',') }}
                                     @if ($quote->iva_by_item)
                                         <p style="font-size: 12px"><b>IVA:
-                                            </b>${{ number_format($totalIva, 4, '.', ',') }}
+                                            </b>${{ number_format($totalIva, 2, '.', ',') }}
                                         </p>
                                     @endif
                                 </td>
@@ -276,14 +276,14 @@
                         <tr>
                             <td colspan="4" class="detalle-cantidad">{{ $item->cantidad }} pz</td>
                             <td colspan="4" class="detalle-cantidad">$
-                                {{ number_format($precioUnitario, 4, '.', ',') }}
+                                {{ number_format($precioUnitario, 2, '.', ',') }}
 
                             </td>
                             <td colspan="4" class="detalle-cantidad">$
-                                {{ number_format($precioTotal, 4, '.', ',') }}
+                                {{ number_format($precioTotal, 2, '.', ',') }}
                                 @if ($quote->iva_by_item)
                                     <p style="font-size: 12px"><b>IVA:
-                                        </b>${{ number_format($totalIva, 4, '.', ',') }}
+                                        </b>${{ number_format($totalIva, 2, '.', ',') }}
                                     </p>
                                 @endif
                             </td>
@@ -298,12 +298,12 @@
         <table class="total content">
             <tr style="">
                 <td style="width: 100%; font-size: 15px;">
-                    <p style="margin-bottom: 5px">Cotización Válida Hasta:
+                    <p style="margin-bottom: 5px">Cotización válida hasta:
                         {{ $quote->created_at->addDays($quote->latestQuotesUpdate->quotesInformation->shelf_life ?: 30)->format('d/m/Y') }}
                     </p>
                     <br>
                     @if (strlen($quote->latestQuotesUpdate->quotesInformation->information) > 0)
-                        <p style="text-align: justify"><span style="font-weight: bold;"> Información Adicional:</span>
+                        <p style="text-align: justify"><span style="font-weight: bold;"> Información adicional:</span>
                             {{ $quote->latestQuotesUpdate->quotesInformation->information }}</p>
                     @endif
                     <br>
@@ -352,21 +352,21 @@
             <li>Precios mostrados en
                 {{ $quote->latestQuotesUpdate->quotesInformation->currency_type == 'USD' ? 'dolares (USD)' : 'pesos mexicanos (MXP)' }}.
             </li>
-            <li>El importe cotizado corresponde a la cantidad de piezas y número de tintas arriba mencionadas, si se
+            <li>El importe cotizado corresponde a la cantidad de piezas y al número de tintas arriba mencionadas.  Si se 
                 modifica
-                el número de piezas el precio cambiaría.</li>
-            <li>El tiempo de entrega empieza a correr una vez recibida la Orden de Compra y autorizada la muestra física
+                el número de piezas, el precio cambiaría.</li>
+            <li>El tiempo de entrega empieza a correr una vez recibida la orden de compra y autorizada la muestra física
                 o
                 virtual a solicitud del cliente.</li>
             <li>Vigencia de la cotización {{ $quote->latestQuotesUpdate->quotesInformation->shelf_life ?: 30 }} días
                 {{ $quote->type_days == 0 ? 'hábiles' : 'naturales' }}.</li>
             <li>Producto cotizado de fabricación nacional o importación puede afinarse la fecha de entrega previo a la
                 emisión
-                de Orden de Compra.</li>
-            <li>Producto cotizado disponible en stock a la fecha de esta cotización puede modificarse al paso de los
+                de orden de compra.</li>
+            <li>El producto cotizado, disponible en stock a la fecha de esta cotización, puede modificarse con el paso de los
                 días
                 sin
-                previo aviso. Solo se bloquea el inventario al recibir Orden de Compra</li>
+                previo aviso. Solo se bloquea el inventario al recibir la orden de compra.</li>
         </ul>
     </div>
 </body>

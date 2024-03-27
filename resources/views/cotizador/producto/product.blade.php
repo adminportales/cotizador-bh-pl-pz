@@ -5,15 +5,38 @@
         <div class="md:col-span-5 col-span-12 w-full border-2 border-gray-200 py-4 px-5 rounded-lg">
             @if ($product->precio_unico)
                 @php
+
+                    $product_type = $product->productAttributes->where('attribute', 'Tipo Descuento')->first();
                     $priceProduct = $product->price;
-                    if ($product->producto_promocion) {
+                    
+                    if ($product_type && $product_type->value == 'Normal') {
+                        $priceProduct = round($priceProduct - $priceProduct * (30 / 100), 2);
+                    }else if($product_type && ($product_type->value == 'Outlet' || $product_type->value == 'Unico')){
+                        $priceProduct = round($priceProduct - $priceProduct * (0 / 100), 2);
+                    }else{
+                        if ($product->producto_promocion) {
                         $priceProduct = round($priceProduct - $priceProduct * ($product->descuento / 100), 2);
-                    } else {
-                        $priceProduct = round($priceProduct - $priceProduct * ($product->provider->discount / 100), 2);
+                        } else {
+                            $priceProduct = round($priceProduct - $priceProduct * ($product->provider->discount / 100), 2);
+                        }
+                        if ($product->provider->company == 'EuroCotton') {
+                             $iva = $priceProduct * 0.16;
+                             $priceProduct = round($priceProduct - $iva, 2);
+                        }
+                        if ($product->provider->company == 'For Promotional') {
+                  
+                            if ($product->descuento >= $product->provider->discount ) {
+                                $priceProduct = round($product->price- $product->price * ($product->descuento /100),2);
+                            } else {
+                                $priceProduct = round($product->price - $product->price * (25/100),2);
+                            }
+                    
+                        }
                     }
+
                 @endphp
             @endif
-            <p class="mb-2 text-xl">Detalles del Producto</p>
+            <p class="mb-2 text-xl">Detalles del producto</p>
             <div class="product text-center flex gap-1 justify-center">
                 <div class="product-small-img" style="overflow: auto; max-height: 400px">
                     @foreach ($product->images as $image)
@@ -30,7 +53,7 @@
             <br>
             <div class="grid grid-cols-12">
                 <div class="col-span-12 text-sm">
-                    <p class="mb-2 text-xl">Informacion Adicional</p>
+                    <p class="mb-2 text-xl">Información adicional</p>
                     <div class="grid grid-cols-5">
                         <div class="col-span-2 text-white bg-primary-500 p-2">SKU Padre:</div>
                         <div class="col-span-3 p-2 border border-gray-200"> {{ $product->sku_parent }}</div>
@@ -43,10 +66,10 @@
                         <div class="col-span-2 text-white bg-primary-500 p-2">Producto Nuevo:</div>
                         <div class="col-span-3 p-2  border border-gray-200">
                             {{ $product->producto_nuevo ? 'SI' : 'NO' }}</div>
-                        <div class="col-span-2 text-white bg-primary-500 p-2">Producto de Promocion:</div>
+                        <div class="col-span-2 text-white bg-primary-500 p-2">Producto de Promoción:</div>
                         <div class="col-span-3 p-2  border border-gray-200">
                             {{ $product->producto_promocion ? 'SI' : 'NO' }}</div>
-                        <div class="col-span-2 text-white bg-primary-500 p-2">Ultima Actualizacion:</div>
+                        <div class="col-span-2 text-white bg-primary-500 p-2">Última Actualización:</div>
                         <div class="col-span-3 p-2  border border-gray-200">
                             {{ $product->updated_at->diffForHumans() }}</div>
 
@@ -58,12 +81,35 @@
                             <div class="col-span-3 p-2 border font-bold border-gray-200  bg-gray-200"> Precio</div>
                             @foreach ($product->precios as $precio)
                                 @php
-                                    $priceProduct = $precio->price;
-                                    if ($product->producto_promocion) {
+
+                                    $product_type = $product->productAttributes->where('attribute', 'Tipo Descuento')->first();
+                                    $priceProduct = $product->price;
+
+                                    if ($product_type && $product_type->value == 'Normal') {
+                                        $priceProduct = round($priceProduct - $priceProduct * (30 / 100), 2);
+                                    }else if($product_type && ($product_type->value == 'Outlet' || $product_type->value == 'Unico'))
+                                        $priceProduct = round($priceProduct - $priceProduct * (0 / 100), 2);
+                                    else{
+                                        if ($product->producto_promocion) {
                                         $priceProduct = round($priceProduct - $priceProduct * ($product->descuento / 100), 2);
-                                    } else {
-                                        $priceProduct = round($priceProduct - $priceProduct * ($product->provider->discount / 100), 2);
+                                        } else {
+                                            $priceProduct = round($priceProduct - $priceProduct * ($product->provider->discount / 100), 2);
+                                        }
+                                        if ($product->provider->company == 'EuroCotton') {
+                                            $iva = $priceProduct * 0.16;
+                                            $priceProduct = round($priceProduct - $iva, 2);
+                                        }
+                                        if ($product->provider->company == 'For Promotional') {
+                  
+                                            if ($product->descuento >= $product->provider->discount ) {
+                                                $priceProduct = round($product->price- $product->price * ($product->descuento /100),2);
+                                            } else {
+                                                $priceProduct = round($product->price - $product->price * (25/100),2);
+                                            }
+                                    
+                                        }
                                     }
+
                                 @endphp
                                 <div class="col-span-2  border border-gray-200 p-2">{{ $precio->escala_inicial }} -
                                     {{ $precio->escala_final }}</div>
@@ -74,7 +120,7 @@
                     @endif
 
                     @if (count($product->productCategories) > 0)
-                        <p class="mb-2 text-xl mt-4">Categoria</p>
+                        <p class="mb-2 text-xl mt-4">Categoría</p>
                         <div class="grid grid-cols-5">
                             <div class="col-span-2 text-white bg-primary-500 p-2">Familia:</div>
                             <div class="col-span-3 p-2  border border-gray-200">
@@ -86,7 +132,7 @@
                         </div>
                     @endif
                     @if (count($product->productAttributes) > 0)
-                        <p class="mb-2 text-xl mt-4">Otros Atributos</p>
+                        <p class="mb-2 text-xl mt-4">Otros atributos</p>
                         <div class="grid grid-cols-5">
                             @foreach ($product->productAttributes as $attr)
                                 <div class="col-span-2 text-white bg-primary-500 p-2">{{ $attr->attribute }}:</div>

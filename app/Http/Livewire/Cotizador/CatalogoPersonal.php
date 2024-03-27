@@ -11,6 +11,14 @@ use Livewire\Component;
 use Livewire\WithFileUploads;
 use Livewire\WithPagination;
 
+/**
+ * Clase CatalogoPersonal
+ *
+ * Esta clase es un componente Livewire que se utiliza para manejar la funcionalidad del catálogo personal de productos.
+ * Contiene métodos para renderizar la vista del catálogo, editar un producto, guardar los cambios realizados en un producto,
+ * eliminar un producto, agregar una escala de precios, eliminar una escala de precios, editar una escala de precios y cambiar
+ * el tipo de precio (escalado o único).
+ */
 class CatalogoPersonal extends Component
 {
     use WithPagination;

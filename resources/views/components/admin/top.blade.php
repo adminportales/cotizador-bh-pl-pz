@@ -56,7 +56,7 @@
                   <li class="menu single-menu">
                       <a href="#uiKit" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
                           <div class="">
-                              <span>Conf. Tecnicas</span>
+                              <span>Conf. Técnicas</span>
                           </div>
                           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                               fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
@@ -66,7 +66,7 @@
                       </a>
                       <ul class="collapse submenu list-unstyled" id="uiKit" data-parent="#topAccordion">
                           <li>
-                              <a href="{{ url('admin/materials') }}"> Materiales y Tecnicas</a>
+                              <a href="{{ url('admin/materials') }}"> Materiales y Técnicas</a>
                           </li>
                           <li>
                               <a href="{{ url('admin/sizes') }}"> Tamaños </a>

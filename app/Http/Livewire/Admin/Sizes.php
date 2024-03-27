@@ -8,6 +8,11 @@ use App\Models\Size;
 
 use Illuminate\Support\Str as Str;
 
+/**
+ * Clase Sizes
+ *
+ * Esta clase es responsable de manejar la lógica relacionada con los tamaños en el sistema de cotización.
+ */
 class Sizes extends Component
 {
     use WithPagination;
@@ -16,6 +21,11 @@ class Sizes extends Component
     public $selected_id, $keyWord, $nombre;
     public $updateMode = false;
 
+    /**
+     * Renderiza la vista de tamaños con la lista de tamaños disponibles.
+     *
+     * @return \Illuminate\View\View
+     */
     public function render()
     {
         $keyWord = '%' . $this->keyWord . '%';
@@ -26,17 +36,32 @@ class Sizes extends Component
         ]);
     }
 
+    /**
+     * Cancela la edición o creación de un tamaño y reinicia los valores de entrada.
+     *
+     * @return void
+     */
     public function cancel()
     {
         $this->resetInput();
         $this->updateMode = false;
     }
 
+    /**
+     * Reinicia los valores de entrada.
+     *
+     * @return void
+     */
     private function resetInput()
     {
         $this->nombre = null;
     }
 
+    /**
+     * Almacena un nuevo tamaño en la base de datos.
+     *
+     * @return void
+     */
     public function store()
     {
         $this->validate([
@@ -50,9 +75,15 @@ class Sizes extends Component
 
         $this->resetInput();
         $this->emit('closeModal');
-        session()->flash('message', 'Size Successfully created.');
+        session()->flash('message', 'Tamaño creado exitosamente.');
     }
 
+    /**
+     * Prepara los datos para editar un tamaño existente.
+     *
+     * @param  int  $id
+     * @return void
+     */
     public function edit($id)
     {
         $record = Size::findOrFail($id);
@@ -63,6 +94,11 @@ class Sizes extends Component
         $this->updateMode = true;
     }
 
+    /**
+     * Actualiza un tamaño existente en la base de datos.
+     *
+     * @return void
+     */
     public function update()
     {
         $this->validate([
@@ -78,10 +114,16 @@ class Sizes extends Component
 
             $this->resetInput();
             $this->updateMode = false;
-            session()->flash('message', 'Size Successfully updated.');
+            session()->flash('message', 'Tamaño actualizado exitosamente.');
         }
     }
 
+    /**
+     * Elimina un tamaño de la base de datos.
+     *
+     * @param  int  $id
+     * @return void
+     */
     public function destroy($id)
     {
         if ($id) {

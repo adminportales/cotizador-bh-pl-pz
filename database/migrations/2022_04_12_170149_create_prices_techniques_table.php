@@ -16,7 +16,7 @@ class CreatePricesTechniquesTable extends Migration
         Schema::create('prices_techniques', function (Blueprint $table) {
             $table->id();
             $table->foreignId('size_material_technique_id')->constrained('size_material_technique');
-            $table->integer('escala_inicial');
+            $table->integer('escala_inicial')->nullable();
             $table->integer('escala_final')->nullable();
             $table->decimal('precio', 8, 2);
             $table->enum('tipo_precio', ['F', 'D']);

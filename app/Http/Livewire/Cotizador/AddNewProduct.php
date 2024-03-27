@@ -11,6 +11,13 @@ use Exception;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 
+/**
+ * Clase AddNewProduct
+ *
+ * Esta clase es responsable de manejar la lógica y la presentación de la página "Agregar nuevo producto" en el cotizador.
+ * Contiene métodos para renderizar la vista, guardar un nuevo producto, abrir y cerrar la modal de escalas de precios,
+ * agregar, editar y eliminar escalas de precios, y cambiar el tipo de precio entre único y por escalas.
+ */
 class AddNewProduct extends Component
 {
     use WithFileUploads;

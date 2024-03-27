@@ -181,8 +181,8 @@
                         <table>
                             <td style="width:32%; vertical-align: middle">
                                 @if ($producto->image)
-                                    <img src="{{ $producto->image }}"
-                                        style="max-height: 320px;height:auto;max-width: 100%;width:auto;">
+                                    <img style="width:200px; height:240px; object-fit:contain;"
+                                    src="{{$producto->image}}" alt="">
                                 @else
                                     <img src="img/default.jpg" width="180">
                                 @endif
@@ -354,7 +354,7 @@
                                 <strong>Cantidad: </strong> {{ $item->cantidad }} pz
                             </p>
                             <p>
-                                <strong>Precio: </strong> $ {{ number_format($precioUnitario, 4, '.', ',') }}
+                                <strong>Precio: </strong> $ {{ number_format($precioUnitario, 2, '.', ',') }}
                             </p>
                         @endif
                     </td>

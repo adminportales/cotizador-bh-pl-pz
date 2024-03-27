@@ -311,7 +311,7 @@
         }
     @endphp
     <div class="flex justify-between mt-3">
-        <h5 class="font-semibold text-lg">Informacion del total</h5>
+        <h5 class="font-semibold text-lg">Información del total</h5>
         @if ($quote->company_id == auth()->user()->company_session)
             {{-- <div class="text-success" style="width: 25px; cursor: pointer;" data-toggle="modal"
                 data-target="#discountModalEdit" data-toggle="tooltip" data-placement="bottom" title="Editar">

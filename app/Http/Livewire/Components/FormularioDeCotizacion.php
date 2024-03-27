@@ -13,64 +13,273 @@ use Exception;
 use Livewire\Component;
 
 
+/**
+ * Clase que representa el componente de formulario de cotización.
+ */
 class FormularioDeCotizacion extends Component
 {
-    public $product, $currentQuote, $productEdit, $currentQuote_id, $productNewAdd;
+    /**
+     * Producto actual.
+     *
+     * @var mixed
+     */
+    public $product;
 
-    public $precio, $precioCalculado, $precioTotal = 0;
+    /**
+     * Cotización actual.
+     *
+     * @var mixed
+     */
+    public $currentQuote;
 
-    public $tecnica = null, $colores = null, $operacion = null, $utilidad = null, $entrega = null, $cantidad = null, $priceTechnique, $newPriceTechnique = null, $newDescription = null, $imageSelected;
+    /**
+     * Producto en edición.
+     *
+     * @var mixed
+     */
+    public $productEdit;
 
-    public $priceScales, $infoScales = [], $priceScalesComplete = [],  $cantidadEscala, $precioTecnicaEscala, $editScale = false, $itemEditScale = null;
+    /**
+     * ID de la cotización actual.
+     *
+     * @var mixed
+     */
+    public $currentQuote_id;
 
+    /**
+     * Nuevo producto agregado.
+     *
+     * @var mixed
+     */
+    public $productNewAdd;
+
+    /**
+     * Precio del producto.
+     *
+     * @var float
+     */
+    public $precio;
+
+    /**
+     * Precio calculado.
+     *
+     * @var float
+     */
+    public $precioCalculado;
+
+    /**
+     * Precio total.
+     *
+     * @var float
+     */
+    public $precioTotal = 0;
+
+    /**
+     * Técnica seleccionada.
+     *
+     * @var mixed
+     */
+    public $tecnica = null;
+
+    /**
+     * Colores seleccionados.
+     *
+     * @var mixed
+     */
+    public $colores = null;
+
+    /**
+     * Operación seleccionada.
+     *
+     * @var mixed
+     */
+    public $operacion = null;
+
+    /**
+     * Utilidad seleccionada.
+     *
+     * @var mixed
+     */
+    public $utilidad = null;
+
+    /**
+     * Entrega seleccionada.
+     *
+     * @var mixed
+     */
+    public $entrega = null;
+
+    /**
+     * Cantidad seleccionada.
+     *
+     * @var mixed
+     */
+    public $cantidad = null;
+
+    /**
+     * Precio de la técnica.
+     *
+     * @var mixed
+     */
+    public $priceTechnique;
+
+    /**
+     * Nuevo precio de la técnica.
+     *
+     * @var mixed
+     */
+    public $newPriceTechnique = null;
+
+    /**
+     * Nueva descripción.
+     *
+     * @var mixed
+     */
+    public $newDescription = null;
+
+    /**
+     * Imagen seleccionada.
+     *
+     * @var mixed
+     */
+    public $imageSelected;
+
+    /**
+     * Indica si se utiliza el precio por escalas.
+     *
+     * @var bool
+     */
+    public $priceScales;
+
+    /**
+     * Información de las escalas de precios.
+     *
+     * @var array
+     */
+    public $infoScales = [];
+
+    /**
+     * Precios de las escalas completas.
+     *
+     * @var array
+     */
+    public $priceScalesComplete = [];
+
+    /**
+     * Cantidad de la escala.
+     *
+     * @var mixed
+     */
+    public $cantidadEscala;
+
+    /**
+     * Precio de la técnica en la escala.
+     *
+     * @var mixed
+     */
+    public $precioTecnicaEscala;
+
+    /**
+     * Indica si se está editando una escala.
+     *
+     * @var bool
+     */
+    public $editScale = false;
+
+    /**
+     * Ítem de la escala en edición.
+     *
+     * @var mixed
+     */
+    public $itemEditScale;
+
+    /**
+     * Tipo de días.
+     *
+     * @var mixed
+     */
     public $typeDays;
 
+    /**
+     * Material seleccionado.
+     *
+     * @var mixed
+     */
     public $materialSeleccionado;
+
+    /**
+     * Técnica seleccionada.
+     *
+     * @var mixed
+     */
     public $tecnicaSeleccionada;
+
+    /**
+     * Tamaño seleccionado.
+     *
+     * @var mixed
+     */
     public $sizeSeleccionado;
 
+    /**
+     * Método que se ejecuta al inicializar el componente FormularioDeCotizacion.
+     * Se encarga de asignar los valores iniciales a las propiedades del componente
+     * basados en la cotización actual o en la edición de un producto.
+     */
+    public $taxFee;
     public function mount()
     {
+        // Asignar valores iniciales si existe una cotización actual
         $this->priceScales = false;
         if ($this->currentQuote) {
+            // Obtener el producto de la cotización actual
             $this->product = Product::find($this->currentQuote->product_id);
-            // Calculo de Precio
+
+            // Asignar valores de la cotización actual a las propiedades del componente
             $this->colores = $this->currentQuote->color_logos;
             $this->operacion = $this->currentQuote->costo_indirecto;
-            $this->cantidad =  $this->currentQuote->cantidad ?: 1;
-            $this->utilidad =  $this->currentQuote->utilidad;
-            $this->entrega =  $this->currentQuote->dias_entrega;
-            $this->typeDays =  $this->currentQuote->type_days;
-            $this->newPriceTechnique =  $this->currentQuote->new_price_technique;
-            $this->newDescription =  $this->currentQuote->new_description;
-            $this->imageSelected =  $this->currentQuote->images_selected;
+            $this->cantidad = $this->currentQuote->cantidad ?: 1;
+            $this->utilidad = $this->currentQuote->utilidad;
+            $this->entrega = $this->currentQuote->dias_entrega;
+            $this->typeDays = $this->currentQuote->type_days;
+            $this->newPriceTechnique = $this->currentQuote->new_price_technique;
+            $this->newDescription = $this->currentQuote->new_description;
+            $this->imageSelected = $this->currentQuote->images_selected;
 
+            // Obtener el precio y la técnica seleccionada de la cotización actual
             $prices_techniques = PricesTechnique::find($this->currentQuote->prices_techniques_id);
             $this->materialSeleccionado = $prices_techniques->sizeMaterialTechnique->materialTechnique->material->id;
             $this->tecnicaSeleccionada = $prices_techniques->sizeMaterialTechnique->materialTechnique->technique->id;
             $this->sizeSeleccionado = $prices_techniques->sizeMaterialTechnique->size->id;
+
+            // Verificar si la cotización se realiza por escalas de precio
             $this->priceScales = $this->currentQuote->quote_by_scales;
             if ($this->priceScales) {
+                // Obtener la información de las escalas de precio y asignarla a la propiedad infoScales
                 $this->priceScalesComplete = json_decode($this->currentQuote->scales_info);
                 $this->infoScales = array_map(function ($scale) {
-
                     $costoIndirecto = (property_exists($scale, 'operacion') && $scale->operacion) ? $scale->operacion : $this->operacion;
-
                     return ['quantity' => $scale->quantity, 'utility' => $scale->utility, 'operacion' => $costoIndirecto, 'tecniquePrice' => $scale->tecniquePrice];
                 }, $this->priceScalesComplete);
             }
         }
+
+        // Asignar valores iniciales si se está editando un producto
         if ($this->productEdit) {
+            // Obtener el producto a editar
             $product = json_decode($this->productEdit['product']);
             $this->product = Product::find($product->id);
-            $techniquesInfo =  (object) json_decode($this->productEdit['technique']);
+            $this->product->price = $product->price;
 
+            // Obtener la información de las técnicas del producto a editar
+            $techniquesInfo = (object) json_decode($this->productEdit['technique']);
+
+            // Asignar valores del producto a editar a las propiedades del componente
             $this->materialSeleccionado = $techniquesInfo->material_id;
             $this->tecnicaSeleccionada = $techniquesInfo->tecnica_id;
             $this->sizeSeleccionado = $techniquesInfo->size_id;
             $this->currentQuote_id = $this->productEdit['id'];
             $this->imageSelected = $product->image;
-
 
             $this->colores = $this->productEdit['color_logos'];
             $this->operacion = $this->productEdit['costo_indirecto'];
@@ -78,36 +287,74 @@ class FormularioDeCotizacion extends Component
             $this->utilidad = $this->productEdit['utilidad'];
             $this->entrega = $this->productEdit['dias_entrega'];
             $this->typeDays = $this->productEdit['type_days'];
-            $this->newPriceTechnique = $this->productEdit['prices_techniques'];
-            $this->newDescription =  $this->productEdit['new_description'];
+            /*   $this->newPriceTechnique = $this->productEdit['prices_techniques']; */
+            $this->newDescription = $this->productEdit['new_description'];
 
+            // Verificar si la cotización se realiza por escalas de precio
             $this->priceScales = $this->productEdit['quote_by_scales'];
             if ($this->priceScales) {
+                // Obtener la información de las escalas de precio y asignarla a la propiedad infoScales
                 $this->priceScalesComplete = json_decode($this->productEdit['scales_info']);
                 $this->infoScales = array_map(function ($scale) {
-                    //agregar prices_Saclae de la variable $info o scale
-
                     $costoIndirecto = (property_exists($scale, 'operacion') && $scale->operacion) ? $scale->operacion : $this->operacion;
                     return ['quantity' => $scale->quantity, 'utility' => $scale->utility, 'operacion' => $costoIndirecto, 'tecniquePrice' => $scale->tecniquePrice];
                 }, $this->priceScalesComplete);
             }
         }
+
+        // Asignar valor inicial si se está agregando un nuevo producto
         if ($this->productNewAdd) {
             $this->product = $this->productNewAdd;
         }
 
+        // Obtener la utilidad global
         $utilidad = GlobalAttribute::find(1);
         $utilidad = (float) $utilidad->value;
+
+        // Calcular el precio del producto
         $priceProduct = $this->product->price;
-        if ($this->product->producto_promocion) {
-            $priceProduct = round($priceProduct - $priceProduct * ($this->product->descuento / 100), 2);
+        // Verifica si existe el atributo 'Outlet' y hace el 30 de descuento
+        $productType = $this->product->productAttributes->where('attribute', 'Tipo Descuento')->first();
+
+        if ($productType && $productType->value == 'Normal') {
+            $priceProduct = round($priceProduct - $priceProduct * (30 / 100), 2);
+        } else if ($productType && ($productType->value == 'Outlet' || $productType->value == 'Unico')) {
+            $priceProduct = round($priceProduct - $priceProduct * (0 / 100), 2);
         } else {
-            $priceProduct = round($priceProduct - $priceProduct * ($this->product->provider->discount / 100), 2);
+            if ($this->product->producto_promocion) {
+                $priceProduct = round($priceProduct - $priceProduct * ($this->product->descuento / 100), 2);
+            } else {
+
+                $priceProduct = round($priceProduct - $priceProduct *  ($this->product->provider->discount / 100), 2);
+            }
+            if ($this->product->provider->company == 'EuroCotton') {
+                $iva = $priceProduct * 0.16;
+                $priceProduct = round($priceProduct - $iva, 2);
+            }
+
+            if ($this->product->provider->company  == 'For Promotional') {
+                  
+                if ($this->product->descuento >= $this->product->provider->discount ) {
+                    $priceProduct = round($this->product->price- $this->product->price * ($this->product->descuento /100),2);
+                } else {
+                    $priceProduct = round($this->product->price - $this->product->price * (25/100),2);
+                }
+        
+            }
+
+
         }
+
         $this->precio = round($priceProduct + $priceProduct * ($utilidad / 100), 2);
         $this->precioCalculado = $this->precio;
     }
 
+
+    /**
+     * Renderiza el formulario de cotización y calcula el precio total.
+     *
+     * @return \Illuminate\View\View
+     */
     public function render()
     {
         $this->precioTotal = 0;
@@ -161,6 +408,11 @@ class FormularioDeCotizacion extends Component
         if ($this->utilidad > 99)
             $this->utilidad = 99;
 
+        if ($this->tecnicaSeleccionada == 8) {
+            $this->colores = 1;
+        }
+
+
         $precioDeTecnica = 0;
 
         if (!$this->priceScales) {
@@ -211,9 +463,18 @@ class FormularioDeCotizacion extends Component
             }
 
             $nuevoPrecio = round(($this->precio + ($precioDeTecnicaUsado * $this->colores) + $this->operacion) / ((100 - $this->utilidad) / 100), 2);
+            if ($this->taxFee > 99)
+                $this->taxFee = 99;
 
-            $this->precioCalculado = $nuevoPrecio;
-            $this->precioTotal = $nuevoPrecio * $this->cantidad;
+            if ($this->taxFee) {
+                // Calcula el precio con el taxFee
+                $precioConTaxFee = round($nuevoPrecio * (1 + ($this->taxFee / 100)), 2);
+                $this->precioCalculado = $precioConTaxFee;
+                $this->precioTotal = $this->precioCalculado * $this->cantidad;
+            } else {
+                $this->precioCalculado = $nuevoPrecio;
+                $this->precioTotal = $nuevoPrecio * $this->cantidad;
+            }
         } else {
             $this->priceScalesComplete = [];
             foreach ($this->infoScales as $info) {
@@ -263,7 +524,18 @@ class FormularioDeCotizacion extends Component
                 }
                 // dd($this->infoScales);
                 $nuevoPrecio = round(($this->precio + ($precioDeTecnicaUsado * $this->colores) + $info['operacion']) / ((100 - $info['utility']) / 100), 2);
+                /*  if ($this->taxFee > 99)
+                    $this->taxFee = 99;
 
+                if ($this->taxFee) {
+                    // Calcula el precio con el taxFee
+                    $precioConTaxFee = round($nuevoPrecio * (1 + ($this->taxFee / 100)), 2);
+                    $this->precioCalculado = $precioConTaxFee;
+                    $this->precioTotal = $this->precioCalculado * $this->cantidad;
+                } else {
+                    $this->precioCalculado = $nuevoPrecio;
+                    $this->precioTotal = $nuevoPrecio * $this->cantidad;
+                } */
                 array_push($this->priceScalesComplete, [
                     'quantity' => $info['quantity'],
                     'tecniquePrice' => $info['tecniquePrice'] != null ? floatval($info['tecniquePrice'])  : $precioDeTecnica,
@@ -303,6 +575,19 @@ class FormularioDeCotizacion extends Component
         ]);
     }
 
+    /**
+     * Agrega una cotización al formulario de cotización.
+     *
+     * Este método se encarga de agregar una cotización al formulario de cotización.
+     * Realiza validaciones del formulario y guarda los datos de la cotización en la base de datos.
+     * Si el usuario no tiene una cotización activa, crea una nueva cotización por defecto.
+     * Si el usuario tiene varias cotizaciones pero ninguna por defecto, muestra un mensaje de error.
+     * Si el usuario tiene una cotización activa y la opción de escalas de precios está activada, reinicia los valores de descuento, tipo y valor de la cotización activa.
+     * Luego, guarda los datos de la cotización en la base de datos.
+     * Finalmente, muestra un mensaje de éxito y reinicia los datos del formulario.
+     *
+     * @return void
+     */
     public function agregarCotizacion()
     {
         $this->validarFormulario();
@@ -366,6 +651,20 @@ class FormularioDeCotizacion extends Component
         $this->resetData();
     }
 
+    /**
+     * Actualiza la cotización actual con los datos del formulario.
+     *
+     * Valida el formulario antes de realizar la actualización.
+     * Si el nuevo precio de la técnica no es numérico, se establece como nulo.
+     * Si la nueva descripción está vacía, se establece como nula.
+     *
+     * Los datos de la cotización se asignan a un arreglo y se actualiza la cotización actual con estos datos.
+     *
+     * Si no se utilizan escalas de precios, se asignan los valores correspondientes al arreglo de datos.
+     * Si se utilizan escalas de precios, se asigna null a los valores correspondientes al arreglo de datos y se codifica en JSON la información de las escalas de precios.
+     *
+     * Se reinician los datos del formulario y se emiten eventos para cerrar el modal y actualizar el producto actual.
+     */
     public function editarCurrentCotizacion()
     {
         $this->validarFormulario();
@@ -411,18 +710,31 @@ class FormularioDeCotizacion extends Component
         $this->emit('updateProductCurrent');
     }
 
+    /**
+     * Método para editar una cotización.
+     *
+     * Realiza la validación del formulario y actualiza los datos de la cotización.
+     * Se encarga de preparar los datos necesarios y emitir eventos para actualizar la interfaz.
+     * También se encarga de cerrar el modal y reiniciar los datos del formulario.
+     */
     public function editarCotizacion()
     {
+        // Validar el formulario
         $this->validarFormulario();
+
+        // Preparar los datos del producto
         $product = $this->product->toArray();
         $product['image'] = $this->imageSelected ?: ($this->product->firstImage ? $this->product->firstImage->image_url : '');
         unset($this->product->firstImage);
         unset($this->product->images);
+
+        // Verificar y ajustar los valores de precio y descripción
         if (!is_numeric($this->newPriceTechnique))
             $this->newPriceTechnique = null;
         if (trim($this->newDescription) == "")
             $this->newDescription = null;
 
+        // Crear el nuevo objeto de cotización
         $newQuote = [
             'currentQuote_id' => $this->currentQuote_id,
             'product' => json_encode($product),
@@ -434,6 +746,7 @@ class FormularioDeCotizacion extends Component
             'type_days' => $this->typeDays
         ];
 
+        // Verificar si se utiliza la escala de precios
         if (!$this->priceScales) {
             $newQuote['utilidad'] = $this->utilidad;
             $newQuote['newPriceTechnique'] = $this->newPriceTechnique;
@@ -452,11 +765,24 @@ class FormularioDeCotizacion extends Component
             $newQuote['scales_info'] = json_encode($this->priceScalesComplete);
         }
 
+        // Emitir evento para actualizar la interfaz
         $this->emit('productUpdate', $newQuote);
+
+        // Cerrar el modal
         $this->dispatchBrowserEvent('closeModal');
+
+        // Reiniciar los datos del formulario
         $this->resetData();
     }
 
+    /**
+     * Agrega un nuevo producto a la cotización.
+     *
+     * Este método valida el formulario y agrega un nuevo producto a la cotización actual.
+     * Se encarga de preparar los datos del producto y generar un nuevo registro de cotización.
+     * Luego, emite un evento para notificar que se ha agregado un producto y cierra el modal.
+     * Finalmente, reinicia los datos del formulario.
+     */
     public function addNewProductToQuote()
     {
         $this->validarFormulario();
@@ -503,23 +829,44 @@ class FormularioDeCotizacion extends Component
         $this->resetData();
     }
 
+    /**
+     * Selecciona una imagen.
+     *
+     * @param string $image La imagen seleccionada.
+     * @return void
+     */
     public function seleccionarImagen($image)
     {
         $this->imageSelected = $image;
         $this->dispatchBrowserEvent('hideModalImage');
     }
 
+    /**
+     * Elimina la imagen seleccionada.
+     *
+     * @return void
+     */
     public function eliminarImagen()
     {
         $this->imageSelected = null;
     }
 
+    /**
+     * Cambia el tipo de precio.
+     *
+     * @param bool $isIscale Indica si el precio es escalado.
+     * @return void
+     */
     public function changeTypePrice($isIscale)
     {
-
         $this->priceScales = $isIscale;
     }
 
+    /**
+     * Abre el modal de escalas.
+     *
+     * @return void
+     */
     public function openScale()
     {
         $this->editScale = false;
@@ -529,6 +876,11 @@ class FormularioDeCotizacion extends Component
         $this->dispatchBrowserEvent('showModalScales');
     }
 
+    /**
+     * Cierra el modal de escalas.
+     *
+     * @return void
+     */
     public function closeScale()
     {
         $this->editScale = false;
@@ -538,11 +890,21 @@ class FormularioDeCotizacion extends Component
         $this->dispatchBrowserEvent('hideModalScales');
     }
 
+    /**
+     * Abre el modal de imagen.
+     *
+     * @return void
+     */
     public function openModalImage()
     {
         $this->dispatchBrowserEvent('showModalImage');
     }
 
+    /**
+     * Cierra el modal de imagen.
+     *
+     * @return void
+     */
     public function closeModalImage()
     {
         $this->dispatchBrowserEvent('hideModalImage');
@@ -643,6 +1005,7 @@ class FormularioDeCotizacion extends Component
     public function resetTecnique()
     {
         $this->sizeSeleccionado = null;
+
         $this->tecnicaSeleccionada = null;
     }
 

@@ -24,10 +24,10 @@
             <p><b>Ejecutivo: </b> {{ $quote->user->name }}</p>
             <br>
         @endif
-        <p><b>Nombre Comercial: </b> {{ $nombreComercial ? $nombreComercial->name : 'Sin Definir' }}</p>
-        <p><b>Numero de lead: </b> {{ $quote->lead }}</p>
+        <p><b>Nombre comercial: </b> {{ $nombreComercial ? $nombreComercial->name : 'Sin Definir' }}</p>
+        <p><b>Número de lead: </b> {{ $quote->lead }}</p>
         <p><b>Oportunidad: </b> {{ $quote->latestQuotesUpdate->quotesInformation->oportunity }}</p>
-        <p><b>Probabilidad de Venta: </b>
+        <p><b>Probabilidad de venta: </b>
             @switch($quote->latestQuotesUpdate->quotesInformation->rank)
                 @case(1)
                     {{ 'Medio' }}
@@ -46,12 +46,12 @@
         </p>
         <br>
         <p><b>Email: </b>{{ $quote->latestQuotesUpdate->quotesInformation->email }}</p>
-        <p><b>Telefono: </b>{{ $quote->latestQuotesUpdate->quotesInformation->landline }}</p>
+        <p><b>Teléfono: </b>{{ $quote->latestQuotesUpdate->quotesInformation->landline }}</p>
         <p><b>Celular: </b>{{ $quote->latestQuotesUpdate->quotesInformation->cell_phone }}</p>
         <p><b>Departamento: </b>{{ $quote->latestQuotesUpdate->quotesInformation->department }}</p>
         <p><b>El IVA se muestra: </b>{{ $quote->iva_by_item ? 'Por Producto' : 'En el total' }}</p>
         <p>El monto total <b>{{ $quote->show_total ? 'SI' : 'NO' }}</b> se muestra</p>
-        <p>Los dias son: <b>{{ $quote->type_days == 0 ? 'Habiles' : 'Naturales' }}</b></p>
+        <p>Los días son: <b>{{ $quote->type_days == 0 ? 'Habiles' : 'Naturales' }}</b></p>
         @if ($quote->latestQuotesUpdate->quotesInformation->shelf_life)
             <p><b>Duracion de la cotizacion:
                 </b>{{ $quote->latestQuotesUpdate->quotesInformation->shelf_life }}</p>
@@ -59,11 +59,11 @@
         @if ($quote->latestQuotesUpdate->quotesInformation->tax_fee)
             <p><b>Tax Fee: </b> {{ $quote->latestQuotesUpdate->quotesInformation->tax_fee }} % </p>
         @endif
-        <p><b>Informacion adicional:
+        <p><b>Información adicional:
             </b>{{ $quote->latestQuotesUpdate->quotesInformation->information }}
         </p>
     @else
-        <p>Sin informacion</p>
+        <p>Sin información</p>
     @endif
     @if ($quote->logo)
         <div class="text-center">

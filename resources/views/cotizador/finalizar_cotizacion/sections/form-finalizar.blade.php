@@ -1,7 +1,7 @@
 <form action="" method="post">
     <fieldset class="border p-2">
         <legend class="w-auto px-2">
-            <h5>Informacion Obligatoria</h5>
+            <h5>Información obligatoria</h5>
         </legend>
         <div class="grid grid-cols-3 gap-3">
             @if (count(auth()->user()->managments) > 1)
@@ -26,7 +26,7 @@
                     <select name="tipo"
                         class="block w-full p-3 mb-2 text-gray-900 border border-gray-300 rounded-md bg-white sm:text-xs focus:ring-blue-500 focus:border-blue-500 "
                         wire:model="tipoCliente" wire:change="cargarDatosCliente">
-                        <option value="">Como vas a registrar el cliente</option>
+                        <option value="">¿Cómo vas a registrar al cliente?</option>
                         <option value="buscar">Seleccionar uno de mis clientes</option>
                         <option value="crear">Crear un nuevo prospecto</option>
                     </select>
@@ -56,8 +56,7 @@
                         </select>
                     </div>
                     @if ($errors->has('clienteSeleccionado'))
-                        <span
-                            class="text-danger">{{ $errors->first('clienteSeleccionado') }}</span>
+                        <span class="text-danger">{{ $errors->first('clienteSeleccionado') }}</span>
                     @endif
                 </div>
             @elseif($tipoCliente == 'crear')
@@ -92,7 +91,7 @@
                     <label for="">Email</label>
                     <input type="email"
                         class="block w-full p-3 mb-2 text-gray-900 border border-gray-300 rounded-md bg-white sm:text-xs focus:ring-blue-500 focus:border-blue-500 "
-                        placeholder="Correo electronico del contacto" wire:model="email">
+                        placeholder="Correo electrónico del contacto" wire:model="email">
                 </div>
                 @if ($errors->has('email'))
                     <span class="text-danger">{{ $errors->first('email') }}</span>
@@ -100,10 +99,10 @@
             </div>
             <div class="col-span-3 md:col-span-1">
                 <div class="form-group">
-                    <label for="">Telefono</label>
+                    <label for="">Teléfono</label>
                     <input type="number"
                         class="block w-full p-3 mb-2 text-gray-900 border border-gray-300 rounded-md bg-white sm:text-xs focus:ring-blue-500 focus:border-blue-500 "
-                        placeholder="Telefono del contacto" wire:model="telefono">
+                        placeholder="Teléfono del contacto" wire:model="telefono">
                 </div>
                 @if ($errors->has('telefono'))
                     <span class="text-danger">{{ $errors->first('telefono') }}</span>
@@ -133,7 +132,7 @@
             </div>
             <div class="col-span-3 md:col-span-1">
                 <div class="form-group">
-                    <label for="">Probabilidad de Venta</label>
+                    <label for="">Probabilidad de venta</label>
                     <select name="tipo"
                         class="block w-full p-3 mb-2 text-gray-900 border border-gray-300 rounded-md bg-white sm:text-xs focus:ring-blue-500 focus:border-blue-500 "
                         wire:model="rank">
@@ -151,7 +150,7 @@
     </fieldset>
     <fieldset class="form-group border p-2">
         <legend class="w-auto px-2">
-            <h5>Informacion Opcional</h5>
+            <h5>Información opcional</h5>
         </legend>
         <div class="grid grid-cols-3 gap-3">
             <div class="col-span-3 md:col-span-1">
@@ -189,7 +188,7 @@
             </div>
             <div class="col-span-3 md:col-span-1">
                 <div class="form-group">
-                    <label for="">Los dias seran (Configuracion Global)</label>
+                    <label for="">Los días serán (Configuración Global)</label>
                     <select name="tipo"
                         class="block w-full p-3 mb-2 text-gray-900 border border-gray-300 rounded-md bg-white sm:text-xs focus:ring-blue-500 focus:border-blue-500 "
                         wire:model="typeDays">
@@ -200,10 +199,10 @@
             </div>
             <div class="col-span-3 md:col-span-1">
                 <div class="form-group">
-                    <label for="">Vigencia de la cotizacion (Opcional)</label>
+                    <label for="">Vigencia de la cotización (Opcional)</label>
                     <input type="number"
                         class="block w-full p-3 mb-2 text-gray-900 border border-gray-300 rounded-md bg-white sm:text-xs focus:ring-blue-500 focus:border-blue-500 "
-                        placeholder="Duracion de la vigencia" wire:model="shelfLife">
+                        placeholder="Duración de la vigencia" wire:model="shelfLife">
                 </div>
             </div>
             <div class="col-span-3 md:col-span-1">
@@ -211,13 +210,12 @@
                     <label for="">Tax Fee (Opcional)</label>
                     <input type="number"
                         class="block w-full p-3 mb-2 text-gray-900 border border-gray-300 rounded-md bg-white sm:text-xs focus:ring-blue-500 focus:border-blue-500 "
-                        placeholder="Tax Fee (Valor Maximo 99)" wire:model="taxFee"
-                        max="99">
+                        placeholder="Tax Fee (Valor Máximo 99)" wire:model="taxFee" max="99">
                 </div>
             </div>
             <div class="col-span-3 md:col-span-1">
                 <div class="form-group">
-                    <label for="">En la cotizacion se mostrara:</label>
+                    <label for="">En la cotización se mostrará:</label>
                     <select name="tipo"
                         class="block w-full p-3 mb-2 text-gray-900 border border-gray-300 rounded-md bg-white sm:text-xs focus:ring-blue-500 focus:border-blue-500 "
                         wire:model="show_tax">
@@ -244,7 +242,7 @@
             </div> --}}
             <div class="col-span-3">
                 <div class="form-group">
-                    <label for="">Informacion Adicional (Opcional)</label>
+                    <label for="">Información adicional (Opcional)</label>
                     <textarea name="" id="" cols="30" rows="2"
                         class="block w-full p-3 mb-2 text-gray-900 border border-gray-300 rounded-md bg-white sm:text-xs focus:ring-blue-500 focus:border-blue-500 "
                         wire:model="informacion"></textarea>
@@ -256,8 +254,7 @@
             <div class="col-span-3 md:col-span-1">
                 <div class="form-group">
                     <label for="">Logo del Cliente</label>
-                    <div class="form-group" x-data="{ isUploading: false, progress: 5 }"
-                        x-on:livewire-upload-start="isUploading = true"
+                    <div class="form-group" x-data="{ isUploading: false, progress: 5 }" x-on:livewire-upload-start="isUploading = true"
                         x-on:livewire-upload-finish="isUploading = false"
                         x-on:livewire-upload-error="isUploading = false"
                         x-on:livewire-upload-progress="progress = $event.detail.progress">
@@ -266,7 +263,7 @@
                             wire:model="logo" accept="image/*">
 
                         <div x-show="isUploading" class="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
-                            <div class="bg-blue-600 h-2.5 rounded-full" x-bind:style="`width: ${progress}%`" >
+                            <div class="bg-blue-600 h-2.5 rounded-full" x-bind:style="`width: ${progress}%`">
                             </div>
                         </div>
                     </div>
@@ -274,7 +271,8 @@
                         <p class="text-yellow-500 py-3">Revisa que tenga fondo blanco o que se un
                             archivo PNG
                         </p>
-                        <div class="bg-red-200 p-2 rounded-md hover:bg-red-300 text-center" wire:click="limpiarLogo()">Eliminar
+                        <div class="bg-red-200 p-2 rounded-md hover:bg-red-300 text-center"
+                            wire:click="limpiarLogo()">Eliminar
                         </div>
                     @else
                         <p>No hay un logo de cliente cargado</p>

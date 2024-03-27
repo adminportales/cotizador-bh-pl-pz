@@ -5,7 +5,7 @@
                 <li class="hover:border-b-2 rounded-t-lg cursor-pointer text-center flex items-center {{ $item->active ? 'bg-gray-50 active border-gray-300 border-b-2 ' : '' }}"
                     wire:click='selectQuoteActive({{ $item->id }})'>
                     <a class="inline-block py-2 px-4 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300"
-                        aria-current="page">{{ $item->name ?: 'Cotizacion Actual' }}</a>
+                        aria-current="page">{{ $item->name ?: 'Cotización Actual' }}</a>
                     @if ($item->active)
                         <div class="flex">
                             <button wire:click="editQuote({{ $item->id }})">
@@ -50,7 +50,7 @@
             <!-- Modal header -->
             <div class="flex items-start justify-between p-4 border-b rounded-t">
                 <h3 class="text-xl font-semibold text-gray-900 ">
-                    {{ $quoteEdit ? 'Editar Nombre de la Cotizacion' : 'Agregar nueva cotizacion' }}
+                    {{ $quoteEdit ? 'Editar Nombre de la cotización' : 'Agregar nueva cotizacion' }}
                 </h3>
             </div>
             <!-- Modal body -->
@@ -62,7 +62,7 @@
                             para el mismo cliente, pero no quieres perder el progreso de tu cotizacion actual</p>
                     @endif
                     <div class="col-span-2">
-                        <label for="" class="text-sm font-semibold">Nombre de la cotizacion</label>
+                        <label for="" class="text-sm font-semibold">Nombre de la cotización</label>
                         <input
                             class="block w-full p-3 mb-2 text-gray-900 border border-gray-300 rounded-md bg-white sm:text-xs focus:ring-blue-500 focus:border-blue-500 "
                             type="text" placeholder="Ej. Bolsas Coca Cola" wire:model="nameQuote">
@@ -92,14 +92,14 @@
 
     function eliminarCurrentQuote(quoteId) {
         Swal.fire({
-            title: 'Esta seguro?',
-            text: "Esta accion ya no se puede revertir!",
+            title: '¿Está seguro?',
+            text: "¡Esta acción ya no se puede revertir!",
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
-            confirmButtonText: 'Si, eliminar mi cotizacion!',
-            cancelButtonText: 'Cancelar!'
+            confirmButtonText: 'Sí, eliminar mi cotización',
+            cancelButtonText: 'Cancelar'
         }).then((result) => {
             if (result.isConfirmed) {
                 @this.deleteCurrentQuote(quoteId)

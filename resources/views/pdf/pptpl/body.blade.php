@@ -176,13 +176,20 @@
                             $quote_scales = true;
                         }
                     @endphp
-                    <td style="vertical-align: middle;max-height: 12cm; {{ $loop->last ? 'height: auto;' : 'height: 12cm;' }}">
+                    <td
+                        style="vertical-align: middle;max-height: 12cm; {{ $loop->last ? 'height: auto;' : 'height: 12cm;' }}">
                         <p style="margin: 0; font-size: 31px; font-weight: bold;">{{ $producto->name }}</p>
                         <table>
                             <td style="width:32%; vertical-align: middle">
-                                @if ($producto->image)
+                                {{--     @if ($producto->image)
                                     <img src="{{ $producto->image }}"
                                         style="max-height: 320px;height:auto;max-width: 100%;width:auto;">
+                                @else
+                                    <img src="img/default.jpg" width="180">
+                                @endif --}}
+                                @if ($producto->image)
+                                
+                                    <img  style="max-height: 220px;height:auto;max-width: 220px;width:auto;" src="{{$producto->image}}" alt="">
                                 @else
                                     <img src="img/default.jpg" width="180">
                                 @endif
@@ -314,6 +321,7 @@
                     @endif
                     <td style="vertical-align: middle; height: 16cm; text-align:center; width: 50%">
                         @if ($producto->image)
+                            {{ $product->image }}
                             <img src="{{ $producto->image }}"
                                 style="max-height: 520px;height:auto;max-width: 520px;width:auto;">
                         @else
@@ -354,7 +362,7 @@
                                 <strong>Cantidad: </strong> {{ $item->cantidad }} pz
                             </p>
                             <p>
-                                <strong>Precio: </strong> $ {{ number_format($precioUnitario, 4, '.', ',') }}
+                                <strong>Precio: </strong> $ {{ number_format($precioUnitario, 2, '.', ',') }}
                             </p>
                         @endif
                     </td>
@@ -387,6 +395,7 @@
                         // $subtotal = $quote->currency_type == 'USD' ? $subtotal / $quote->currency : $subtotal;
                         // $discount = $quote->currency_type == 'USD' ? $discount / $quote->currency : $discount;
                         // $iva = $quote->currency_type == 'USD' ? $iva / $quote->currency : $iva;
+
                     @endphp
                     <div style="width: 100%; text-align: right; margin-top: 5px;">
                         <br>
