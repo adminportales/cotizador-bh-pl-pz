@@ -54,10 +54,12 @@ class CotizadorController extends Controller
         $utilidad = GlobalAttribute::find(1);
         $utilidad = (float) $utilidad->value;
         // Revisar sin un id esta dentro de una array
-        $disponiblidad = false;
+  /*    $disponiblidad = false;
         if (in_array($product->provider_id, $proveedores->toArray())) {
             $disponiblidad = true;
-        }
+        } */
+
+        $disponiblidad = true;
 
         // Consultar las existencias de los productos en caso de ser de Doble Vela.
         $msg = '';
@@ -185,7 +187,7 @@ class CotizadorController extends Controller
                 break;
         }
        /*  $pdf->setPaper('Letter', 'portrait');
-        
+
         $pdf->save(public_path($filename));
 
         return response()->download(public_path($filename))->deleteFileAfterSend(true); */
@@ -193,7 +195,7 @@ class CotizadorController extends Controller
         $pdf->output(['isRemoteEnabled' => true]);
         $filename = trim("QS-" . $quote->id  . $quote->updated_at->format('d-m-Y') . '.pdf');
         $pdf->save(public_path($filename));
-        return response()->download(public_path($filename))->deleteFileAfterSend(true); 
+        return response()->download(public_path($filename))->deleteFileAfterSend(true);
 /*         return $pdf->stream("QS-" . $quote->id . " " . $quote->latestQuotesUpdate->quotesInformation->oportunity . ' ' . $quote->updated_at->format('d/m/Y') . '.pdf');
  */    }
 
