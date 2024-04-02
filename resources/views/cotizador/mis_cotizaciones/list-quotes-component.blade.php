@@ -1,10 +1,11 @@
-<div>
+<div class="flex justify-between items-center mb-3">
     <h3 class="font-semibold text-xl py-4">Listado de cotizaciones</h3>
-    <div class="mb-3">
-        <input wire:model='keyWord' type="text"
-            class="block w-full p-3 mb-2 text-gray-900 border border-gray-300 rounded-md bg-white sm:text-xs focus:ring-blue-500 focus:border-blue-500 "
-            name="search" id="search" placeholder="Buscar">
-    </div>
+    <a href="{{ route('exportCotizaciones.cotizador') }}" class="bg-green-200 p-3  rounded-md hover:bg-green-300">Descargar Tabla Cotizaciones</a>
+</div>
+<input wire:model='keyWord' type="text"
+    class="block w-full p-3 mb-2 text-gray-900 border border-gray-300 rounded-md bg-white sm:text-xs focus:ring-blue-500 focus:border-blue-500 "
+    name="search" id="search" placeholder="Buscar">
+
     @if (count($quotes) > 0)
         <div class="relative overflow-x-auto my-2 shadow-md rounded-md">
             <table class="w-full text-left rtl:text-right text-gray-500 dark:text-gray-400">
