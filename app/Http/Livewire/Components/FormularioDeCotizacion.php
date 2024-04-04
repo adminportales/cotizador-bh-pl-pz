@@ -722,8 +722,7 @@ class FormularioDeCotizacion extends Component
 
         // Preparar los datos del producto
         $product = $this->product->toArray();
-        dd($this->imageSelected);
-        $product['image'] = $this->imageSelected ?: ($this->product->firstImage ? $this->product->firstImage->image_url : '');
+        $product['image'] = $this->imageSelectedUrl ?: ($this->imageSelected ?: ($this->product->firstImage ? $this->product->firstImage->image_url : ''));
         unset($this->product->firstImage);
         unset($this->product->images);
 
