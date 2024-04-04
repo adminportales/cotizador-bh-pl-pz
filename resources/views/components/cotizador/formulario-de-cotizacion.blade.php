@@ -601,7 +601,6 @@
                 <div class=" sm:flex justify-between p-4">
 
 
-
                     @if (!$priceScales)
                         <div>
                             <h6 class="text-success">Precio Final por Artículo: $ {{ $precioCalculado }}</h6>

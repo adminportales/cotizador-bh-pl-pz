@@ -349,7 +349,6 @@ class FormularioDeCotizacion extends Component
         $this->precioCalculado = $this->precio;
     }
 
-
     /**
      * Renderiza el formulario de cotización y calcula el precio total.
      *
@@ -411,7 +410,6 @@ class FormularioDeCotizacion extends Component
         if ($this->tecnicaSeleccionada == 8) {
             $this->colores = 1;
         }
-
 
         $precioDeTecnica = 0;
 
@@ -681,7 +679,7 @@ class FormularioDeCotizacion extends Component
             'color_logos' => $this->colores,
             'costo_indirecto' => $this->operacion,
             'dias_entrega' => $this->entrega,
-            'images_selected' => $this->imageSelected,
+            'images_selected' => $this->imageSelected ?: $this->imageSelectedUrl,
             'type_days' => $this->typeDays
         ];
 
@@ -724,6 +722,7 @@ class FormularioDeCotizacion extends Component
 
         // Preparar los datos del producto
         $product = $this->product->toArray();
+        dd($this->imageSelected);
         $product['image'] = $this->imageSelected ?: ($this->product->firstImage ? $this->product->firstImage->image_url : '');
         unset($this->product->firstImage);
         unset($this->product->images);
@@ -851,16 +850,14 @@ class FormularioDeCotizacion extends Component
         $this->imageSelected = null;
     }
 
-
     // Otros métodos y propiedades
 
     public function updatedImage()
     {
-
         $pathImagen = null;
         if ($this->image != null) {
             $name = time() . '.' . $this->image->getClientOriginalExtension();
-            $pathImagen = url('') . '/storage/media/' . $name;
+            $pathImagen =  url('') . '/storage/media/' . $name;
             $this->image->storeAs('public/media', $name);
         }
 
