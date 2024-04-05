@@ -54,7 +54,7 @@ class CotizadorController extends Controller
         $utilidad = GlobalAttribute::find(1);
         $utilidad = (float) $utilidad->value;
         // Revisar sin un id esta dentro de una array
-  /*    $disponiblidad = false;
+        /*    $disponiblidad = false;
         if (in_array($product->provider_id, $proveedores->toArray())) {
             $disponiblidad = true;
         } */
@@ -186,7 +186,7 @@ class CotizadorController extends Controller
                 # code...
                 break;
         }
-       /*  $pdf->setPaper('Letter', 'portrait');
+        /*  $pdf->setPaper('Letter', 'portrait');
 
         $pdf->save(public_path($filename));
 
@@ -196,8 +196,9 @@ class CotizadorController extends Controller
         $filename = trim("QS-" . $quote->id  . $quote->updated_at->format('d-m-Y') . '.pdf');
         $pdf->save(public_path($filename));
         return response()->download(public_path($filename))->deleteFileAfterSend(true);
-/*         return $pdf->stream("QS-" . $quote->id . " " . $quote->latestQuotesUpdate->quotesInformation->oportunity . ' ' . $quote->updated_at->format('d/m/Y') . '.pdf');
- */    }
+        /*         return $pdf->stream("QS-" . $quote->id . " " . $quote->latestQuotesUpdate->quotesInformation->oportunity . ' ' . $quote->updated_at->format('d/m/Y') . '.pdf');
+ */
+    }
 
     /**
      * Previsualiza una presentación en formato PPT.
@@ -608,4 +609,80 @@ class CotizadorController extends Controller
         $writer->save('php://output');
         exit;
     }
+
+        /**
+     * Exporta las cotizaciones creadas de cada usuario a un archivo Excel.
+     *
+     * Crea un archivo Excel con las cotizaciones de los usuarios registrados en el sistema.
+     * El archivo se descarga automáticamente al ser accedido.
+     */
+
+    public function exportCotizaciones()
+    {
+        
+        $documento = new Spreadsheet();
+        
+        $documento
+            ->getProperties()
+            ->setCreator("Aquí va el creador, como cadena")
+            ->setLastModifiedBy('Parzibyte')
+            ->setTitle('Mi primer documento creado con PhpSpreadSheet')
+            ->setSubject('El asunto')
+            ->setDescription('Este documento fue generado para parzibyte.me')
+            ->setKeywords('etiquetas o palabras clave separadas por espacios')
+            ->setCategory('La categoría');
+
+        $nombreDelDocumento = "Reporte de Cotizaciones con corte al " . now()->format('d-m-Y') . ".xlsx";
+
+        $hoja = $documento->getActiveSheet();
+        $hoja->setTitle("Cotizaciones");
+        $quotes = auth()->user()->quotes()->get();
+        $i = 2;
+        $hoja->setCellValueByColumnAndRow(1, 1,  '#');
+        $hoja->setCellValueByColumnAndRow(2, 1,  'LEAD');
+        $hoja->setCellValueByColumnAndRow(3, 1,  'CLIENTE');
+        $hoja->setCellValueByColumnAndRow(4, 1,  'OPORTUNIDAD');
+        $hoja->setCellValueByColumnAndRow(5, 1,  'PROBABILIDAD DE VENTA');
+        $hoja->setCellValueByColumnAndRow(6, 1,  'TOTAL');
+        $hoja->setCellValueByColumnAndRow(7, 1,  'FECHA');
+
+        foreach ($quotes as $quote) {
+            $hoja->setCellValueByColumnAndRow(1, $i, 'QS'.$quote->id);
+            $hoja->setCellValueByColumnAndRow(2, $i,  $quote->lead);
+            if ($quote->latestQuotesUpdate){
+                $hoja->setCellValueByColumnAndRow(3, $i,   $quote->latestQuotesUpdate->quotesInformation->name . ' | ' . $quote->latestQuotesUpdate->quotesInformation->company);
+                $hoja->setCellValueByColumnAndRow(4, $i,  $quote->latestQuotesUpdate->quotesInformation->oportunity);
+                switch($quote->latestQuotesUpdate->quotesInformation->rank) {
+                    case 1:
+                        $rank = 'Medio';
+                        break;
+                    case 2:
+                        $rank = 'Alto';
+                        break;
+                    case 3:
+                        $rank = 'Muy Alto';
+                        break;
+                    default:
+                        $rank = '';
+                }
+                $hoja->setCellValueByColumnAndRow(5, $i, $rank);
+                if ($quote->latestQuotesUpdate->quoteProducts){
+                    if (count($quote->latestQuotesUpdate->quoteProducts) > 0){
+                        $hoja->setCellValueByColumnAndRow(6, $i,  '$ '. $quote->latestQuotesUpdate->quoteProducts->sum('precio_total'));
+                    }
+                    $hoja->setCellValueByColumnAndRow(7, $i,  $quote->created_at->format('d-m-Y') );
+                }
+            }
+            $i++;
+        }
+
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename="' . $nombreDelDocumento . '"');
+        header('Cache-Control: max-age=0');
+
+        $writer = IOFactory::createWriter($documento, 'Xlsx');
+        $writer->save('php://output');
+        exit;
+    }
+    
 }
