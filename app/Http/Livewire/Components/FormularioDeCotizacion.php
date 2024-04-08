@@ -11,13 +11,14 @@ use App\Models\SizeMaterialTechnique;
 use App\Models\Technique;
 use Exception;
 use Livewire\Component;
-
+use Livewire\WithFileUploads;
 
 /**
  * Clase que representa el componente de formulario de cotización.
  */
 class FormularioDeCotizacion extends Component
 {
+    use WithFileUploads;
     /**
      * Producto actual.
      *
@@ -227,6 +228,9 @@ class FormularioDeCotizacion extends Component
      * basados en la cotización actual o en la edición de un producto.
      */
     public $taxFee;
+    public $image;
+    public $imageSelectedUrl;
+    public $loading = false;
     public function mount()
     {
         // Asignar valores iniciales si existe una cotización actual
@@ -333,22 +337,18 @@ class FormularioDeCotizacion extends Component
             }
 
             if ($this->product->provider->company  == 'For Promotional') {
-                  
-                if ($this->product->descuento >= $this->product->provider->discount ) {
-                    $priceProduct = round($this->product->price- $this->product->price * ($this->product->descuento /100),2);
+
+                if ($this->product->descuento >= $this->product->provider->discount) {
+                    $priceProduct = round($this->product->price - $this->product->price * ($this->product->descuento / 100), 2);
                 } else {
-                    $priceProduct = round($this->product->price - $this->product->price * (25/100),2);
+                    $priceProduct = round($this->product->price - $this->product->price * (25 / 100), 2);
                 }
-        
             }
-
-
         }
 
         $this->precio = round($priceProduct + $priceProduct * ($utilidad / 100), 2);
         $this->precioCalculado = $this->precio;
     }
-
 
     /**
      * Renderiza el formulario de cotización y calcula el precio total.
@@ -411,7 +411,6 @@ class FormularioDeCotizacion extends Component
         if ($this->tecnicaSeleccionada == 8) {
             $this->colores = 1;
         }
-
 
         $precioDeTecnica = 0;
 
@@ -624,7 +623,7 @@ class FormularioDeCotizacion extends Component
             'color_logos' => $this->colores,
             'costo_indirecto' => $this->operacion,
             'dias_entrega' => $this->entrega,
-            'images_selected' => $this->imageSelected,
+            'images_selected' => $this->imageSelected ?: $this->imageSelectedUrl,
             'type_days' => $this->typeDays
         ];
 
@@ -681,7 +680,7 @@ class FormularioDeCotizacion extends Component
             'color_logos' => $this->colores,
             'costo_indirecto' => $this->operacion,
             'dias_entrega' => $this->entrega,
-            'images_selected' => $this->imageSelected,
+            'images_selected' => $this->imageSelected ?: $this->imageSelectedUrl,
             'type_days' => $this->typeDays
         ];
 
@@ -724,7 +723,7 @@ class FormularioDeCotizacion extends Component
 
         // Preparar los datos del producto
         $product = $this->product->toArray();
-        $product['image'] = $this->imageSelected ?: ($this->product->firstImage ? $this->product->firstImage->image_url : '');
+        $product['image'] = $this->imageSelectedUrl ?: ($this->imageSelected ?: ($this->product->firstImage ? $this->product->firstImage->image_url : ''));
         unset($this->product->firstImage);
         unset($this->product->images);
 
@@ -849,6 +848,26 @@ class FormularioDeCotizacion extends Component
     public function eliminarImagen()
     {
         $this->imageSelected = null;
+    }
+
+    // Otros métodos y propiedades
+
+    public function updatedImage()
+    {
+        try {
+            if ($this->image != null) {
+                $name = time() . '.' . $this->image->getClientOriginalExtension();
+                $pathImagen =  url('') . '/storage/media/' . $name;
+                $this->image->storeAs('public/media', $name);
+
+                // Si llegamos aquí, la imagen se ha subido correctamente
+                $this->imageSelectedUrl = $pathImagen;
+                session()->flash('message', 'La imagen se ha subido correctamente.');
+            }
+        } catch (\Exception $e) {
+            // Si ocurre algún error durante la carga de la imagen
+            session()->flash('error', 'Ha ocurrido un error al subir la imagen.');
+        }
     }
 
     /**

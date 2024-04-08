@@ -264,7 +264,7 @@
                                                         maxlength="2" max="100"
                                                         class="block w-full p-3 mb-2 text-gray-900 border border-gray-300 rounded-md bg-white sm:text-xs focus:ring-blue-500 focus:border-blue-500 ">
                                                 </div>
-                                               {{--  <div class="md:col-span-1 col-span-2">
+                                                {{--  <div class="md:col-span-1 col-span-2">
                                                     <label for="" class="text-sm font-semibold">Tax
                                                         Fee</label>
                                                     <input type="number" name="margen" wire:model="taxFee"
@@ -358,14 +358,36 @@
                             placeholder="Descripción que se mostrará en la cotización. Si se deja vacío, se mostrará la descripción que se encuentra en la parte de arriba. (Opcional)"> </textarea>
                     </div>
                     <div class="col-span-2">
-                        <label for="" class="text-sm font-semibold block">Imagen que sera visualizada en la
-                            cotización</label>
+                        <label for="" class="text-sm font-semibold block">Imagen del proveedor</label>
                         @if (!$imageSelected)
                             <button type="button"
                                 class="w-full block mt-2 text-white bg-green-500 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded text-sm px-5 py-2.5 text-center mr-2 mb-2 "
                                 data-toggle="modal" wire:click='openModalImage'>
-                                Selecciona la imagen que se vera en la cotización
+                                Selecciona imagen del proveedor
                             </button>
+                            <label for="" class="text-sm font-semibold block">Subir otra imagen a la
+                                cotizacion</label>
+                            <div class="input-group">
+                                <input type="file" wire:model="image" class="form-control" id="inputGroupFile04"
+                                    aria-describedby="inputGroupFileAddon04" aria-label="Upload">
+                             {{--    <button
+                                    class="w-full block mt-2 text-white bg-green-500 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded text-sm px-2 py-2 text-center mr-2 mb-2"
+                                    type="button" id="">Subir</button> --}}
+                            </div>
+                            @if ($imageSelectedUrl)
+                                <img src="{{ $imageSelectedUrl }}" alt="Imagen seleccionada">
+                            @endif
+                            @if (session()->has('message'))
+                                <div class="alert alert-success">
+                                    {{ session('message') }}
+                                </div>
+                            @endif
+
+                            @if (session()->has('error'))
+                                <div class="alert alert-danger">
+                                    {{ session('error') }}
+                                </div>
+                            @endif
                         @else
                             <div class="flex justify-between items-center">
                                 <div class="text-center">
@@ -589,7 +611,6 @@
             </h3>
             <div class="bg-gray-50 p-3 rounded-sm">
                 <div class=" sm:flex justify-between p-4">
-
 
 
                     @if (!$priceScales)
