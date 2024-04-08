@@ -370,11 +370,23 @@
                             <div class="input-group">
                                 <input type="file" wire:model="image" class="form-control" id="inputGroupFile04"
                                     aria-describedby="inputGroupFileAddon04" aria-label="Upload">
-                                <button class="btn btn-outline-secondary" type="button"
-                                    id="">Subir</button>
+                             {{--    <button
+                                    class="w-full block mt-2 text-white bg-green-500 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded text-sm px-2 py-2 text-center mr-2 mb-2"
+                                    type="button" id="">Subir</button> --}}
                             </div>
                             @if ($imageSelectedUrl)
                                 <img src="{{ $imageSelectedUrl }}" alt="Imagen seleccionada">
+                            @endif
+                            @if (session()->has('message'))
+                                <div class="alert alert-success">
+                                    {{ session('message') }}
+                                </div>
+                            @endif
+
+                            @if (session()->has('error'))
+                                <div class="alert alert-danger">
+                                    {{ session('error') }}
+                                </div>
                             @endif
                         @else
                             <div class="flex justify-between items-center">

@@ -230,6 +230,7 @@ class FormularioDeCotizacion extends Component
     public $taxFee;
     public $image;
     public $imageSelectedUrl;
+    public $loading = false;
     public function mount()
     {
         // Asignar valores iniciales si existe una cotización actual
@@ -853,14 +854,20 @@ class FormularioDeCotizacion extends Component
 
     public function updatedImage()
     {
-        $pathImagen = null;
-        if ($this->image != null) {
-            $name = time() . '.' . $this->image->getClientOriginalExtension();
-            $pathImagen =  url('') . '/storage/media/' . $name;
-            $this->image->storeAs('public/media', $name);
-        }
+        try {
+            if ($this->image != null) {
+                $name = time() . '.' . $this->image->getClientOriginalExtension();
+                $pathImagen =  url('') . '/storage/media/' . $name;
+                $this->image->storeAs('public/media', $name);
 
-        $this->imageSelectedUrl = $pathImagen;
+                // Si llegamos aquí, la imagen se ha subido correctamente
+                $this->imageSelectedUrl = $pathImagen;
+                session()->flash('message', 'La imagen se ha subido correctamente.');
+            }
+        } catch (\Exception $e) {
+            // Si ocurre algún error durante la carga de la imagen
+            session()->flash('error', 'Ha ocurrido un error al subir la imagen.');
+        }
     }
 
     /**
