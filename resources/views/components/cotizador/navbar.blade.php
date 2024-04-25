@@ -3,13 +3,12 @@
         <div class="flex items-center gap-3 flex-col md:flex-row w-full md:w-auto">
             <div class="flex w-full md:w-auto ">
                 @if (auth()->user()->companySession)
-                    <div
-                        class="{{ auth()->user()->companySession->name != 'PROMO LIFE' ? 'bg-white' : '' }} rounded-sm hidden md:block">
-                        <img alt="logo" class="h-12 w-auto"
+                    <div class="{{-- {{ auth()->user()->companySession->name != 'PROMO LIFE' ? 'bg-white' : '' }} --}} rounded-sm hidden md:block">
+                        <img alt="logo" class="h-12 w-max"
                             src="{{ asset('img') . '/' . auth()->user()->companySession->image }}">
                     </div>
                 @endif
-                <div class="w-full ml-3 text-white">
+                <div class="w-1/4 ml-3 text-white">
                     <h6 class="m-0 font-bold">
                         COTIZADOR {{ auth()->user()->companySession ? auth()->user()->companySession->name : '' }}
                     </h6>
