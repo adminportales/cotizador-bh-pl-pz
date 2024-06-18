@@ -523,7 +523,7 @@ class FormularioDeCotizacion extends Component
                 }
                 // dd($this->infoScales);
                 $nuevoPrecio = round(($this->precio + ($precioDeTecnicaUsado * $this->colores) + $info['operacion']) / ((100 - $info['utility']) / 100), 2);
-                /*  if ($this->taxFee > 99)
+                if ($this->taxFee > 99)
                     $this->taxFee = 99;
 
                 if ($this->taxFee) {
@@ -534,7 +534,7 @@ class FormularioDeCotizacion extends Component
                 } else {
                     $this->precioCalculado = $nuevoPrecio;
                     $this->precioTotal = $nuevoPrecio * $this->cantidad;
-                } */
+                }
                 array_push($this->priceScalesComplete, [
                     'quantity' => $info['quantity'],
                     'tecniquePrice' => $info['tecniquePrice'] != null ? floatval($info['tecniquePrice'])  : $precioDeTecnica,
