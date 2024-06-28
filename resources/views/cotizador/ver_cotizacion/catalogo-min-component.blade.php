@@ -24,14 +24,15 @@
                 <div class="sm:col-span-12 lg:col-span-4 md:col-span-6 col-span-12 flex justify-center">
                     <div class="border-2 border-gray-200 py-2 px-3 rounded-xl w-full h-full">
                         <div class="text-center shadow-sm p-2 h-full">
-                            
+
                             @php
 
                                 $product_type = $row->productAttributes->where('attribute', 'Tipo Descuento')->first();
                                 $priceProduct = $row->price;
-                                
+
                                 if ($product_type && $product_type->value == 'Normal') {
-                                    $priceProduct = round($priceProduct - $priceProduct * (30 / 100), 2);
+                                    $priceProduct = round($priceProduct - $priceProduct * (0 / 100), 2);
+                                    //$priceProduct = round($priceProduct - $priceProduct * (30 / 100), 2);
                                 }else if($product_type && ($product_type->value == 'Outlet' || $product_type->value == 'Unico')){
                                     $priceProduct = round($priceProduct - $priceProduct * (0 / 100), 2);
                                 }else{
