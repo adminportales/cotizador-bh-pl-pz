@@ -321,7 +321,8 @@ class FormularioDeCotizacion extends Component
         $productType = $this->product->productAttributes->where('attribute', 'Tipo Descuento')->first();
 
         if ($productType && $productType->value == 'Normal') {
-            $priceProduct = round($priceProduct - $priceProduct * (30 / 100), 2);
+            $priceProduct = round($priceProduct - $priceProduct * (0 / 100), 2);
+           // $priceProduct = round($priceProduct - $priceProduct * (30 / 100), 2);
         } else if ($productType && ($productType->value == 'Outlet' || $productType->value == 'Unico')) {
             $priceProduct = round($priceProduct - $priceProduct * (0 / 100), 2);
         } else {
@@ -523,7 +524,7 @@ class FormularioDeCotizacion extends Component
                 }
                 // dd($this->infoScales);
                 $nuevoPrecio = round(($this->precio + ($precioDeTecnicaUsado * $this->colores) + $info['operacion']) / ((100 - $info['utility']) / 100), 2);
-                /*  if ($this->taxFee > 99)
+                if ($this->taxFee > 99)
                     $this->taxFee = 99;
 
                 if ($this->taxFee) {
@@ -534,7 +535,7 @@ class FormularioDeCotizacion extends Component
                 } else {
                     $this->precioCalculado = $nuevoPrecio;
                     $this->precioTotal = $nuevoPrecio * $this->cantidad;
-                } */
+                }
                 array_push($this->priceScalesComplete, [
                     'quantity' => $info['quantity'],
                     'tecniquePrice' => $info['tecniquePrice'] != null ? floatval($info['tecniquePrice'])  : $precioDeTecnica,

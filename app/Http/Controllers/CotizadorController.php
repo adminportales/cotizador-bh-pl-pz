@@ -74,7 +74,7 @@ class CotizadorController extends Controller
                 $parametros = array('Key' => 't5jRODOUUIoytCPPk2Nd6Q==', 'codigo' => $product->sku_parent);
                 //hacemos el llamado del metodo
                 $resultado = $cliente->call('GetExistencia', $parametros);
-                $msg = '';
+                $msg = ''; 
                 $productoEsEncontrado = false;
                 if (array_key_exists('GetExistenciaResult', $resultado)) {
                     $informacionExistencias = json_decode(utf8_encode($resultado['GetExistenciaResult']))->Resultado;
@@ -619,9 +619,9 @@ class CotizadorController extends Controller
 
     public function exportCotizaciones()
     {
-        
+
         $documento = new Spreadsheet();
-        
+
         $documento
             ->getProperties()
             ->setCreator("Aquí va el creador, como cadena")
@@ -684,5 +684,5 @@ class CotizadorController extends Controller
         $writer->save('php://output');
         exit;
     }
-    
+
 }
