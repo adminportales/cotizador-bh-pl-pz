@@ -321,8 +321,8 @@ class FormularioDeCotizacion extends Component
         $productType = $this->product->productAttributes->where('attribute', 'Tipo Descuento')->first();
 
         if ($productType && $productType->value == 'Normal') {
-            $priceProduct = round($priceProduct - $priceProduct * (0 / 100), 2);
-           // $priceProduct = round($priceProduct - $priceProduct * (30 / 100), 2);
+           // $priceProduct = round($priceProduct - $priceProduct * (0 / 100), 2);
+            $priceProduct = round($priceProduct - $priceProduct * (30 / 100), 2);
         } else if ($productType && ($productType->value == 'Outlet' || $productType->value == 'Unico')) {
             $priceProduct = round($priceProduct - $priceProduct * (0 / 100), 2);
         } else {
