@@ -31,8 +31,8 @@
                                 $priceProduct = $row->price;
 
                                 if ($product_type && $product_type->value == 'Normal') {
-                                    $priceProduct = round($priceProduct - $priceProduct * (0 / 100), 2);
-                                    //$priceProduct = round($priceProduct - $priceProduct * (30 / 100), 2);
+                                    //$priceProduct = round($priceProduct - $priceProduct * (0 / 100), 2);
+                                    $priceProduct = round($priceProduct - $priceProduct * (30 / 100), 2);
                                 }else if($product_type && ($product_type->value == 'Outlet' || $product_type->value == 'Unico')){
                                     $priceProduct = round($priceProduct - $priceProduct * (0 / 100), 2);
                                 }else{

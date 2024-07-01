@@ -10,28 +10,32 @@
                     $priceProduct = $product->price;
 
                     if ($product_type && $product_type->value == 'Normal') {
+                        //$priceProduct = round($priceProduct - $priceProduct * (0 / 100), 2);
+                        $priceProduct = round($priceProduct - $priceProduct * (30 / 100), 2);
+                    } elseif ($product_type && ($product_type->value == 'Outlet' || $product_type->value == 'Unico')) {
                         $priceProduct = round($priceProduct - $priceProduct * (0 / 100), 2);
-                        // $priceProduct = round($priceProduct - $priceProduct * (30 / 100), 2);
-                    }else if($product_type && ($product_type->value == 'Outlet' || $product_type->value == 'Unico')){
-                        $priceProduct = round($priceProduct - $priceProduct * (0 / 100), 2);
-                    }else{
+                    } else {
                         if ($product->producto_promocion) {
-                        $priceProduct = round($priceProduct - $priceProduct * ($product->descuento / 100), 2);
+                            $priceProduct = round($priceProduct - $priceProduct * ($product->descuento / 100), 2);
                         } else {
-                            $priceProduct = round($priceProduct - $priceProduct * ($product->provider->discount / 100), 2);
+                            $priceProduct = round(
+                                $priceProduct - $priceProduct * ($product->provider->discount / 100),
+                                2,
+                            );
                         }
                         if ($product->provider->company == 'EuroCotton') {
-                             $iva = $priceProduct * 0.16;
-                             $priceProduct = round($priceProduct - $iva, 2);
+                            $iva = $priceProduct * 0.16;
+                            $priceProduct = round($priceProduct - $iva, 2);
                         }
                         if ($product->provider->company == 'For Promotional') {
-
-                            if ($product->descuento >= $product->provider->discount ) {
-                                $priceProduct = round($product->price- $product->price * ($product->descuento /100),2);
+                            if ($product->descuento >= $product->provider->discount) {
+                                $priceProduct = round(
+                                    $product->price - $product->price * ($product->descuento / 100),
+                                    2,
+                                );
                             } else {
-                                $priceProduct = round($product->price - $product->price * (25/100),2);
+                                $priceProduct = round($product->price - $product->price * (25 / 100), 2);
                             }
-
                         }
                     }
 
@@ -83,32 +87,47 @@
                             @foreach ($product->precios as $precio)
                                 @php
 
-                                    $product_type = $product->productAttributes->where('attribute', 'Tipo Descuento')->first();
+                                    $product_type = $product->productAttributes
+                                        ->where('attribute', 'Tipo Descuento')
+                                        ->first();
                                     $priceProduct = $product->price;
 
                                     if ($product_type && $product_type->value == 'Normal') {
-                                        //$priceProduct = round($priceProduct - $priceProduct * (30 / 100), 2);
-                                        $priceProduct = round($priceProduct - $priceProduct * (0/ 100), 2);
-                                    }else if($product_type && ($product_type->value == 'Outlet' || $product_type->value == 'Unico'))
+                                        $priceProduct = round($priceProduct - $priceProduct * (30 / 100), 2);
+                                        //$priceProduct = round($priceProduct - $priceProduct * (0 / 100), 2);
+                                    } elseif (
+                                        $product_type &&
+                                        ($product_type->value == 'Outlet' || $product_type->value == 'Unico')
+                                    ) {
                                         $priceProduct = round($priceProduct - $priceProduct * (0 / 100), 2);
-                                    else{
+                                    } else {
                                         if ($product->producto_promocion) {
-                                        $priceProduct = round($priceProduct - $priceProduct * ($product->descuento / 100), 2);
+                                            $priceProduct = round(
+                                                $priceProduct - $priceProduct * ($product->descuento / 100),
+                                                2,
+                                            );
                                         } else {
-                                            $priceProduct = round($priceProduct - $priceProduct * ($product->provider->discount / 100), 2);
+                                            $priceProduct = round(
+                                                $priceProduct - $priceProduct * ($product->provider->discount / 100),
+                                                2,
+                                            );
                                         }
                                         if ($product->provider->company == 'EuroCotton') {
                                             $iva = $priceProduct * 0.16;
                                             $priceProduct = round($priceProduct - $iva, 2);
                                         }
                                         if ($product->provider->company == 'For Promotional') {
-
-                                            if ($product->descuento >= $product->provider->discount ) {
-                                                $priceProduct = round($product->price- $product->price * ($product->descuento /100),2);
+                                            if ($product->descuento >= $product->provider->discount) {
+                                                $priceProduct = round(
+                                                    $product->price - $product->price * ($product->descuento / 100),
+                                                    2,
+                                                );
                                             } else {
-                                                $priceProduct = round($product->price - $product->price * (25/100),2);
+                                                $priceProduct = round(
+                                                    $product->price - $product->price * (25 / 100),
+                                                    2,
+                                                );
                                             }
-
                                         }
                                     }
 
