@@ -1230,6 +1230,9 @@ input:checked + .toggle-bg {
 .w-1\/2 {
   width: 50%;
 }
+.w-1\/4 {
+  width: 25%;
+}
 .w-10 {
   width: 2.5rem;
 }
@@ -1268,6 +1271,10 @@ input:checked + .toggle-bg {
 }
 .w-full {
   width: 100%;
+}
+.w-max {
+  width: -moz-max-content;
+  width: max-content;
 }
 .max-w-2xl {
   max-width: 42rem;
