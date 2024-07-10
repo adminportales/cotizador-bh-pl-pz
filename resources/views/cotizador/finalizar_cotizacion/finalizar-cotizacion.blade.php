@@ -91,7 +91,11 @@
                                                     if (auth()->user()->currentQuoteActive->type == 'Fijo') {
                                                         $discount = auth()->user()->currentQuoteActive->value;
                                                     } else {
-                                                        $discount = round(($subtotal / 100) * auth()->user()->currentQuoteActive->value, 2);
+                                                        $discount = round(
+                                                            ($subtotal / 100) *
+                                                                auth()->user()->currentQuoteActive->value,
+                                                            2,
+                                                        );
                                                     }
                                                 @endphp
                                                 <tr>
@@ -130,7 +134,8 @@
 
 
                                     <div class="flex flex-col gap-2">
-                                        <input type="checkbox" wire:model="enviarCorreo" id="enviarCorreo"> Enviar cotización por correo electrónico
+                                        <input type="checkbox" wire:model="enviarCorreo" id="enviarCorreo"> Enviar
+                                        cotización por correo electrónico
                                         <button class="bg-gray-200 p-3 rounded-md hover:bg-gray-300"
                                             data-modal-target="preview" data-modal-toggle="preview"
                                             onclick="preview()">Previsualizar cotización</button>
@@ -290,7 +295,9 @@
                 showCancelButton: true,
                 icon: 'warning',
                 confirmButtonText: 'Guardar',
+                confirmButtonColor: '#3085d6',
                 cancelButtonText: 'Cancelar',
+                cancelButtonColor: '#3085d6'
             }).then((result) => {
                 /* Read more about isConfirmed, isDenied below */
                 if (result.isConfirmed) {
