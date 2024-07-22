@@ -388,7 +388,7 @@
                     </td>
                 @else
                     <td><img src="quotesheet/bh/icon-email.png"alt="">
-                        {{ $user->id == 109 || $user->id == 52 || $user->id == 62 ? 'Ricardo Zamora Rodriguez' : $quote->company->manager }}
+                        {{ $user->id == 52 || $user->id == 62 ? 'Ricardo Zamora Rodriguez' : $quote->company->manager }}
                         <b>GERENTE COMERCIAL</b>
                     </td>
                 @endif
@@ -402,7 +402,7 @@
                     </td>
                 @else
                     <td><img src="quotesheet/bh/icon-email.png"alt="">
-                        {{ $user->id == 109 || $user->id == 52 || $user->id == 62 ? 'ricardo.zamora@promolife.com.mx' : $quote->company->email }}
+                        {{ $user->id == 52 || $user->id == 62 ? 'ricardo.zamora@promolife.com.mx' : $quote->company->email }}
                     </td>
                 @endif
                 <td><img src="quotesheet/bh/icon-email.png" alt="">
@@ -417,7 +417,7 @@
                 @else
                     <td>
                         <img src="quotesheet/bh/icon-whatsapp.png" alt="">
-                        {{ $user->id == 109 || $user->id == 52 || $user->id == 62 ? '55 1963 4472' : $quote->company->phone }}
+                        {{ $user->id == 52 || $user->id == 62 ? '55 1963 4472' : $quote->company->phone }}
                     </td>
                 @endif
                 <td><img src="quotesheet/bh/icon-whatsapp.png" alt=""> {{ $user->phone }}</td>
